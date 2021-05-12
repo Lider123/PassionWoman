@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">PassionWoman</string>
+
+    <!-- title -->
+    <string name="categories">Categories</string>
+</resources>

@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.PassionWoman" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textViewStyle">@style/Theme.PassionWoman.TextAppearance</item>
+        <item name="cardViewStyle">@style/Theme.PassionWoman.CardView</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:fontFamily">@font/lora_regular</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.Title">
+        <item name="android:textSize">48sp</item>
+        <item name="android:fontFamily">@font/lora_bold</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.Card">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/lora_bold</item>
+    </style>
+
+    <style name="Theme.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+    </style>
+</resources>
