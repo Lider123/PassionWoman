@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
@@ -19,6 +20,7 @@ class ApiImpl(
             .build()
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
+        delay(500L)
         val json = assetManager.open("categories.json").bufferedReader().use{ it.readText()}
         val listType = Types.newParameterizedType(List::class.java, CategoryModel::class.java)
         val adapter: JsonAdapter<List<CategoryModel>> = moshi.adapter(listType)

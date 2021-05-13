@@ -23,7 +23,7 @@ class MainActivity : BaseActivity() {
             currentFragment: Fragment?,
             nextFragment: Fragment
         ) {
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
         }
 
         override fun applyCommands(commands: Array<out Command>) {

@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +25,8 @@ class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
         super.initViews()
         binding.rvCategories.run {
             adapter = categoriesAdapter
+            layoutAnimation =
+                LayoutAnimationController(AnimationUtils.loadAnimation(requireContext(), R.anim.item_fade_in))
             addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
         }
     }
