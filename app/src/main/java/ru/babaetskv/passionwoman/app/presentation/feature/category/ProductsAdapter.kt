@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class ProductsAdapter(
@@ -29,6 +30,10 @@ class ProductsAdapter(
             binding.run {
                 root.setOnClickListener {
                     onItemClick.invoke(item)
+                }
+                item.items.firstOrNull()?.let {
+                    tvPrice.text = it.price.toPriceString()
+                    ratingBar.rating = it.rating
                 }
                 tvName.text = item.name
                 ivPreview.load(item.preview, R.drawable.logo)

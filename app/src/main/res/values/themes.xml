@@ -31,11 +31,12 @@
 
     <style name="Theme.PassionWoman.TextAppearance.Card">
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/lora_bold</item>
+        <item name="android:fontFamily">@font/lora_regular</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Card.Large">
         <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/lora_bold</item>
     </style>
 
     <style name="Theme.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">
