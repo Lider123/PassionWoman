@@ -7,13 +7,13 @@ import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import org.kodein.di.generic.instance
+import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
 
 class MainActivity : BaseActivity() {
-    private val navigatorHolder: NavigatorHolder by instance()
+    private val navigatorHolder: NavigatorHolder by inject()
 
     private val navigator = object : AppNavigator(this, R.id.container) {
 

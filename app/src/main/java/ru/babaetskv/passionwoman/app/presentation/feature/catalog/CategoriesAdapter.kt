@@ -11,7 +11,9 @@ import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.domain.model.Category
 
-class CategoriesAdapter : BaseAdapter<Category>(EqualDiffUtilCallback()) {
+class CategoriesAdapter(
+    private val onItemClick: (Category) -> Unit
+) : BaseAdapter<Category>(EqualDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Category> =
         LayoutInflater.from(parent.context)
@@ -20,11 +22,14 @@ class CategoriesAdapter : BaseAdapter<Category>(EqualDiffUtilCallback()) {
                 ViewHolder(it)
             }
     
-    class ViewHolder(v: View) : BaseViewHolder<Category>(v) {
+    inner class ViewHolder(v: View) : BaseViewHolder<Category>(v) {
         private val binding = ViewItemCategoryBinding.bind(v)
 
         override fun bind(item: Category) {
             binding.run {
+                root.setOnClickListener {
+                    onItemClick.invoke(item)
+                }
                 tvName.text = item.name
                 ivImage.load(item.image, R.drawable.logo)
             }

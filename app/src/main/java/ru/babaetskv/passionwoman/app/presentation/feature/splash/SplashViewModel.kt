@@ -7,8 +7,8 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 
 class SplashViewModel(
-    private val router: Router
-) : BaseViewModel() {
+    router: Router
+) : BaseViewModel(router) {
 
     override fun onResume() {
         super.onResume()

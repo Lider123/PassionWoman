@@ -5,31 +5,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    tools:background="@color/background">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_default">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivImage"
+            android:id="@+id/ivPreview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="3:2"
+            app:layout_constraintDimensionRatio="5:8"
             tools:src="@tools:sample/backgrounds/scenic"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
             android:layout_marginHorizontal="@dimen/margin_default"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPreview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             tools:text="@tools:sample/lorem"
-            style="@style/Theme.PassionWoman.TextAppearance.Card.Large"/>
+            style="@style/Theme.PassionWoman.TextAppearance.Card"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

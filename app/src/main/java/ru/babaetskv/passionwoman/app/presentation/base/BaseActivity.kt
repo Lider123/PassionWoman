@@ -4,18 +4,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.github.terrakok.cicerone.Router
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
-import ru.babaetskv.passionwoman.app.MainApp
+import org.koin.android.ext.android.inject
 
-
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    protected val router: Router by instance()
-
-    override val kodein: Kodein by lazy {
-        MainApp.instance.kodein
-    }
+abstract class BaseActivity : AppCompatActivity() {
+    protected val router: Router by inject()
 
     protected fun hideKeyboard() {
         val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
