@@ -21,7 +21,7 @@ class CatalogViewModel(
     }
 
     private fun loadData() {
-        launch {
+        launchWithLoading {
             when (val result = getCategoriesUseCase.execute()) {
                 is BaseUseCase.Result.Success -> {
                     categoriesLiveData.postValue(result.data)

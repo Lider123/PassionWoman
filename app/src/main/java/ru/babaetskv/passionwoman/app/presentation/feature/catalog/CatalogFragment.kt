@@ -34,14 +34,16 @@ class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
     override fun initObservers() {
         super.initObservers()
         viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::populateCategories)
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding.mockView.isVisible = show
     }
 
     private fun populateCategories(categories: List<Category>) {
         categoriesAdapter.submitList(categories) {
-            binding.run {
-                toolbar.isVisible = categories.isNotEmpty()
-                rvCategories.isVisible = categories.isNotEmpty()
-            }
+            binding.rvCategories.isVisible = categories.isNotEmpty()
         }
     }
 

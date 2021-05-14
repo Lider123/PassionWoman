@@ -19,11 +19,19 @@
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:paddingHorizontal="@dimen/margin_default"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_item_category"/>
+
+    <ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
+        android:id="@+id/mockView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lmv_margin="@dimen/margin_default"
+        app:lmv_itemView="@layout/view_item_category_mock"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

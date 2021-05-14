@@ -9,4 +9,10 @@
         <attr name="tv_actionStartVisible" format="boolean"/>
         <attr name="tv_actionEndVisible" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="LinearMockView">
+        <attr name="lmv_itemView" format="reference"/>
+        <attr name="lmv_margin" format="dimension"/>
+        <attr name="android:background"/>
+    </declare-styleable>
 </resources>
