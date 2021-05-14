@@ -6,15 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvCategoriesTitle"
+    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_default"
-        android:text="@string/categories"
-        app:layout_constraintTop_toTopOf="parent"
-        style="@style/Theme.PassionWoman.TextAppearance.Title"/>
+        android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
+        app:tv_title="@string/categories"
+        app:tv_titleTextAppearance="@style/Theme.PassionWoman.TextAppearance.Title"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
@@ -23,7 +22,7 @@
         android:layout_marginTop="16dp"
         android:paddingHorizontal="@dimen/margin_default"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/tvCategoriesTitle"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_item_category"/>

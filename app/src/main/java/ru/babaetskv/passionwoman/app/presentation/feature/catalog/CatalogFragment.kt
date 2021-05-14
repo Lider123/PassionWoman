@@ -39,7 +39,7 @@ class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
     private fun populateCategories(categories: List<Category>) {
         categoriesAdapter.submitList(categories) {
             binding.run {
-                tvCategoriesTitle.isVisible = categories.isNotEmpty()
+                toolbar.isVisible = categories.isNotEmpty()
                 rvCategories.isVisible = categories.isNotEmpty()
             }
         }

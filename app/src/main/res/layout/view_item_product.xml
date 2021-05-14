@@ -29,12 +29,12 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             android:lines="1"
             android:ellipsize="end"
+            android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Card"
             app:layout_constraintTop_toBottomOf="@id/ivPreview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            tools:text="$60.00"
-            style="@style/Theme.PassionWoman.TextAppearance.Card"/>
+            tools:text="$60.00" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
@@ -44,12 +44,12 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             android:lines="1"
             android:ellipsize="end"
+            android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Card"
             app:layout_constraintTop_toBottomOf="@id/tvPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            tools:text="@tools:sample/lorem"
-            style="@style/Theme.PassionWoman.TextAppearance.Card"/>
+            tools:text="@tools:sample/lorem" />
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/ratingBar"

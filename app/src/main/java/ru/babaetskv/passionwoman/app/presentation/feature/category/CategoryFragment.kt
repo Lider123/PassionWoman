@@ -25,7 +25,7 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
 
     override fun initViews() {
         super.initViews()
-        binding.btnBack.setOnClickListener {
+        binding.toolbar.setOnStartClickListener {
             viewModel.onBackPressed()
         }
         binding.rvProducts.run {
@@ -43,7 +43,7 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
     }
 
     private fun populateCategory(category: Category) {
-        binding.tvCategoryName.text = category.name
+        binding.toolbar.title = category.name
     }
 
     private fun populateProducts(products: List<Product>) {

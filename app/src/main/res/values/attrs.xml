@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToolbarView">
+        <attr name="tv_title" format="string"/>
+        <attr name="tv_actionStartSrc" format="reference"/>
+        <attr name="tv_actionEndSrc" format="reference"/>
+        <attr name="tv_titleTextAppearance" format="reference"/>
+        <attr name="android:textAlignment"/>
+        <attr name="tv_actionStartVisible" format="boolean"/>
+        <attr name="tv_actionEndVisible" format="boolean"/>
+    </declare-styleable>
+</resources>
