@@ -1,8 +1,11 @@
 [
   {
+    "id": "product_bra_1",
     "name": "Cute bra",
     "preview": "product_bra_1_preview.jpg",
-    "items": [
+    "price": 55.0,
+    "rating": 4.0,
+    "colors": [
       {
         "color": {
           "name": "white",
@@ -13,9 +16,7 @@
           "product_bra_1_item_1_2.jpg",
           "product_bra_1_item_1_3.jpg",
           "product_bra_1_item_1_4.jpg"
-        ],
-        "price": 55.0,
-        "rating": 4.0
+        ]
       },
       {
         "color": {
@@ -27,9 +28,7 @@
           "product_bra_1_item_2_2.jpg",
           "product_bra_1_item_2_3.jpg",
           "product_bra_1_item_2_4.jpg"
-        ],
-        "price": 54.0,
-        "rating": 4.7
+        ]
       }
     ]
   }

@@ -1,10 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.category
 
 import android.os.Parcelable
-import android.view.animation.AnimationUtils
-import android.view.animation.LayoutAnimationController
 import android.viewbinding.library.fragment.viewBinding
-import kotlinx.android.parcel.Parcelize
+import androidx.recyclerview.widget.DefaultItemAnimator
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
@@ -30,8 +29,7 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
         }
         binding.rvProducts.run {
             adapter = productsAdapter
-            layoutAnimation =
-                LayoutAnimationController(AnimationUtils.loadAnimation(requireContext(), R.anim.item_fade_in))
+            itemAnimator = DefaultItemAnimator()
             addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
         }
     }
