@@ -40,6 +40,6 @@ val repositoryModule = module {
 }
 
 val networkModule = module {
-    single<ApiProvider> { ApiProviderImpl(get<Context>().assets) }
+    single<ApiProvider> { ApiProviderImpl(get()) }
     single { get<ApiProvider>().provideApi() }
 }

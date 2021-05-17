@@ -31,7 +31,9 @@ class CategoriesAdapter(
                     onItemClick.invoke(item)
                 }
                 tvName.text = item.name
-                ivImage.load(item.image, R.drawable.logo)
+                ivImage.load(item.image, R.drawable.logo,
+                    resizeAsItem = true
+                )
             }
         }
     }

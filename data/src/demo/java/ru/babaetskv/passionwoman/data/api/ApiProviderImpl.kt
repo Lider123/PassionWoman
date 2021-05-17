@@ -1,10 +1,10 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
+import android.content.Context
 
 class ApiProviderImpl(
-    private val assetManager: AssetManager
+    private val context: Context
 ) : ApiProvider {
 
-    override fun provideApi(): Api = ApiImpl(assetManager)
+    override fun provideApi(): Api = ApiImpl(context.assets)
 }

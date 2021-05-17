@@ -34,7 +34,9 @@ class ProductsAdapter(
                 tvPrice.text = item.price.toPriceString()
                 ratingBar.rating = item.rating
                 tvName.text = item.name
-                ivPreview.load(item.preview, R.drawable.logo)
+                ivPreview.load(item.preview, R.drawable.logo,
+                    resizeAsItem = true
+                )
             }
         }
     }
