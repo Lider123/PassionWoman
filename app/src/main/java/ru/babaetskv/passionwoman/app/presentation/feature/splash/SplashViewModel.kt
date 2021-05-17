@@ -14,7 +14,7 @@ class SplashViewModel(
         super.onResume()
         launch {
             delay(DELAY)
-            router.replaceScreen(Screens.catalog())
+            router.replaceScreen(Screens.navigation())
         }
     }
 

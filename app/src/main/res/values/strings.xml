@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PassionWoman</string>
 
-    <!-- title -->
-    <string name="categories">Categories</string>
+    <string name="categories_title">Categories</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_cart">Cart</string>
+    <string name="menu_profile">Profile</string>
 </resources>

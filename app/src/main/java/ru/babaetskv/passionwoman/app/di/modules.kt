@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.di
 
-import android.content.Context
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -8,6 +7,7 @@ import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
@@ -28,6 +28,7 @@ val viewModelModule = module {
     viewModel { (args: CategoryFragment.Args) ->
         CategoryViewModel(args, get(), get())
     }
+    viewModel { NavigationViewModel(get()) }
 }
 
 val interactorModule = module {
