@@ -35,6 +35,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, BaseFragment.NoArgs
         if (currentFragment != null && nextFragment != null && currentFragment === nextFragment) return
 
         childFragmentManager.beginTransaction().apply {
+            setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
             childFragmentManager.fragments.forEach { detach(it) }
             if (nextFragment == null) {
                 add(R.id.container, tab.fragmentFactory.invoke(), tag)

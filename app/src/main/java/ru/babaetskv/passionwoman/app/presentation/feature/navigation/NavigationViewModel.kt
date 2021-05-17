@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 
 class NavigationViewModel(router: Router) : BaseViewModel(router) {
@@ -19,13 +20,13 @@ class NavigationViewModel(router: Router) : BaseViewModel(router) {
             CatalogFragment.create() // TODO: set up home fragment
         }),
         FAVORITES("favorites", R.id.menu_favorites, {
-            Fragment() // TODO : set up favorites fragment
+            InDevelopmentFragment.create() // TODO : set up favorites fragment
         }),
         CART("cart", R.id.menu_cart, {
-            Fragment() // TODO : set up cart fragment
+            InDevelopmentFragment.create() // TODO : set up cart fragment
         }),
         PROFILE("profile", R.id.menu_profile, {
-            Fragment() // TODO : set up profile fragment
+            InDevelopmentFragment.create() // TODO : set up profile fragment
         });
 
         companion object {

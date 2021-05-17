@@ -24,29 +24,28 @@
 
     <style name="Theme.PassionWoman.TextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/onPrimary</item>
-        <item name="android:fontFamily">@font/lora_regular</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Title">
         <item name="android:textSize">36sp</item>
-        <item name="android:fontFamily">@font/lora_bold</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Card">
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/lora_regular</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Card.Large">
         <item name="android:textSize">28sp</item>
-        <item name="android:fontFamily">@font/lora_bold</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Toolbar">
         <item name="android:textColor">@color/secondary</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:fontFamily">@font/lora_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">

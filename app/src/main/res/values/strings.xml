@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">PassionWoman</string>
 
+    <string name="in_development">Feature is in development</string>
+
     <string name="categories_title">Categories</string>
 
     <string name="menu_home">Home</string>
