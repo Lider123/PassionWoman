@@ -17,12 +17,13 @@
         app:tv_actionEndVisible="true"
         app:tv_actionStartSrc="@drawable/ic_back" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ru.babaetskv.passionwoman.app.presentation.view.GridRecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/margin_small"
         android:clipToPadding="false"
+        android:layoutAnimation="@anim/layout_grid_fade_in_delayed"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

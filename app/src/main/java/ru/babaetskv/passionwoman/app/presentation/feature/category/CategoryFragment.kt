@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.category
 
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.core.view.isVisible
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -29,7 +29,6 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
         }
         binding.rvProducts.run {
             adapter = productsAdapter
-            itemAnimator = DefaultItemAnimator()
             addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
         }
     }
@@ -45,7 +44,9 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
     }
 
     private fun populateProducts(products: List<Product>) {
-        productsAdapter.submitList(products)
+        productsAdapter.submitList(products) {
+            binding.rvProducts.isVisible = products.isNotEmpty()
+        }
     }
 
     @Parcelize
