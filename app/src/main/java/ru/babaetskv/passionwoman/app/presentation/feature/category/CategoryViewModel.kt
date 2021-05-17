@@ -22,7 +22,7 @@ class CategoryViewModel(
     }
 
     private fun loadProducts() {
-        launch {
+        launchWithLoading {
             when (val result = getProductsUseCase.execute(categoryLiveData.value!!.id)) {
                 is BaseUseCase.Result.Success -> {
                     productsLiveData.postValue(result.data)
