@@ -13,7 +13,8 @@ import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class ProductsAdapter(
-    private val onItemClick: (Product) -> Unit
+    private val onItemClick: (Product) -> Unit,
+    private val onBuyClick: (Product) -> Unit
 ) : BaseAdapter<Product>(ProductDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> =
@@ -37,6 +38,9 @@ class ProductsAdapter(
                 ivPreview.load(item.preview, R.drawable.logo,
                     resizeAsItem = true
                 )
+                btnBuy.setOnClickListener {
+                    onBuyClick.invoke(item)
+                }
             }
         }
     }

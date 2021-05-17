@@ -18,6 +18,7 @@ class MainApp : Application() {
             if (BuildConfig.DEBUG) androidLogger()
             androidContext(this@MainApp)
             modules(
+                appModule,
                 networkModule,
                 navigationModule,
                 interactorModule,

@@ -34,11 +34,6 @@
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Card">
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/lora_italic</item>
-    </style>
-
-    <style name="Theme.PassionWoman.TextAppearance.Card.Large">
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
@@ -46,6 +41,11 @@
     <style name="Theme.PassionWoman.TextAppearance.Toolbar">
         <item name="android:textColor">@color/secondary</item>
         <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">
@@ -57,5 +57,15 @@
 
     <style name="Theme.PassionWoman.ImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/secondary</item>
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance</item>
+    </style>
+
+    <style name="Theme.PassionWoman.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
+        <item name="android:textColor">@color/secondary</item>
     </style>
 </resources>

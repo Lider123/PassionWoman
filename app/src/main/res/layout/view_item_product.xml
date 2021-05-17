@@ -9,8 +9,7 @@
     tools:background="@color/background">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_default">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPreview"
@@ -29,7 +28,6 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             android:lines="1"
             android:ellipsize="end"
-            android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Card"
             app:layout_constraintTop_toBottomOf="@id/ivPreview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,9 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_extra_small"
             android:layout_marginHorizontal="@dimen/margin_default"
-            android:lines="1"
+            android:lines="2"
             android:ellipsize="end"
-            android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Card"
             app:layout_constraintTop_toBottomOf="@id/tvPrice"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +60,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            tools:progress="4"
-            style="?android:attr/ratingBarStyleSmall"/>
+            style="?android:attr/ratingBarStyleSmall"
+            tools:progress="4" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:text="@string/item_product_button_buy"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/Theme.PassionWoman.Button.Text"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

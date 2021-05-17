@@ -16,7 +16,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>() {
     private val binding: FragmentCategoryBinding by viewBinding()
     private val productsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(viewModel::onProductPressed)
+        ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_category

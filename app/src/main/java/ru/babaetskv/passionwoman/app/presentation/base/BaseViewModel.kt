@@ -7,6 +7,7 @@ import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel(

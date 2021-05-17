@@ -9,12 +9,17 @@ import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragm
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
+import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
 import ru.babaetskv.passionwoman.data.repository.CatalogRepositoryImpl
 import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
 import ru.babaetskv.passionwoman.domain.repository.CatalogRepository
+
+val appModule = module {
+    single { Notifier(get()) }
+}
 
 val navigationModule = module {
     single { Cicerone.create() }
@@ -26,7 +31,7 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get()) }
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: CategoryFragment.Args) ->
-        CategoryViewModel(args, get(), get())
+        CategoryViewModel(args, get(), get(), get())
     }
     viewModel { NavigationViewModel(get()) }
 }

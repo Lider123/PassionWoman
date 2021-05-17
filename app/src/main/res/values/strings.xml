@@ -9,4 +9,6 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_cart">Cart</string>
     <string name="menu_profile">Profile</string>
+
+    <string name="item_product_button_buy">Buy now</string>
 </resources>
