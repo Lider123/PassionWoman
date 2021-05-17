@@ -1,0 +1,21 @@
+[
+  {
+    "id": "product_lingerie_1",
+    "name": "Cute set",
+    "preview": "image/product_lingerie_1_preview.webp",
+    "price": 75.0,
+    "rating": 3.8,
+    "colors": [
+      {
+        "color": {
+          "name": "white",
+          "hex": "#000000"
+        },
+        "images": [
+          "image/product_lingerie_1_item_1_1.webp",
+          "image/product_lingerie_1_item_1_2.webp"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "id": "product_erotic_1",
+    "name": "Sexy lingerie",
+    "preview": "image/product_erotic_1_preview.jpg",
+    "price": 75.0,
+    "rating": 3.8,
+    "colors": [
+      {
+        "color": {
+          "name": "light blue",
+          "hex": "#72bcd4"
+        },
+        "images": [
+          "image/product_erotic_1_item_1_1.jpg",
+          "image/product_erotic_1_item_1_2.jpg"
+        ]
+      }
+    ]
+  }
+]

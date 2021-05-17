@@ -1,0 +1,22 @@
+[
+  {
+    "id": "product_swim_1",
+    "name": "Cute swimsuit",
+    "preview": "image/product_swim_1_preview.webp",
+    "price": 65.0,
+    "rating": 3.4,
+    "colors": [
+      {
+        "color": {
+          "name": "yellow",
+          "hex": "#e5e500"
+        },
+        "images": [
+          "image/product_swim_1_item_1_1.webp",
+          "image/product_swim_1_item_1_2.webp",
+          "image/product_swim_1_item_1_3.webp"
+        ]
+      }
+    ]
+  }
+]

@@ -2,7 +2,7 @@
   {
     "id": "product_bra_1",
     "name": "Cute bra",
-    "preview": "product_bra_1_preview.jpg",
+    "preview": "image/product_bra_1_preview.jpg",
     "price": 55.0,
     "rating": 4.0,
     "colors": [
@@ -12,10 +12,10 @@
           "hex": "#ffffff"
         },
         "images": [
-          "product_bra_1_item_1_1.jpg",
-          "product_bra_1_item_1_2.jpg",
-          "product_bra_1_item_1_3.jpg",
-          "product_bra_1_item_1_4.jpg"
+          "image/product_bra_1_item_1_1.jpg",
+          "image/product_bra_1_item_1_2.jpg",
+          "image/product_bra_1_item_1_3.jpg",
+          "image/product_bra_1_item_1_4.jpg"
         ]
       },
       {
@@ -24,10 +24,10 @@
           "hex": "#000000"
         },
         "images": [
-          "product_bra_1_item_2_1.jpg",
-          "product_bra_1_item_2_2.jpg",
-          "product_bra_1_item_2_3.jpg",
-          "product_bra_1_item_2_4.jpg"
+          "image/product_bra_1_item_2_1.jpg",
+          "image/product_bra_1_item_2_2.jpg",
+          "image/product_bra_1_item_2_3.jpg",
+          "image/product_bra_1_item_2_4.jpg"
         ]
       }
     ]
