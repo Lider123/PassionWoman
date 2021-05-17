@@ -6,7 +6,6 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class CategoryViewModel(
@@ -24,14 +23,8 @@ class CategoryViewModel(
 
     private fun loadProducts() {
         launchWithLoading {
-            when (val result = getProductsUseCase.execute(categoryLiveData.value!!.id)) {
-                is BaseUseCase.Result.Success -> {
-                    productsLiveData.postValue(result.data)
-                }
-                is BaseUseCase.Result.Failure -> {
-                    // TODO: handle error
-                }
-            }
+            val products = getProductsUseCase.execute(categoryLiveData.value!!.id)
+            productsLiveData.postValue(products)
         }
     }
 
