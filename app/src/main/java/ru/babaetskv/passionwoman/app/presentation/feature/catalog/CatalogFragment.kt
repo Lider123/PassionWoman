@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Category
 
 class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
@@ -30,11 +31,6 @@ class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
     override fun initObservers() {
         super.initObservers()
         viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::populateCategories)
-        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
-    }
-
-    private fun showLoading(show: Boolean) {
-        binding.mockView.isVisible = show
     }
 
     private fun populateCategories(categories: List<Category>) {

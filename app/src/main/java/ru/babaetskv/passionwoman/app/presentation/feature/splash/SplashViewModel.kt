@@ -5,10 +5,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
 class SplashViewModel(
+    notifier: Notifier,
     router: Router
-) : BaseViewModel(router) {
+) : BaseViewModel(notifier, router) {
 
     override fun onResume() {
         super.onResume()

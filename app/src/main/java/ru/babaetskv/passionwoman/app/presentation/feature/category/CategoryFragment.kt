@@ -37,11 +37,6 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
         super.initObservers()
         viewModel.categoryLiveData.observe(viewLifecycleOwner, ::populateCategory)
         viewModel.productsLiveData.observe(viewLifecycleOwner, ::populateProducts)
-        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
-    }
-
-    private fun showLoading(show: Boolean) {
-        binding.progress.isVisible = show
     }
 
     private fun populateCategory(category: Category) {

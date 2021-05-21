@@ -2,6 +2,7 @@
     <string name="app_name">PassionWoman</string>
 
     <string name="in_development">Feature is in development</string>
+    <string name="retry">Retry</string>
 
     <string name="categories_title">Categories</string>
 
@@ -11,4 +12,8 @@
     <string name="menu_profile">Profile</string>
 
     <string name="item_product_button_buy">Buy now</string>
+
+    <string name="error_message">An unknown error occurred</string>
+    <string name="error_get_categories">Failed to retrieve categories</string>
+    <string name="error_get_products">Failed to retrieve products</string>
 </resources>

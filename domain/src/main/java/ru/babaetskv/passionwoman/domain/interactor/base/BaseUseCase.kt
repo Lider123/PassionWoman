@@ -4,21 +4,11 @@ abstract class BaseUseCase<in P, out R> {
 
     protected abstract suspend fun run(params: P): R
 
-    suspend fun execute(params: P): Result<R> = try {
-        val data = run(params)
-        Result.Success(data)
-    } catch(e: Exception) {
-        Result.Failure(e)
-    }
+    protected abstract fun getUseCaseException(cause: Exception): Exception
 
-    sealed class Result<out R> {
-
-        data class Success<out T>(
-            val data: T
-        ) : Result<T>()
-
-        data class Failure(
-            val error: Throwable
-        ) : Result<Nothing>()
+    suspend fun execute(params: P): R = try {
+        run(params)
+    } catch (e: Exception) {
+        throw getUseCaseException(e)
     }
 }

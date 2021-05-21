@@ -7,8 +7,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
+import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
-class NavigationViewModel(router: Router) : BaseViewModel(router) {
+class NavigationViewModel(notifier: Notifier, router: Router) : BaseViewModel(notifier, router) {
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
 
     fun onTabPressed(tab: Tab) {

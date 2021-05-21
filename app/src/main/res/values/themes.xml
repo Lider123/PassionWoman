@@ -61,7 +61,8 @@
     
     <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/secondary</item>
-        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance</item>
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
+        <item name="cornerRadius">16dp</item>
     </style>
 
     <style name="Theme.PassionWoman.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
