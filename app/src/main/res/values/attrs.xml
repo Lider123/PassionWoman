@@ -15,4 +15,11 @@
         <attr name="lmv_margin" format="dimension"/>
         <attr name="android:background"/>
     </declare-styleable>
+
+    <declare-styleable name="ErrorView">
+        <attr name="ev_isBackVisible" format="boolean"/>
+        <attr name="ev_isActionVisible" format="boolean"/>
+        <attr name="ev_message" format="string"/>
+        <attr name="ev_action" format="string"/>
+    </declare-styleable>
 </resources>

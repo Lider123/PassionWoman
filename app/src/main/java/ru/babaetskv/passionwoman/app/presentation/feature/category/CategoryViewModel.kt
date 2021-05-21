@@ -11,13 +11,18 @@ import ru.babaetskv.passionwoman.domain.model.Product
 class CategoryViewModel(
     args: CategoryFragment.Args,
     private val getProductsUseCase: GetProductsUseCase,
-    private val notifier: Notifier,
+    notifier: Notifier,
     router: Router
-) : BaseViewModel(router) {
+) : BaseViewModel(notifier, router) {
     val categoryLiveData = MutableLiveData(args.category)
     val productsLiveData = MutableLiveData<List<Product>>(emptyList())
 
     init {
+        loadProducts()
+    }
+
+    override fun onErrorActionPressed() {
+        super.onErrorActionPressed()
         loadProducts()
     }
 

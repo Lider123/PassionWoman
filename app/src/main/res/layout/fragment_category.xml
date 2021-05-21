@@ -31,8 +31,18 @@
         app:spanCount="2"
         tools:listitem="@layout/view_item_product"/>
 
+    <ru.babaetskv.passionwoman.app.presentation.view.ErrorView
+        android:id="@id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:ev_action="@string/retry"
+        app:ev_isBackVisible="false" />
+
     <ru.babaetskv.passionwoman.app.presentation.view.ProgressView
-        android:id="@+id/progress"
+        android:id="@id/progressView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
