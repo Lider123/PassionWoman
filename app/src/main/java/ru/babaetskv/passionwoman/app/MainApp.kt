@@ -23,6 +23,7 @@ class MainApp : Application() {
                 navigationModule,
                 interactorModule,
                 viewModelModule,
+                preferencesModule,
                 repositoryModule
             )
         }

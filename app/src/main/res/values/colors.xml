@@ -11,4 +11,6 @@
 
     <color name="alert_info">@color/primaryVariant</color>
     <color name="alert_error">#ff9494</color>
+
+    <color name="onboarding_banner_shade">#98000000</color>
 </resources>
