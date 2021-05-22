@@ -11,10 +11,13 @@ import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewMod
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
+import ru.babaetskv.passionwoman.data.preferences.Preferences
+import ru.babaetskv.passionwoman.data.preferences.PreferencesImpl
 import ru.babaetskv.passionwoman.data.repository.CatalogRepositoryImpl
 import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
@@ -34,12 +37,13 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { SplashViewModel(get(), get()) }
+    viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get(), get()) }
     viewModel { (args: CategoryFragment.Args) ->
         CategoryViewModel(args, get(), get(), get())
     }
     viewModel { NavigationViewModel(get(), get()) }
+    viewModel { OnboardingViewModel(get(), get(), get()) }
 }
 
 val interactorModule = module {
@@ -54,4 +58,8 @@ val repositoryModule = module {
 val networkModule = module {
     single<ApiProvider> { ApiProviderImpl(get()) }
     single { get<ApiProvider>().provideApi() }
+}
+
+val preferencesModule = module {
+    single<Preferences> { PreferencesImpl() }
 }

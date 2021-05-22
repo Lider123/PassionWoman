@@ -6,8 +6,10 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.data.preferences.Preferences
 
 class SplashViewModel(
+    private val preferences: Preferences,
     notifier: Notifier,
     router: Router
 ) : BaseViewModel(notifier, router) {
@@ -16,7 +18,10 @@ class SplashViewModel(
         super.onResume()
         launch {
             delay(DELAY)
-            router.replaceScreen(Screens.navigation())
+            val nextScreen = if (preferences.onboardingShowed) {
+                Screens.navigation()
+            } else Screens.onboarding()
+            router.replaceScreen(nextScreen)
         }
     }
 
