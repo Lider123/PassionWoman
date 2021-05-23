@@ -56,6 +56,8 @@ abstract class BaseFragment<VM : BaseViewModel, TArgs : Parcelable> : Fragment()
         super.onPause()
     }
 
+    open fun onBackPressed() = viewModel.onBackPressed()
+
     open fun initViews() = Unit
 
     open fun initObservers() {

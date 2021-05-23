@@ -16,6 +16,13 @@
     <string name="error_message">An unknown error occurred</string>
     <string name="error_get_categories">Failed to retrieve categories</string>
     <string name="error_get_products">Failed to retrieve products</string>
+    <string name="error_phone_number_is_null">Phone number is empty</string>
+    <string name="error_invalid_phone_number">Invalid phone number</string>
+    <string name="error_network">Network error</string>
+    <string name="error_auth_failed">Authentication failed</string>
+    <string name="error_wrong_sms_code">Wrong SMS code</string>
+    <string name="error_get_profile">Failed to retrieve profile</string>
+    <string name="error_update_profile">Failed to update profile</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -23,4 +30,19 @@
     <string name="onboarding_4">The joy of fashion that a girl experiences every day</string>
     <string name="onboarding_5">Your favorite lingerie is here</string>
     <string name="onboarding_next">Next</string>
+
+    <string name="login_welcome">Welcome</string>
+    <string name="login_or">or</string>
+    <string name="login_login">Log In</string>
+    <string name="login_enter_as_guest">Enter as a guest</string>
+    <string name="login_author">Powered by babaetskv</string>
+    <string name="login_hint">phone number</string>
+
+    <string name="sms_title_template">Enter SMS code which was sent to phone number\n%s</string>
+    <string name="sms_hint">000000</string>
+
+    <string name="sign_up_title">Sign Up</string>
+    <string name="sign_up_hint_name">name</string>
+    <string name="sign_up_hint_surname">surname</string>
+    <string name="sign_up_done">Done</string>
 </resources>

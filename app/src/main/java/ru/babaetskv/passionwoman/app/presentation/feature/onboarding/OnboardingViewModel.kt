@@ -6,10 +6,10 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
-import ru.babaetskv.passionwoman.data.preferences.Preferences
+import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 
 class OnboardingViewModel(
-    private val preferences: Preferences,
+    appPreferences: AppPreferences,
     notifier: Notifier,
     router: Router
 ) : BaseViewModel(notifier, router) {
@@ -27,10 +27,10 @@ class OnboardingViewModel(
     val pagesLiveData = MutableLiveData(pages)
 
     init {
-        preferences.onboardingShowed = true
+        appPreferences.onboardingShowed = true
     }
 
     private fun onNextPressed() {
-        router.replaceScreen(Screens.navigation())
+        router.newRootScreen(Screens.auth())
     }
 }

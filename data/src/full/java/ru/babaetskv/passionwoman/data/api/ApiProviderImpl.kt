@@ -7,13 +7,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ru.babaetskv.passionwoman.data.BuildConfig
-import ru.babaetskv.passionwoman.data.preferences.Preferences
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import java.util.concurrent.TimeUnit
 
 class ApiProviderImpl(
     context: Context,
     private val moshi: Moshi,
-    private val preferences: Preferences
+    private val authPreferences: AuthPreferences
 ) : ApiProvider {
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = if (BuildConfig.DEBUG) {
@@ -33,7 +33,7 @@ class ApiProviderImpl(
             .build()
     private val authHttpClient: OkHttpClient
         get() = httpClientBuilder
-            .addInterceptor(AuthInterceptor(preferences))
+            .addInterceptor(AuthInterceptor(authPreferences))
             .build()
 
     override fun provideAuthApi(): PassionWomanApi =
