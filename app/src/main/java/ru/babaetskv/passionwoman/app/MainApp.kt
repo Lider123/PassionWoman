@@ -30,7 +30,7 @@ class MainApp : Application() {
                 interactorModule,
                 viewModelModule,
                 preferencesModule,
-                repositoryModule
+                gatewayModule
             )
         }
 

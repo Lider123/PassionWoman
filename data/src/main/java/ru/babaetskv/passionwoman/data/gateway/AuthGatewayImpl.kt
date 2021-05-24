@@ -1,16 +1,16 @@
-package ru.babaetskv.passionwoman.data.repository
+package ru.babaetskv.passionwoman.data.gateway
 
 import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.model.AccessTokenModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
+import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
 import ru.babaetskv.passionwoman.domain.model.Profile
-import ru.babaetskv.passionwoman.domain.repository.AuthRepository
 
-class AuthRepositoryImpl(
+class AuthGatewayImpl(
     private val api: PassionWomanApi,
     private val commonApi: CommonApi
-) : AuthRepository {
+) : AuthGateway {
 
     override suspend fun getProfile(): Profile = api.getProfile().toProfile()
 

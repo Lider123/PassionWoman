@@ -1,15 +1,15 @@
-package ru.babaetskv.passionwoman.data.repository
+package ru.babaetskv.passionwoman.data.gateway
 
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
+import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.model.Category
 import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.repository.CatalogRepository
 
-class CatalogRepositoryImpl(
+class CatalogGatewayImpl(
     private val api: PassionWomanApi
-) : CatalogRepository {
+) : CatalogGateway {
 
     override suspend fun getCategories(): List<Category> =
         api.getCategories().map(CategoryModel::toCategory)

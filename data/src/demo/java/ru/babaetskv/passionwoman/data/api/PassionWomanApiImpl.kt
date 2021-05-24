@@ -15,6 +15,7 @@ class PassionWomanApiImpl(
     private val moshi: Moshi,
     private val assetManager: AssetManager
 ) : PassionWomanApi {
+    private var profileMock: ProfileModel? = null
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
@@ -35,13 +36,16 @@ class PassionWomanApiImpl(
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        val json = assetManager.open("profile.json").bufferedReader().use{ it.readText()}
-        val adapter: JsonAdapter<ProfileModel> = moshi.adapter(ProfileModel::class.java)
-        return@withContext adapter.fromJson(json)!!
+        return@withContext if (profileMock == null) {
+            val json = assetManager.open("profile.json").bufferedReader().use{ it.readText()}
+            val adapter: JsonAdapter<ProfileModel> = moshi.adapter(ProfileModel::class.java)
+            adapter.fromJson(json)!!.also { profileMock = it }
+        } else profileMock!!
     }
 
     override suspend fun updateProfile(body: ProfileModel) = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
+        profileMock = body
     }
 
     enum class CategoryProducts(val categoryId: String, val productsFileName: String) {

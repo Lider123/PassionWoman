@@ -1,14 +1,14 @@
 package ru.babaetskv.passionwoman.domain.interactor
 
+import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
 import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.ErrorMessageProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.domain.repository.AuthRepository
 
 class AuthorizeUseCase(
-    private val authRepository: AuthRepository,
+    private val authGateway: AuthGateway,
     private val authPreferences: AuthPreferences,
     private val errorMessageProvider: ErrorMessageProvider
 ) : BaseUseCase<String, Profile>() {
@@ -16,10 +16,10 @@ class AuthorizeUseCase(
     override fun getUseCaseException(cause: Exception): Exception = AuthorizeException(cause)
 
     override suspend fun run(params: String): Profile {
-        val authToken = authRepository.authorize(params)
+        val authToken = authGateway.authorize(params)
         authPreferences.authToken = authToken
         authPreferences.authType = AuthPreferences.AuthType.AUTHORIZED
-        return authRepository.getProfile()
+        return authGateway.getProfile()
     }
 
     inner class AuthorizeException(

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/primaryVariant"/>
+        </shape>
+    </item>
+
+    <item>
+        <inset
+            android:drawable="@drawable/ic_profile"
+            android:inset="@dimen/margin_default"/>
+    </item>
+</layer-list>

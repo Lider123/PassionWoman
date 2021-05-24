@@ -1,8 +1,7 @@
 package ru.babaetskv.passionwoman.app.utils
 
 import android.content.Context
-import android.os.Handler
-import android.util.Log
+import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -14,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import me.philio.pinentry.PinEntryView
+import java.util.*
 
 fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
@@ -69,7 +69,6 @@ fun View.showAnimated(@AnimRes animationRes: Int) {
 }
 
 fun View.hideAnimated(animation: Animation) {
-    Log.e("TEST", "hideAnimated") // TODO: remove
     animation.apply {
         setAnimationListener(object : Animation.AnimationListener {
 
@@ -80,7 +79,6 @@ fun View.hideAnimated(animation: Animation) {
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                Log.e("TEST", "Animation end") // TODO: remove
                 isVisible = false
             }
         })
@@ -92,3 +90,10 @@ fun View.hideAnimated(animation: Animation) {
 fun View.hideAnimated(@AnimRes animationRes: Int) {
     hideAnimated(AnimationUtils.loadAnimation(context, animationRes))
 }
+
+fun String.toFormattedPhone(): String =
+    try {
+        PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)
+    } catch (e: Exception) {
+        this
+    }

@@ -3,14 +3,36 @@ package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
-class NavigationViewModel(notifier: Notifier, router: Router) : BaseViewModel(notifier, router) {
+class NavigationViewModel(
+    authPreferences: AuthPreferences,
+    notifier: Notifier,
+    router: Router
+) : BaseViewModel(notifier, router) {
+    private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
+
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
+
+    init {
+        authTypeFlow.launchIn(this)
+    }
+
+    private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
+        when (authType) {
+            AuthPreferences.AuthType.NONE -> router.newRootScreen(Screens.auth())
+            else -> Unit
+        }
+    }
 
     fun onTabPressed(tab: Tab) {
         selectedTabLiveData.postValue(tab)
@@ -20,14 +42,14 @@ class NavigationViewModel(notifier: Notifier, router: Router) : BaseViewModel(no
         HOME("home", R.id.menu_home, {
             CatalogFragment.create() // TODO: set up home fragment
         }),
-        FAVORITES("favorites", R.id.menu_favorites, {
-            InDevelopmentFragment.create() // TODO : set up favorites fragment
+        SEARCH("search", R.id.menu_search, {
+            InDevelopmentFragment.create() // TODO : set up search fragment
         }),
         CART("cart", R.id.menu_cart, {
             InDevelopmentFragment.create() // TODO : set up cart fragment
         }),
         PROFILE("profile", R.id.menu_profile, {
-            InDevelopmentFragment.create() // TODO : set up profile fragment
+            ProfileFragment.create()
         });
 
         companion object {
