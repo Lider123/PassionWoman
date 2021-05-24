@@ -25,6 +25,7 @@ class OnboardingViewModel(
     )
 
     val pagesLiveData = MutableLiveData(pages)
+    val currPageLiveData = MutableLiveData(0)
 
     init {
         preferences.onboardingShowed = true
@@ -32,5 +33,23 @@ class OnboardingViewModel(
 
     private fun onNextPressed() {
         router.replaceScreen(Screens.navigation())
+    }
+
+    fun onCurrPageChanged(page: Int) {
+        currPageLiveData.postValue(page)
+    }
+
+    fun onPrevPagePressed() {
+        val currPage = currPageLiveData.value!!
+        if (currPage == 0) return
+
+        currPageLiveData.postValue(currPage - 1)
+    }
+
+    fun onNextPagePressed() {
+        val currPage = currPageLiveData.value!!
+        if (currPage == pagesLiveData.value!!.size - 1) return
+
+        currPageLiveData.postValue(currPage + 1)
     }
 }

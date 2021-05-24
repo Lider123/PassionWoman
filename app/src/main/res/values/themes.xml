@@ -33,6 +33,11 @@
         <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
+    <style name="Theme.PassionWoman.TextAppearance.Subtitle">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
     <style name="Theme.PassionWoman.TextAppearance.Card">
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">@font/lora_bold_italic</item>
