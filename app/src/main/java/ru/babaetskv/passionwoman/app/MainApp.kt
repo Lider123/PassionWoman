@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app
 
 import android.app.Application
+import com.chibatching.kotpref.Kotpref
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -11,6 +12,11 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         initKoin()
+        initKotpref()
+    }
+
+    private fun initKotpref() {
+        Kotpref.init(this)
     }
 
     private fun initKoin() {
