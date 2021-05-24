@@ -3,6 +3,8 @@ package ru.babaetskv.passionwoman.app.di
 import android.content.res.Resources
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -56,8 +58,14 @@ val repositoryModule = module {
 }
 
 val networkModule = module {
-    single<ApiProvider> { ApiProviderImpl(get()) }
-    single { get<ApiProvider>().provideApi() }
+    single {
+        Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+    single<ApiProvider> { ApiProviderImpl(get(), get(), get()) }
+    single { get<ApiProvider>().provideAuthApi() }
+    single { get<ApiProvider>().provideCommonApi() }
 }
 
 val preferencesModule = module {
