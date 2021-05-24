@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
@@ -9,7 +10,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "ru.babaetskv.app.passionwoman"
+        applicationId "ru.babaetskv.passionwoman.app"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -28,7 +29,7 @@ android {
     productFlavors {
         demo {
             dimension "1"
-            applicationIdSuffix ".demo"
+            applicationIdSuffix ""
             versionNameSuffix "-demo"
         }
         full {
@@ -77,6 +78,10 @@ dependencies {
 
     // Circle indicator
     implementation "me.relex:circleindicator:2.1.6"
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     // Tests
     testImplementation 'junit:junit:4.+'
