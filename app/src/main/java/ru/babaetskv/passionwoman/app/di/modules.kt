@@ -8,28 +8,38 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.babaetskv.passionwoman.app.auth.AuthHandler
+import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.exception.ErrorMessageProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
-import ru.babaetskv.passionwoman.data.preferences.Preferences
-import ru.babaetskv.passionwoman.data.preferences.PreferencesImpl
+import ru.babaetskv.passionwoman.data.preferences.AppPreferencesImpl
+import ru.babaetskv.passionwoman.data.preferences.AuthPreferencesImpl
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.data.repository.AuthRepositoryImpl
 import ru.babaetskv.passionwoman.data.repository.CatalogRepositoryImpl
-import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
-import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
+import ru.babaetskv.passionwoman.domain.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.ErrorMessageProvider
+import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
+import ru.babaetskv.passionwoman.domain.repository.AuthRepository
 import ru.babaetskv.passionwoman.domain.repository.CatalogRepository
 
 val appModule = module {
     single<Resources> { androidContext().resources }
     single { Notifier(get()) }
     single<ErrorMessageProvider> { ErrorMessageProviderImpl(get()) }
+    single<AuthHandler> { AuthHandlerImpl(get()) }
 }
 
 val navigationModule = module {
@@ -39,22 +49,31 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { SplashViewModel(get(), get(), get()) }
+    viewModel { SplashViewModel(get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get(), get()) }
     viewModel { (args: CategoryFragment.Args) ->
         CategoryViewModel(args, get(), get(), get())
     }
     viewModel { NavigationViewModel(get(), get()) }
     viewModel { OnboardingViewModel(get(), get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get(), get(), get()) }
+    viewModel { (args: SignUpFragment.Args) ->
+        SignUpViewModel(args, get(), get(), get())
+    }
 }
 
 val interactorModule = module {
     factory { GetCategoriesUseCase(get(), get()) }
     factory { GetProductsUseCase(get(), get()) }
+    factory { AuthorizeAsGuestUseCase(get(), get()) }
+    factory { AuthorizeUseCase(get(), get(), get()) }
+    factory { GetProfileUseCase(get(), get()) }
+    factory { UpdateProfileUseCase(get(), get(), get()) }
 }
 
-val repositoryModule = module {
+val repositoryModule = module { // TODO: rename to gateway
     single<CatalogRepository> { CatalogRepositoryImpl(get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }
 
 val networkModule = module {
@@ -69,5 +88,6 @@ val networkModule = module {
 }
 
 val preferencesModule = module {
-    single<Preferences> { PreferencesImpl() }
+    single<AppPreferences> { AppPreferencesImpl() }
+    single<AuthPreferences> { AuthPreferencesImpl() }
 }

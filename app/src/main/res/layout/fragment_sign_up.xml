@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:foreground="@color/bg_login_shade"
+        app:srcCompat="@drawable/bg_login"/>
+
+    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tv_title="@string/sign_up_title"
+        app:tv_actionStartVisible="true"
+        app:tv_actionStartSrc="@drawable/ic_back"
+        app:tv_titleTextAppearance="@style/Theme.PassionWoman.TextAppearance.Title"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputNameWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sign_up_hint_name"
+            android:lines="1"
+            android:ellipsize="end"
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            style="@style/Theme.PassionWoman.EditText"
+            tools:text="@tools:sample/first_names" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputSurnameWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        app:layout_constraintTop_toBottomOf="@id/inputNameWrapper">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputSurname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sign_up_hint_surname"
+            android:lines="1"
+            android:ellipsize="end"
+            android:inputType="textPersonName"
+            android:imeOptions="actionDone"
+            style="@style/Theme.PassionWoman.EditText"
+            tools:text="@tools:sample/last_names" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        android:text="@string/sign_up_done"
+        app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
+        style="@style/Theme.PassionWoman.Button.Colored"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="@string/login_author"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ru.babaetskv.passionwoman.app.presentation.view.ProgressView
+        android:id="@id/progressView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:visibility="visible" />
+</androidx.constraintlayout.widget.ConstraintLayout>

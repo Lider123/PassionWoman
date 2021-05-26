@@ -47,7 +47,7 @@ abstract class BaseViewModel(
         }
     }
 
-    fun onBackPressed() {
+    open fun onBackPressed() {
         router.exit()
     }
 

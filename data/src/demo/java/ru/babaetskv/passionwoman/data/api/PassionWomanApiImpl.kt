@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
+import ru.babaetskv.passionwoman.data.model.ProfileModel
 
 class PassionWomanApiImpl(
     private val moshi: Moshi,
@@ -30,6 +31,17 @@ class PassionWomanApiImpl(
         val listType = Types.newParameterizedType(List::class.java, ProductModel::class.java)
         val adapter: JsonAdapter<List<ProductModel>> = moshi.adapter(listType)
         return@withContext adapter.fromJson(json) ?: emptyList()
+    }
+
+    override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        val json = assetManager.open("profile.json").bufferedReader().use{ it.readText()}
+        val adapter: JsonAdapter<ProfileModel> = moshi.adapter(ProfileModel::class.java)
+        return@withContext adapter.fromJson(json)!!
+    }
+
+    override suspend fun updateProfile(body: ProfileModel) = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
     }
 
     enum class CategoryProducts(val categoryId: String, val productsFileName: String) {

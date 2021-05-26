@@ -6,4 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Image(
     val url: String
-) : Parcelable
+) : Parcelable {
+
+    override fun toString() = url
+}

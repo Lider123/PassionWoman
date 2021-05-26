@@ -1,9 +1,9 @@
 package ru.babaetskv.passionwoman.data.api
 
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
+import ru.babaetskv.passionwoman.data.model.ProfileModel
 
 interface PassionWomanApi {
 
@@ -14,4 +14,12 @@ interface PassionWomanApi {
     suspend fun getProducts(
         @Query("category") categoryId: String
     ): List<ProductModel>
+
+    @GET("api/auth/profile")
+    suspend fun getProfile(): ProfileModel
+
+    @PUT("api/auth/profile")
+    suspend fun updateProfile(
+        @Body body: ProfileModel
+    )
 }

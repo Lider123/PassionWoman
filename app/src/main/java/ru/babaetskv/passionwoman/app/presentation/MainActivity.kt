@@ -15,6 +15,7 @@ import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
+import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertToast
 import ru.babaetskv.passionwoman.app.utils.notifier.Message
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -24,6 +25,8 @@ class MainActivity : BaseActivity() {
     private val notifier: Notifier by inject()
 
     private var alertChannel: ReceiveChannel<Message>? = null
+    private val currentFragment: BaseFragment<*, *>?
+        get() = supportFragmentManager.findFragmentById(R.id.container) as? BaseFragment<*, *>
     private val navigator = object : AppNavigator(this, R.id.container) {
 
         override fun setupFragmentTransaction(
@@ -65,6 +68,10 @@ class MainActivity : BaseActivity() {
     override fun onStop() {
         unsubscribeFromAlerts()
         super.onStop()
+    }
+
+    override fun onBackPressed() {
+        currentFragment?.onBackPressed() ?: super.onBackPressed()
     }
 
     private fun subscribeOnAlerts() {

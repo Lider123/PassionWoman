@@ -2,12 +2,12 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.Context
 import com.squareup.moshi.Moshi
-import ru.babaetskv.passionwoman.data.preferences.Preferences
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class ApiProviderImpl(
     private val context: Context,
     private val moshi: Moshi,
-    private val preferences: Preferences
+    private val authPreferences: AuthPreferences
 ) : ApiProvider {
 
     override fun provideAuthApi(): PassionWomanApi = PassionWomanApiImpl(moshi, context.assets)
