@@ -93,5 +93,6 @@
         parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:background">@drawable/bg_input</item>
         <item name="hintTextColor">@color/hint</item>
+        <item name="android:textColorHint">@color/text_input_label_color</item>
     </style>
 </resources>

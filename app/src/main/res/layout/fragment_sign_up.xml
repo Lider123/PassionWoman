@@ -38,7 +38,7 @@
             android:hint="@string/sign_up_hint_name"
             android:lines="1"
             android:ellipsize="end"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:imeOptions="actionNext"
             style="@style/Theme.PassionWoman.EditText"
             tools:text="@tools:sample/first_names" />
@@ -58,7 +58,7 @@
             android:hint="@string/sign_up_hint_surname"
             android:lines="1"
             android:ellipsize="end"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:imeOptions="actionDone"
             style="@style/Theme.PassionWoman.EditText"
             tools:text="@tools:sample/last_names" />
