@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
+import okhttp3.MultipartBody
 import retrofit2.http.*
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
@@ -21,5 +22,11 @@ interface PassionWomanApi {
     @PUT("api/auth/profile")
     suspend fun updateProfile(
         @Body body: ProfileModel
+    )
+
+    @Multipart
+    @POST("api/auth/avatar")
+    suspend fun uploadAvatar(
+        @Part image: MultipartBody.Part
     )
 }

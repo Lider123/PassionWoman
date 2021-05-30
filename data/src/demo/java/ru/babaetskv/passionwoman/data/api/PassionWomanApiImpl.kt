@@ -7,6 +7,7 @@ import com.squareup.moshi.Types
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
@@ -46,6 +47,11 @@ class PassionWomanApiImpl(
     override suspend fun updateProfile(body: ProfileModel) = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         profileMock = body
+    }
+
+    override suspend fun uploadAvatar(image: MultipartBody.Part) {
+        delay(DELAY_LOADING)
+        // TODO: think up how to save image
     }
 
     enum class CategoryProducts(val categoryId: String, val productsFileName: String) {

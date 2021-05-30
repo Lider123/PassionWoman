@@ -26,6 +26,7 @@
     <string name="error_get_profile">Failed to retrieve profile</string>
     <string name="error_update_profile">Failed to update profile</string>
     <string name="error_log_out">Failed to log out</string>
+    <string name="error_update_avatar">Failed to update avatar</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -58,4 +59,7 @@
     <string name="profile_about">About app</string>
     <string name="profile_log_out_confirmation_message">Are you sure you want to log out?</string>
     <string name="profile_edit">Edit</string>
+    <string name="profile_pick_avatar_message">Pick avatar from…</string>
+    <string name="profile_camera">Camera</string>
+    <string name="profile_gallery">Gallery</string>
 </resources>

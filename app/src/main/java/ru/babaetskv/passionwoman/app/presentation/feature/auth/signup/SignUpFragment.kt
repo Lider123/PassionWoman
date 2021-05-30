@@ -33,13 +33,14 @@ class SignUpFragment : BaseFragment<SignUpViewModel, SignUpFragment.Args>() {
             }
             inputSurname.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    inputSurname.hideKeyboard()
+                    hideKeyboard()
                     btnDone.performClick()
                     return@setOnEditorActionListener true
                 }
                 return@setOnEditorActionListener false
             }
             btnDone.setOnClickListener {
+                hideKeyboard()
                 viewModel.onDonePressed()
             }
             toolbar.setOnStartClickListener {

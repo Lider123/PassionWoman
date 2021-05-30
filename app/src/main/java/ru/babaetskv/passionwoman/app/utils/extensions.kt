@@ -12,6 +12,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import me.philio.pinentry.PinEntryView
 import java.util.*
 
@@ -30,9 +31,9 @@ fun EditText.showKeyboard() {
         ?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun EditText.hideKeyboard() {
-    getSystemService(context, InputMethodManager::class.java)
-        ?.hideSoftInputFromWindow(windowToken, 0)
+fun Fragment.hideKeyboard() {
+    getSystemService(requireContext(), InputMethodManager::class.java)
+        ?.hideSoftInputFromWindow(requireView().windowToken, 0)
 }
 
 fun PinEntryView.showKeyboard() {

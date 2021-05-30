@@ -41,13 +41,13 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
                     }
                 }
                 btnLogin.setOnClickListener {
-                    etPhone.hideKeyboard()
+                    hideKeyboard()
                     val phone = countryCodePicker.fullNumberWithPlus
                     val formattedPhone = countryCodePicker.formattedFullNumber
                     viewModel.onLoginPressed(phone, formattedPhone)
                 }
                 btnGuest.setOnClickListener {
-                    etPhone.hideKeyboard()
+                    hideKeyboard()
                     viewModel.onGuestPressed()
                 }
                 etPhone.run {
