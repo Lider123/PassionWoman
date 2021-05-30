@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.ErrorView
 import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
@@ -76,7 +76,7 @@ abstract class BaseFragment<VM : BaseViewModel, TArgs : Parcelable> : Fragment()
         when (exception) {
             is NetworkDataException -> {
                 errorView.isVisible = true
-                errorView.message = exception.message ?: getString(R.string.error_message)
+                errorView.message = exception.message ?: getString(R.string.error_unknown)
                 errorView.setBackButtonListener {
                     viewModel.onBackPressed()
                 }

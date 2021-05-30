@@ -22,4 +22,8 @@
         <attr name="ev_message" format="string"/>
         <attr name="ev_action" format="string"/>
     </declare-styleable>
+
+    <attr name="coloredButtonStyle" format="reference"/>
+    <attr name="textButtonStyle" format="reference"/>
+    <attr name="outlineButtonStyle" format="reference"/>
 </resources>

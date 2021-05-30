@@ -11,4 +11,5 @@ class ErrorMessageProviderImpl(resources: Resources): ErrorMessageProvider {
     override val AUTHORIZE_ERROR: String = resources.getString(R.string.error_auth_failed)
     override val GET_PROFILE_ERROR: String = resources.getString(R.string.error_get_profile)
     override val UPDATE_PROFILE_ERROR: String = resources.getString(R.string.error_update_profile)
+    override val LOG_OUT_ERROR: String = resources.getString(R.string.error_log_out)
 }

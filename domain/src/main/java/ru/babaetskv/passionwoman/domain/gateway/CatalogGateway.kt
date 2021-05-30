@@ -1,9 +1,9 @@
-package ru.babaetskv.passionwoman.domain.repository
+package ru.babaetskv.passionwoman.domain.gateway
 
 import ru.babaetskv.passionwoman.domain.model.Category
 import ru.babaetskv.passionwoman.domain.model.Product
 
-interface CatalogRepository {
+interface CatalogGateway {
 
     suspend fun getCategories(): List<Category>
 

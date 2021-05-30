@@ -11,29 +11,28 @@ import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.exception.ErrorMessageProviderImpl
-import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
+import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.AppPreferencesImpl
 import ru.babaetskv.passionwoman.data.preferences.AuthPreferencesImpl
-import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.data.repository.AuthRepositoryImpl
-import ru.babaetskv.passionwoman.data.repository.CatalogRepositoryImpl
-import ru.babaetskv.passionwoman.domain.GetProfileUseCase
+import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.ErrorMessageProvider
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
-import ru.babaetskv.passionwoman.domain.repository.AuthRepository
-import ru.babaetskv.passionwoman.domain.repository.CatalogRepository
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.gateway.*
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -54,12 +53,13 @@ val viewModelModule = module {
     viewModel { (args: CategoryFragment.Args) ->
         CategoryViewModel(args, get(), get(), get())
     }
-    viewModel { NavigationViewModel(get(), get()) }
+    viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get(), get()) }
     viewModel { AuthViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: SignUpFragment.Args) ->
         SignUpViewModel(args, get(), get(), get())
     }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
 }
 
 val interactorModule = module {
@@ -69,11 +69,12 @@ val interactorModule = module {
     factory { AuthorizeUseCase(get(), get(), get()) }
     factory { GetProfileUseCase(get(), get()) }
     factory { UpdateProfileUseCase(get(), get(), get()) }
+    factory { LogOutUseCase(get(), get()) }
 }
 
-val repositoryModule = module { // TODO: rename to gateway
-    single<CatalogRepository> { CatalogRepositoryImpl(get()) }
-    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+val gatewayModule = module {
+    single<CatalogGateway> { CatalogGatewayImpl(get()) }
+    single<AuthGateway> { AuthGatewayImpl(get(), get()) }
 }
 
 val networkModule = module {

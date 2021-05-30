@@ -37,11 +37,11 @@ abstract class BaseViewModel(
             is NetworkActionException -> {
                 val request = error.message?.let {
                     notifier.newRequest(this, it)
-                } ?: notifier.newRequest(this, R.string.error_message)
+                } ?: notifier.newRequest(this, R.string.error_unknown)
                 request.sendError()
             }
             else -> {
-                notifier.newRequest(this, R.string.error_message)
+                notifier.newRequest(this, R.string.error_unknown)
                     .sendError()
             }
         }
