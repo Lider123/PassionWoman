@@ -16,4 +16,14 @@
 
     <color name="onboarding_banner_shade">#98000000</color>
     <color name="bg_login_shade">#C000</color>
+
+    <color name="ucrop_color_toolbar">@color/primary</color>
+    <color name="ucrop_color_statusbar">@color/primaryVariant</color>
+    <color name="ucrop_color_toolbar_widget">@color/onPrimary</color>
+    <color name="ucrop_color_widget_active">@color/secondary</color>
+    <color name="ucrop_color_active_controls_color">@color/secondary</color>
+    <color name="ucrop_color_widget_background">@color/primary</color>
+    <color name="ucrop_color_widget_rotate_angle">@color/secondary</color>
+    <color name="ucrop_color_crop_background">@color/onPrimary</color>
+    <color name="ucrop_color_progress_wheel_line">@color/secondary</color>
 </resources>

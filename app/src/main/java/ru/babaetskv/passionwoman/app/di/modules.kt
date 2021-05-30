@@ -59,7 +59,7 @@ val viewModelModule = module {
     viewModel { (args: SignUpFragment.Args) ->
         SignUpViewModel(args, get(), get(), get())
     }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
 }
 
 val interactorModule = module {
@@ -70,6 +70,7 @@ val interactorModule = module {
     factory { GetProfileUseCase(get(), get()) }
     factory { UpdateProfileUseCase(get(), get(), get()) }
     factory { LogOutUseCase(get(), get()) }
+    factory { UpdateAvatarUseCase(get(), get()) }
 }
 
 val gatewayModule = module {

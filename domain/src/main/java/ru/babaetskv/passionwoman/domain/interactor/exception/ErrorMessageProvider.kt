@@ -8,4 +8,5 @@ interface ErrorMessageProvider {
     val AUTHORIZE_ERROR: String
     val UPDATE_PROFILE_ERROR: String
     val LOG_OUT_ERROR: String
+    val UPDATE_AVATAR_ERROR: String
 }
