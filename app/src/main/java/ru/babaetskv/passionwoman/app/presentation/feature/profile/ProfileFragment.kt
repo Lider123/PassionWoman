@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
@@ -37,7 +37,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
     private var activeDialog: AlertDialog? = null
 
     override val layoutRes: Int = R.layout.fragment_profile
-    override val viewModel: ProfileViewModel by viewModel()
+    override val viewModel: ProfileViewModel by sharedViewModel()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {

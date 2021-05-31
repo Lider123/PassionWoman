@@ -4,17 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
 
-class SignUpViewModel(
-    private val args: SignUpFragment.Args,
+class EditProfileViewModel(
+    private val args: EditProfileFragment.Args,
+    private val profileUpdatesListener: ProfileUpdatesListener,
     private val updateProfileUseCase: UpdateProfileUseCase,
     notifier: Notifier,
     router: Router
 ) : BaseViewModel(notifier, router) {
-    private var name: String = ""
-    private var surname: String = ""
+    private var name: String = args.profile.name
+    private var surname: String = args.profile.surname
     private val dataIsValid: Boolean
         get() = name.isNotBlank() && surname.isNotBlank()
 
@@ -39,7 +41,10 @@ class SignUpViewModel(
                 surname = surname
             )
             updateProfileUseCase.execute(newProfile)
-            router.newRootScreen(Screens.navigation())
+            profileUpdatesListener.onProfileUpdated()
+            if (args.signingUp) {
+                router.newRootScreen(Screens.navigation())
+            } else onBackPressed()
         }
     }
 }
