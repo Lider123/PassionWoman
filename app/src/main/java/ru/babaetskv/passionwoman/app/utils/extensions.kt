@@ -7,10 +7,12 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import me.philio.pinentry.PinEntryView
@@ -25,6 +27,10 @@ fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorR
 fun View.color(@ColorRes colorRes: Int) = context.color(colorRes)
 
 fun Float.toPriceString() = String.format("$%.2f", this)
+
+fun TextView.setHtmlText(text: String) {
+    this.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+}
 
 fun EditText.showKeyboard() {
     getSystemService(context, InputMethodManager::class.java)

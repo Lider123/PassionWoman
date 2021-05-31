@@ -6,8 +6,10 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.domain.model.Category
+import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 object Screens {
@@ -38,5 +40,9 @@ object Screens {
 
     fun editProfile(profile: Profile) = FragmentScreen {
         EditProfileFragment.create(profile, false)
+    }
+
+    fun productCard(product: Product) = FragmentScreen {
+        ProductCardFragment.create(product)
     }
 }

@@ -19,6 +19,8 @@ import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragm
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
@@ -61,6 +63,9 @@ val viewModelModule = module {
         EditProfileViewModel(args, profileUpdatesListener, get(), get(), get())
     }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { (args: ProductCardFragment.Args) ->
+        ProductCardViewModel(args, get(), get())
+    }
 }
 
 val interactorModule = module {
