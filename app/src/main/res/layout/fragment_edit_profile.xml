@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:foreground="@color/bg_login_shade"
-        app:srcCompat="@drawable/bg_login"/>
+        android:foreground="@color/bg_login_shade"/>
 
     <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
         android:id="@+id/toolbar"
@@ -19,7 +19,7 @@
         android:layout_height="?android:attr/actionBarSize"
         android:textAlignment="viewStart"
         app:layout_constraintTop_toTopOf="parent"
-        app:tv_title="@string/sign_up_title"
+        app:tv_title="@string/edit_profile_sign_up"
         app:tv_actionStartVisible="true"
         app:tv_actionStartSrc="@drawable/ic_back"
         app:tv_titleTextAppearance="@style/Theme.PassionWoman.TextAppearance.Title"/>
@@ -35,7 +35,7 @@
             android:id="@+id/inputName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/sign_up_hint_name"
+            android:hint="@string/edit_profile_hint_name"
             android:lines="1"
             android:ellipsize="end"
             android:inputType="textCapSentences"
@@ -55,7 +55,7 @@
             android:id="@+id/inputSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/sign_up_hint_surname"
+            android:hint="@string/edit_profile_hint_surname"
             android:lines="1"
             android:ellipsize="end"
             android:inputType="textCapSentences"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_default"
         android:layout_marginHorizontal="@dimen/margin_default"
-        android:text="@string/sign_up_done"
+        android:text="@string/edit_profile_done"
         app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
         style="@style/Theme.PassionWoman.Button.Colored"/>
 

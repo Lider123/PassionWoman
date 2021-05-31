@@ -12,13 +12,14 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.exception.ErrorMessageProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -56,8 +57,8 @@ val viewModelModule = module {
     viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get(), get()) }
     viewModel { AuthViewModel(get(), get(), get(), get(), get()) }
-    viewModel { (args: SignUpFragment.Args) ->
-        SignUpViewModel(args, get(), get(), get())
+    viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
+        EditProfileViewModel(args, profileUpdatesListener, get(), get(), get())
     }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
 }

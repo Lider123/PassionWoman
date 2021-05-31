@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.SignUpFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
@@ -33,6 +33,10 @@ object Screens {
     }
 
     fun signUp(profile: Profile) = FragmentScreen {
-        SignUpFragment.create(profile)
+        EditProfileFragment.create(profile, true)
+    }
+
+    fun editProfile(profile: Profile) = FragmentScreen {
+        EditProfileFragment.create(profile, false)
     }
 }

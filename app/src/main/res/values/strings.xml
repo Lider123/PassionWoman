@@ -45,10 +45,11 @@
     <string name="sms_title_template">Enter SMS code which was sent to phone number\n%s</string>
     <string name="sms_hint">000000</string>
 
-    <string name="sign_up_title">Sign Up</string>
-    <string name="sign_up_hint_name">name</string>
-    <string name="sign_up_hint_surname">surname</string>
-    <string name="sign_up_done">Done</string>
+    <string name="edit_profile_sign_up">Sign Up</string>
+    <string name="edit_profile_edit">Edit profile</string>
+    <string name="edit_profile_hint_name">name</string>
+    <string name="edit_profile_hint_surname">surname</string>
+    <string name="edit_profile_done">Done</string>
 
     <string name="profile_guest">Guest</string>
     <string name="profile_full_name_template">%s %s</string>

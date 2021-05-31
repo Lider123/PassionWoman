@@ -1,12 +1,12 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.net.Uri
-    import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
@@ -25,20 +25,24 @@ class ProfileViewModel(
     private val updateAvatarUseCase: UpdateAvatarUseCase,
     notifier: Notifier,
     router: Router
-) : BaseViewModel(notifier, router) {
+) : BaseViewModel(notifier, router), ProfileUpdatesListener {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val menuItemsLiveData = MutableLiveData(ProfileMenuItem.values().asList())
     val profileLiveData = MutableLiveData<Profile?>()
     val dialogLiveData = MutableLiveData<Dialog?>()
-    val eventBus = eventChannel.consumeAsFlow()
+    val eventBus = eventChannel.receiveAsFlow()
 
     init {
         authTypeFlow.launchIn(this)
     }
 
-    private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
+    override fun onProfileUpdated() {
+        loadProfile(false)
+    }
+
+    private fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
             AuthPreferences.AuthType.AUTHORIZED -> loadProfile(false)
             AuthPreferences.AuthType.GUEST -> loadProfile(true)
@@ -77,9 +81,9 @@ class ProfileViewModel(
     }
 
     fun onEditPressed() {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        profileLiveData.value?.let {
+            router.navigateTo(Screens.editProfile(it))
+        }
     }
 
     fun onAvatarPressed() {
