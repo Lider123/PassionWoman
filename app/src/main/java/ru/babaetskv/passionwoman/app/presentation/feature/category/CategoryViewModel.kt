@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.category
 import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
@@ -29,14 +30,13 @@ class CategoryViewModel(
     private fun loadProducts() {
         launchWithLoading {
             val products = getProductsUseCase.execute(categoryLiveData.value!!.id)
+            // TODO: handle empty products list
             productsLiveData.postValue(products)
         }
     }
 
     fun onProductPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendError()
+        router.navigateTo(Screens.productCard(product))
     }
 
     fun onBuyPressed(product: Product) {

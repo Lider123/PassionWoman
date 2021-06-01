@@ -63,4 +63,8 @@
     <string name="profile_pick_avatar_message">Pick avatar from…</string>
     <string name="profile_camera">Camera</string>
     <string name="profile_gallery">Gallery</string>
+
+    <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
+    <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
+    <string name="product_card_add_to_cart">Add to cart</string>
 </resources>

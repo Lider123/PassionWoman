@@ -23,6 +23,12 @@
         <attr name="ev_action" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="ColorView">
+        <attr name="cv_border_width" format="dimension" />
+        <attr name="cv_color" format="color"/>
+        <attr name="cv_border_color" format="color" />
+    </declare-styleable>
+
     <attr name="coloredButtonStyle" format="reference"/>
     <attr name="textButtonStyle" format="reference"/>
     <attr name="outlineButtonStyle" format="reference"/>

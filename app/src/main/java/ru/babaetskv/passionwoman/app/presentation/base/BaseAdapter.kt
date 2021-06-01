@@ -8,4 +8,15 @@ abstract class BaseAdapter<T : Any>(callback: DiffUtil.ItemCallback<T>) : ListAd
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+            return
+        }
+
+        for (payload in payloads) {
+            holder.bind(getItem(position), payload)
+        }
+    }
 }
