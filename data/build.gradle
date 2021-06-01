@@ -10,6 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
+
+        buildConfigField 'String', 'API_URL', '"http://192.168.1.167:8080"' // TODO: check
     }
 
     buildTypes {
@@ -41,6 +43,17 @@ android {
 dependencies {
     implementation project(":domain")
 
+    // JSON handling
     api "com.squareup.moshi:moshi:$moshi_version"
     api "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    // Preferences
+    api "com.chibatching.kotpref:kotpref:$kotpref_version"
+    implementation "com.chibatching.kotpref:enum-support:$kotpref_version"
+
+    // Network
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
 }

@@ -1,0 +1,31 @@
+[
+  {
+    "id": "product_garter_belt_1",
+    "name": "Sexy garter belt",
+    "preview": "image/product_garter_belt_1_preview.webp",
+    "price": 32.0,
+    "rating": 4.6,
+    "colors": [
+      {
+        "color": {
+          "name": "black",
+          "hex": "#000000"
+        },
+        "images": [
+          "image/product_garter_belt_1_item_1_1.webp",
+          "image/product_garter_belt_1_item_1_2.webp"
+        ]
+      },
+      {
+        "color": {
+          "name": "white",
+          "hex": "#ffffff"
+        },
+        "images": [
+          "image/product_garter_belt_1_item_2_1.webp",
+          "image/product_garter_belt_1_item_2_2.webp"
+        ]
+      }
+    ]
+  }
+]

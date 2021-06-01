@@ -12,7 +12,10 @@
         android:theme="@style/Theme.PassionWoman"
         android:name="ru.babaetskv.passionwoman.app.MainApp">
 
-        <activity android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity">
+        <activity
+            android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

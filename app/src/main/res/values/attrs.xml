@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToolbarView">
+        <attr name="tv_title" format="string"/>
+        <attr name="tv_actionStartSrc" format="reference"/>
+        <attr name="tv_actionEndSrc" format="reference"/>
+        <attr name="tv_titleTextAppearance" format="reference"/>
+        <attr name="android:textAlignment"/>
+        <attr name="tv_actionStartVisible" format="boolean"/>
+        <attr name="tv_actionEndVisible" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LinearMockView">
+        <attr name="lmv_itemView" format="reference"/>
+        <attr name="lmv_margin" format="dimension"/>
+        <attr name="android:background"/>
+    </declare-styleable>
+
+    <declare-styleable name="ErrorView">
+        <attr name="ev_isBackVisible" format="boolean"/>
+        <attr name="ev_isActionVisible" format="boolean"/>
+        <attr name="ev_message" format="string"/>
+        <attr name="ev_action" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorView">
+        <attr name="cv_border_width" format="dimension" />
+        <attr name="cv_color" format="color"/>
+        <attr name="cv_border_color" format="color" />
+    </declare-styleable>
+
+    <attr name="coloredButtonStyle" format="reference"/>
+    <attr name="textButtonStyle" format="reference"/>
+    <attr name="outlineButtonStyle" format="reference"/>
+</resources>

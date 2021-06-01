@@ -1,6 +1,70 @@
 <resources>
     <string name="app_name">PassionWoman</string>
 
-    <!-- title -->
-    <string name="categories">Categories</string>
+    <string name="in_development">Feature is in development</string>
+    <string name="retry">Retry</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="categories_title">Categories</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_cart">Cart</string>
+    <string name="menu_profile">Profile</string>
+
+    <string name="item_product_button_buy">Buy now</string>
+
+    <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_get_categories">Failed to retrieve categories</string>
+    <string name="error_get_products">Failed to retrieve products</string>
+    <string name="error_phone_number_is_null">Phone number is empty</string>
+    <string name="error_invalid_phone_number">Invalid phone number</string>
+    <string name="error_network">Network error</string>
+    <string name="error_auth_failed">Authentication failed</string>
+    <string name="error_wrong_sms_code">Wrong SMS code</string>
+    <string name="error_get_profile">Failed to retrieve profile</string>
+    <string name="error_update_profile">Failed to update profile</string>
+    <string name="error_log_out">Failed to log out</string>
+    <string name="error_update_avatar">Failed to update avatar</string>
+
+    <string name="onboarding_1">Feel the magic with our lingerie brand</string>
+    <string name="onboarding_2">Your body deserves comfort</string>
+    <string name="onboarding_3">Willing to change society, start from your underwear</string>
+    <string name="onboarding_4">The joy of fashion that a girl experiences every day</string>
+    <string name="onboarding_5">Your favorite lingerie is here</string>
+    <string name="onboarding_next">Next</string>
+
+    <string name="login_welcome">Welcome</string>
+    <string name="login_or">or</string>
+    <string name="login_login">Log In</string>
+    <string name="login_enter_as_guest">Enter as a guest</string>
+    <string name="login_author">Powered by babaetskv</string>
+    <string name="login_hint">phone number</string>
+
+    <string name="sms_title_template">Enter SMS code which was sent to phone number\n%s</string>
+    <string name="sms_hint">000000</string>
+
+    <string name="edit_profile_sign_up">Sign Up</string>
+    <string name="edit_profile_edit">Edit profile</string>
+    <string name="edit_profile_hint_name">name</string>
+    <string name="edit_profile_hint_surname">surname</string>
+    <string name="edit_profile_done">Done</string>
+
+    <string name="profile_guest">Guest</string>
+    <string name="profile_full_name_template">%s %s</string>
+    <string name="profile_favorites">Favorites</string>
+    <string name="profile_orders">Orders</string>
+    <string name="profile_log_out">Log Out</string>
+    <string name="profile_log_in">Log In</string>
+    <string name="profile_about">About app</string>
+    <string name="profile_log_out_confirmation_message">Are you sure you want to log out?</string>
+    <string name="profile_edit">Edit</string>
+    <string name="profile_pick_avatar_message">Pick avatar from…</string>
+    <string name="profile_camera">Camera</string>
+    <string name="profile_gallery">Gallery</string>
+
+    <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
+    <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
+    <string name="product_card_add_to_cart">Add to cart</string>
 </resources>

@@ -1,0 +1,21 @@
+[
+  {
+    "id": "product_panties_1",
+    "name": "Cute panties",
+    "preview": "image/product_panties_1_preview.jpg",
+    "price": 60.0,
+    "rating": 4.5,
+    "colors": [
+      {
+        "color": {
+          "name": "purple",
+          "hex": "#800080"
+        },
+        "images": [
+          "image/product_panties_1_item_1_1.jpg",
+          "image/product_panties_1_item_1_2.jpg"
+        ]
+      }
+    ]
+  }
+]

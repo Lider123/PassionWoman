@@ -13,29 +13,98 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
         <item name="android:windowBackground">@color/background</item>
-        <item name="android:textViewStyle">@style/Theme.PassionWoman.TextAppearance</item>
+        <item name="android:textViewStyle">@style/Theme.PassionWoman.TextView</item>
+        <item name="imageButtonStyle">@style/Theme.PassionWoman.ImageButton</item>
         <item name="cardViewStyle">@style/Theme.PassionWoman.CardView</item>
+        <item name="editTextStyle">@style/Theme.PassionWoman.EditText</item>
+        <item name="textInputStyle">@style/Theme.PassionWoman.TextInput</item>
+        <item name="coloredButtonStyle">@style/Theme.PassionWoman.Button.Colored</item>
+        <item name="textButtonStyle">@style/Theme.PassionWoman.Button.Text</item>
+        <item name="outlineButtonStyle">@style/Theme.PassionWoman.Button.Outline</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/onPrimary</item>
-        <item name="android:fontFamily">@font/lora_regular</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Theme.PassionWoman.TextAppearance.Title">
-        <item name="android:textSize">48sp</item>
-        <item name="android:fontFamily">@font/lora_bold</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
-    <style name="Theme.PassionWoman.TextAppearance.Card">
+    <style name="Theme.PassionWoman.TextAppearance.Subtitle">
         <item name="android:textSize">28sp</item>
-        <item name="android:fontFamily">@font/lora_bold</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.AppName">
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
+    <style name="Theme.PassionWoman.TextAppearance.Dialog">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
     </style>
 
     <style name="Theme.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">@dimen/corners_default</item>
         <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
         <item name="android:clickable">true</item>
+        <item name="cardBackgroundColor">@color/primaryVariant</item>
+    </style>
+
+    <style name="Theme.PassionWoman.ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/secondary</item>
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="cornerRadius">@dimen/corners_default</item>
+    </style>
+
+    <style name="Theme.PassionWoman.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="cornerRadius">@dimen/corners_default</item>
+        <item name="strokeColor">@color/secondary</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textColor">@color/secondary</item>
+    </style>
+
+    <style name="Theme.PassionWoman.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
+        <item name="android:textColor">@color/secondary</item>
+    </style>
+
+    <style name="Theme.PassionWoman.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style
+        name="Theme.PassionWoman.TextInput"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="hintTextColor">@color/hint</item>
+        <item name="android:textColorHint">@color/text_input_label_color</item>
     </style>
 </resources>

@@ -4,17 +4,23 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.github.terrakok.cicerone.Router
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
-import ru.babaetskv.passionwoman.app.MainApp
+import org.koin.android.ext.android.inject
+import ru.babaetskv.passionwoman.app.presentation.SimpleKeyboardAnimator
 
+abstract class BaseActivity : AppCompatActivity() {
+    private val keyboardAnimator: SimpleKeyboardAnimator by lazy {
+        SimpleKeyboardAnimator(window)
+    }
+    protected val router: Router by inject()
 
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    protected val router: Router by instance()
+    override fun onStart() {
+        super.onStart()
+        keyboardAnimator.start()
+    }
 
-    override val kodein: Kodein by lazy {
-        MainApp.instance.kodein
+    override fun onStop() {
+        keyboardAnimator.stop()
+        super.onStop()
     }
 
     protected fun hideKeyboard() {
