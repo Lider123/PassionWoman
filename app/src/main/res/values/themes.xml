@@ -88,6 +88,7 @@
     <style name="Theme.PassionWoman.Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAppearance">@style/Theme.PassionWoman.TextAppearance.Button</item>
         <item name="android:textColor">@color/secondary</item>
+        <item name="android:padding">@dimen/margin_small</item>
     </style>
 
     <style name="Theme.PassionWoman.EditText" parent="Widget.AppCompat.EditText">
