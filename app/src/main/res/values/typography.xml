@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Typography.PassionWoman.TextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Typography.PassionWoman.TextAppearance.Title">
+        <item name="android:textSize">36sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
+    <style name="Typography.PassionWoman.TextAppearance.Subtitle">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
+    <style name="Typography.PassionWoman.TextAppearance.AppName">
+        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Typography.PassionWoman.TextAppearance.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lora_bold_italic</item>
+    </style>
+
+    <style name="Typography.PassionWoman.TextAppearance.Dialog">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
+    </style>
+</resources>
