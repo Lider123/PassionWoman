@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@android:integer/config_shortAnimTime"
+    android:repeatCount="0"
+    android:repeatMode="restart"
+    android:valueFrom="1"
+    android:valueTo="1"
+    android:valueType="floatType">
+
+    <propertyValuesHolder android:propertyName="scaleX">
+        <keyframe
+            android:fraction="0"
+            android:value="1" />
+        <keyframe
+            android:fraction="0.5"
+            android:value="0.9" />
+        <keyframe
+            android:fraction="1"
+            android:value="1" />
+    </propertyValuesHolder>
+
+    <propertyValuesHolder android:propertyName="scaleY">
+        <keyframe
+            android:fraction="0"
+            android:value="1" />
+        <keyframe
+            android:fraction="0.5"
+            android:value="0.9" />
+        <keyframe
+            android:fraction="1"
+            android:value="1" />
+    </propertyValuesHolder>
+</objectAnimator>

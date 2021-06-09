@@ -11,6 +11,7 @@ import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.exception.ErrorMessageProviderImpl
+import ru.babaetskv.passionwoman.app.presentation.MainViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
@@ -51,6 +52,7 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
+    viewModel { MainViewModel(get(), get()) }
     viewModel { SplashViewModel(get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get(), get()) }
     viewModel { (args: CategoryFragment.Args) ->

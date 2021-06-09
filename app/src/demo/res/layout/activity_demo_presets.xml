@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.feature.demopresets.DemoPresetsActivity">
+
+    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
+        app:tv_title="@string/demo_presets_title"
+        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPresets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/margin_default"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:layoutAnimation="@anim/layout_fade_in"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/view_item_single_preset"/>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnApplyPresets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_default"
+                    android:layout_marginBottom="@dimen/margin_default"
+                    android:text="@string/demo_presets_apply"
+                    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+                    style="@style/Theme.PassionWoman.Button.Colored"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <ru.babaetskv.passionwoman.app.presentation.view.ProgressView
+            android:id="@id/progressView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </FrameLayout>
+</LinearLayout>
