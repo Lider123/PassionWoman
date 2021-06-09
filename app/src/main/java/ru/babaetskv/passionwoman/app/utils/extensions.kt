@@ -1,6 +1,8 @@
 package ru.babaetskv.passionwoman.app.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.animation.Animation
@@ -50,6 +52,12 @@ fun PinEntryView.showKeyboard() {
 fun PinEntryView.hideKeyboard() {
     getSystemService(context, InputMethodManager::class.java)
         ?.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun Activity.hideKeyboard() {
+    val view = currentFocus ?: View(this)
+    getSystemService(this, InputMethodManager::class.java)
+        ?.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun View.showAnimated(animation: Animation) {

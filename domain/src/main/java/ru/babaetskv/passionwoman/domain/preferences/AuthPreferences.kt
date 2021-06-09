@@ -11,6 +11,6 @@ interface AuthPreferences {
     fun reset()
 
     enum class AuthType {
-        AUTHORIZED, GUEST, NONE
+        NONE, AUTHORIZED, GUEST
     }
 }

@@ -1,0 +1,13 @@
+<resources>
+    <string name="demo_presets_title">Demo presets</string>
+    <string name="demo_presets_apply">Apply</string>
+    <string name="demo_presets_show_onboarding">Show onboarding</string>
+    <string name="demo_presets_authentication">Authentication</string>
+    <string name="demo_presets_authorized">Authorized</string>
+    <string name="demo_presets_guest">Guest</string>
+    <string name="demo_presets_none">Unauthorized</string>
+    <string name="demo_presets_profile_exists">Profile exists</string>
+
+    <string name="demo_name">Jane</string>
+    <string name="demo_surname">Doe</string>
+</resources>

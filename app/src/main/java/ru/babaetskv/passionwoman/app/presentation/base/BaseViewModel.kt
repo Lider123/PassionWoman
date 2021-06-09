@@ -21,9 +21,13 @@ abstract class BaseViewModel(
     override val coroutineContext: CoroutineContext =
         viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
 
+    open fun onStart() = Unit
+
     open fun onResume() = Unit
 
     open fun onPause() = Unit
+
+    open fun onStop() = Unit
 
     open fun onErrorActionPressed() = Unit
 

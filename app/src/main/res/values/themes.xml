@@ -21,6 +21,8 @@
         <item name="coloredButtonStyle">@style/Theme.PassionWoman.Button.Colored</item>
         <item name="textButtonStyle">@style/Theme.PassionWoman.Button.Text</item>
         <item name="outlineButtonStyle">@style/Theme.PassionWoman.Button.Outline</item>
+        <item name="switchStyle">@style/Theme.PassionWoman.Switch</item>
+        <item name="radioButtonStyle">@style/Theme.PassionWoman.RadioButton</item>
     </style>
 
     <style name="Theme.PassionWoman.TextView" parent="Widget.MaterialComponents.TextView">
@@ -80,5 +82,21 @@
         <item name="android:background">@drawable/bg_input</item>
         <item name="hintTextColor">@color/hint</item>
         <item name="android:textColorHint">@color/text_input_label_color</item>
+    </style>
+
+    <style name="Theme.PassionWoman.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+    </style>
+
+    <style name="Theme.PassionWoman.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:button">@drawable/radio_button</item>
+        <item name="android:paddingStart">@dimen/margin_small</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/margin_small</item>
     </style>
 </resources>
