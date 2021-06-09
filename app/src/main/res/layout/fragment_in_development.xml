@@ -16,6 +16,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Title"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
         android:text="@string/in_development"/>
 </LinearLayout>

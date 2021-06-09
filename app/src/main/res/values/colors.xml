@@ -7,7 +7,7 @@
     <color name="onPrimary">#fff</color>
     <color name="onSecondary">#fff</color>
     <color name="background">#151515</color>
-    <color name="text">@color/primaryVariant</color>
+    <color name="text">@color/onPrimary</color>
     <color name="hint">#8FFF</color>
     <color name="error">#ff9494</color>
 

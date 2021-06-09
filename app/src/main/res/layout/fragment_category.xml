@@ -13,7 +13,7 @@
         android:layout_height="?android:attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         android:textAlignment="viewStart"
-        app:tv_titleTextAppearance="@style/Theme.PassionWoman.TextAppearance.Title"
+        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
         app:tv_actionStartVisible="true"
         app:tv_actionEndVisible="true"
         app:tv_actionStartSrc="@drawable/ic_back" />
