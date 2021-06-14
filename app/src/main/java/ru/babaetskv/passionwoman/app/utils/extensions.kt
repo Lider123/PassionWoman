@@ -2,21 +2,23 @@ package ru.babaetskv.passionwoman.app.utils
 
 import android.app.Activity
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import me.philio.pinentry.PinEntryView
 import java.util.*
 
@@ -112,3 +114,10 @@ fun String.toFormattedPhone(): String =
     } catch (e: Exception) {
         this
     }
+
+fun ImageView.load(@DrawableRes imageRes: Int) {
+    Glide.with(this)
+        .load(imageRes)
+        .override(width, 0)
+        .into(this)
+}
