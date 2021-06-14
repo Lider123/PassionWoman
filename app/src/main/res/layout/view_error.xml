@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/banner_in_development"/>
+        tools:src="@drawable/banner_in_development"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnBack"
