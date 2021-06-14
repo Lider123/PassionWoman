@@ -2,11 +2,11 @@ package ru.babaetskv.passionwoman.app.presentation.feature.demopresets
 
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -24,7 +24,7 @@ class DemoPresetsViewModel(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val resources: Resources,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 

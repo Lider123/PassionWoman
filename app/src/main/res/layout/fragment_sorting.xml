@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+        android:id="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
+        app:tv_actionStartVisible="true"
+        app:tv_actionStartSrc="@drawable/ic_back"
+        app:tv_title="@string/sorting_title"
+        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSortings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/margin_default"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_item_sorting"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnApplySorting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="@string/sorting_apply"
+        style="?attr/coloredButtonStyle"/>
+</LinearLayout>

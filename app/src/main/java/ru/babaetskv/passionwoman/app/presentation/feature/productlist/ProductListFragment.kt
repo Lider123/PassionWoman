@@ -25,21 +25,35 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragme
 
     override fun initViews() {
         super.initViews()
-        binding.toolbar.run {
-            title = args.title
-            setOnStartClickListener {
-                viewModel.onBackPressed()
+        binding.run {
+            toolbar.run {
+                title = args.title
+                setOnStartClickListener {
+                    viewModel.onBackPressed()
+                }
             }
-        }
-        binding.rvProducts.run {
-            adapter = productsAdapter
-            addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
+            layoutActions.isVisible = args.actionsAvailable
+            btnFilters.setOnClickListener {
+                viewModel.onFiltersPressed()
+            }
+            btnSorting.setOnClickListener {
+                viewModel.onSortingPressed()
+            }
+            rvProducts.run {
+                adapter = productsAdapter
+                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
+            }
         }
     }
 
     override fun initObservers() {
         super.initObservers()
         viewModel.productsLiveData.observe(viewLifecycleOwner, ::populateProducts)
+        viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
+    }
+
+    private fun populateSorting(sorting: Sorting) {
+        binding.btnSorting.text = sorting.getUiName(viewModel.stringProvider)
     }
 
     private fun populateProducts(products: List<Product>) {
@@ -53,17 +67,19 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragme
         val categoryId: String?,
         val title: String,
         val filters: Filters,
-        val sorting: Sorting
+        val sorting: Sorting,
+        val actionsAvailable: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(categoryId: String?, title: String, filters: Filters, sorting: Sorting) =
+        fun create(categoryId: String?, title: String, filters: Filters, sorting: Sorting, actionsAvailable: Boolean) =
             ProductListFragment().withArgs(Args(
                 categoryId = categoryId,
                 title = title,
                 filters = filters,
-                sorting = sorting
+                sorting = sorting,
+                actionsAvailable = actionsAvailable
             ))
     }
 }

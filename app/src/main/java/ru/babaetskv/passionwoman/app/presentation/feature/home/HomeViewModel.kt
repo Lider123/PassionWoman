@@ -2,9 +2,9 @@ package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
@@ -15,7 +15,7 @@ class HomeViewModel(
     private val getHomeDataUseCase: GetHomeDataUseCase,
     private val resources: Resources,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     val promotionsLiveData = MutableLiveData(emptyList<Promotion>())
     val saleProductsLiveData = MutableLiveData(emptyList<Product>())
@@ -63,7 +63,7 @@ class HomeViewModel(
         router.navigateTo(Screens.productList(
             resources.getString(R.string.home_popular_products_title),
             Filters.DEFAULT,
-            Sorting.POPULARITY_DESC
+            Sorting.POPULARITY
         ))
     }
 
@@ -71,7 +71,7 @@ class HomeViewModel(
         router.navigateTo(Screens.productList(
             resources.getString(R.string.home_new_products_title),
             Filters.DEFAULT,
-            Sorting.NEW_DESC
+            Sorting.NEW
         ))
     }
 

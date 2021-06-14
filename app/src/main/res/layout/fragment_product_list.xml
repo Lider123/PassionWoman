@@ -18,6 +18,34 @@
         app:tv_actionEndVisible="true"
         app:tv_actionStartSrc="@drawable/ic_back" />
 
+    <LinearLayout
+        android:id="@+id/layoutActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnFilters"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_default"
+            android:padding="@dimen/margin_small"
+            android:src="@drawable/ic_filters"
+            android:background="@drawable/bg_card" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnSorting"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/margin_default"
+            android:paddingVertical="@dimen/margin_small"
+            android:paddingHorizontal="@dimen/margin_default"
+            android:background="@drawable/bg_card"
+            tools:text="@tools:sample/lorem"/>
+    </LinearLayout>
+
     <ru.babaetskv.passionwoman.app.presentation.view.GridRecyclerView
         android:id="@+id/rvProducts"
         android:layout_width="match_parent"
@@ -25,7 +53,7 @@
         android:padding="@dimen/margin_small"
         android:clipToPadding="false"
         android:layoutAnimation="@anim/layout_grid_fade_in_delayed"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/layoutActions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"

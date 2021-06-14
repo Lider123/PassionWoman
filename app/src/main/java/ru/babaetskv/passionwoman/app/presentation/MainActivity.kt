@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
@@ -21,22 +22,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     private val currentFragment: BaseFragment<*, *>?
         get() = supportFragmentManager.findFragmentById(R.id.container) as? BaseFragment<*, *>
-    private val navigator = object : AppNavigator(this, R.id.container) {
-
-        override fun setupFragmentTransaction(
-            screen: FragmentScreen,
-            fragmentTransaction: FragmentTransaction,
-            currentFragment: Fragment?,
-            nextFragment: Fragment
-        ) {
-            fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
-        }
-
-        override fun applyCommands(commands: Array<out Command>) {
-            hideKeyboard()
-            super.applyCommands(commands)
-        }
-    }
+    private val navigator = MainAppNavigator(this, R.id.container)
 
     override val contentViewRes: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModel()

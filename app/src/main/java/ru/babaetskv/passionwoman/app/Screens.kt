@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfil
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.domain.model.*
 
@@ -25,11 +26,11 @@ object Screens {
     }
 
     fun category(category: Category) = FragmentScreen {
-        ProductListFragment.create(category.id, category.name, Filters.DEFAULT, Sorting.DEFAULT)
+        ProductListFragment.create(category.id, category.name, Filters.DEFAULT, Sorting.DEFAULT, true)
     }
 
     fun productList(title: String, filters: Filters, sorting: Sorting) = FragmentScreen {
-        ProductListFragment.create(null, title, filters, sorting)
+        ProductListFragment.create(null, title, filters, sorting, false)
     }
 
     fun auth() = FragmentScreen {
@@ -46,5 +47,9 @@ object Screens {
 
     fun productCard(product: Product) = FragmentScreen {
         ProductCardFragment.create(product)
+    }
+
+    fun sorting(sorting: Sorting) = FragmentScreen {
+        SortingFragment.create(sorting)
     }
 }

@@ -1,9 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
@@ -13,7 +13,7 @@ import ru.babaetskv.passionwoman.domain.utils.execute
 class CatalogViewModel(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     val categoriesLiveData = MutableLiveData<List<Category>>(emptyList())
 

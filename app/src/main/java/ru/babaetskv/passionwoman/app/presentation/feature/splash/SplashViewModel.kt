@@ -1,9 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.splash
 
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
@@ -16,7 +16,7 @@ class SplashViewModel(
     private val authPreferences: AuthPreferences,
     private val getProfileUseCase: GetProfileUseCase,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
 
     override fun onResume() {

@@ -1,7 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.auth
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
@@ -9,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeAsGuestUseCase
@@ -22,7 +22,7 @@ class AuthViewModel(
     private val authorizeAsGuestUseCase: AuthorizeAsGuestUseCase,
     private val authPreferences: AuthPreferences,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router), AuthHandler.AuthCallback, AuthHandler.OnSendSmsListener {
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 

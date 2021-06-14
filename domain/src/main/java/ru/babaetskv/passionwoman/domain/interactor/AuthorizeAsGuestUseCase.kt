@@ -1,13 +1,13 @@
 package ru.babaetskv.passionwoman.domain.interactor
 
 import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
-import ru.babaetskv.passionwoman.domain.interactor.exception.ErrorMessageProvider
+import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class AuthorizeAsGuestUseCase(
     private val authPreferences: AuthPreferences,
-    private val errorMessageProvider: ErrorMessageProvider
+    private val stringProvider: StringProvider
 ) : BaseUseCase<Unit, Unit>() {
 
     override fun getUseCaseException(cause: Exception): Exception = AuthorizeAsGuestException(cause)
@@ -19,5 +19,5 @@ class AuthorizeAsGuestUseCase(
 
     inner class AuthorizeAsGuestException(
         cause: Exception?
-    ) : NetworkActionException(errorMessageProvider.AUTHORIZE_AS_GUEST_ERROR, cause)
+    ) : NetworkActionException(stringProvider.AUTHORIZE_AS_GUEST_ERROR, cause)
 }

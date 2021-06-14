@@ -2,13 +2,13 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
@@ -24,7 +24,7 @@ class ProfileViewModel(
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router), ProfileUpdatesListener {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)

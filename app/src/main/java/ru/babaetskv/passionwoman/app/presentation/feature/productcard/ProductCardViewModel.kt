@@ -1,15 +1,15 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
 class ProductCardViewModel(
     args: ProductCardFragment.Args,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     val productLiveData = MutableLiveData(args.product)
     val productColorsLiveData = MutableLiveData(args.product.colors.mapIndexed { index, value ->

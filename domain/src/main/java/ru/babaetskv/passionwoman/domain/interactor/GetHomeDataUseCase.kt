@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.domain.interactor
 
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
-import ru.babaetskv.passionwoman.domain.interactor.exception.ErrorMessageProvider
+import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.HomeData
@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.domain.model.Sorting
 
 class GetHomeDataUseCase(
     private val catalogGateway: CatalogGateway,
-    private val errorMessageProvider: ErrorMessageProvider
+    private val stringProvider: StringProvider
 ) : BaseUseCase<Unit, HomeData>() {
 
     override fun getUseCaseException(cause: Exception): Exception = GetHomeDataException(cause)
@@ -30,14 +30,14 @@ class GetHomeDataUseCase(
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = Filters.DEFAULT,
-                sorting = Sorting.POPULARITY_DESC,
+                sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
             ),
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = Filters.DEFAULT,
-                sorting = Sorting.NEW_DESC,
+                sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
             ),
@@ -46,7 +46,7 @@ class GetHomeDataUseCase(
 
     inner class GetHomeDataException(
         cause: Exception?
-    ) : NetworkDataException(errorMessageProvider.GET_HOME_DATA_ERROR, cause)
+    ) : NetworkDataException(stringProvider.GET_HOME_DATA_ERROR, cause)
 
     companion object {
         private const val PRODUCTS_LIMIT = 6
