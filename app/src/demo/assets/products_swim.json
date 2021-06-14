@@ -4,6 +4,7 @@
     "name": "Cute swimsuit",
     "preview": "image/product_swim_1_preview.webp",
     "price": 65.0,
+    "priceWithDiscount": 65.0,
     "rating": 3.4,
     "colors": [
       {

@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.app.presentation.feature.category
+package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
 import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
@@ -9,13 +9,15 @@ import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class CategoryViewModel(
-    args: CategoryFragment.Args,
+class ProductListViewModel(
+    private val args: ProductListFragment.Args,
     private val getProductsUseCase: GetProductsUseCase,
     notifier: Notifier,
     router: Router
 ) : BaseViewModel(notifier, router) {
-    val categoryLiveData = MutableLiveData(args.category)
+    private val filters = args.filters
+    private val sorting = args.sorting
+
     val productsLiveData = MutableLiveData<List<Product>>(emptyList())
 
     init {
@@ -29,7 +31,14 @@ class CategoryViewModel(
 
     private fun loadProducts() {
         launchWithLoading {
-            val products = getProductsUseCase.execute(categoryLiveData.value!!.id)
+            // TODO: add pagination
+            val products = getProductsUseCase.execute(GetProductsUseCase.Params(
+                categoryId = args.categoryId,
+                filters = filters,
+                sorting = sorting,
+                limit = 10,
+                offset = 0
+            ))
             // TODO: handle empty products list
             productsLiveData.postValue(products)
         }

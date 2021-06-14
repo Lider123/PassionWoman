@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
@@ -40,10 +41,10 @@ class NavigationViewModel(
 
     enum class Tab(val tag: String, val menuItemId: Int, val fragmentFactory: () -> Fragment) {
         HOME("home", R.id.menu_home, {
-            CatalogFragment.create() // TODO: set up home fragment
+            HomeFragment.create()
         }),
-        SEARCH("search", R.id.menu_search, {
-            InDevelopmentFragment.create() // TODO : set up search fragment
+        CATALOG("catalog", R.id.menu_catalog, {
+            CatalogFragment.create()
         }),
         CART("cart", R.id.menu_cart, {
             InDevelopmentFragment.create() // TODO : set up cart fragment

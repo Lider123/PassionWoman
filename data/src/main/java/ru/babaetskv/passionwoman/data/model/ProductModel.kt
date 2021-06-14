@@ -9,6 +9,7 @@ data class ProductModel(
     @Json(name = "name") val name: String,
     @Json(name = "preview") val preview: String,
     @Json(name = "price") val price: Float,
+    @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
     @Json(name = "rating") val rating: Float,
     @Json(name = "colors") val colors: List<ProductColorModel>
 ) {
@@ -19,6 +20,7 @@ data class ProductModel(
             name = name,
             preview = Image(preview),
             price = price,
+            priceWithDiscount = priceWithDiscount,
             rating = rating,
             colors = colors.map(ProductColorModel::toProductColor)
         )

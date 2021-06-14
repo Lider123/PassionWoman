@@ -9,7 +9,7 @@
     <string name="categories_title">Categories</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_search">Search</string>
+    <string name="menu_catalog">Catalog</string>
     <string name="menu_cart">Cart</string>
     <string name="menu_profile">Profile</string>
 
@@ -27,6 +27,7 @@
     <string name="error_update_profile">Failed to update profile</string>
     <string name="error_log_out">Failed to log out</string>
     <string name="error_update_avatar">Failed to update avatar</string>
+    <string name="error_get_home_data">Failed to retrieve home screen data</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -67,4 +68,9 @@
     <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
     <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
     <string name="product_card_add_to_cart">Add to cart</string>
+
+    <string name="home_sale_products_title">Sale</string>
+    <string name="home_popular_products_title">Popular</string>
+    <string name="home_new_products_title">New</string>
+    <string name="home_brands_title">Brands</string>
 </resources>

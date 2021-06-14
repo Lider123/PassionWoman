@@ -4,6 +4,7 @@
     "name": "Nice corset",
     "preview": "image/product_corset_1_preview.jpg",
     "price": 75.0,
+    "priceWithDiscount": 75.0,
     "rating": 3.8,
     "colors": [
       {
@@ -22,6 +23,7 @@
     "name": "Sexy corset",
     "preview": "image/product_corset_2_preview.jpg",
     "price": 75.0,
+    "priceWithDiscount": 75.0,
     "rating": 3.8,
     "colors": [
       {

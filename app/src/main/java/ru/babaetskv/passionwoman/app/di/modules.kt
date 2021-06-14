@@ -16,8 +16,9 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.category.CategoryViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
@@ -55,8 +56,8 @@ val viewModelModule = module {
     viewModel { MainViewModel(get(), get()) }
     viewModel { SplashViewModel(get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get(), get()) }
-    viewModel { (args: CategoryFragment.Args) ->
-        CategoryViewModel(args, get(), get(), get())
+    viewModel { (args: ProductListFragment.Args) ->
+        ProductListViewModel(args, get(), get(), get())
     }
     viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get(), get()) }
@@ -68,6 +69,7 @@ val viewModelModule = module {
     viewModel { (args: ProductCardFragment.Args) ->
         ProductCardViewModel(args, get(), get())
     }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
 }
 
 val interactorModule = module {
@@ -79,10 +81,11 @@ val interactorModule = module {
     factory { UpdateProfileUseCase(get(), get(), get()) }
     factory { LogOutUseCase(get(), get()) }
     factory { UpdateAvatarUseCase(get(), get()) }
+    factory { GetHomeDataUseCase(get(), get()) }
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
     single<AuthGateway> { AuthGatewayImpl(get(), get()) }
 }
 

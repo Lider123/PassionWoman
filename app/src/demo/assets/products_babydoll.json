@@ -4,6 +4,7 @@
     "name": "Cute babydoll",
     "preview": "image/product_babydoll_1_preview.jpg",
     "price": 75.0,
+    "priceWithDiscount": 67.5,
     "rating": 3.8,
     "colors": [
       {

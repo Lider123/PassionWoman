@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.app.presentation.feature.category
+package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
@@ -8,24 +8,28 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.databinding.FragmentCategoryBinding
+import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
-import ru.babaetskv.passionwoman.domain.model.Category
+import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.Sorting
 
-class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>() {
-    private val binding: FragmentCategoryBinding by viewBinding()
+class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragment.Args>() {
+    private val binding: FragmentProductListBinding by viewBinding()
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed)
     }
 
-    override val layoutRes: Int = R.layout.fragment_category
-    override val viewModel: CategoryViewModel by viewModel { parametersOf(args) }
+    override val layoutRes: Int = R.layout.fragment_product_list
+    override val viewModel: ProductListViewModel by viewModel { parametersOf(args) }
 
     override fun initViews() {
         super.initViews()
-        binding.toolbar.setOnStartClickListener {
-            viewModel.onBackPressed()
+        binding.toolbar.run {
+            title = args.title
+            setOnStartClickListener {
+                viewModel.onBackPressed()
+            }
         }
         binding.rvProducts.run {
             adapter = productsAdapter
@@ -35,12 +39,7 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.categoryLiveData.observe(viewLifecycleOwner, ::populateCategory)
         viewModel.productsLiveData.observe(viewLifecycleOwner, ::populateProducts)
-    }
-
-    private fun populateCategory(category: Category) {
-        binding.toolbar.title = category.name
     }
 
     private fun populateProducts(products: List<Product>) {
@@ -51,11 +50,20 @@ class CategoryFragment : BaseFragment<CategoryViewModel, CategoryFragment.Args>(
 
     @Parcelize
     data class Args(
-        val category: Category
+        val categoryId: String?,
+        val title: String,
+        val filters: Filters,
+        val sorting: Sorting
     ) : Parcelable
 
     companion object {
 
-        fun create(category: Category) = CategoryFragment().withArgs(Args(category))
+        fun create(categoryId: String?, title: String, filters: Filters, sorting: Sorting) =
+            ProductListFragment().withArgs(Args(
+                categoryId = categoryId,
+                title = title,
+                filters = filters,
+                sorting = sorting
+            ))
     }
 }

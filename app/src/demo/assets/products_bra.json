@@ -4,6 +4,7 @@
     "name": "Cute bra",
     "preview": "image/product_bra_1_preview.jpg",
     "price": 55.0,
+    "priceWithDiscount": 49.5,
     "rating": 4.0,
     "colors": [
       {

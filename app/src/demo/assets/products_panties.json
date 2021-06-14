@@ -4,6 +4,7 @@
     "name": "Cute panties",
     "preview": "image/product_panties_1_preview.jpg",
     "price": 60.0,
+    "priceWithDiscount": 60.0,
     "rating": 4.5,
     "colors": [
       {
