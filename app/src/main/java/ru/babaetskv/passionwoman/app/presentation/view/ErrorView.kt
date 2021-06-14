@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewErrorBinding
+import ru.babaetskv.passionwoman.app.utils.load
 
 class ErrorView @JvmOverloads constructor(
     context: Context,
@@ -53,6 +54,7 @@ class ErrorView @JvmOverloads constructor(
             }
         }
         binding.run {
+            ivBanner.load(R.drawable.banner_in_development)
             btnBack.setOnClickListener {
                 backButtonListener?.invoke(it)
             }

@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.hideAnimated
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
+import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.showAnimated
 
 class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
@@ -33,6 +34,7 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
     override fun initViews() {
         super.initViews()
         binding.run {
+            ivBackground.load(R.drawable.bg_login)
             layoutLogin.run {
                 countryCodePicker.run {
                     registerCarrierNumberEditText(etPhone)

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.AppName"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.AppName"
         android:textSize="34sp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_welcome"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Subtitle"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle"
         app:layout_constraintTop_toBottomOf="@id/tvAppName"
         app:layout_constraintBottom_toTopOf="@id/layoutPhone"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="0dp"
             app:ccp_autoDetectCountry="true"
             app:ccp_contentColor="@color/onPrimary"
             app:ccp_defaultLanguage="RUSSIAN"
@@ -70,7 +72,8 @@
             android:inputType="phone"
             android:maxLines="1"
             android:imeOptions="actionDone"
-            tools:text="9999999999" />
+            tools:text="9999999999"
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

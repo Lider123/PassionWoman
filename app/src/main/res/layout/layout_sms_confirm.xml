@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.AppName"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.AppName"
         android:textSize="34sp"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_default"
         android:text="@string/sms_title_template"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.Subtitle"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@id/tvAppName"
         app:layout_constraintBottom_toTopOf="@id/pevSmsCode"/>

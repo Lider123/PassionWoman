@@ -13,6 +13,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
+import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragment.Args>() {
@@ -30,9 +31,7 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragme
             toolbar.title = if (args.signingUp) {
                 getString(R.string.edit_profile_sign_up)
             } else getString(R.string.edit_profile_edit)
-            if (args.signingUp) {
-                ivBackground.setImageResource(R.drawable.bg_login)
-            }
+            if (args.signingUp) ivBackground.load(R.drawable.bg_login)
             inputName.run {
                 setText(args.profile.name)
                 doAfterTextChanged {

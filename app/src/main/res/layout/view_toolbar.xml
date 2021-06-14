@@ -20,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:textAppearance="@style/Theme.PassionWoman.TextAppearance.AppName"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.AppName"
         app:layout_constraintStart_toEndOf="@id/btnActionStart"
         app:layout_constraintEnd_toStartOf="@id/btnActionEnd"
         app:layout_goneMarginStart="@dimen/margin_default"

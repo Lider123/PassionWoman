@@ -6,7 +6,8 @@
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_extra_large">64dp</dimen>
 
-    <dimen name="corners_default">16dp</dimen>
+    <dimen name="corners_default">24dp</dimen>
+    <dimen name="corners_switch">100sp</dimen>
 
     <dimen name="image_size_item">200dp</dimen>
     <dimen name="image_size_full">600dp</dimen>

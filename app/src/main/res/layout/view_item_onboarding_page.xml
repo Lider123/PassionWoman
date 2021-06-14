@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1"
         app:layout_goneMarginBottom="@dimen/onboarding_indicator_height"
-        style="@style/Theme.PassionWoman.TextAppearance.Subtitle"
+        style="@style/Typography.PassionWoman.TextAppearance.Subtitle"
         tools:lines="3"
         tools:text="@tools:sample/lorem/random"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

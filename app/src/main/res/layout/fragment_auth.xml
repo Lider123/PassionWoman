@@ -7,11 +7,12 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:foreground="@color/bg_login_shade"
-        app:srcCompat="@drawable/bg_login"/>
+        tools:src="@drawable/bg_login"/>
 
     <include
         android:id="@+id/layoutLogin"
