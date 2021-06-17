@@ -9,6 +9,7 @@ data class Product(
     val name: String,
     val preview: Image,
     val price: Float,
+    val priceWithDiscount: Float, // TODO: handle discount in views
     val rating: Float,
     val colors: List<ProductColor>
 ) : Parcelable

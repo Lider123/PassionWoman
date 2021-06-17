@@ -4,6 +4,7 @@
     "name": "Cute set",
     "preview": "image/product_lingerie_1_preview.webp",
     "price": 75.0,
+    "priceWithDiscount": 75.0,
     "rating": 3.8,
     "colors": [
       {

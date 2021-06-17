@@ -4,6 +4,7 @@
     "name": "Sexy stockings",
     "preview": "image/product_stockings_1_preview.jpg",
     "price": 37.0,
+    "priceWithDiscount": 33.3,
     "rating": 4.3,
     "colors": [
       {

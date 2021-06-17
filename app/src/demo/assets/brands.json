@@ -1,0 +1,32 @@
+[
+  {
+    "id": "brand_1",
+    "logo": "image/brand_1.webp",
+    "name": "Victoria's Secret"
+  },
+  {
+    "id": "brand_2",
+    "logo": "image/brand_2.png",
+    "name": "Intimissimi"
+  },
+  {
+    "id": "brand_3",
+    "logo": "image/brand_3.jpg",
+    "name": "MilaVitsa"
+  },
+  {
+    "id": "brand_4",
+    "logo": "image/brand_4.gif",
+    "name": "La Perla"
+  },
+  {
+    "id": "brand_5",
+    "logo": "image/brand_5.jpg",
+    "name": "Fleur du Mal"
+  },
+  {
+    "id": "brand_6",
+    "logo": "image/brand_6.png",
+    "name": "Maison Lejaby"
+  }
+]

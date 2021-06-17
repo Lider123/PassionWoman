@@ -13,4 +13,5 @@ class ErrorMessageProviderImpl(resources: Resources): ErrorMessageProvider {
     override val UPDATE_PROFILE_ERROR: String = resources.getString(R.string.error_update_profile)
     override val LOG_OUT_ERROR: String = resources.getString(R.string.error_log_out)
     override val UPDATE_AVATAR_ERROR: String = resources.getString(R.string.error_update_avatar)
+    override val GET_HOME_DATA_ERROR: String = resources.getString(R.string.error_get_home_data)
 }

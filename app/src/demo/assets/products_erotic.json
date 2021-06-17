@@ -4,6 +4,7 @@
     "name": "Sexy lingerie",
     "preview": "image/product_erotic_1_preview.jpg",
     "price": 75.0,
+    "priceWithDiscount": 75.0,
     "rating": 3.8,
     "colors": [
       {

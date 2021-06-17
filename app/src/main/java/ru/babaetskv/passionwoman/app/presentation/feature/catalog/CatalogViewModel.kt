@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
 import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Router
+import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -35,5 +36,11 @@ class CatalogViewModel(
 
     fun onCategoryPressed(category: Category) {
         router.navigateTo(Screens.category(category))
+    }
+
+    fun onSearchPressed() {
+        // TODO
+        notifier.newRequest(this, R.string.in_development)
+            .sendAlert()
     }
 }
