@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.auth.signup
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -13,7 +13,7 @@ class EditProfileViewModel(
     private val profileUpdatesListener: ProfileUpdatesListener,
     private val updateProfileUseCase: UpdateProfileUseCase,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     private var name: String = args.profile.name
     private var surname: String = args.profile.surname

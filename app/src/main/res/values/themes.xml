@@ -99,4 +99,11 @@
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
     </style>
+
+    <style name="Theme.PassionWoman.BottomSheetDialogFragment" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.PassionWoman.BottomSheetDialog</item>
+    </style>
 </resources>

@@ -73,4 +73,12 @@
     <string name="home_popular_products_title">Popular</string>
     <string name="home_new_products_title">New</string>
     <string name="home_brands_title">Brands</string>
+
+    <string name="sort_new">By new</string>
+    <string name="sort_popularity">By popularity</string>
+    <string name="sort_price_asc">By price ascending</string>
+    <string name="sort_price_desc">By price descending</string>
+
+    <string name="sorting_apply">Apply</string>
+    <string name="sorting_title">Sorting</string>
 </resources>

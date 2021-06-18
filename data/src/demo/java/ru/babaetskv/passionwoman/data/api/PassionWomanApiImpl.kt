@@ -43,14 +43,14 @@ class PassionWomanApiImpl(
     ): List<ProductModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         val filtersObject = moshi.adapter(FiltersModel::class.java).fromJson(filters)?.toFilters()
+        val sortingObject = Sorting.findValueByApiName(sorting)
         val filename = if (categoryId != null) {
             CategoryProducts.findByCategoryId(categoryId)!!.productsFileName
         } else {
-            val sortingObject = Sorting.findValueByApiName(sorting)
             when {
                 filtersObject?.discountOnly == true -> "products_sale.json"
-                listOf(Sorting.POPULARITY_DESC, Sorting.POPULARITY_ASC).contains(sortingObject) -> "products_popular.json"
-                listOf(Sorting.NEW_DESC, Sorting.NEW_ASC).contains(sortingObject) -> "products_new.json"
+                sortingObject == Sorting.POPULARITY -> "products_popular.json"
+                sortingObject == Sorting.NEW -> "products_new.json"
                 else -> "products_popular.json"
             }
         }
@@ -64,7 +64,13 @@ class PassionWomanApiImpl(
             }
         }
         val pagingIndices = IntRange(offset, offset + limit - 1)
-        return@withContext products.slice(products.indices.intersect(pagingIndices))
+        return@withContext products.slice(products.indices.intersect(pagingIndices)).let { result ->
+            when (sortingObject) {
+                Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
+                Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
+                else -> result
+            }
+        }
     }
 
     override suspend fun getBrands(): List<BrandModel> = withContext(Dispatchers.IO) {

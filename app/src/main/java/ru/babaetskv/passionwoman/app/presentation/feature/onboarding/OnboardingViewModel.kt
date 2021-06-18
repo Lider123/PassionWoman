@@ -1,9 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
@@ -11,7 +11,7 @@ import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 class OnboardingViewModel(
     appPreferences: AppPreferences,
     notifier: Notifier,
-    router: Router
+    router: AppRouter
 ) : BaseViewModel(notifier, router) {
     private val pages = listOf(
         OnboardingPage(R.drawable.onboarding_1, R.string.onboarding_1),

@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation
 
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow
@@ -8,11 +7,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Message
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
-class MainViewModel(notifier: Notifier, router: Router) : BaseViewModel(notifier, router) {
+class MainViewModel(notifier: Notifier, router: AppRouter) : BaseViewModel(notifier, router) {
     private var alertChannel: ReceiveChannel<Message>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
