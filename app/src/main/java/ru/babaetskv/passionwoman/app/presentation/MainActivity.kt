@@ -1,27 +1,22 @@
 package ru.babaetskv.passionwoman.app.presentation
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
-import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.github.terrakok.cicerone.androidx.FragmentScreen
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
+import ru.babaetskv.passionwoman.app.presentation.base.BackButtonListener
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
-import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertToast
 
-class MainActivity : BaseActivity<MainViewModel>() {
+class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private val navigatorHolder: NavigatorHolder by inject()
 
-    private val currentFragment: BaseFragment<*, *>?
-        get() = supportFragmentManager.findFragmentById(R.id.container) as? BaseFragment<*, *>
+    private val currentFragment: BackButtonListener?
+        get() = supportFragmentManager.findFragmentById(R.id.container) as? BackButtonListener
     private val navigator = MainAppNavigator(this, R.id.container)
 
     override val contentViewRes: Int = R.layout.activity_main
@@ -45,6 +40,13 @@ class MainActivity : BaseActivity<MainViewModel>() {
         super.initObservers()
         lifecycleScope.launchWhenResumed {
             viewModel.eventBus.collect(::handleEvent)
+        }
+    }
+
+    override fun handleRouterEvent(event: MainViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            MainViewModel.Router.SplashScreen -> router.newRootScreen(Screens.splash())
         }
     }
 

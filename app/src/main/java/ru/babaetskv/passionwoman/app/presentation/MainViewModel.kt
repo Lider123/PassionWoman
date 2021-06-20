@@ -6,20 +6,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Message
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
-class MainViewModel(notifier: Notifier, router: AppRouter) : BaseViewModel(notifier, router) {
+class MainViewModel(notifier: Notifier) : BaseViewModel<MainViewModel.Router>(notifier) {
     private var alertChannel: ReceiveChannel<Message>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
 
     init {
-        router.newRootScreen(Screens.splash())
+        launch {
+            navigateTo(Router.SplashScreen)
+        }
     }
 
     override fun onStart() {
@@ -57,5 +58,9 @@ class MainViewModel(notifier: Notifier, router: AppRouter) : BaseViewModel(notif
         data class ShowAlertMessage(
             val message: Message
         ) : Event()
+    }
+
+    sealed class Router : RouterEvent {
+        object SplashScreen : Router()
     }
 }

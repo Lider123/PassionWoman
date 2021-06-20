@@ -3,10 +3,11 @@ package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 import android.viewbinding.library.fragment.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 
-class NavigationFragment : BaseFragment<NavigationViewModel, BaseFragment.NoArgs>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, BaseFragment.NoArgs>() {
     private val binding: FragmentNavigationBinding by viewBinding()
 
     override val layoutRes: Int = R.layout.fragment_navigation
@@ -26,6 +27,13 @@ class NavigationFragment : BaseFragment<NavigationViewModel, BaseFragment.NoArgs
     override fun initObservers() {
         super.initObservers()
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
+    }
+
+    override fun handleRouterEvent(event: NavigationViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            NavigationViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+        }
     }
 
     private fun showTab(tab: NavigationViewModel.Tab) {

@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
@@ -17,9 +16,8 @@ import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
     authPreferences: AuthPreferences,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<NavigationViewModel.Router>(notifier) {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
@@ -30,7 +28,7 @@ class NavigationViewModel(
 
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
-            AuthPreferences.AuthType.NONE -> router.newRootScreen(Screens.auth())
+            AuthPreferences.AuthType.NONE -> navigateTo(Router.AuthScreen)
             else -> Unit
         }
     }
@@ -57,5 +55,9 @@ class NavigationViewModel(
 
             fun findByMenuItemId(menuItemId: Int) = values().find { it.menuItemId == menuItemId }
         }
+    }
+
+    sealed class Router : RouterEvent {
+        object AuthScreen : Router()
     }
 }

@@ -4,15 +4,14 @@ import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentHomeBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductsAdapter
-import ru.babaetskv.passionwoman.domain.model.Brand
-import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.model.Promotion
+import ru.babaetskv.passionwoman.domain.model.*
 
-class HomeFragment : BaseFragment<HomeViewModel, BaseFragment.NoArgs>() {
+class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, BaseFragment.NoArgs>() {
     private val binding: FragmentHomeBinding by viewBinding()
     private val promotionsAdapter: PromotionsAdapter by lazy {
         PromotionsAdapter(viewModel::onPromotionPressed)
@@ -83,6 +82,22 @@ class HomeFragment : BaseFragment<HomeViewModel, BaseFragment.NoArgs>() {
         viewModel.popularProductsLiveData.observe(viewLifecycleOwner, ::populatePopularProducts)
         viewModel.newProductsLiveData.observe(viewLifecycleOwner, ::populateNewProducts)
         viewModel.brandsLiveData.observe(viewLifecycleOwner, ::populateBrands)
+    }
+
+    override fun handleRouterEvent(event: HomeViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            is HomeViewModel.Router.ProductCardScreen -> {
+                router.navigateTo(Screens.productCard(event.product))
+            }
+            is HomeViewModel.Router.ProductListScreen -> {
+                router.navigateTo(Screens.productList(
+                    getString(event.titleRes),
+                    event.filters,
+                    event.sorting
+                ))
+            }
+        }
     }
 
     private fun populateBrands(brands: List<Brand>) {

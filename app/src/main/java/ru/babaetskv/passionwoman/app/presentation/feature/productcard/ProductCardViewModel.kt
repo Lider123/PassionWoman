@@ -2,15 +2,14 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
 class ProductCardViewModel(
     args: ProductCardFragment.Args,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<ProductCardViewModel.Router>(notifier) {
     val productLiveData = MutableLiveData(args.product)
     val productColorsLiveData = MutableLiveData(args.product.colors.mapIndexed { index, value ->
         ProductColorItem(value, index == 0)
@@ -36,4 +35,6 @@ class ProductCardViewModel(
         notifier.newRequest(this, R.string.in_development)
             .sendAlert()
     }
+
+    sealed class Router : RouterEvent
 }

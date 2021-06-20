@@ -11,7 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
-class SortingFragment : BaseFragment<SortingViewModel, SortingFragment.Args>() {
+class SortingFragment : BaseFragment<SortingViewModel, SortingViewModel.Router, SortingFragment.Args>() {
     private val binding: FragmentSortingBinding by viewBinding()
     private val sortingAdapter: SortingAdapter by lazy {
         SortingAdapter(viewModel.stringProvider, viewModel::onSortingPressed)

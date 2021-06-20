@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
@@ -18,7 +19,7 @@ import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.showAnimated
 
-class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
+class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, BaseFragment.NoArgs>() {
     private val binding: FragmentAuthBinding by viewBinding()
     private var smsAutoFilled = false
     private val authHandler: AuthHandler by lazy {
@@ -103,6 +104,13 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
         viewModel.smsCodeLiveData.observe(viewLifecycleOwner, ::populateSmsCode)
         lifecycleScope.launchWhenResumed {
             viewModel.eventBus.collect(::handleEvent)
+        }
+    }
+
+    override fun handleRouterEvent(event: AuthViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            AuthViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
         }
     }
 

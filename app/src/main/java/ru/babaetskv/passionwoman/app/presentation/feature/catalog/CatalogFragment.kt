@@ -4,13 +4,13 @@ import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Category
 
-class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
+class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, BaseFragment.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
 
     override val viewModel: CatalogViewModel by viewModel()
@@ -36,6 +36,15 @@ class CatalogFragment : BaseFragment<CatalogViewModel, BaseFragment.NoArgs>() {
     override fun initObservers() {
         super.initObservers()
         viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::populateCategories)
+    }
+
+    override fun handleRouterEvent(event: CatalogViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            is CatalogViewModel.Router.CategoryScreen -> {
+                router.navigateTo(Screens.category(event.category))
+            }
+        }
     }
 
     private fun populateCategories(categories: List<Category>) {
