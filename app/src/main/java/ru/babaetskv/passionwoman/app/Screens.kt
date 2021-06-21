@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
+import ru.babaetskv.passionwoman.app.navigation.BottomSheetDialogFragmentScreen
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
@@ -49,7 +50,7 @@ object Screens {
         ProductCardFragment.create(product)
     }
 
-    fun sorting(sorting: Sorting) = FragmentScreen {
+    fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {
         SortingFragment.create(sorting)
     }
 }

@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -7,8 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import org.koin.android.ext.android.inject
@@ -19,10 +21,7 @@ import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 
-abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
-    Fragment(),
-    BackButtonListener
-    where VM : BaseViewModel<TRouterEvent> {
+abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> : BottomSheetDialogFragment(), BackButtonListener where VM : BaseViewModel<TRouterEvent> {
     private var _args: TArgs? = null
 
     protected val router: AppRouter by inject()
@@ -42,6 +41,9 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
 
     abstract val layoutRes: Int
     abstract val viewModel: VM
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        BottomSheetDialog(requireContext(), R.style.Theme_PassionWoman_BottomSheetDialogFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +68,7 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     }
 
     override fun onBackPressed() {
-        router.exit()
+        dismiss()
     }
 
     open fun initViews() = Unit

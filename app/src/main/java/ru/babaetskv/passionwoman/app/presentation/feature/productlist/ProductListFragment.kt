@@ -60,7 +60,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
                 router.navigateTo(Screens.productCard(event.product))
             }
             is ProductListViewModel.Router.SortingScreen -> {
-                router.navigateTo(Screens.sorting(event.selectedSorting))
+                router.openBottomSheet(Screens.sorting(event.selectedSorting))
             }
         }
     }

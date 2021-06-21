@@ -77,7 +77,6 @@ class ProductListViewModel(
 
     fun onSortingPressed() {
         launch {
-            // TODO: open in bottomsheet
             navigateTo(Router.SortingScreen(sortingLiveData.value!!))
         }
     }

@@ -8,6 +8,7 @@ import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.commands.OpenBottomSheet
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 
 class MainAppNavigator(
@@ -27,5 +28,16 @@ class MainAppNavigator(
     override fun applyCommands(commands: Array<out Command>) {
         activity.hideKeyboard()
         super.applyCommands(commands)
+    }
+
+    override fun applyCommand(command: Command) {
+        when (command) {
+            is OpenBottomSheet -> openIntoBottomSheet(command.screen)
+            else -> super.applyCommand(command)
+        }
+    }
+
+    private fun openIntoBottomSheet(screen: BottomSheetDialogFragmentScreen) {
+        screen.createBottomSheetFragment(fragmentFactory).show(fragmentManager, screen.screenKey)
     }
 }

@@ -105,5 +105,6 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.PassionWoman.BottomSheetDialog</item>
+        <item name="radioButtonStyle">@style/Theme.PassionWoman.RadioButton</item>
     </style>
 </resources>
