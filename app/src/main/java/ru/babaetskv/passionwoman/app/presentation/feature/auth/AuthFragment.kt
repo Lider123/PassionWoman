@@ -14,12 +14,13 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.hideAnimated
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.showAnimated
 
-class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, BaseFragment.NoArgs>() {
+class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentAuthBinding by viewBinding()
     private var smsAutoFilled = false
     private val authHandler: AuthHandler by lazy {

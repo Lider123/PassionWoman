@@ -8,9 +8,10 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.domain.model.Category
 
-class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, BaseFragment.NoArgs>() {
+class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
 
     override val viewModel: CatalogViewModel by viewModel()

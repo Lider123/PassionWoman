@@ -6,8 +6,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 
-class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, BaseFragment.NoArgs>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentNavigationBinding by viewBinding()
 
     override val layoutRes: Int = R.layout.fragment_navigation

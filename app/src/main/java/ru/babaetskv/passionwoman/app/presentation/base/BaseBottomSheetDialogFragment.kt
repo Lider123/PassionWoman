@@ -1,46 +1,39 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.flow.collect
-import kotlinx.parcelize.Parcelize
-import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
-import ru.babaetskv.passionwoman.app.presentation.view.ErrorView
-import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
-import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 
-abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> : BottomSheetDialogFragment(), BackButtonListener where VM : BaseViewModel<TRouterEvent> {
-    private var _args: TArgs? = null
-
-    protected val router: AppRouter by inject()
-
-    var args: TArgs
-        get() = run {
-            if (_args == null) {
-                _args = requireArguments().getParcelable(ARGUMENTS_KEY)!!
-            }
-            _args!!
+abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+    BottomSheetDialogFragment(),
+    FragmentComponent<VM, TRouterEvent, TArgs>
+    where VM : BaseViewModel<TRouterEvent> {
+    override var componentArguments: Bundle
+        get() = requireArguments()
+        set(value) {
+            arguments = value
         }
-        set(args) {
-            arguments = bundleOf(ARGUMENTS_KEY to args)
-            _args = args
-        }
-
+    override val componentContext: Context
+        get() = requireContext()
+    override var _args: TArgs? = null
+    override val componentView: View
+        get() = requireView()
+    override val componentLifecycleScope: LifecycleCoroutineScope
+        get() = lifecycleScope
+    override val componentViewLifecycleOwner: LifecycleOwner
+        get() = viewLifecycleOwner
 
     abstract val layoutRes: Int
-    abstract val viewModel: VM
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         BottomSheetDialog(requireContext(), R.style.Theme_PassionWoman_BottomSheetDialogFragment)
@@ -57,6 +50,11 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
         initObservers()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.onResume()
@@ -67,61 +65,14 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
         super.onPause()
     }
 
+    override fun onStop() {
+        viewModel.onStop()
+        super.onStop()
+    }
+
     override fun onBackPressed() {
         dismiss()
     }
 
-    open fun initViews() = Unit
-
-    @Suppress("UNCHECKED_CAST")
-    open fun initObservers() {
-        viewModel.loadingLiveData.observe(viewLifecycleOwner, ::showLoading)
-        viewModel.errorLiveData.observe(viewLifecycleOwner, ::showError)
-        lifecycleScope.launchWhenResumed {
-            viewModel.routerEventBus.collect {
-                when (it) {
-                    RouterEvent.GoBack -> onBackPressed()
-                    else -> handleRouterEvent(it as TRouterEvent)
-                }
-            }
-        }
-    }
-
-    open fun handleRouterEvent(event: TRouterEvent) = Unit
-
-    open fun showError(exception: Exception?) {
-        val errorView = requireView().findViewById<ErrorView>(R.id.errorView) ?: return
-
-        exception ?: run {
-            errorView.isVisible = false
-            return
-        }
-
-        when (exception) {
-            is NetworkDataException -> {
-                errorView.isVisible = true
-                errorView.message = exception.message ?: getString(R.string.error_unknown)
-                errorView.setBackButtonListener {
-                    onBackPressed()
-                }
-                errorView.setActionButtonListener {
-                    viewModel.onErrorActionPressed()
-                }
-            }
-        }
-    }
-
-    open fun showLoading(show: Boolean) {
-        requireView().findViewById<LinearMockView>(R.id.mockView)?.isVisible = show
-        requireView().findViewById<ProgressView>(R.id.progressView)?.isVisible = show
-    }
-
     fun withArgs(args: TArgs) = also { it.args = args }
-
-    @Parcelize
-    object NoArgs : Parcelable
-
-    companion object {
-        private const val ARGUMENTS_KEY = "FRAGMENT_ARGUMENTS"
-    }
 }

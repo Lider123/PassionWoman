@@ -8,10 +8,11 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentHomeBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductsAdapter
 import ru.babaetskv.passionwoman.domain.model.*
 
-class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, BaseFragment.NoArgs>() {
+class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentHomeBinding by viewBinding()
     private val promotionsAdapter: PromotionsAdapter by lazy {
         PromotionsAdapter(viewModel::onPromotionPressed)

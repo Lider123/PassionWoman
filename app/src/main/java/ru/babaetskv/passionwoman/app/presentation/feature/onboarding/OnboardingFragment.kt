@@ -8,8 +8,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 
-class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, BaseFragment.NoArgs>() {
+class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
         OnboardingPagesAdapter()
     }
