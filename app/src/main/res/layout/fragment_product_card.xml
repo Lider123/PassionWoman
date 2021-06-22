@@ -83,35 +83,52 @@
             app:tv_actionEndSrc="@drawable/ic_favorites"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDiscountPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:padding="@dimen/margin_extra_small"
+            android:gravity="center"
+            android:background="@drawable/bg_discount"
+            android:rotation="-15"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            tools:text="-20%"
+            tools:visibility="visible"/>
+
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
             android:max="5"
             android:stepSize="0.5"
-            app:layout_constraintTop_toTopOf="@id/tvProductName"
-            app:layout_constraintBottom_toBottomOf="@id/tvProductName"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
+            app:layout_constraintStart_toStartOf="parent"
             style="?android:attr/ratingBarStyleSmall"
             tools:progress="4"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvProductName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:textSize="22sp"
-            app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ratingBar"
-            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintEnd_toStartOf="@id/tvDiscountPercent"
+            app:layout_goneMarginTop="@dimen/margin_default"
             tools:text="@tools:sample/lorem" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginHorizontal="@dimen/margin_default"
@@ -119,7 +136,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvProductName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             tools:text="$60" />
 
         <androidx.appcompat.widget.AppCompatTextView

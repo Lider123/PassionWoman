@@ -17,6 +17,10 @@
         <item name="android:fontFamily">@font/lora_bold_italic</item>
     </style>
 
+    <style name="Typography.PassionWoman.TextAppearance.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="Typography.PassionWoman.TextAppearance.AppName">
         <item name="android:textColor">@color/secondary</item>
         <item name="android:textSize">24sp</item>

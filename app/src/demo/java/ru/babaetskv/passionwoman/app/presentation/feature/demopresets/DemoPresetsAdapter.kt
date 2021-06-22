@@ -55,7 +55,7 @@ class DemoPresetsAdapter(
             binding.run {
                 tvTitle.setText(item.titleRes)
                 item.availableValuesWithTitles.forEach { availableValue ->
-                    val radioButton = AppCompatRadioButton(itemView.context).apply {
+                    val radioButton = AppCompatRadioButton(context).apply {
                         id = View.generateViewId()
                         setText(availableValue.first)
                         isChecked = availableValue.second == item.value

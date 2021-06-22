@@ -73,7 +73,15 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         binding.run {
             tvProductName.text = product.name
             ratingBar.rating = product.rating
-            tvPrice.text = product.price.toPriceString()
+            if (product.discountRate > 0) {
+                tvPrice.setHtmlText(getString(R.string.item_product_price_with_discount_template, product.priceWithDiscount.toPriceString(), product.price.toPriceString()))
+            } else {
+                tvPrice.text = product.price.toPriceString()
+            }
+            tvDiscountPercent.run {
+                isVisible = product.discountRate > 0
+                text = context.getString(R.string.product_card_discount_template, product.discountRate)
+            }
         }
     }
 

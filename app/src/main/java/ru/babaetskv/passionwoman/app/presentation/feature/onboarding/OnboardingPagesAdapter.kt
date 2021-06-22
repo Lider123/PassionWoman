@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemOnboardingPageBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
@@ -26,7 +25,6 @@ class OnboardingPagesAdapter: BaseAdapter<OnboardingPage>(EqualDiffUtilCallback(
 
         override fun bind(item: OnboardingPage) {
             binding.run {
-                val context = itemView.context
                 ivBanner.load(item.bannerRes)
                 tvMessage.text = context.getString(item.messageRes)
                 btnAction.run {
