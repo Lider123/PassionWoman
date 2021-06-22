@@ -18,8 +18,8 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
     override val contentViewRes: Int = R.layout.activity_demo_presets
     override val viewModel: DemoPresetsViewModel by viewModel()
 
-    override fun initView() {
-        super.initView()
+    override fun initViews() {
+        super.initViews()
         binding.run {
             rvPresets.run {
                 adapter = this@DemoPresetsActivity.adapter

@@ -7,16 +7,17 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
-import ru.babaetskv.passionwoman.app.presentation.base.BackButtonListener
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
+import ru.babaetskv.passionwoman.app.presentation.base.ViewComponent
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertToast
 
 class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private val navigatorHolder: NavigatorHolder by inject()
-
-    private val currentFragment: BackButtonListener?
-        get() = supportFragmentManager.findFragmentById(R.id.container) as? BackButtonListener
+    private val router: AppRouter by inject()
+    private val currentFragment: ViewComponent<*, *>?
+        get() = supportFragmentManager.findFragmentById(R.id.container) as? ViewComponent<*, *>
     private val navigator = MainAppNavigator(this, R.id.container)
 
     override val contentViewRes: Int = R.layout.activity_main

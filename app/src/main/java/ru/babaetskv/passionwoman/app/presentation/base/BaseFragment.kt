@@ -15,8 +15,7 @@ import ru.babaetskv.passionwoman.app.navigation.AppRouter
 
 abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     Fragment(),
-    FragmentComponent<VM, TRouterEvent, TArgs>,
-    BackButtonListener
+    FragmentComponent<VM, TRouterEvent, TArgs>
     where VM : BaseViewModel<TRouterEvent> {
     protected val router: AppRouter by inject()
 
