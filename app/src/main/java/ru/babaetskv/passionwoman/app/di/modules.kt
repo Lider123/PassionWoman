@@ -57,25 +57,25 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { MainViewModel(get(), get()) }
-    viewModel { SplashViewModel(get(), get(), get(), get(), get()) }
-    viewModel { CatalogViewModel(get(), get(), get()) }
+    viewModel { MainViewModel(get()) }
+    viewModel { SplashViewModel(get(), get(), get(), get()) }
+    viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModel(args, get(), get(), get(), get(), get())
+        ProductListViewModel(args, get(), get(), get(), get())
     }
-    viewModel { NavigationViewModel(get(), get(), get()) }
-    viewModel { OnboardingViewModel(get(), get(), get()) }
-    viewModel { AuthViewModel(get(), get(), get(), get(), get()) }
+    viewModel { NavigationViewModel(get(), get()) }
+    viewModel { OnboardingViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
-        EditProfileViewModel(args, profileUpdatesListener, get(), get(), get())
+        EditProfileViewModel(args, profileUpdatesListener, get(), get())
     }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
-        ProductCardViewModel(args, get(), get())
+        ProductCardViewModel(args, get())
     }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
-        SortingViewModel(args, get(), get(), get(), get())
+        SortingViewModel(args, get(), get(), get())
     }
 }
 

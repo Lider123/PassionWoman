@@ -8,13 +8,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
-class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragment.Args>() {
+class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewModel.Router, ProductListFragment.Args>() {
     private val binding: FragmentProductListBinding by viewBinding()
     private val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed)
@@ -50,6 +51,18 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragme
         super.initObservers()
         viewModel.productsLiveData.observe(viewLifecycleOwner, ::populateProducts)
         viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
+    }
+
+    override fun handleRouterEvent(event: ProductListViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            is ProductListViewModel.Router.ProductCardScreen -> {
+                router.navigateTo(Screens.productCard(event.product))
+            }
+            is ProductListViewModel.Router.SortingScreen -> {
+                router.openBottomSheet(Screens.sorting(event.selectedSorting))
+            }
+        }
     }
 
     private fun populateSorting(sorting: Sorting) {

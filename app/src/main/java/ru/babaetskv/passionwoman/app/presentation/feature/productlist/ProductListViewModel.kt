@@ -3,10 +3,10 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
@@ -19,9 +19,8 @@ class ProductListViewModel(
     private val getProductsUseCase: GetProductsUseCase,
     sortingUpdateHub: SortingUpdateHub,
     val stringProvider: StringProvider,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<ProductListViewModel.Router>(notifier) {
     private val filters = args.filters
     private val sortingUpdateFlow = sortingUpdateHub.flow.onEach(::onSortingUpdated)
 
@@ -59,7 +58,9 @@ class ProductListViewModel(
     }
 
     fun onProductPressed(product: Product) {
-        router.navigateTo(Screens.productCard(product))
+        launch {
+            navigateTo(Router.ProductCardScreen(product))
+        }
     }
 
     fun onBuyPressed(product: Product) {
@@ -75,7 +76,19 @@ class ProductListViewModel(
     }
 
     fun onSortingPressed() {
-        // TODO: open in bottomsheet
-        router.navigateTo(Screens.sorting(sortingLiveData.value!!))
+        launch {
+            navigateTo(Router.SortingScreen(sortingLiveData.value!!))
+        }
+    }
+
+    sealed class Router : RouterEvent {
+
+        data class ProductCardScreen(
+            val product: Product
+        ) : Router()
+
+        data class SortingScreen(
+            val selectedSorting: Sorting
+        ) : Router()
     }
 }

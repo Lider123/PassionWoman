@@ -2,8 +2,8 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -12,9 +12,8 @@ class SortingViewModel(
     private val args: SortingFragment.Args,
     private val sortingUpdateHub: SortingUpdateHub,
     val stringProvider: StringProvider,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<SortingViewModel.Router>(notifier) {
 
     val sortingsLiveData = MutableLiveData(Sorting.values().map { SortingItem(it, selected = it == args.sorting) })
 
@@ -33,4 +32,6 @@ class SortingViewModel(
             onBackPressed()
         }
     }
+
+    sealed class Router : RouterEvent
 }

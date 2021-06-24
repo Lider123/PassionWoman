@@ -2,11 +2,11 @@ package ru.babaetskv.passionwoman.app.presentation.feature.splash
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.utils.execute
@@ -15,27 +15,39 @@ class SplashViewModel(
     private val appPreferences: AppPreferences,
     private val authPreferences: AuthPreferences,
     private val getProfileUseCase: GetProfileUseCase,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<SplashViewModel.Router>(notifier) {
 
     override fun onResume() {
         super.onResume()
         launch {
             delay(DELAY)
             when {
-                !appPreferences.onboardingShowed -> router.newRootScreen(Screens.onboarding())
+                !appPreferences.onboardingShowed -> navigateTo(Router.OnboardingScreen)
                 authPreferences.authType == AuthPreferences.AuthType.NONE -> {
-                    router.newRootScreen(Screens.auth())
+                    navigateTo(Router.AuthScreen)
                 }
                 authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED
                     && !authPreferences.profileIsFilled -> launchWithLoading {
                     val profile = getProfileUseCase.execute()
-                    router.newRootScreen(Screens.signUp(profile))
+                    navigateTo(Router.SignUpScreen(profile))
                 }
-                else -> router.newRootScreen(Screens.navigation())
+                else -> navigateTo(Router.NavigationScreen)
             }
         }
+    }
+
+    sealed class Router : RouterEvent {
+
+        object OnboardingScreen : Router()
+
+        object AuthScreen : Router()
+
+        data class SignUpScreen(
+            val profile: Profile
+        ) : Router()
+
+        object NavigationScreen : Router()
     }
 
     companion object {

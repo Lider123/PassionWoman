@@ -5,15 +5,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeUseCase
 import ru.babaetskv.passionwoman.domain.model.AuthResult
+import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.utils.execute
 
@@ -21,9 +21,8 @@ class AuthViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
     private val authorizeAsGuestUseCase: AuthorizeAsGuestUseCase,
     private val authPreferences: AuthPreferences,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router), AuthHandler.AuthCallback, AuthHandler.OnSendSmsListener {
+    notifier: Notifier
+) : BaseViewModel<AuthViewModel.Router>(notifier), AuthHandler.AuthCallback, AuthHandler.OnSendSmsListener {
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val lastPhoneLiveData = MutableLiveData<String>()
@@ -44,12 +43,12 @@ class AuthViewModel(
         launchWithLoading {
             val profile = authorizeUseCase.execute(authResult.token)
             authPreferences.profileIsFilled = profile.isFilled
-            val screen = if (profile.isFilled) {
-                Screens.navigation()
+            val event = if (profile.isFilled) {
+                Router.NavigationScreen
             } else {
-                Screens.signUp(profile)
+                Router.SignUpScreen(profile)
             }
-            router.newRootScreen(screen)
+            navigateTo(event)
         }
     }
 
@@ -85,7 +84,7 @@ class AuthViewModel(
     fun onGuestPressed() {
         launchWithLoading {
             authorizeAsGuestUseCase.execute()
-            router.newRootScreen(Screens.navigation())
+            navigateTo(Router.NavigationScreen)
         }
     }
 
@@ -98,5 +97,14 @@ class AuthViewModel(
         data class LoginWithPhone(
             val phone: String
         ) : Event()
+    }
+
+    sealed class Router : RouterEvent {
+
+        object NavigationScreen : Router()
+
+        data class SignUpScreen(
+            val profile: Profile
+        ) : Router()
     }
 }

@@ -1,11 +1,11 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
-import android.content.res.Resources
+import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
 import ru.babaetskv.passionwoman.domain.model.*
@@ -13,10 +13,8 @@ import ru.babaetskv.passionwoman.domain.utils.execute
 
 class HomeViewModel(
     private val getHomeDataUseCase: GetHomeDataUseCase,
-    private val resources: Resources,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<HomeViewModel.Router>(notifier) {
     val promotionsLiveData = MutableLiveData(emptyList<Promotion>())
     val saleProductsLiveData = MutableLiveData(emptyList<Product>())
     val popularProductsLiveData = MutableLiveData(emptyList<Product>())
@@ -56,38 +54,59 @@ class HomeViewModel(
     }
 
     fun onProductPressed(product: Product) {
-        router.navigateTo(Screens.productCard(product))
+        launch {
+            navigateTo(Router.ProductCardScreen(product))
+        }
     }
 
     fun onPopularProductsPressed() {
-        router.navigateTo(Screens.productList(
-            resources.getString(R.string.home_popular_products_title),
-            Filters.DEFAULT,
-            Sorting.POPULARITY
-        ))
+        launch {
+            navigateTo(Router.ProductListScreen(
+                R.string.home_popular_products_title,
+                Filters.DEFAULT,
+                Sorting.POPULARITY
+            ))
+        }
     }
 
     fun onNewProductsPressed() {
-        router.navigateTo(Screens.productList(
-            resources.getString(R.string.home_new_products_title),
-            Filters.DEFAULT,
-            Sorting.NEW
-        ))
+        launch {
+            navigateTo(Router.ProductListScreen(
+                R.string.home_new_products_title,
+                Filters.DEFAULT,
+                Sorting.NEW
+            ))
+        }
     }
 
     fun onSaleProductsPressed() {
-        router.navigateTo(Screens.productList(
-            resources.getString(R.string.home_sale_products_title),
-            Filters.DEFAULT.copy(
-                discountOnly = true
-            ),
-            Sorting.DEFAULT
-        ))
+       launch {
+           navigateTo(Router.ProductListScreen(
+               R.string.home_sale_products_title,
+               Filters.DEFAULT.copy(
+                   discountOnly = true
+               ),
+               Sorting.DEFAULT
+           ))
+       }
     }
 
     fun onBrandPressed(brand: Brand) {
         // TODO
         notifier.newRequest(this, R.string.in_development)
             .sendAlert()
+    }
+
+    sealed class Router : RouterEvent {
+
+        data class ProductCardScreen(
+            val product: Product
+        ) : Router()
+
+        data class ProductListScreen(
+            @StringRes val titleRes: Int,
+            val filters: Filters,
+            val sorting: Sorting
+        ) : Router()
     }
 }

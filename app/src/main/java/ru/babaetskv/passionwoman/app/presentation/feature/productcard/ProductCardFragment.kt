@@ -15,7 +15,7 @@ import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragment.Args>() {
+class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
     private val productPhotosAdapter: ProductPhotosAdapter by lazy {
         ProductPhotosAdapter()

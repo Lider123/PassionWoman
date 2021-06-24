@@ -1,9 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.auth.signup
 
 import androidx.lifecycle.MutableLiveData
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
@@ -12,9 +11,8 @@ class EditProfileViewModel(
     private val args: EditProfileFragment.Args,
     private val profileUpdatesListener: ProfileUpdatesListener,
     private val updateProfileUseCase: UpdateProfileUseCase,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router) {
+    notifier: Notifier
+) : BaseViewModel<EditProfileViewModel.Router>(notifier) {
     private var name: String = args.profile.name
     private var surname: String = args.profile.surname
     private val dataIsValid: Boolean
@@ -42,9 +40,11 @@ class EditProfileViewModel(
             )
             updateProfileUseCase.execute(newProfile)
             profileUpdatesListener.onProfileUpdated()
-            if (args.signingUp) {
-                router.newRootScreen(Screens.navigation())
-            } else onBackPressed()
+            if (args.signingUp) navigateTo(Router.NavigationScreen) else onBackPressed()
         }
+    }
+
+    sealed class Router : RouterEvent {
+        object NavigationScreen : Router()
     }
 }

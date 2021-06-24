@@ -10,9 +10,11 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
@@ -21,7 +23,8 @@ import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
 import ru.babaetskv.passionwoman.domain.model.Profile
 
-class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
+class ProfileFragment :
+    BaseFragment<ProfileViewModel, ProfileViewModel.Router, FragmentComponent.NoArgs>() {
     private val guestProfile: Profile
         get() = Profile(
             id = "-1",
@@ -84,6 +87,16 @@ class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
         lifecycleScope.launchWhenResumed {
             viewModel.eventBus.collect(::handleEvent)
+        }
+    }
+
+    override fun handleRouterEvent(event: ProfileViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            ProfileViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is ProfileViewModel.Router.EditProfileScreen -> {
+                router.navigateTo(Screens.editProfile(event.profile))
+            }
         }
     }
 

@@ -8,10 +8,10 @@ import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.FragmentSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
-import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
-class SortingFragment : BaseFragment<SortingViewModel, SortingFragment.Args>() {
+class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingViewModel.Router, SortingFragment.Args>() {
     private val binding: FragmentSortingBinding by viewBinding()
     private val sortingAdapter: SortingAdapter by lazy {
         SortingAdapter(viewModel.stringProvider, viewModel::onSortingPressed)
@@ -25,12 +25,9 @@ class SortingFragment : BaseFragment<SortingViewModel, SortingFragment.Args>() {
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.setOnStartClickListener {
-                viewModel.onBackPressed()
-            }
             rvSortings.run {
                 adapter = sortingAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
+                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
             btnApplySorting.setOnClickListener {
                 viewModel.onApplySortingPressed()

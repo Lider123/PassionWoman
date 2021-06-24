@@ -6,10 +6,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.LogOutUseCase
@@ -23,9 +23,8 @@ class ProfileViewModel(
     private val authPreferences: AuthPreferences,
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
-    notifier: Notifier,
-    router: AppRouter
-) : BaseViewModel(notifier, router), ProfileUpdatesListener {
+    notifier: Notifier
+) : BaseViewModel<ProfileViewModel.Router>(notifier), ProfileUpdatesListener {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
@@ -81,8 +80,10 @@ class ProfileViewModel(
     }
 
     fun onEditPressed() {
-        profileLiveData.value?.let {
-            router.navigateTo(Screens.editProfile(it))
+        val profile = profileLiveData.value ?: return
+
+        launch {
+            navigateTo(Router.EditProfileScreen(profile))
         }
     }
 
@@ -115,7 +116,9 @@ class ProfileViewModel(
     fun onLogInPressed() {
         if (authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED) return
 
-        router.newRootScreen(Screens.auth())
+        launch {
+            navigateTo(Router.AuthScreen)
+        }
     }
 
     fun onLogOutDeclined() {
@@ -148,5 +151,14 @@ class ProfileViewModel(
 
     enum class Dialog {
         LOG_OUT_CONFIRMATION, PICK_AVATAR
+    }
+
+    sealed class Router : RouterEvent {
+
+        object AuthScreen : Router()
+
+        data class EditProfileScreen(
+            val profile: Profile
+        ) : Router()
     }
 }

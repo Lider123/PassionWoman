@@ -1,24 +1,23 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import org.koin.android.ext.android.inject
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.R
 
-abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
-    Fragment(),
+abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+    BottomSheetDialogFragment(),
     FragmentComponent<VM, TRouterEvent, TArgs>
     where VM : BaseViewModel<TRouterEvent> {
-    protected val router: AppRouter by inject()
-
     override var componentArguments: Bundle
         get() = requireArguments()
         set(value) {
@@ -35,6 +34,9 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
         get() = viewLifecycleOwner
 
     abstract val layoutRes: Int
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        BottomSheetDialog(requireContext(), R.style.Theme_PassionWoman_BottomSheetDialogFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +71,7 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     }
 
     override fun onBackPressed() {
-        router.exit()
+        dismiss()
     }
 
     fun withArgs(args: TArgs) = also { it.args = args }
