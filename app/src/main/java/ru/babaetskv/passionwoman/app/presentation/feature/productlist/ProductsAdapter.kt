@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
@@ -10,6 +11,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
@@ -38,7 +40,11 @@ class ProductsAdapter(
                 root.setOnClickListener {
                     onItemClick.invoke(item)
                 }
-                tvPrice.text = item.price.toPriceString()
+                if (item.discountRate > 0) {
+                    tvPrice.setHtmlText(context.getString(R.string.item_product_price_with_discount_template, item.priceWithDiscount.toPriceString(), item.price.toPriceString()))
+                } else {
+                    tvPrice.text = item.price.toPriceString()
+                }
                 ratingBar.rating = item.rating
                 tvName.text = item.name
                 ivPreview.load(item.preview, R.drawable.photo_placeholder,
@@ -46,6 +52,10 @@ class ProductsAdapter(
                 )
                 btnBuy.setOnClickListener {
                     onBuyClick.invoke(item)
+                }
+                tvDiscountPercent.run {
+                    isVisible = item.discountRate > 0
+                    text = context.getString(R.string.product_card_discount_template, item.discountRate)
                 }
             }
         }

@@ -12,4 +12,7 @@ data class Product(
     val priceWithDiscount: Float, // TODO: handle discount in views
     val rating: Float,
     val colors: List<ProductColor>
-) : Parcelable
+) : Parcelable {
+    val discountRate: Float
+        get() = 100 * (1 - priceWithDiscount / price)
+}
