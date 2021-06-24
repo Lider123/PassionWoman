@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustResize"
+        android:hardwareAccelerated="true"
         android:theme="@style/Theme.PassionWoman"
         android:name="ru.babaetskv.passionwoman.app.MainApp">
 

@@ -112,6 +112,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         super.handleRouterEvent(event)
         when (event) {
             AuthViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+            is AuthViewModel.Router.SignUpScreen -> router.navigateTo(Screens.signUp(event.profile))
         }
     }
 

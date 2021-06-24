@@ -16,6 +16,7 @@
 
     <color name="onboarding_banner_shade">#98000000</color>
     <color name="bg_login_shade">#C000</color>
+    <color name="progress_shade">#98000000</color>
 
     <color name="ucrop_color_toolbar">@color/primary</color>
     <color name="ucrop_color_statusbar">@color/primaryVariant</color>
