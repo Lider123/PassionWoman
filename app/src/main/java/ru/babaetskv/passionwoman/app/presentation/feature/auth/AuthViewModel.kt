@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.auth
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
@@ -28,7 +28,7 @@ class AuthViewModel(
     val lastPhoneLiveData = MutableLiveData<String>()
     val smsCodeLiveData = MutableLiveData<String>()
     val modeLiveData = MutableLiveData(Mode.LOGIN)
-    val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
+    val eventBus: Flow<Event> = eventChannel.receiveAsFlow()
 
     override fun onBackPressed() {
         when (modeLiveData.value!!) {
@@ -43,12 +43,13 @@ class AuthViewModel(
         launchWithLoading {
             val profile = authorizeUseCase.execute(authResult.token)
             authPreferences.profileIsFilled = profile.isFilled
-            val event = if (profile.isFilled) {
-                Router.NavigationScreen
+            if (profile.isFilled) {
+                navigateTo(Router.NavigationScreen)
             } else {
-                Router.SignUpScreen(profile)
+                navigateTo(Router.SignUpScreen(profile))
+                smsCodeLiveData.postValue("")
+                modeLiveData.postValue(Mode.LOGIN)
             }
-            navigateTo(event)
         }
     }
 
