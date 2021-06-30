@@ -20,6 +20,7 @@ import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VER
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
 import ru.babaetskv.passionwoman.domain.model.Profile
 
@@ -63,17 +64,17 @@ class ProfileFragment :
                 adapter = profileMenuItemsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            btnLogOut.setOnClickListener {
+            btnLogOut.setOnSingleClickListener {
                 viewModel.onLogOutPressed()
             }
             layoutHeader.run {
-                btnLogin.setOnClickListener {
+                btnLogin.setOnSingleClickListener {
                     viewModel.onLogInPressed()
                 }
-                btnEdit.setOnClickListener {
+                btnEdit.setOnSingleClickListener {
                     viewModel.onEditPressed()
                 }
-                ivAvatar.setOnClickListener {
+                ivAvatar.setOnSingleClickListener {
                     viewModel.onAvatarPressed()
                 }
             }

@@ -108,6 +108,15 @@ fun View.hideAnimated(@AnimRes animationRes: Int) {
     hideAnimated(AnimationUtils.loadAnimation(context, animationRes))
 }
 
+fun View.setOnSingleClickListener(callback: (v: View) -> Unit) {
+    setOnClickListener(object : OnSingleClickListener() {
+
+        override fun onSingleClick(v: View) {
+            callback.invoke(v)
+        }
+    })
+}
+
 fun String.toFormattedPhone(): String =
     try {
         PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)

@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
@@ -50,7 +51,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                 adapter = productColorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            btnAddToCart.setOnClickListener {
+            btnAddToCart.setOnSingleClickListener {
                 viewModel.onAddToCartPressed()
             }
         }

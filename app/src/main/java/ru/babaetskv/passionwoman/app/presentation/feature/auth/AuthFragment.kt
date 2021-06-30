@@ -15,10 +15,7 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
-import ru.babaetskv.passionwoman.app.utils.hideAnimated
-import ru.babaetskv.passionwoman.app.utils.hideKeyboard
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.showAnimated
+import ru.babaetskv.passionwoman.app.utils.*
 
 class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentAuthBinding by viewBinding()
@@ -44,13 +41,13 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                         btnLogin.isEnabled = isValidNumber
                     }
                 }
-                btnLogin.setOnClickListener {
+                btnLogin.setOnSingleClickListener {
                     hideKeyboard()
                     val phone = countryCodePicker.fullNumberWithPlus
                     val formattedPhone = countryCodePicker.formattedFullNumber
                     viewModel.onLoginPressed(phone, formattedPhone)
                 }
-                btnGuest.setOnClickListener {
+                btnGuest.setOnSingleClickListener {
                     hideKeyboard()
                     viewModel.onGuestPressed()
                 }
@@ -65,7 +62,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                 }
             }
             layoutSmsConfirm.run {
-                btnBack.setOnClickListener {
+                btnBack.setOnSingleClickListener {
                     viewModel.onBackPressed()
                 }
                 pevSmsCode.addTextChangedListener(object : TextWatcher {

@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemPromotionBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Promotion
 
 class PromotionsAdapter(
@@ -27,7 +28,7 @@ class PromotionsAdapter(
 
         override fun bind(item: Promotion) {
             binding.run {
-                root.setOnClickListener {
+                root.setOnSingleClickListener {
                     onItemPressed.invoke(item)
                 }
                 ivBanner.load(item.banner, R.drawable.photo_placeholder, resizeAsItem = true)

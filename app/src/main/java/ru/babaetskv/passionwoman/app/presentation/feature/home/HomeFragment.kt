@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductsAdapter
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.*
 
 class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentComponent.NoArgs>() {
@@ -64,13 +65,13 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
                 adapter = brandsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            tvSaleProductsTitle.setOnClickListener {
+            tvSaleProductsTitle.setOnSingleClickListener {
                 viewModel.onSaleProductsPressed()
             }
-            tvPopularProductsTitle.setOnClickListener {
+            tvPopularProductsTitle.setOnSingleClickListener {
                 viewModel.onPopularProductsPressed()
             }
-            tvNewProductsTitle.setOnClickListener {
+            tvNewProductsTitle.setOnSingleClickListener {
                 viewModel.onNewProductsPressed()
             }
         }

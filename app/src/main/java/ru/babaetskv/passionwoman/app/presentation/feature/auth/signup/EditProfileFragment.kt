@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
@@ -54,11 +55,11 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
                 }
                 return@setOnEditorActionListener false
             }
-            btnDone.setOnClickListener {
+            btnDone.setOnSingleClickListener {
                 hideKeyboard()
                 viewModel.onDonePressed()
             }
-            toolbar.setOnStartClickListener {
+            toolbar.setOnSingleClickListener {
                 viewModel.onBackPressed()
             }
         }

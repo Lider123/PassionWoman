@@ -8,6 +8,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 
 class SortingAdapter(
@@ -29,7 +30,7 @@ class SortingAdapter(
             binding.radioSorting.run {
                 text = item.sorting.getUiName(stringProvider)
                 isChecked = item.selected
-                setOnClickListener {
+                setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
             }

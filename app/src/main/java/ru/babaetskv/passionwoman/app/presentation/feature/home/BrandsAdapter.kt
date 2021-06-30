@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemBrandBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Brand
 
 class BrandsAdapter(
@@ -27,7 +28,7 @@ class BrandsAdapter(
 
         override fun bind(item: Brand) {
             binding.run {
-                root.setOnClickListener {
+                root.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 ivLogo.load(item.logo, R.drawable.photo_placeholder, resizeAsItem = true)

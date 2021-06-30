@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductColorBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class ProductColorsAdapter(
     private val onItemClick: (item: ProductColorItem) -> Unit
@@ -28,7 +29,7 @@ class ProductColorsAdapter(
             binding.colorView.run {
                 setColor(item.productColor.color.hex.toColorInt())
                 borderVisible = item.selected
-                setOnClickListener {
+                setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
             }
