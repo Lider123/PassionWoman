@@ -100,6 +100,14 @@ class PassionWomanApiImpl(
         // TODO: think up how to save image
     }
 
+    override suspend fun getFavorites(): List<String> = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        val json = assetManager.open("favorites.json").bufferedReader().use{ it.readText()}
+        val listType = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter: JsonAdapter<List<String>> = moshi.adapter(listType)
+        return@withContext adapter.fromJson(json) ?: emptyList()
+    }
+
     private fun ProductModel.filter(filters: Filters): Boolean {
         if (filters.discountOnly && priceWithDiscount == price) return false
 

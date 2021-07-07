@@ -12,10 +12,12 @@ import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragmen
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
     authPreferences: AuthPreferences,
+    private val syncFavoritesUseCase: SyncFavoritesUseCase,
     notifier: Notifier
 ) : BaseViewModel<NavigationViewModel.Router>(notifier) {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
@@ -29,7 +31,9 @@ class NavigationViewModel(
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
             AuthPreferences.AuthType.NONE -> navigateTo(Router.AuthScreen)
-            else -> Unit
+            else -> {
+                syncFavoritesUseCase.execute(authType == AuthPreferences.AuthType.AUTHORIZED)
+            }
         }
     }
 

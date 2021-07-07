@@ -2,12 +2,16 @@ package ru.babaetskv.passionwoman.data.gateway
 
 import com.squareup.moshi.Moshi
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
+import ru.babaetskv.passionwoman.data.memory.InMemoryStorage
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 
 class CatalogGatewayImpl(
     private val api: PassionWomanApi,
+    private val inMemoryStorage: InMemoryStorage,
+    private val appPreferences: AppPreferences,
     private val moshi: Moshi
 ) : CatalogGateway {
 
@@ -33,4 +37,12 @@ class CatalogGatewayImpl(
 
     override suspend fun getBrands(): List<Brand> =
         api.getBrands().map(BrandModel::toBrand)
+
+    override suspend fun syncFavorites(isAuthorized: Boolean) {
+        val favorites = if (isAuthorized) api.getFavorites() else appPreferences.favorites
+        inMemoryStorage.favorites.run {
+            clear()
+            addAll(favorites)
+        }
+    }
 }

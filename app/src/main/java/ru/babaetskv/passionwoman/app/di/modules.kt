@@ -63,7 +63,7 @@ val viewModelModule = module {
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModel(args, get(), get(), get(), get())
     }
-    viewModel { NavigationViewModel(get(), get()) }
+    viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
@@ -89,10 +89,11 @@ val interactorModule = module {
     factory { LogOutUseCase(get(), get()) }
     factory { UpdateAvatarUseCase(get(), get()) }
     factory { GetHomeDataUseCase(get(), get()) }
+    factory { SyncFavoritesUseCase(get(), get()) }
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get(), get(), get(), get()) }
     single<AuthGateway> { AuthGatewayImpl(get(), get()) }
 }
 

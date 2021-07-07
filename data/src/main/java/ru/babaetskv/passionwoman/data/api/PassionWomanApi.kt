@@ -24,6 +24,9 @@ interface PassionWomanApi {
     @GET("api/catalog/brands")
     suspend fun getBrands(): List<BrandModel>
 
+    @GET("api/catalog/favorites")
+    suspend fun getFavorites(): List<String>
+
     @GET("api/auth/profile")
     suspend fun getProfile(): ProfileModel
 

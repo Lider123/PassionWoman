@@ -17,4 +17,6 @@ interface CatalogGateway {
     suspend fun getPromotions(): List<Promotion>
 
     suspend fun getBrands(): List<Brand>
+
+    suspend fun syncFavorites(isAuthorized: Boolean)
 }

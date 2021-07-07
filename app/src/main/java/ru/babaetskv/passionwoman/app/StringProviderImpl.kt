@@ -13,6 +13,7 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val LOG_OUT_ERROR: String = resources.getString(R.string.error_log_out)
     override val UPDATE_AVATAR_ERROR: String = resources.getString(R.string.error_update_avatar)
     override val GET_HOME_DATA_ERROR: String = resources.getString(R.string.error_get_home_data)
+    override val SYNC_FAVORITES_ERROR: String = resources.getString(R.string.error_sync_favorites)
 
     override val SORT_NEW: String = resources.getString(R.string.sort_new)
     override val SORT_POPULARITY: String = resources.getString(R.string.sort_popularity)

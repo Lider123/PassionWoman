@@ -29,6 +29,7 @@
     <string name="error_log_out">Failed to log out</string>
     <string name="error_update_avatar">Failed to update avatar</string>
     <string name="error_get_home_data">Failed to retrieve home screen data</string>
+    <string name="error_sync_favorites">Failed to sync favorite products</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
