@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app.utils
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Rect
 import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.animation.Animation
@@ -16,7 +17,9 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import me.philio.pinentry.PinEntryView
@@ -129,4 +132,15 @@ fun ImageView.load(@DrawableRes imageRes: Int) {
         .load(imageRes)
         .override(width, 0)
         .into(this)
+}
+
+fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
+    val initialPadding = Rect(paddingLeft, paddingTop, paddingRight, paddingBottom)
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
+        view.updatePadding(
+            top = initialPadding.top.plus(if (top) insets.systemWindowInsetTop else 0),
+            bottom = initialPadding.bottom.plus(if (bottom) insets.systemWindowInsetBottom else 0)
+        )
+        insets
+    }
 }

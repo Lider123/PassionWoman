@@ -11,13 +11,17 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import org.koin.android.ext.android.inject
+import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
 abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     Fragment(),
     FragmentComponent<VM, TRouterEvent, TArgs>
     where VM : BaseViewModel<TRouterEvent> {
     protected val router: AppRouter by inject()
+    protected open val applyTopInset: Boolean = true
+    protected open val applyBottomInset: Boolean = true
 
     override var componentArguments: Bundle
         get() = requireArguments()
@@ -44,6 +48,7 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.findViewById<View>(R.id.contentInsetsView)?.setInsetsListener(applyTopInset, applyBottomInset)
         initViews()
         initObservers()
     }

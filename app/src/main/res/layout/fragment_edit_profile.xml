@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,76 +13,82 @@
         android:scaleType="centerCrop"
         android:foreground="@color/bg_login_shade"/>
 
-    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
-        android:id="@+id/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@id/contentInsetsView"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:textAlignment="viewStart"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tv_title="@string/edit_profile_sign_up"
-        app:tv_actionStartVisible="true"
-        app:tv_actionStartSrc="@drawable/ic_back"
-        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"/>
+        android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputNameWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginHorizontal="@dimen/margin_default"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputName"
+        <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:textAlignment="viewStart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tv_title="@string/edit_profile_sign_up"
+            app:tv_actionStartVisible="true"
+            app:tv_actionStartSrc="@drawable/ic_back"
+            app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputNameWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_profile_hint_name"
-            android:lines="1"
-            android:ellipsize="end"
-            android:inputType="textCapSentences"
-            android:imeOptions="actionNext"
-            style="@style/Theme.PassionWoman.EditText"
-            tools:text="@tools:sample/first_names" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginHorizontal="@dimen/margin_default"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_profile_hint_name"
+                android:lines="1"
+                android:ellipsize="end"
+                android:inputType="textCapSentences"
+                android:imeOptions="actionNext"
+                style="@style/Theme.PassionWoman.EditText"
+                tools:text="@tools:sample/first_names" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputSurnameWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginHorizontal="@dimen/margin_default"
-        app:layout_constraintTop_toBottomOf="@id/inputNameWrapper">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputSurname"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputSurnameWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_profile_hint_surname"
-            android:lines="1"
-            android:ellipsize="end"
-            android:inputType="textCapSentences"
-            android:imeOptions="actionDone"
-            style="@style/Theme.PassionWoman.EditText"
-            tools:text="@tools:sample/last_names" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginHorizontal="@dimen/margin_default"
+            app:layout_constraintTop_toBottomOf="@id/inputNameWrapper">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_profile_hint_surname"
+                android:lines="1"
+                android:ellipsize="end"
+                android:inputType="textCapSentences"
+                android:imeOptions="actionDone"
+                style="@style/Theme.PassionWoman.EditText"
+                tools:text="@tools:sample/last_names" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginHorizontal="@dimen/margin_default"
-        android:text="@string/edit_profile_done"
-        app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
-        style="@style/Theme.PassionWoman.Button.Colored"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginHorizontal="@dimen/margin_default"
+            android:text="@string/edit_profile_done"
+            app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
+            style="@style/Theme.PassionWoman.Button.Colored"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvAuthor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:text="@string/login_author"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:text="@string/login_author"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ru.babaetskv.passionwoman.app.presentation.view.ProgressView
         android:id="@id/progressView"
@@ -92,4 +98,4 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
         tools:visibility="visible" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

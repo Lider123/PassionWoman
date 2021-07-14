@@ -10,6 +10,8 @@ class SplashFragment :
     BaseFragment<SplashViewModel, SplashViewModel.Router, FragmentComponent.NoArgs>() {
     override val viewModel: SplashViewModel by viewModel()
     override val layoutRes: Int = R.layout.fragment_splash
+    override val applyTopInset: Boolean = false
+    override val applyBottomInset: Boolean = false
 
     override fun handleRouterEvent(event: SplashViewModel.Router) {
         super.handleRouterEvent(event)

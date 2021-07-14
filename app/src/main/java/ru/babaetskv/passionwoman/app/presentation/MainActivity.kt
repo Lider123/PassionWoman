@@ -22,6 +22,7 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
 
     override val contentViewRes: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModel()
+    override val applyInsets: Boolean = false
 
     override fun onResumeFragments() {
         super.onResumeFragments()

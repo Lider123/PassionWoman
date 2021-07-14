@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
+import android.os.Build
+import android.view.WindowInsets
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
@@ -13,7 +15,10 @@ import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
-        OnboardingPagesAdapter()
+        val insets = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requireView().rootWindowInsets
+        } else null
+        OnboardingPagesAdapter(insets)
     }
     private val binding: FragmentOnboardingBinding by viewBinding()
 

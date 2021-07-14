@@ -68,12 +68,10 @@
             android:layout_marginTop="@dimen/margin_extra_small"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:max="5"
-            android:stepSize="0.5"
             app:layout_constraintTop_toBottomOf="@id/tvName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            style="?android:attr/ratingBarStyleSmall"
             tools:progress="4" />
 
         <com.google.android.material.button.MaterialButton

@@ -16,6 +16,7 @@ class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, 
 
     override val viewModel: CatalogViewModel by viewModel()
     override val layoutRes: Int = R.layout.fragment_catalog
+    override val applyBottomInset: Boolean = false
 
     private val categoriesAdapter: CategoriesAdapter by lazy {
         CategoriesAdapter(viewModel::onCategoryPressed)

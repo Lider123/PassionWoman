@@ -17,6 +17,7 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
 
     override val contentViewRes: Int = R.layout.activity_demo_presets
     override val viewModel: DemoPresetsViewModel by viewModel()
+    override val applyInsets: Boolean = true
 
     override fun initViews() {
         super.initViews()
