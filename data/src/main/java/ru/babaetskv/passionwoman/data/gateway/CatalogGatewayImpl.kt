@@ -31,6 +31,6 @@ class CatalogGatewayImpl(
     override suspend fun getPromotions(): List<Promotion> =
         api.getPromotions().map(PromotionModel::toPromotion)
 
-    override suspend fun getBrands(): List<Brand> =
-        api.getBrands().map(BrandModel::toBrand)
+    override suspend fun getPopularBrands(): List<Brand> =
+        api.getPopularBrands().map(BrandModel::toBrand)
 }

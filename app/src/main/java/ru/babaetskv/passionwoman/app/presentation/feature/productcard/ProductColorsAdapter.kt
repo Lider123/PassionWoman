@@ -26,7 +26,10 @@ class ProductColorsAdapter(
 
         override fun bind(item: ProductColorItem) {
             binding.colorView.run {
-                setColor(item.productColor.color.hex.toColorInt())
+                val color = item.productColor.color
+                if (color.isMulticolor) {
+                    setMulticolor()
+                } else setColor(color.hex.toColorInt())
                 borderVisible = item.selected
                 setOnClickListener {
                     onItemClick.invoke(item)

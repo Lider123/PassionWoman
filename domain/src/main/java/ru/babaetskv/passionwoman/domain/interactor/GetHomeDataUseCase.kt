@@ -41,7 +41,7 @@ class GetHomeDataUseCase(
                 limit = PRODUCTS_LIMIT,
                 offset = 0
             ),
-            brands = catalogGateway.getBrands()
+            brands = catalogGateway.getPopularBrands()
         )
 
     inner class GetHomeDataException(

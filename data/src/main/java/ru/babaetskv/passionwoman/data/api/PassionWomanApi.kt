@@ -21,8 +21,8 @@ interface PassionWomanApi {
         @Query("offset") offset: Int
     ): List<ProductModel>
 
-    @GET("api/catalog/brands")
-    suspend fun getBrands(): List<BrandModel>
+    @GET("api/catalog/brands/popular")
+    suspend fun getPopularBrands(): List<BrandModel>
 
     @GET("api/auth/profile")
     suspend fun getProfile(): ProfileModel

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.SweepGradient
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -27,6 +28,7 @@ class ColorView @JvmOverloads constructor(
     }
     private var borderWidth: Float
     private var canvasSize: Int? = null
+    private var isMulticolor = false
 
     var borderVisible = false
         set(value) {
@@ -56,7 +58,10 @@ class ColorView @JvmOverloads constructor(
             paintBorder.strokeWidth = borderWidth
             canvas.drawCircle(borderCenter, borderCenter, borderCenter - halfBorder, paintBorder)
         }
-        canvas.drawCircle(borderCenter, borderCenter, circleCenter ?: 0F, paint)
+        if (isMulticolor) {
+            paint.shader = SweepGradient(borderCenter, borderCenter, multicolorList, null)
+            canvas.drawCircle(borderCenter, borderCenter, circleCenter ?: 0F, paint)
+        } else canvas.drawCircle(borderCenter, borderCenter, circleCenter ?: 0F, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -92,11 +97,34 @@ class ColorView @JvmOverloads constructor(
 
     fun setColor(@ColorInt color: Int) {
         paint.color = color
+        isMulticolor = false
+        requestLayout()
+        invalidate()
+    }
+
+    fun setMulticolor() {
+        isMulticolor = true
         requestLayout()
         invalidate()
     }
 
     companion object {
         const val DEFAULT_BORDER_WIDTH = 2
+
+        val multicolorList = listOf(
+            Color.parseColor("#33004c"),
+            Color.parseColor("#4600d2"),
+            Color.parseColor("#0000ff"),
+            Color.parseColor("#0099ff"),
+            Color.parseColor("#00eeff"),
+            Color.parseColor("#00FF7F"),
+            Color.parseColor("#48FF00"),
+            Color.parseColor("#B6FF00"),
+            Color.parseColor("#FFD700"),
+            Color.parseColor("#ff9500"),
+            Color.parseColor("#FF6200"),
+            Color.parseColor("#FF0000"),
+            Color.parseColor("#33004c")
+        ).toIntArray()
     }
 }

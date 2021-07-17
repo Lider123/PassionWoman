@@ -20,18 +20,12 @@ class PassionWomanApiImpl(
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        val json = assetManager.open("categories.json").bufferedReader().use{ it.readText()}
-        val listType = Types.newParameterizedType(List::class.java, CategoryModel::class.java)
-        val adapter: JsonAdapter<List<CategoryModel>> = moshi.adapter(listType)
-        return@withContext (adapter.fromJson(json) ?: emptyList())
+        return@withContext loadListFromAsset("categories.json")
     }
 
     override suspend fun getPromotions(): List<PromotionModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        val json = assetManager.open("promotions.json").bufferedReader().use{ it.readText()}
-        val listType = Types.newParameterizedType(List::class.java, PromotionModel::class.java)
-        val adapter: JsonAdapter<List<PromotionModel>> = moshi.adapter(listType)
-        return@withContext (adapter.fromJson(json) ?: emptyList())
+        return@withContext loadListFromAsset("promotions.json")
     }
 
     override suspend fun getProducts(
@@ -54,10 +48,7 @@ class PassionWomanApiImpl(
                 else -> "products_popular.json"
             }
         }
-        val json = assetManager.open(filename).bufferedReader().use{ it.readText()}
-        val listType = Types.newParameterizedType(List::class.java, ProductModel::class.java)
-        val adapter: JsonAdapter<List<ProductModel>> = moshi.adapter(listType)
-        var products = adapter.fromJson(json) ?: emptyList()
+        var products = loadListFromAsset<ProductModel>(filename)
         if (filtersObject != null) {
             products = products.filter {
                 it.filter(filtersObject)
@@ -73,20 +64,15 @@ class PassionWomanApiImpl(
         }
     }
 
-    override suspend fun getBrands(): List<BrandModel> = withContext(Dispatchers.IO) {
+    override suspend fun getPopularBrands(): List<BrandModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        val json = assetManager.open("brands.json").bufferedReader().use{ it.readText()}
-        val listType = Types.newParameterizedType(List::class.java, BrandModel::class.java)
-        val adapter: JsonAdapter<List<BrandModel>> = moshi.adapter(listType)
-        return@withContext (adapter.fromJson(json) ?: emptyList())
+        return@withContext loadListFromAsset<BrandModel>("brands.json").take(8)
     }
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         return@withContext if (profileMock == null) {
-            val json = assetManager.open("profile.json").bufferedReader().use{ it.readText()}
-            val adapter: JsonAdapter<ProfileModel> = moshi.adapter(ProfileModel::class.java)
-            adapter.fromJson(json)!!.also { profileMock = it }
+            loadObjectFromAsset<ProfileModel>("profile.json").also { profileMock = it }
         } else profileMock!!
     }
 
@@ -100,13 +86,26 @@ class PassionWomanApiImpl(
         // TODO: think up how to save image
     }
 
+    private inline fun <reified T> loadObjectFromAsset(filename: String): T {
+        val json = assetManager.open(filename).bufferedReader().use{ it.readText()}
+        val adapter: JsonAdapter<T> = moshi.adapter(T::class.java)
+        return adapter.fromJson(json)!!
+    }
+
+    private inline fun <reified T> loadListFromAsset(filename: String): List<T> {
+        val json = assetManager.open(filename).bufferedReader().use{ it.readText()}
+        val listType = Types.newParameterizedType(List::class.java, T::class.java)
+        val adapter: JsonAdapter<List<T>> = moshi.adapter(listType)
+        return adapter.fromJson(json) ?: emptyList()
+    }
+
     private fun ProductModel.filter(filters: Filters): Boolean {
         if (filters.discountOnly && priceWithDiscount == price) return false
 
         return true
     }
 
-    enum class CategoryProducts(val categoryId: String, val productsFileName: String) {
+    private enum class CategoryProducts(val categoryId: String, val productsFileName: String) {
         BRA("category_bra", "products_bra.json"),
         PANTIES("category_panties", "products_panties.json"),
         LINGERIE("category_lingerie", "products_lingerie.json"),

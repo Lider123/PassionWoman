@@ -7,4 +7,11 @@ import kotlinx.parcelize.Parcelize
 data class Color(
     val name: String,
     val hex: String
-) : Parcelable
+) : Parcelable {
+    val isMulticolor: Boolean
+        get() = hex == MULTICOLOR
+
+    companion object {
+        private const val MULTICOLOR = "multicolor"
+    }
+}

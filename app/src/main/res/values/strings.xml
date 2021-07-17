@@ -74,7 +74,7 @@
     <string name="home_sale_products_title">Sale</string>
     <string name="home_popular_products_title">Popular</string>
     <string name="home_new_products_title">New</string>
-    <string name="home_brands_title">Brands</string>
+    <string name="home_popular_brands_title">Popular brands</string>
 
     <string name="sort_new">By new</string>
     <string name="sort_popularity">By popularity</string>
