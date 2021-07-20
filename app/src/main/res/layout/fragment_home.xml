@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_default"
                     android:layout_marginHorizontal="@dimen/margin_default"
-                    android:text="@string/home_brands_title"
+                    android:text="@string/home_popular_brands_title"
                     android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle" />
 
                 <ru.babaetskv.passionwoman.app.presentation.view.GridRecyclerView

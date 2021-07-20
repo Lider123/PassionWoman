@@ -4,12 +4,12 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Product(
+data class Product( // TODO: add brand ID
     val id: String,
     val name: String,
     val preview: Image,
     val price: Float,
-    val priceWithDiscount: Float, // TODO: handle discount in views
+    val priceWithDiscount: Float,
     val rating: Float,
     val colors: List<ProductColor>
 ) : Parcelable {
