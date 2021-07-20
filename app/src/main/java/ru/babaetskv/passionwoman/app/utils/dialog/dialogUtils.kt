@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.LayoutDialogBinding
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 const val DIALOG_ACTIONS_ORIENTATION_HORIZONTAL = LinearLayout.HORIZONTAL
 const val DIALOG_ACTIONS_ORIENTATION_VERTICAL = LinearLayout.VERTICAL
@@ -53,7 +54,7 @@ fun Fragment.showAlertDialog(
             val button = MaterialButton(requireContext(), null, buttonStyleAttr).apply {
                 layoutParams = buttonLayoutParams
                 text = action.text
-                setOnClickListener {
+                setOnSingleClickListener {
                     action.callback?.invoke(dialog)
                 }
             }

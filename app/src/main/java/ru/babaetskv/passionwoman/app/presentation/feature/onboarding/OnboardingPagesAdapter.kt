@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class OnboardingPagesAdapter: BaseAdapter<OnboardingPage>(EqualDiffUtilCallback()) {
 
@@ -30,7 +31,7 @@ class OnboardingPagesAdapter: BaseAdapter<OnboardingPage>(EqualDiffUtilCallback(
                 btnAction.run {
                     isVisible = item.actionRes != null
                     text = item.actionRes?.let { context.getString(it) }
-                    setOnClickListener {
+                    setOnSingleClickListener {
                         item.actionCallback?.invoke()
                     }
                 }

@@ -12,6 +12,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
@@ -37,7 +38,7 @@ class ProductsAdapter(
 
         override fun bind(item: Product) {
             binding.run {
-                root.setOnClickListener {
+                root.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 if (item.discountRate > 0) {
@@ -50,7 +51,7 @@ class ProductsAdapter(
                 ivPreview.load(item.preview, R.drawable.photo_placeholder,
                     resizeAsItem = true
                 )
-                btnBuy.setOnClickListener {
+                btnBuy.setOnSingleClickListener {
                     onBuyClick.invoke(item)
                 }
                 tvDiscountPercent.run {

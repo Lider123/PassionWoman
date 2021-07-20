@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.FragmentSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
 class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingViewModel.Router, SortingFragment.Args>() {
@@ -29,7 +30,7 @@ class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingV
                 adapter = sortingAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            btnApplySorting.setOnClickListener {
+            btnApplySorting.setOnSingleClickListener {
                 viewModel.onApplySortingPressed()
             }
         }

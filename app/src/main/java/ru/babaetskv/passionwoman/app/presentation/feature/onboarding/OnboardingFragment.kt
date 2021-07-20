@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
@@ -35,10 +36,10 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
                     }
                 })
             }
-            btnPrev.setOnClickListener {
+            btnPrev.setOnSingleClickListener {
                 viewModel.onPrevPagePressed()
             }
-            btnNext.setOnClickListener {
+            btnNext.setOnSingleClickListener {
                 viewModel.onNextPagePressed()
             }
         }

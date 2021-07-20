@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -34,10 +35,10 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
                 }
             }
             layoutActions.isVisible = args.actionsAvailable
-            btnFilters.setOnClickListener {
+            btnFilters.setOnSingleClickListener {
                 viewModel.onFiltersPressed()
             }
-            btnSorting.setOnClickListener {
+            btnSorting.setOnSingleClickListener {
                 viewModel.onSortingPressed()
             }
             rvProducts.run {

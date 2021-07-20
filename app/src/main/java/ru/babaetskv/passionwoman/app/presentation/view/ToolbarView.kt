@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewToolbarBinding
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class ToolbarView @JvmOverloads constructor(
     context: Context,
@@ -66,10 +67,10 @@ class ToolbarView @JvmOverloads constructor(
             }
         }
         binding.run {
-            btnActionStart.setOnClickListener {
+            btnActionStart.setOnSingleClickListener {
                 onStartClick?.invoke(it)
             }
-            btnActionEnd.setOnClickListener {
+            btnActionEnd.setOnSingleClickListener {
                 onEndClick?.invoke(it)
             }
         }
