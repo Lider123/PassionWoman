@@ -15,11 +15,7 @@ class HomeViewModel(
     private val getHomeDataUseCase: GetHomeDataUseCase,
     notifier: Notifier
 ) : BaseViewModel<HomeViewModel.Router>(notifier) {
-    val promotionsLiveData = MutableLiveData(emptyList<Promotion>())
-    val saleProductsLiveData = MutableLiveData(emptyList<Product>())
-    val popularProductsLiveData = MutableLiveData(emptyList<Product>())
-    val newProductsLiveData = MutableLiveData(emptyList<Product>())
-    val brandsLiveData = MutableLiveData(emptyList<Brand>())
+    val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
 
     init {
         loadData()
@@ -33,11 +29,53 @@ class HomeViewModel(
     private fun loadData() {
         launchWithLoading {
             val data = getHomeDataUseCase.execute()
-            promotionsLiveData.postValue(data.promotions)
-            saleProductsLiveData.postValue(data.saleProducts)
-            popularProductsLiveData.postValue(data.popularProducts)
-            newProductsLiveData.postValue(data.newProducts)
-            brandsLiveData.postValue(data.brands)
+            homeItemsLiveData.postValue(mutableListOf<HomeItem>().apply {
+                if (data.promotions.isNotEmpty()) add(HomeItem.Promotions(data.promotions))
+                if (data.saleProducts.isNotEmpty()) {
+                    add(HEADER_PRODUCTS_SALE)
+                    add(HomeItem.Products(data.saleProducts))
+                }
+                if (data.popularProducts.isNotEmpty()) {
+                    add(HEADER_PRODUCTS_POPULAR)
+                    add(HomeItem.Products(data.popularProducts))
+                }
+                if (data.newProducts.isNotEmpty()) {
+                    add(HEADER_PRODUCTS_NEW)
+                    add(HomeItem.Products(data.newProducts))
+                }
+                if (data.brands.isNotEmpty()) {
+                    add(HEADER_BRANDS)
+                    add(HomeItem.Brands(data.brands))
+                }
+            })
+        }
+    }
+
+    fun onHeaderPressed(header: HomeItem.Header) {
+        when (header) {
+            HEADER_PRODUCTS_SALE -> launch {
+                navigateTo(Router.ProductListScreen(
+                    R.string.home_sale_products_title,
+                    Filters.DEFAULT.copy(
+                        discountOnly = true
+                    ),
+                    Sorting.DEFAULT
+                ))
+            }
+            HEADER_PRODUCTS_POPULAR -> launch {
+                navigateTo(Router.ProductListScreen(
+                    R.string.home_popular_products_title,
+                    Filters.DEFAULT,
+                    Sorting.POPULARITY
+                ))
+            }
+            HEADER_PRODUCTS_NEW -> launch {
+                navigateTo(Router.ProductListScreen(
+                    R.string.home_new_products_title,
+                    Filters.DEFAULT,
+                    Sorting.NEW
+                ))
+            }
         }
     }
 
@@ -59,38 +97,6 @@ class HomeViewModel(
         }
     }
 
-    fun onPopularProductsPressed() {
-        launch {
-            navigateTo(Router.ProductListScreen(
-                R.string.home_popular_products_title,
-                Filters.DEFAULT,
-                Sorting.POPULARITY
-            ))
-        }
-    }
-
-    fun onNewProductsPressed() {
-        launch {
-            navigateTo(Router.ProductListScreen(
-                R.string.home_new_products_title,
-                Filters.DEFAULT,
-                Sorting.NEW
-            ))
-        }
-    }
-
-    fun onSaleProductsPressed() {
-       launch {
-           navigateTo(Router.ProductListScreen(
-               R.string.home_sale_products_title,
-               Filters.DEFAULT.copy(
-                   discountOnly = true
-               ),
-               Sorting.DEFAULT
-           ))
-       }
-    }
-
     fun onBrandPressed(brand: Brand) {
         // TODO
         notifier.newRequest(this, R.string.in_development)
@@ -108,5 +114,12 @@ class HomeViewModel(
             val filters: Filters,
             val sorting: Sorting
         ) : Router()
+    }
+
+    companion object {
+        private val HEADER_PRODUCTS_SALE = HomeItem.Header(R.string.home_sale_products_title, true)
+        private val HEADER_PRODUCTS_POPULAR = HomeItem.Header(R.string.home_popular_products_title, true)
+        private val HEADER_PRODUCTS_NEW = HomeItem.Header(R.string.home_new_products_title, true)
+        private val HEADER_BRANDS = HomeItem.Header(R.string.home_popular_brands_title, false)
     }
 }

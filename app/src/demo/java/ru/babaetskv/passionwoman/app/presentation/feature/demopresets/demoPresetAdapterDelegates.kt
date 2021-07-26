@@ -12,16 +12,16 @@ fun singleDemoPresetDelegate(onPresetChanged: (DemoPreset.SingleDemoPreset) -> U
             ViewItemSinglePresetBinding.inflate(layoutInflater, parent, false)
         }
     ) {
+        binding.switchPreset.setOnCheckedChangeListener { _, isChecked ->
+            val newItem = item.copy(
+                value = isChecked
+            )
+            onPresetChanged.invoke(newItem)
+        }
         bind {
             binding.switchPreset.run {
                 setText(item.titleRes)
                 isChecked = item.value as Boolean
-                setOnCheckedChangeListener { _, isChecked ->
-                    val newItem = item.copy(
-                        value = isChecked
-                    )
-                    onPresetChanged.invoke(newItem)
-                }
             }
         }
     }

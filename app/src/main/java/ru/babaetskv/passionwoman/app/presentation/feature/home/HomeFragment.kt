@@ -1,7 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
+import android.util.Log
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.Screens
@@ -9,32 +11,16 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentHomeBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductsAdapter
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.domain.model.*
 
 class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentHomeBinding by viewBinding()
-    private val promotionsAdapter: PromotionsAdapter by lazy {
-        PromotionsAdapter(viewModel::onPromotionPressed)
-    }
-    private val saleProductsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyProductPressed,
-            itemWidthRatio = PRODUCT_ITEM_WIDTH_RATIO
+    private val homeAdapter: ListDelegationAdapter<List<HomeItem>> by lazy {
+        ListDelegationAdapter(
+            headerHomeItemAdapterDelegate(viewModel::onHeaderPressed),
+            promotionsHomeItemDelegate(viewModel::onPromotionPressed),
+            productsHomeItemDelegate(viewModel::onProductPressed, viewModel::onBuyProductPressed),
+            brandsHomeItemDelegate(viewModel::onBrandPressed)
         )
-    }
-    private val popularProductsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyProductPressed,
-            itemWidthRatio = PRODUCT_ITEM_WIDTH_RATIO
-        )
-    }
-    private val newProductsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyProductPressed,
-            itemWidthRatio = PRODUCT_ITEM_WIDTH_RATIO
-        )
-    }
-    private val brandsAdapter: BrandsAdapter by lazy {
-        BrandsAdapter(viewModel::onBrandPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_home
@@ -43,48 +29,15 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
 
     override fun initViews() {
         super.initViews()
-        binding.run {
-            vpPromotions.run {
-                adapter = promotionsAdapter.apply {
-                    registerAdapterDataObserver(pageIndicatorPromotions.adapterDataObserver)
-                }
-                pageIndicatorPromotions.setViewPager(this)
-            }
-            rvSaleProducts.run {
-                adapter = saleProductsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
-            }
-            rvPopularProducts.run {
-                adapter = popularProductsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
-            }
-            rvNewProducts.run {
-                adapter = newProductsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
-            }
-            rvBrands.run {
-                adapter = brandsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
-            }
-            tvSaleProductsTitle.setOnSingleClickListener {
-                viewModel.onSaleProductsPressed()
-            }
-            tvPopularProductsTitle.setOnSingleClickListener {
-                viewModel.onPopularProductsPressed()
-            }
-            tvNewProductsTitle.setOnSingleClickListener {
-                viewModel.onNewProductsPressed()
-            }
+        binding.rvHomeItems.run {
+            adapter = homeAdapter
+            addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
         }
     }
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.promotionsLiveData.observe(viewLifecycleOwner, ::populatePromotions)
-        viewModel.saleProductsLiveData.observe(viewLifecycleOwner, ::populateSaleProducts)
-        viewModel.popularProductsLiveData.observe(viewLifecycleOwner, ::populatePopularProducts)
-        viewModel.newProductsLiveData.observe(viewLifecycleOwner, ::populateNewProducts)
-        viewModel.brandsLiveData.observe(viewLifecycleOwner, ::populateBrands)
+        viewModel.homeItemsLiveData.observe(viewLifecycleOwner, ::populateHomeItems)
     }
 
     override fun handleRouterEvent(event: HomeViewModel.Router) {
@@ -103,38 +56,15 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
         }
     }
 
-    private fun populateBrands(brands: List<Brand>) {
-        brandsAdapter.submitList(brands) {
-            binding.layoutBrands.isVisible = brands.isNotEmpty()
-        }
-    }
-
-    private fun populatePromotions(promotions: List<Promotion>) {
-        promotionsAdapter.submitList(promotions) {
-            binding.layoutPromotions.isVisible = promotions.isNotEmpty()
-        }
-    }
-
-    private fun populateSaleProducts(products: List<Product>) {
-        saleProductsAdapter.submitList(products) {
-            binding.layoutSaleProducts.isVisible = products.isNotEmpty()
-        }
-    }
-
-    private fun populatePopularProducts(products: List<Product>) {
-        popularProductsAdapter.submitList(products) {
-            binding.layoutPopularProducts.isVisible = products.isNotEmpty()
-        }
-    }
-
-    private fun populateNewProducts(products: List<Product>) {
-        newProductsAdapter.submitList(products) {
-            binding.layoutNewProducts.isVisible = products.isNotEmpty()
+    private fun populateHomeItems(items: List<HomeItem>) {
+        binding.rvHomeItems.isVisible = items.isNotEmpty()
+        homeAdapter.run {
+            this.items = items
+            notifyDataSetChanged()
         }
     }
 
     companion object {
-        private const val PRODUCT_ITEM_WIDTH_RATIO = 0.41f
 
         fun create() = HomeFragment()
     }
