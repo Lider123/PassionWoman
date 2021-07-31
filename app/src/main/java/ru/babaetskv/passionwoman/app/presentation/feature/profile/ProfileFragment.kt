@@ -98,6 +98,7 @@ class ProfileFragment :
             is ProfileViewModel.Router.EditProfileScreen -> {
                 router.navigateTo(Screens.editProfile(event.profile))
             }
+            ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
         }
     }
 

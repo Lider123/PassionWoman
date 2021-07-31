@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
@@ -12,15 +13,18 @@ import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragmen
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
     authPreferences: AuthPreferences,
+    private val syncFavoritesUseCase: SyncFavoritesUseCase,
     notifier: Notifier
 ) : BaseViewModel<NavigationViewModel.Router>(notifier) {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
+    val dialogLiveData = MutableLiveData<Dialog?>()
 
     init {
         authTypeFlow.launchIn(this)
@@ -29,8 +33,20 @@ class NavigationViewModel(
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
             AuthPreferences.AuthType.NONE -> navigateTo(Router.AuthScreen)
+            AuthPreferences.AuthType.AUTHORIZED -> syncFavorites()
             else -> Unit
         }
+    }
+
+    private suspend fun syncFavorites() {
+        syncFavoritesUseCase.execute(SyncFavoritesUseCase.Params { doOnAnswer ->
+            dialogLiveData.postValue(Dialog.MergeFavorites {
+                dialogLiveData.postValue(null)
+                launch {
+                    doOnAnswer.invoke(it)
+                }
+            })
+        })
     }
 
     fun onTabPressed(tab: Tab) {
@@ -59,5 +75,12 @@ class NavigationViewModel(
 
     sealed class Router : RouterEvent {
         object AuthScreen : Router()
+    }
+
+    sealed class Dialog {
+
+        data class MergeFavorites(
+            val callback: (merge: Boolean) -> Unit
+        ) : Dialog()
     }
 }

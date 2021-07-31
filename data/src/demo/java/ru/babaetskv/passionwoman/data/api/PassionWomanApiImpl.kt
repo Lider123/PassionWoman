@@ -7,8 +7,13 @@ import com.squareup.moshi.Types
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 import ru.babaetskv.passionwoman.data.model.*
+import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.NOT_FOUND
 import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
@@ -17,6 +22,7 @@ class PassionWomanApiImpl(
     private val assetManager: AssetManager
 ) : PassionWomanApi {
     private var profileMock: ProfileModel? = null
+    private var favoriteIdsMock: List<String>? = null
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
@@ -69,6 +75,21 @@ class PassionWomanApiImpl(
         return@withContext loadListFromAsset<BrandModel>("brands.json").take(8)
     }
 
+    override suspend fun getFavorites(ids: String): List<ProductModel> {
+        delay(DELAY_LOADING)
+        val favoriteIds = ids.split(",").toSet()
+        return CategoryProducts.values()
+            .flatMap<CategoryProducts, ProductModel> { loadListFromAsset(it.productsFileName) }
+            .filter { favoriteIds.contains(it.id) }
+    }
+
+    override suspend fun getProduct(productId: String): ProductModel = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        return@withContext CategoryProducts.values()
+            .flatMap<CategoryProducts, ProductModel> { loadListFromAsset(it.productsFileName) }
+            .find { it.id == productId } ?: throw getNotFoundException("Product not found")
+    }
+
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         return@withContext if (profileMock == null) {
@@ -81,9 +102,21 @@ class PassionWomanApiImpl(
         profileMock = body
     }
 
-    override suspend fun uploadAvatar(image: MultipartBody.Part) {
+    override suspend fun uploadAvatar(image: MultipartBody.Part) = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         // TODO: think up how to save image
+    }
+
+    override suspend fun getFavoriteIds(): List<String> = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        return@withContext if (favoriteIdsMock == null) {
+            loadListFromAsset<String>("favoriteIds.json").also { favoriteIdsMock = it }
+        } else favoriteIdsMock!!
+    }
+
+    override suspend fun setFavoriteIds(ids: List<String>) = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        favoriteIdsMock = ids
     }
 
     private inline fun <reified T> loadObjectFromAsset(filename: String): T {
@@ -104,6 +137,13 @@ class PassionWomanApiImpl(
 
         return true
     }
+
+    private fun getNotFoundException(message: String) : HttpException =
+        message.toResponseBody("text/plain".toMediaType()).let {
+            Response.error<Nothing>(NOT_FOUND, it)
+        }.let {
+            HttpException(it)
+        }
 
     private enum class CategoryProducts(val categoryId: String, val productsFileName: String) {
         BRA("category_bra", "products_bra.json"),

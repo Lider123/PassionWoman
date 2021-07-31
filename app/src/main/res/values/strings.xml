@@ -29,6 +29,11 @@
     <string name="error_log_out">Failed to log out</string>
     <string name="error_update_avatar">Failed to update avatar</string>
     <string name="error_get_home_data">Failed to retrieve home screen data</string>
+    <string name="error_get_favorites">Failed to retrieve favorites</string>
+    <string name="error_get_product">Failed to retrieve the product</string>
+    <string name="error_add_to_favorites">Failed to add the product to favorites</string>
+    <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
+    <string name="error_sync_favorites">Failed to synchronize favorites</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -52,6 +57,8 @@
     <string name="edit_profile_hint_name">name</string>
     <string name="edit_profile_hint_surname">surname</string>
     <string name="edit_profile_done">Done</string>
+
+    <string name="navigation_merge_favorites_confirmation_message">Do you want to merge favorites?</string>
 
     <string name="profile_guest">Guest</string>
     <string name="profile_full_name_template">%s %s</string>
@@ -83,4 +90,6 @@
 
     <string name="sorting_apply">Apply</string>
     <string name="sorting_title">Sorting</string>
+
+    <string name="product_list_favorites">Favorites</string>
 </resources>

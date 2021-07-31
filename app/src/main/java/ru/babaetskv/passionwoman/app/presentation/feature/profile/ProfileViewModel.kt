@@ -60,21 +60,19 @@ class ProfileViewModel(
     }
 
     fun onMenuItemPressed(item: ProfileMenuItem) {
-        when (item) {
-            ProfileMenuItem.FAVORITES -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
-            }
-            ProfileMenuItem.ORDERS -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
-            }
-            ProfileMenuItem.ABOUT -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
+        launch {
+            when (item) {
+                ProfileMenuItem.FAVORITES -> navigateTo(Router.FavoritesScreen)
+                ProfileMenuItem.ORDERS -> {
+                    // TODO
+                    notifier.newRequest(this, R.string.in_development)
+                        .sendAlert()
+                }
+                ProfileMenuItem.ABOUT -> {
+                    // TODO
+                    notifier.newRequest(this, R.string.in_development)
+                        .sendAlert()
+                }
             }
         }
     }
@@ -160,5 +158,7 @@ class ProfileViewModel(
         data class EditProfileScreen(
             val profile: Profile
         ) : Router()
+
+        object FavoritesScreen : Router()
     }
 }

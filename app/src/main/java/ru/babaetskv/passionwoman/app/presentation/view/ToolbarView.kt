@@ -1,11 +1,14 @@
 package ru.babaetskv.passionwoman.app.presentation.view
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import ru.babaetskv.passionwoman.app.R
@@ -53,6 +56,16 @@ class ToolbarView @JvmOverloads constructor(
                 }.let {
                     setActionEnd(it)
                 }
+                getResourceId(R.styleable.ToolbarView_tv_actionStartTint, -1).let {
+                    if (it == -1) null else it
+                }.let {
+                    setActionStartTint(it)
+                }
+                getResourceId(R.styleable.ToolbarView_tv_actionEndTint, -1).let {
+                    if (it == -1) null else it
+                }.let {
+                    setActionEndTint(it)
+                }
                 binding.tvTitle.textAlignment =
                     getInteger(R.styleable.ToolbarView_android_textAlignment, TEXT_ALIGNMENT_CENTER)
                 btnStartVisible = getBoolean(R.styleable.ToolbarView_tv_actionStartVisible, false)
@@ -82,6 +95,24 @@ class ToolbarView @JvmOverloads constructor(
 
     fun setActionEnd(@DrawableRes drawableRes: Int?) {
         drawableRes?.let { binding.btnActionEnd.setImageResource(it) }
+    }
+
+    fun setActionStartTint(@ColorRes colorRes: Int?) {
+        colorRes?.let {
+            binding.btnActionStart.setColorFilter(
+                ContextCompat.getColor(context, it),
+                PorterDuff.Mode.SRC_IN
+            )
+        }
+    }
+
+    fun setActionEndTint(@ColorRes colorRes: Int?) {
+        colorRes?.let {
+            binding.btnActionEnd.setColorFilter(
+                ContextCompat.getColor(context, it),
+                PorterDuff.Mode.SRC_IN
+            )
+        }
     }
 
     fun setOnStartClickListener(listener: ((v: View) -> Unit)?) {

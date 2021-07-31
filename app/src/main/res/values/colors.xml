@@ -10,6 +10,7 @@
     <color name="text">@color/onPrimary</color>
     <color name="hint">#8FFF</color>
     <color name="error">#ff9494</color>
+    <color name="favorite">#bc1e1b</color>
 
     <color name="alert_info">@color/primaryVariant</color>
     <color name="alert_error">@color/error</color>

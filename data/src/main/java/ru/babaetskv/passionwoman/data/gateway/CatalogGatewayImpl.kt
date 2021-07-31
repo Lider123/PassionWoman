@@ -5,9 +5,11 @@ import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class CatalogGatewayImpl(
     private val api: PassionWomanApi,
+    private val favoritesPreferences: FavoritesPreferences,
     private val moshi: Moshi
 ) : CatalogGateway {
 
@@ -33,4 +35,25 @@ class CatalogGatewayImpl(
 
     override suspend fun getPopularBrands(): List<Brand> =
         api.getPopularBrands().map(BrandModel::toBrand)
+
+    override suspend fun getFavorites(): List<Product> =
+        api.getFavorites(favoritesPreferences.getFavoriteIds().joinToString(","))
+            .map(ProductModel::toProduct)
+
+    override suspend fun getProduct(productId: String): Product =
+        api.getProduct(productId).toProduct()
+
+    override suspend fun addToFavorites(productId: String) {
+        favoritesPreferences.putFavoriteId(productId)
+    }
+
+    override suspend fun removeFromFavorites(productId: String) {
+        favoritesPreferences.deleteFavoriteId(productId)
+    }
+
+    override suspend fun getFavoriteIds(): List<String> = api.getFavoriteIds()
+
+    override suspend fun setFavoriteIds(ids: List<String>) {
+        api.setFavoriteIds(ids)
+    }
 }

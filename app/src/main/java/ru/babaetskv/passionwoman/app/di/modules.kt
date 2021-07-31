@@ -36,11 +36,13 @@ import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.AppPreferencesImpl
 import ru.babaetskv.passionwoman.data.preferences.AuthPreferencesImpl
 import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
+import ru.babaetskv.passionwoman.data.preferences.FavoritesPreferencesImpl
 import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.gateway.*
+import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -61,9 +63,9 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModel(args, get(), get(), get(), get())
+        ProductListViewModel(args, get(), get(), get(), get(), get(), get(), get())
     }
-    viewModel { NavigationViewModel(get(), get()) }
+    viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
@@ -71,7 +73,7 @@ val viewModelModule = module {
     }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
-        ProductCardViewModel(args, get())
+        ProductCardViewModel(args, get(), get(), get(), get(), get())
     }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
@@ -86,13 +88,18 @@ val interactorModule = module {
     factory { AuthorizeUseCase(get(), get(), get()) }
     factory { GetProfileUseCase(get(), get()) }
     factory { UpdateProfileUseCase(get(), get(), get()) }
-    factory { LogOutUseCase(get(), get()) }
+    factory { LogOutUseCase(get(), get(), get()) }
     factory { UpdateAvatarUseCase(get(), get()) }
     factory { GetHomeDataUseCase(get(), get()) }
+    factory { GetFavoritesUseCase(get(), get()) }
+    factory { GetProductUseCase(get(), get()) }
+    factory { AddToFavoritesUseCase(get(), get()) }
+    factory { RemoveFromFavoritesUseCase(get(), get()) }
+    factory { SyncFavoritesUseCase(get(), get(), get()) }
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get(), get(), get()) }
     single<AuthGateway> { AuthGatewayImpl(get(), get()) }
 }
 
@@ -110,4 +117,5 @@ val networkModule = module {
 val preferencesModule = module {
     single<AppPreferences> { AppPreferencesImpl() }
     single<AuthPreferences> { AuthPreferencesImpl() }
+    single<FavoritesPreferences> { FavoritesPreferencesImpl() }
 }
