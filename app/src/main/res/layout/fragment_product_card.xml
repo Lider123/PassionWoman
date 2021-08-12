@@ -103,6 +103,7 @@
                 android:background="@drawable/bg_discount"
                 android:rotation="-15"
                 android:visibility="gone"
+                android:textColor="@color/onSecondary"
                 app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
@@ -135,13 +136,29 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPrice"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginHorizontal="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_default"
                 android:textSize="26sp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintTop_toBottomOf="@id/tvProductName"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvPriceDeleted"
+                tools:text="$60" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPriceDeleted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                app:layout_constraintTop_toBottomOf="@id/tvProductName"
+                app:layout_constraintStart_toEndOf="@id/tvPrice"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="$60" />
 

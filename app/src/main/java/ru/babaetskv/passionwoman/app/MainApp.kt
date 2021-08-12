@@ -1,6 +1,8 @@
 package ru.babaetskv.passionwoman.app
 
 import android.app.Application
+import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import com.chibatching.kotpref.Kotpref
 import ru.babaetskv.passionwoman.app.di.*
 
@@ -11,6 +13,9 @@ class MainApp : Application() {
         super.onCreate()
         initKoin()
         initKotpref()
+        if (Build.VERSION.SDK_INT < 29) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     private fun initKotpref() {

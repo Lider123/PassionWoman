@@ -33,6 +33,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="@dimen/margin_default"
             android:padding="@dimen/margin_small"
+            android:tint="@color/text"
             android:src="@drawable/ic_filters"
             android:background="@drawable/bg_card" />
 
