@@ -10,6 +10,11 @@ interface StringProvider {
     val LOG_OUT_ERROR: String
     val UPDATE_AVATAR_ERROR: String
     val GET_HOME_DATA_ERROR: String
+    val GET_FAVORITES_ERROR: String
+    val GET_PRODUCT_ERROR: String
+    val ADD_TO_FAVORITES_ERROR: String
+    val REMOVE_FROM_FAVORITES_ERROR: String
+    val SYNC_FAVORITES_ERROR: String
 
     val SORT_NEW: String
     val SORT_POPULARITY: String

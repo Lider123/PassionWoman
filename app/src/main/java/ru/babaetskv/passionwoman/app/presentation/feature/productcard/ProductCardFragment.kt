@@ -62,6 +62,12 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
         viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
+        viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
+    }
+
+    private fun populateFavorite(isFavorite: Boolean) {
+        val iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked
+        binding.toolbar.setActionEnd(iconRes)
     }
 
     private fun populateProductPhotos(photos: List<Image>) {
@@ -83,6 +89,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                 isVisible = product.discountRate > 0
                 text = context.getString(R.string.product_card_discount_template, product.discountRate)
             }
+            content.isVisible = true
         }
     }
 
@@ -94,11 +101,11 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
 
     @Parcelize
     data class Args(
-        val product: Product
+        val productId: String
     ) : Parcelable
 
     companion object {
 
-        fun create(product: Product) = ProductCardFragment().withArgs(Args(product))
+        fun create(productId: String) = ProductCardFragment().withArgs(Args(productId))
     }
 }

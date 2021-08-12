@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
+import android.content.res.Resources
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
@@ -29,12 +30,12 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         super.initViews()
         binding.run {
             toolbar.run {
-                title = args.title
+                title = args.mode.getScreenTitle(resources)
                 setOnStartClickListener {
                     viewModel.onBackPressed()
                 }
             }
-            layoutActions.isVisible = args.actionsAvailable
+            layoutActions.isVisible = args.mode.actionsAreVisible
             btnFilters.setOnSingleClickListener {
                 viewModel.onFiltersPressed()
             }
@@ -76,24 +77,38 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         }
     }
 
+    sealed class Mode : Parcelable {
+        val actionsAreVisible: Boolean
+            get() = when (this) {
+                is Catalog -> this.actionsAvailable
+                Favorites -> false
+            }
+
+        fun getScreenTitle(resources: Resources): String = when (this) {
+            is Catalog -> this.title
+            Favorites -> resources.getString(R.string.product_list_favorites)
+        }
+
+        @Parcelize
+        data class Catalog(
+            val categoryId: String?,
+            val title: String,
+            val filters: Filters,
+            val sorting: Sorting,
+            val actionsAvailable: Boolean
+        ) : Mode()
+
+        @Parcelize
+        object Favorites : Mode()
+    }
+
     @Parcelize
     data class Args(
-        val categoryId: String?,
-        val title: String,
-        val filters: Filters,
-        val sorting: Sorting,
-        val actionsAvailable: Boolean
+        val mode: Mode
     ) : Parcelable
 
     companion object {
 
-        fun create(categoryId: String?, title: String, filters: Filters, sorting: Sorting, actionsAvailable: Boolean) =
-            ProductListFragment().withArgs(Args(
-                categoryId = categoryId,
-                title = title,
-                filters = filters,
-                sorting = sorting,
-                actionsAvailable = actionsAvailable
-            ))
+        fun create(mode: Mode) = ProductListFragment().withArgs(Args(mode))
     }
 }

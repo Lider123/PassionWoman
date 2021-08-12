@@ -24,6 +24,25 @@ interface PassionWomanApi {
     @GET("api/catalog/brands/popular")
     suspend fun getPopularBrands(): List<BrandModel>
 
+    @GET("api/catalog/favorites")
+    suspend fun getFavorites(
+        @Query("ids") ids: String
+    ): List<ProductModel>
+
+    @GET("api/catalog/products/{productId}")
+    suspend fun getProduct(
+        @Path("productId") productId: String
+    ): ProductModel
+
+    @GET("api/catalog/favoriteIds")
+    suspend fun getFavoriteIds(): List<String>
+
+    @Multipart
+    @POST("api/catalog/favoriteIds")
+    suspend fun setFavoriteIds(
+        @Part("favoriteIds") ids: List<String>
+    )
+
     @GET("api/auth/profile")
     suspend fun getProfile(): ProfileModel
 

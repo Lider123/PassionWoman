@@ -27,11 +27,27 @@ object Screens {
     }
 
     fun category(category: Category) = FragmentScreen {
-        ProductListFragment.create(category.id, category.name, Filters.DEFAULT, Sorting.DEFAULT, true)
+        ProductListFragment.create(ProductListFragment.Mode.Catalog(
+            categoryId = category.id,
+            title = category.name,
+            filters = Filters.DEFAULT,
+            sorting = Sorting.DEFAULT,
+            actionsAvailable = true
+        ))
     }
 
     fun productList(title: String, filters: Filters, sorting: Sorting) = FragmentScreen {
-        ProductListFragment.create(null, title, filters, sorting, false)
+        ProductListFragment.create(ProductListFragment.Mode.Catalog(
+            categoryId = null,
+            title = title,
+            filters = filters,
+            sorting = sorting,
+            actionsAvailable = false
+        ))
+    }
+
+    fun favorites() = FragmentScreen {
+        ProductListFragment.create(ProductListFragment.Mode.Favorites)
     }
 
     fun auth() = FragmentScreen {
@@ -47,7 +63,7 @@ object Screens {
     }
 
     fun productCard(product: Product) = FragmentScreen {
-        ProductCardFragment.create(product)
+        ProductCardFragment.create(product.id)
     }
 
     fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {

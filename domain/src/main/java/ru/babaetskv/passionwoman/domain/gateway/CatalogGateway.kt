@@ -17,4 +17,16 @@ interface CatalogGateway {
     suspend fun getPromotions(): List<Promotion>
 
     suspend fun getPopularBrands(): List<Brand>
+
+    suspend fun getFavorites(): List<Product>
+
+    suspend fun getProduct(productId: String): Product
+
+    suspend fun addToFavorites(productId: String)
+
+    suspend fun removeFromFavorites(productId: String)
+
+    suspend fun getFavoriteIds(): List<String>
+
+    suspend fun setFavoriteIds(ids: List<String>)
 }
