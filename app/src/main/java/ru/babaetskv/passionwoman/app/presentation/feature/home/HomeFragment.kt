@@ -39,6 +39,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
 
     override val layoutRes: Int = R.layout.fragment_home
     override val viewModel: HomeViewModel by viewModel()
+    override val applyBottomInset: Boolean = false
 
     override fun initViews() {
         super.initViews()

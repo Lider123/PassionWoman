@@ -17,6 +17,8 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
 
     override val layoutRes: Int = R.layout.fragment_navigation
     override val viewModel: NavigationViewModel by viewModel()
+    override val applyTopInset: Boolean = false
+    override val applyBottomInset: Boolean = false
 
     override fun initViews() {
         super.initViews()
