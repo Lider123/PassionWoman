@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PassionWoman" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
@@ -45,6 +46,7 @@
 
     <style name="Theme.PassionWoman.ImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@color/onPrimary</item>
     </style>
     
     <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
@@ -52,6 +54,7 @@
         <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
         <item name="android:padding">@dimen/margin_small</item>
         <item name="cornerRadius">@dimen/corners_default</item>
+        <item name="android:textColor">@color/onSecondary</item>
     </style>
 
     <style

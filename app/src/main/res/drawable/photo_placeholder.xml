@@ -9,7 +9,7 @@
 
     <item>
         <inset
-            android:drawable="@drawable/ic_launcher_foreground"
-            android:inset="50dp"/>
+            android:drawable="@drawable/ic_logo"
+            android:inset="50dp" />
     </item>
 </layer-list>

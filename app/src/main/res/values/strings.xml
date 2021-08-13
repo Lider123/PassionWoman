@@ -6,6 +6,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="deleted_text_template"><![CDATA[<del>%s</del>]]></string>
+
     <string name="categories_title">Categories</string>
 
     <string name="menu_home">Home</string>
@@ -14,7 +16,6 @@
     <string name="menu_profile">Profile</string>
 
     <string name="item_product_button_buy">Buy now</string>
-    <string name="item_product_price_with_discount_template"><![CDATA[%s <font color=#bbbbbb><del>%s</del></font>]]></string>
 
     <string name="error_unknown">An unknown error occurred</string>
     <string name="error_get_categories">Failed to retrieve categories</string>

@@ -42,9 +42,14 @@ class ProductsAdapter(
                     onItemClick.invoke(item)
                 }
                 if (item.discountRate > 0) {
-                    tvPrice.setHtmlText(context.getString(R.string.item_product_price_with_discount_template, item.priceWithDiscount.toPriceString(), item.price.toPriceString()))
+                    tvPrice.text = item.priceWithDiscount.toPriceString()
+                    tvPriceDeleted.run {
+                        isVisible = true
+                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toPriceString()))
+                    }
                 } else {
                     tvPrice.text = item.price.toPriceString()
+                    tvPriceDeleted.isVisible = false
                 }
                 ratingBar.rating = item.rating
                 tvName.text = item.name

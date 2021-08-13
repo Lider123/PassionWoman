@@ -37,6 +37,7 @@
             android:paddingEnd="0dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_back"
+            android:tint="@color/onPrimary"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -47,6 +48,7 @@
             android:paddingEnd="@dimen/margin_small"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_forward"
+            android:tint="@color/onPrimary"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
