@@ -11,7 +11,7 @@ interface FavoritesPreferences {
     fun getFavoriteIds(): Collection<String>
     fun deleteFavoriteId(id: String)
     fun isFavorite(id: String): Boolean
-    fun clear()
+    fun reset()
 
     sealed class Action {
 
