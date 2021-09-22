@@ -33,16 +33,12 @@ import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
 import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
-import ru.babaetskv.passionwoman.data.preferences.AppPreferencesImpl
-import ru.babaetskv.passionwoman.data.preferences.AuthPreferencesImpl
 import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
-import ru.babaetskv.passionwoman.data.preferences.FavoritesPreferencesImpl
+import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
+import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
-import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
-import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.gateway.*
-import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -115,7 +111,8 @@ val networkModule = module {
 }
 
 val preferencesModule = module {
-    single<AppPreferences> { AppPreferencesImpl() }
-    single<AuthPreferences> { AuthPreferencesImpl() }
-    single<FavoritesPreferences> { FavoritesPreferencesImpl() }
+    single<PreferencesProvider> { PreferencesProviderImpl(get()) }
+    single { get<PreferencesProvider>().provideAppPreferences() }
+    single { get<PreferencesProvider>().provideAuthPreferences() }
+    single { get<PreferencesProvider>().provideFavoritesPreferences() }
 }

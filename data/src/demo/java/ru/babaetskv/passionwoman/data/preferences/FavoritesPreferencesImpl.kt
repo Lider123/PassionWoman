@@ -49,7 +49,7 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
         }
     }
 
-    override fun clear() {
+    override fun reset() {
         favoriteIds.clear()
     }
 }

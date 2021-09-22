@@ -16,7 +16,7 @@ class LogOutUseCase(
 
     override suspend fun run(params: Unit) {
         authPreferences.reset()
-        favoritesPreferences.clear()
+        favoritesPreferences.reset()
     }
 
     inner class LogOutException(cause: Exception?) : NetworkActionException(stringProvider.LOG_OUT_ERROR, cause)
