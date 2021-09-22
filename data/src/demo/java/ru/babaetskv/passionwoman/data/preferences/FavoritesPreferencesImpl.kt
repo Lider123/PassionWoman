@@ -32,6 +32,14 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
         actionsChannel.offer(FavoritesPreferences.Action.Set)
     }
 
+    override fun setFavoriteIds(vararg ids: String) {
+        favoriteIds.run {
+            clear()
+            addAll(ids)
+        }
+        actionsChannel.offer(FavoritesPreferences.Action.Set)
+    }
+
     override fun deleteFavoriteId(id: String) {
         if (!favoriteIds.contains(id)) return
 
