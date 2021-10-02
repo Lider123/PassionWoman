@@ -13,6 +13,7 @@
         android:windowSoftInputMode="adjustResize"
         android:hardwareAccelerated="true"
         android:theme="@style/Theme.PassionWoman"
+        android:usesCleartextTraffic="true"
         android:name="ru.babaetskv.passionwoman.app.MainApp">
 
         <activity android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity">
