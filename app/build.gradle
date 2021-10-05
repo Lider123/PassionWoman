@@ -103,6 +103,10 @@ dependencies {
 
     // Image picker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    // AdapterDelegates
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapter_delegates_version"
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapter_delegates_version"
 }
 repositories {
     mavenCentral()
