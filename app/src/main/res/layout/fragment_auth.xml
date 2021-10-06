@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:foreground="@color/bg_login_shade"
-        tools:src="@drawable/bg_login"/>
+        app:srcCompat="@drawable/bg_login"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@id/contentInsetsView"

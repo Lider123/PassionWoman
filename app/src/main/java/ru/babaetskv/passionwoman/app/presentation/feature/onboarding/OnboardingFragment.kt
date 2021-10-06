@@ -1,7 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
 import android.os.Build
-import android.view.WindowInsets
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
@@ -11,7 +10,8 @@ import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import java.util.*
+import kotlin.math.min
 
 class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
@@ -41,10 +41,10 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
                     }
                 })
             }
-            btnPrev.setOnSingleClickListener {
+            btnPrev.setOnClickListener {
                 viewModel.onPrevPagePressed()
             }
-            btnNext.setOnSingleClickListener {
+            btnNext.setOnClickListener {
                 viewModel.onNextPagePressed()
             }
         }
@@ -73,6 +73,7 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
 
     private fun populatePages(pages: List<OnboardingPage>) {
         adapter.submitList(pages)
+        binding.viewPager.offscreenPageLimit = min(pages.size, 3)
     }
     
     companion object {
