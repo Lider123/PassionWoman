@@ -40,7 +40,7 @@ class PassionWomanApiImpl(
         sorting: String,
         limit: Int,
         offset: Int
-    ): List<ProductModel> = withContext(Dispatchers.IO) {
+    ): ProductsPagedResponseModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         val filtersObject = moshi.adapter(FiltersModel::class.java).fromJson(filters)?.toFilters()
         val sortingObject = Sorting.findValueByApiName(sorting)
@@ -67,6 +67,11 @@ class PassionWomanApiImpl(
                 Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
                 else -> result
             }
+        }.let {
+            ProductsPagedResponseModel(
+                products = it,
+                total = products.size
+            )
         }
     }
 

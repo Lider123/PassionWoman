@@ -15,4 +15,6 @@ data class Product( // TODO: add brand ID and description
 ) : Parcelable {
     val discountRate: Float
         get() = 100 * (1 - priceWithDiscount / price)
+
+    override fun toString(): String = "Product(id=$id)" // TODO: remove
 }

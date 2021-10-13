@@ -15,6 +15,7 @@ interface StringProvider {
     val ADD_TO_FAVORITES_ERROR: String
     val REMOVE_FROM_FAVORITES_ERROR: String
     val SYNC_FAVORITES_ERROR: String
+    val GET_PRODUCTS_PAGE_ERROR: String
 
     val SORT_NEW: String
     val SORT_POPULARITY: String

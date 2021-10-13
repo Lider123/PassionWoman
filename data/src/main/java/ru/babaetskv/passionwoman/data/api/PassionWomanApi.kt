@@ -19,7 +19,7 @@ interface PassionWomanApi {
         @Query("sorting") sorting: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): List<ProductModel>
+    ): ProductsPagedResponseModel
 
     @GET("api/catalog/brands/popular")
     suspend fun getPopularBrands(): List<BrandModel>

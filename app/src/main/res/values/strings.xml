@@ -35,6 +35,7 @@
     <string name="error_add_to_favorites">Failed to add the product to favorites</string>
     <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
     <string name="error_sync_favorites">Failed to synchronize favorites</string>
+    <string name="error_get_products_page">Failed to retrieve additional products</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>

@@ -12,7 +12,7 @@ interface CatalogGateway {
         offset: Int,
         filters: Filters,
         sorting: Sorting
-    ): List<Product>
+    ): ProductsPagedResponse
 
     suspend fun getPromotions(): List<Promotion>
 

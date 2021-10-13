@@ -1,9 +1,11 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import android.content.res.Resources
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -19,8 +21,10 @@ import ru.babaetskv.passionwoman.domain.model.Sorting
 
 class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewModel.Router, ProductListFragment.Args>() {
     private val binding: FragmentProductListBinding by viewBinding()
-    private val productsAdapter: ProductsAdapter by lazy {
-        ProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed)
+    private val productsAdapter: PagedProductsAdapter by lazy {
+        PagedProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed).apply {
+            addLoadStateListener(viewModel::onLoadStateChanged)
+        }
     }
 
     override val layoutRes: Int = R.layout.fragment_product_list
@@ -30,12 +34,12 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         super.initViews()
         binding.run {
             toolbar.run {
-                title = args.mode.getScreenTitle(resources)
+                title = args.title
                 setOnStartClickListener {
                     viewModel.onBackPressed()
                 }
             }
-            layoutActions.isVisible = args.mode.actionsAreVisible
+            layoutActions.isVisible = args.actionsAvailable
             btnFilters.setOnSingleClickListener {
                 viewModel.onFiltersPressed()
             }
@@ -51,7 +55,9 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.productsLiveData.observe(viewLifecycleOwner, ::populateProducts)
+        lifecycleScope.launchWhenResumed {
+            viewModel.productsFlow.collect(::populateProducts)
+        }
         viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
     }
 
@@ -71,44 +77,35 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         binding.btnSorting.text = sorting.getUiName(viewModel.stringProvider)
     }
 
-    private fun populateProducts(products: List<Product>) {
-        productsAdapter.submitList(products) {
-            binding.rvProducts.isVisible = products.isNotEmpty()
-        }
-    }
-
-    sealed class Mode : Parcelable {
-        val actionsAreVisible: Boolean
-            get() = when (this) {
-                is Catalog -> this.actionsAvailable
-                Favorites -> false
-            }
-
-        fun getScreenTitle(resources: Resources): String = when (this) {
-            is Catalog -> this.title
-            Favorites -> resources.getString(R.string.product_list_favorites)
-        }
-
-        @Parcelize
-        data class Catalog(
-            val categoryId: String?,
-            val title: String,
-            val filters: Filters,
-            val sorting: Sorting,
-            val actionsAvailable: Boolean
-        ) : Mode()
-
-        @Parcelize
-        object Favorites : Mode()
+    private suspend fun populateProducts(products: PagingData<Product>) {
+        // TODO: fix animations on data submit
+        productsAdapter.submitData(products)
+        binding.rvProducts.isVisible = productsAdapter.itemCount > 0
     }
 
     @Parcelize
     data class Args(
-        val mode: Mode
+        val categoryId: String?,
+        val title: String,
+        val filters: Filters,
+        val sorting: Sorting,
+        val actionsAvailable: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(mode: Mode) = ProductListFragment().withArgs(Args(mode))
+        fun create(
+            categoryId: String?,
+            title: String,
+            filters: Filters,
+            sorting: Sorting,
+            actionsAvailable: Boolean
+        ) = ProductListFragment().withArgs(Args(
+            categoryId = categoryId,
+            title = title,
+            filters = filters,
+            sorting = sorting,
+            actionsAvailable = actionsAvailable
+        ))
     }
 }

@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
@@ -21,6 +22,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationV
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
@@ -32,6 +34,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
+import ru.babaetskv.passionwoman.data.datasource.ProductsDataSource
 import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
 import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
@@ -39,6 +42,8 @@ import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
+import ru.babaetskv.passionwoman.domain.model.Filters
+import ru.babaetskv.passionwoman.domain.model.Sorting
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -59,7 +64,11 @@ val viewModelModule = module {
     viewModel { SplashViewModel(get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModel(args, get(), get(), get(), get(), get(), get(), get())
+        ProductListViewModel(args, get(), get(), get(),
+            productsDataSource = get {
+                parametersOf(args.categoryId, args.filters, args.sorting)
+            }
+        )
     }
     viewModel { NavigationViewModel(get(), get(), get()) }
     viewModel { OnboardingViewModel(get(), get()) }
@@ -75,11 +84,21 @@ val viewModelModule = module {
     viewModel { (args: SortingFragment.Args) ->
         SortingViewModel(args, get(), get(), get())
     }
+    viewModel { FavoritesViewModel(get(), get(), get(), get(), get()) }
+}
+
+val dataSourceModule = module {
+    factory { (categoryId: String, filters: Filters, sorting: Sorting) ->
+        ProductsDataSource(get(), get(),
+            categoryId = categoryId,
+            filters = filters,
+            sorting = sorting
+        )
+    }
 }
 
 val interactorModule = module {
     factory { GetCategoriesUseCase(get(), get()) }
-    factory { GetProductsUseCase(get(), get()) }
     factory { AuthorizeAsGuestUseCase(get(), get()) }
     factory { AuthorizeUseCase(get(), get(), get()) }
     factory { GetProfileUseCase(get(), get()) }

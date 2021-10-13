@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
+import androidx.lifecycle.LifecycleOwner
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeBrandsBinding
@@ -7,7 +8,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeHeaderBinding
 import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeProductsBinding
 import ru.babaetskv.passionwoman.app.databinding.ViewItemHomePromotionsBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductsAdapter
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.PagedProductsAdapter
 import ru.babaetskv.passionwoman.domain.model.Brand
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Promotion
@@ -56,7 +57,7 @@ fun promotionsHomeItemDelegate(onPromotionClickListener: (item: Promotion) -> Un
         }
     }
 
-fun productsHomeItemDelegate(
+fun LifecycleOwner.productsHomeItemDelegate(
     onProductClickListener: (item: Product) -> Unit,
     onBuyProductPressed: (item: Product) -> Unit
 ) =
@@ -66,14 +67,14 @@ fun productsHomeItemDelegate(
         }
     ) {
         binding.root.run {
-            adapter = ProductsAdapter(onProductClickListener, onBuyProductPressed,
+            adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed,
                 itemWidthRatio = HOME_PRODUCT_ITEM_WIDTH_RATIO
             )
             addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_default))
         }
         bind {
-            with (binding.root.adapter as ProductsAdapter) {
-                submitList(item.data)
+            with (binding.root.adapter as PagedProductsAdapter) {
+                submitList(lifecycle, item.data)
             }
         }
     }
