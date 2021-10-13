@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
-import android.util.Log
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter

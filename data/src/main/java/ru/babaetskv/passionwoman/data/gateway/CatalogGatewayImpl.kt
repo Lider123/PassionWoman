@@ -22,13 +22,13 @@ class CatalogGatewayImpl(
         offset: Int,
         filters: Filters,
         sorting: Sorting
-    ): List<Product> = api.getProducts(
+    ): ProductsPagedResponse = api.getProducts(
         categoryId,
         moshi.adapter(FiltersModel::class.java).toJson(FiltersModel.fromFilters(filters)),
         sorting.apiName,
         limit,
         offset
-    ).map(ProductModel::toProduct)
+    ).toProductPagedResponse()
 
     override suspend fun getPromotions(): List<Promotion> =
         api.getPromotions().map(PromotionModel::toPromotion)

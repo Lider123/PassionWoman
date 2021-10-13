@@ -44,15 +44,11 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
         error.printStackTrace()
-        when (error) {
-            is NetworkDataException -> {
-                errorLiveData.postValue(error)
-            }
-            is NetworkActionException -> {
-                val request = error.message.let {
-                    notifier.newRequest(this, it)
-                }
-                request.sendError()
+        when {
+            error is NetworkDataException && !error.dataIsOptional -> errorLiveData.postValue(error)
+            error is NetworkActionException -> {
+                notifier.newRequest(this, error.message)
+                    .sendError()
             }
             else -> {
                 notifier.newRequest(this, R.string.error_unknown)

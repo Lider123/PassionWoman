@@ -26,21 +26,21 @@ class GetHomeDataUseCase(
                 sorting = Sorting.DEFAULT,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ),
+            ).products,
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = Filters.DEFAULT,
                 sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ),
+            ).products,
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = Filters.DEFAULT,
                 sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ),
+            ).products,
             brands = catalogGateway.getPopularBrands()
         )
 

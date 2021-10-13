@@ -8,7 +8,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
-import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
+import ru.babaetskv.passionwoman.app.presentation.base.BasePagingAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
@@ -16,11 +16,11 @@ import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class ProductsAdapter(
+class PagedProductsAdapter(
     private val onItemClick: (Product) -> Unit,
     private val onBuyClick: (Product) -> Unit,
     private val itemWidthRatio: Float = 1f
-) : BaseAdapter<Product>(ProductDiffUtilCallback()) {
+) : BasePagingAdapter<Product>(ProductDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
         val view = LayoutInflater.from(parent.context)
