@@ -8,6 +8,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
+import ru.babaetskv.passionwoman.app.ServiceProvider
+import ru.babaetskv.passionwoman.app.ServiceProviderImpl
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.StringProviderImpl
@@ -51,6 +53,11 @@ val appModule = module {
     single<StringProvider> { StringProviderImpl(get()) }
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { SortingUpdateHub() }
+}
+
+val serviceModule = module {
+    single<ServiceProvider> { ServiceProviderImpl() }
+    single { get<ServiceProvider>().provideAnalyticService() }
 }
 
 val navigationModule = module {

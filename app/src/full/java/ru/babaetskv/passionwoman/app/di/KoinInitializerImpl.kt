@@ -19,7 +19,8 @@ class KoinInitializerImpl : KoinInitializer {
                 interactorModule,
                 viewModelModule,
                 preferencesModule,
-                gatewayModule
+                gatewayModule,
+                serviceModule
             )
         }
     }
