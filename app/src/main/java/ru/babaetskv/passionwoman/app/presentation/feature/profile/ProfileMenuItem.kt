@@ -10,5 +10,5 @@ enum class ProfileMenuItem(
 ) {
     FAVORITES(R.string.profile_favorites, R.drawable.ic_favorites),
     ORDERS(R.string.profile_orders, R.drawable.ic_orders),
-    ABOUT(R.string.profile_about, R.drawable.ic_info)
+    CONTACTS(R.string.profile_contacts, R.drawable.ic_info)
 }

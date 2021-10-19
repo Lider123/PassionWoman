@@ -13,6 +13,7 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.StringProviderImpl
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
@@ -31,6 +32,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.So
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
+import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
@@ -51,6 +53,7 @@ val appModule = module {
     single<StringProvider> { StringProviderImpl(get()) }
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { SortingUpdateHub() }
+    single { ExternalIntentHandler(androidContext()) }
 }
 
 val navigationModule = module {
@@ -85,6 +88,7 @@ val viewModelModule = module {
         SortingViewModel(args, get(), get(), get())
     }
     viewModel { FavoritesViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ContactsViewModel(get(), get()) }
 }
 
 val dataSourceModule = module {
