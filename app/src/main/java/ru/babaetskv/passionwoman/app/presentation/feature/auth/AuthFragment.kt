@@ -33,7 +33,6 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
     override fun initViews() {
         super.initViews()
         binding.run {
-            ivBackground.load(R.drawable.bg_login)
             layoutLogin.run {
                 countryCodePicker.run {
                     registerCarrierNumberEditText(etPhone)
@@ -132,15 +131,17 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                 AuthViewModel.Mode.LOGIN -> {
                     layoutSmsConfirm.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutLogin.run {
-                        root.showAnimated(R.anim.fragment_fade_in)
-                        etPhone.requestFocus()
+                        root.showAnimated(R.anim.fragment_fade_in) {
+                            etPhone.requestFocus()
+                        }
                     }
                 }
                 AuthViewModel.Mode.SMS_CONFIRM -> {
                     layoutLogin.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutSmsConfirm.run {
-                        root.showAnimated(R.anim.fragment_fade_in)
-                        pevSmsCode.requestFocus()
+                        root.showAnimated(R.anim.fragment_fade_in) {
+                            pevSmsCode.requestFocus()
+                        }
                     }
                 }
             }

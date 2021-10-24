@@ -65,7 +65,7 @@ fun Activity.hideKeyboard() {
         ?.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun View.showAnimated(animation: Animation) {
+fun View.showAnimated(animation: Animation, doOnAnimationEnd: (() -> Unit)? = null) {
     animation.apply {
         setAnimationListener(object : Animation.AnimationListener {
 
@@ -77,6 +77,7 @@ fun View.showAnimated(animation: Animation) {
 
             override fun onAnimationEnd(animation: Animation?) {
                 isVisible = true
+                doOnAnimationEnd?.invoke()
             }
         })
     }.let {
@@ -84,8 +85,8 @@ fun View.showAnimated(animation: Animation) {
     }
 }
 
-fun View.showAnimated(@AnimRes animationRes: Int) {
-    showAnimated(AnimationUtils.loadAnimation(context, animationRes))
+fun View.showAnimated(@AnimRes animationRes: Int, doOnAnimationEnd: (() -> Unit)? = null) {
+    showAnimated(AnimationUtils.loadAnimation(context, animationRes), doOnAnimationEnd)
 }
 
 fun View.hideAnimated(animation: Animation) {
@@ -130,7 +131,6 @@ fun String.toFormattedPhone(): String =
 fun ImageView.load(@DrawableRes imageRes: Int) {
     Glide.with(this)
         .load(imageRes)
-        .override(width, 0)
         .into(this)
 }
 
