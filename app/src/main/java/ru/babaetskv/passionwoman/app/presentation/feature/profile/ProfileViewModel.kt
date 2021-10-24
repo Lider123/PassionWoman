@@ -68,10 +68,8 @@ class ProfileViewModel(
                     notifier.newRequest(this, R.string.in_development)
                         .sendAlert()
                 }
-                ProfileMenuItem.ABOUT -> {
-                    // TODO
-                    notifier.newRequest(this, R.string.in_development)
-                        .sendAlert()
+                ProfileMenuItem.CONTACTS -> {
+                    navigateTo(Router.ContactsScreen)
                 }
             }
         }
@@ -160,5 +158,7 @@ class ProfileViewModel(
         ) : Router()
 
         object FavoritesScreen : Router()
+
+        object ContactsScreen: Router()
     }
 }

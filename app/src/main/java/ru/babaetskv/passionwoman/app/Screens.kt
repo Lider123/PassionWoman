@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.babaetskv.passionwoman.app.navigation.BottomSheetDialogFragmentScreen
+import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
@@ -69,5 +70,9 @@ object Screens {
 
     fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {
         SortingFragment.create(sorting)
+    }
+
+    fun contacts() = BottomSheetDialogFragmentScreen {
+        ContactsFragment.create()
     }
 }

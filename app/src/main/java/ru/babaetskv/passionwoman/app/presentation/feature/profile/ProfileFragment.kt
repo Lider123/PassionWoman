@@ -99,6 +99,7 @@ class ProfileFragment :
                 router.navigateTo(Screens.editProfile(event.profile))
             }
             ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
+            ProfileViewModel.Router.ContactsScreen -> router.openBottomSheet(Screens.contacts())
         }
     }
 

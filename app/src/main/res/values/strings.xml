@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">PassionWoman</string>
+    <string name="phone" translatable="false">+442087599036</string> <!--TODO: check-->
+    <string name="email" translatable="false">example@example.com</string> <!--TODO: check-->
+    <string name="instagram" translatable="false">https://instagram.com</string> <!--TODO: check-->
+    <string name="telegram" translatable="false">https://telegram.me</string> <!--TODO: check-->
 
     <string name="in_development">Feature is in development</string>
     <string name="retry">Retry</string>
@@ -68,7 +72,7 @@
     <string name="profile_orders">Orders</string>
     <string name="profile_log_out">Log Out</string>
     <string name="profile_log_in">Log In</string>
-    <string name="profile_about">About app</string>
+    <string name="profile_contacts">Contacts</string>
     <string name="profile_log_out_confirmation_message">Are you sure you want to log out?</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_pick_avatar_message">Pick avatar from…</string>
@@ -94,4 +98,10 @@
     <string name="sorting_title">Sorting</string>
 
     <string name="product_list_favorites">Favorites</string>
+
+    <string name="contacts_version_placeholder">v%s</string>
+    <string name="contacts_phone">Call us</string>
+    <string name="contacts_email">Send us an email</string>
+    <string name="contacts_instagram">Find us on Instagram</string>
+    <string name="contacts_telegram">Write to us on Telegram</string>
 </resources>
