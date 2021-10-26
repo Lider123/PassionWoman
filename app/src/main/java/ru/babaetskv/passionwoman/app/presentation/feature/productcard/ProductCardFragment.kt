@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
@@ -29,6 +30,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     override val viewModel: ProductCardViewModel by viewModel {
         parametersOf(args)
     }
+    override val screenName: String = ScreenKeys.PRODUCT_CARD
 
     override fun initViews() {
         super.initViews()

@@ -8,23 +8,25 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
     authPreferences: AuthPreferences,
     private val syncFavoritesUseCase: SyncFavoritesUseCase,
-    notifier: Notifier
-) : BaseViewModel<NavigationViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<NavigationViewModel.Router>(dependencies) {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
     val dialogLiveData = MutableLiveData<Dialog?>()
+
+    override val logScreenOpening: Boolean = false
 
     init {
         authTypeFlow.launchIn(this)

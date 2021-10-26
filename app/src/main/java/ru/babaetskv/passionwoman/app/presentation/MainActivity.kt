@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
@@ -23,6 +23,7 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override val contentViewRes: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModel()
     override val applyInsets: Boolean = false
+    override val screenName: String = ""
 
     override fun onResumeFragments() {
         super.onResumeFragments()

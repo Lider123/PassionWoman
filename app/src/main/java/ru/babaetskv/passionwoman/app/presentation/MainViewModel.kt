@@ -8,14 +8,18 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.notifier.Message
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
-class MainViewModel(notifier: Notifier) : BaseViewModel<MainViewModel.Router>(notifier) {
+class MainViewModel(
+    dependencies: ViewModelDependencies
+) : BaseViewModel<MainViewModel.Router>(dependencies) {
     private var alertChannel: ReceiveChannel<Message>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
+
+    override val logScreenOpening: Boolean = false
 
     init {
         launch {
@@ -23,8 +27,8 @@ class MainViewModel(notifier: Notifier) : BaseViewModel<MainViewModel.Router>(no
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onStart(screenName: String) {
+        super.onStart(screenName)
         subscribeOnAlerts()
     }
 

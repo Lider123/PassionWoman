@@ -9,7 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
@@ -29,6 +30,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
 
     override val layoutRes: Int = R.layout.fragment_auth
     override val viewModel: AuthViewModel by viewModel()
+    override val screenName: String = ScreenKeys.LOGIN
 
     override fun initViews() {
         super.initViews()
@@ -125,10 +127,10 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         }
     }
 
-    private fun populateMode(mode: AuthViewModel.Mode) {
+    private fun populateMode(mode: AuthMode) {
         binding.run {
             when (mode) {
-                AuthViewModel.Mode.LOGIN -> {
+                AuthMode.LOGIN -> {
                     layoutSmsConfirm.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutLogin.run {
                         root.showAnimated(R.anim.fragment_fade_in) {
@@ -136,7 +138,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                         }
                     }
                 }
-                AuthViewModel.Mode.SMS_CONFIRM -> {
+                AuthMode.SMS_CONFIRM -> {
                     layoutLogin.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutSmsConfirm.run {
                         root.showAnimated(R.anim.fragment_fade_in) {
@@ -145,6 +147,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                     }
                 }
             }
+            viewModel.onModeChanged(mode)
         }
     }
 

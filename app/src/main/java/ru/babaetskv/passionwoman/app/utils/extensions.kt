@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.view.View
 import android.view.animation.Animation
@@ -144,3 +145,5 @@ fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
         insets
     }
 }
+
+operator fun Bundle.plus(other: Bundle): Bundle = this.apply { putAll(other) }

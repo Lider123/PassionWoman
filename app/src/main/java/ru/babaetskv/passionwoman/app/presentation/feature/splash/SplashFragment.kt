@@ -2,7 +2,8 @@ package ru.babaetskv.passionwoman.app.presentation.feature.splash
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 
@@ -12,6 +13,7 @@ class SplashFragment :
     override val layoutRes: Int = R.layout.fragment_splash
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
+    override val screenName: String = ScreenKeys.SPLASH
 
     override fun handleRouterEvent(event: SplashViewModel.Router) {
         super.handleRouterEvent(event)

@@ -5,7 +5,8 @@ import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentHomeBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
@@ -25,6 +26,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
     override val layoutRes: Int = R.layout.fragment_home
     override val viewModel: HomeViewModel by viewModel()
     override val applyBottomInset: Boolean = false
+    override val screenName: String = ScreenKeys.HOME
 
     override fun initViews() {
         super.initViews()
@@ -46,7 +48,8 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
                 router.navigateTo(Screens.productCard(event.product))
             }
             is HomeViewModel.Router.ProductListScreen -> {
-                router.navigateTo(Screens.productList(
+                router.navigateTo(
+                    Screens.productList(
                     getString(event.titleRes),
                     event.filters,
                     event.sorting

@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.viewbinding.library.fragment.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
@@ -19,6 +19,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
     override val viewModel: NavigationViewModel by viewModel()
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
+    override val screenName: String = ""
 
     override fun initViews() {
         super.initViews()

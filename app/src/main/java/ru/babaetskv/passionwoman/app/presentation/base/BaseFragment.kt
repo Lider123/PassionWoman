@@ -55,7 +55,7 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
 
     override fun onStart() {
         super.onStart()
-        viewModel.onStart()
+        viewModel.onStart(screenName)
     }
 
     override fun onResume() {

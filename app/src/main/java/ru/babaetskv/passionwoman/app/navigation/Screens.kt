@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.app
+package ru.babaetskv.passionwoman.app.navigation
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.babaetskv.passionwoman.app.navigation.BottomSheetDialogFragmentScreen

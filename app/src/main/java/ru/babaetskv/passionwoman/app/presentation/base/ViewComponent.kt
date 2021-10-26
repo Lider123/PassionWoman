@@ -14,6 +14,7 @@ import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataExceptio
 
 interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel<TRouterEvent> {
     val viewModel: VM
+    val screenName: String
     val componentView: View
     val componentViewLifecycleOwner: LifecycleOwner
     val componentLifecycleScope: LifecycleCoroutineScope

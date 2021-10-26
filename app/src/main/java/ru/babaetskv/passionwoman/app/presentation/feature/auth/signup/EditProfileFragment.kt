@@ -9,7 +9,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
@@ -26,6 +27,8 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     override val viewModel: EditProfileViewModel by viewModel {
         parametersOf(args, profileViewModel)
     }
+    override val screenName: String =
+        if (args.signingUp) ScreenKeys.SIGN_UP else ScreenKeys.EDIT_PROFILE
 
     override fun initViews() {
         super.initViews()

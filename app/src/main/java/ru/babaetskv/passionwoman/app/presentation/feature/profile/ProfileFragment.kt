@@ -10,7 +10,8 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
@@ -42,6 +43,7 @@ class ProfileFragment :
 
     override val layoutRes: Int = R.layout.fragment_profile
     override val viewModel: ProfileViewModel by sharedViewModel()
+    override val screenName: String = ScreenKeys.PROFILE
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {

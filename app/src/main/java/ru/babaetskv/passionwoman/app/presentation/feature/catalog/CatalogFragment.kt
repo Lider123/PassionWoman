@@ -4,7 +4,8 @@ import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
@@ -13,14 +14,14 @@ import ru.babaetskv.passionwoman.domain.model.Category
 
 class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
+    private val categoriesAdapter: CategoriesAdapter by lazy {
+        CategoriesAdapter(viewModel::onCategoryPressed)
+    }
 
     override val viewModel: CatalogViewModel by viewModel()
     override val layoutRes: Int = R.layout.fragment_catalog
     override val applyBottomInset: Boolean = false
-
-    private val categoriesAdapter: CategoriesAdapter by lazy {
-        CategoriesAdapter(viewModel::onCategoryPressed)
-    }
+    override val screenName: String = ScreenKeys.CATEGORIES
 
     override fun initViews() {
         super.initViews()

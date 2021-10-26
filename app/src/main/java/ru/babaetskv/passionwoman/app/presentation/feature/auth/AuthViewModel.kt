@@ -5,11 +5,12 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeUseCase
 import ru.babaetskv.passionwoman.domain.model.AuthResult
@@ -21,19 +22,23 @@ class AuthViewModel(
     private val authorizeUseCase: AuthorizeUseCase,
     private val authorizeAsGuestUseCase: AuthorizeAsGuestUseCase,
     private val authPreferences: AuthPreferences,
-    notifier: Notifier
-) : BaseViewModel<AuthViewModel.Router>(notifier), AuthHandler.AuthCallback, AuthHandler.OnSendSmsListener {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<AuthViewModel.Router>(dependencies),
+    AuthHandler.AuthCallback,
+    AuthHandler.OnSendSmsListener {
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val lastPhoneLiveData = MutableLiveData<String>()
     val smsCodeLiveData = MutableLiveData<String>()
-    val modeLiveData = MutableLiveData(Mode.LOGIN)
+    val modeLiveData = MutableLiveData(AuthMode.LOGIN)
     val eventBus: Flow<Event> = eventChannel.receiveAsFlow()
+
+    override val logScreenOpening: Boolean = false
 
     override fun onBackPressed() {
         when (modeLiveData.value!!) {
-            Mode.LOGIN -> super.onBackPressed()
-            Mode.SMS_CONFIRM -> modeLiveData.postValue(Mode.LOGIN)
+            AuthMode.LOGIN -> super.onBackPressed()
+            AuthMode.SMS_CONFIRM -> modeLiveData.postValue(AuthMode.LOGIN)
         }
     }
 
@@ -48,7 +53,7 @@ class AuthViewModel(
             } else {
                 navigateTo(Router.SignUpScreen(profile))
                 smsCodeLiveData.postValue("")
-                modeLiveData.postValue(Mode.LOGIN)
+                modeLiveData.postValue(AuthMode.LOGIN)
             }
         }
     }
@@ -67,7 +72,7 @@ class AuthViewModel(
 
     override fun onSendSms() {
         loadingLiveData.postValue(false)
-        modeLiveData.postValue(Mode.SMS_CONFIRM)
+        modeLiveData.postValue(AuthMode.SMS_CONFIRM)
     }
 
     override fun onSmsReceived(code: String) {
@@ -89,8 +94,8 @@ class AuthViewModel(
         }
     }
 
-    enum class Mode {
-        LOGIN, SMS_CONFIRM
+    fun onModeChanged(mode: AuthMode) {
+        analyticsHandler.log(OpenScreenEvent(mode.screenName))
     }
 
     sealed class Event {

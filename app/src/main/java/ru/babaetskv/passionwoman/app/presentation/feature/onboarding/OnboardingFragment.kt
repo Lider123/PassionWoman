@@ -6,7 +6,8 @@ import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
@@ -24,6 +25,7 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
 
     override val layoutRes: Int = R.layout.fragment_onboarding
     override val viewModel: OnboardingViewModel by viewModel()
+    override val screenName: String = ScreenKeys.ONBOARDING
 
     override fun initViews() {
         super.initViews()

@@ -1,6 +1,7 @@
-package ru.babaetskv.passionwoman.app
+package ru.babaetskv.passionwoman.app.utils
 
 import android.content.res.Resources
+import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 
 class StringProviderImpl(resources: Resources): StringProvider {

@@ -52,7 +52,7 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
 
     override fun onStart() {
         super.onStart()
-        viewModel.onStart()
+        viewModel.onStart(screenName)
     }
 
     override fun onResume() {

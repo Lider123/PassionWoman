@@ -4,17 +4,19 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
+import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.utils.execute
 
 class HomeViewModel(
     private val getHomeDataUseCase: GetHomeDataUseCase,
-    notifier: Notifier
-) : BaseViewModel<HomeViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<HomeViewModel.Router>(dependencies) {
     val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
 
     init {
@@ -92,12 +94,14 @@ class HomeViewModel(
     }
 
     fun onProductPressed(product: Product) {
+        analyticsHandler.log(SelectProductEvent(product))
         launch {
             navigateTo(Router.ProductCardScreen(product))
         }
     }
 
     fun onBrandPressed(brand: Brand) {
+        analyticsHandler.log(SelectBrandEvent(brand))
         // TODO
         notifier.newRequest(this, R.string.in_development)
             .sendAlert()
