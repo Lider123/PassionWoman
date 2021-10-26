@@ -5,13 +5,13 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 
 class OnboardingViewModel(
     appPreferences: AppPreferences,
-    notifier: Notifier
-) : BaseViewModel<OnboardingViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<OnboardingViewModel.Router>(dependencies) {
     private val pages = listOf(
         OnboardingPage(R.drawable.onboarding_1, R.string.onboarding_1),
         OnboardingPage(R.drawable.onboarding_2, R.string.onboarding_2),

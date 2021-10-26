@@ -12,10 +12,12 @@ class AuthPreferencesImpl : AuthPreferences {
     override var authToken: String = ""
     override var profileIsFilled: Boolean = false
     override val authTypeFlow = MutableStateFlow(authType)
+    override var userId: String = "null"
 
     override fun reset() {
         authType = AuthPreferences.AuthType.NONE
         authToken = ""
+        userId = "null"
         profileIsFilled = false
     }
 }

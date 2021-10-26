@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.LogOutUseCase
 import ru.babaetskv.passionwoman.domain.interactor.UpdateAvatarUseCase
@@ -23,8 +23,8 @@ class ProfileViewModel(
     private val authPreferences: AuthPreferences,
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
-    notifier: Notifier
-) : BaseViewModel<ProfileViewModel.Router>(notifier), ProfileUpdatesListener {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<ProfileViewModel.Router>(dependencies), ProfileUpdatesListener {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 

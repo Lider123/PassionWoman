@@ -11,7 +11,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
@@ -29,6 +30,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
 
     override val layoutRes: Int = R.layout.fragment_product_list
     override val viewModel: ProductListViewModel by viewModel { parametersOf(args) }
+    override val screenName: String = ScreenKeys.PRODUCT_LIST
 
     override fun initViews() {
         super.initViews()

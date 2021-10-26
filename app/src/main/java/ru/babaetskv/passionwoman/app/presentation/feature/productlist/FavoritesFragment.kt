@@ -5,7 +5,8 @@ import androidx.core.view.isVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
@@ -20,6 +21,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
 
     override val layoutRes: Int = R.layout.fragment_product_list
     override val viewModel: FavoritesViewModel by viewModel()
+    override val screenName: String = ScreenKeys.FAVORITES
 
     override fun initViews() {
         super.initViews()

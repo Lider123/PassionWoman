@@ -8,11 +8,14 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
+import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
+import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
-import ru.babaetskv.passionwoman.app.StringProviderImpl
+import ru.babaetskv.passionwoman.app.utils.StringProviderImpl
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
@@ -54,6 +57,7 @@ val appModule = module {
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { SortingUpdateHub() }
     single { ExternalIntentHandler(androidContext()) }
+    single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
 }
 
 val navigationModule = module {
@@ -63,14 +67,16 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
+    single { ViewModelDependencies(get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModel(args, get(), get(), get(),
-            productsDataSource = get {
-                parametersOf(args.categoryId, args.filters, args.sorting)
-            }
+        ProductListViewModel(args,
+            sortingUpdateHub = get(),
+            stringProvider = get(),
+            productsDataSource = get { parametersOf(args.categoryId, args.filters, args.sorting) },
+            dependencies = get()
         )
     }
     viewModel { NavigationViewModel(get(), get(), get()) }

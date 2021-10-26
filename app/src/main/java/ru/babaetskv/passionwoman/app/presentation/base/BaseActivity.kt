@@ -41,7 +41,7 @@ abstract class BaseActivity<VM, TRouterEvent : RouterEvent> :
     override fun onStart() {
         super.onStart()
         keyboardAnimator.start()
-        viewModel.onStart()
+        viewModel.onStart(screenName)
     }
 
     override fun onResume() {

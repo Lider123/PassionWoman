@@ -4,6 +4,7 @@ import android.viewbinding.library.fragment.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.BuildConfig
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentContactsBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
@@ -16,6 +17,7 @@ class ContactsFragment : BaseBottomSheetDialogFragment<ContactsViewModel, Contac
 
     override val layoutRes: Int = R.layout.fragment_contacts
     override val viewModel: ContactsViewModel by viewModel()
+    override val screenName: String = ScreenKeys.CONTACTS
 
     override fun initViews() {
         super.initViews()

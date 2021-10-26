@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
@@ -22,6 +23,7 @@ class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingV
     override val viewModel: SortingViewModel by viewModel {
         parametersOf(args)
     }
+    override val screenName: String = ScreenKeys.SORTING
 
     override fun initViews() {
         super.initViews()

@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
@@ -24,8 +25,8 @@ class FavoritesViewModel(
     private val getProductUseCase: GetProductUseCase,
     favoritesPreferences: FavoritesPreferences,
     val stringProvider: StringProvider,
-    notifier: Notifier
-) : BaseViewModel<FavoritesViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<FavoritesViewModel.Router>(dependencies) {
     private val favoritesActionsFlow: Flow<FavoritesPreferences.Action> =
         favoritesPreferences.favoritesUpdatesFlow
             .filterNotNull()
@@ -83,6 +84,7 @@ class FavoritesViewModel(
     }
 
     fun onProductPressed(product: Product) {
+        analyticsHandler.log(SelectProductEvent(product))
         launch {
             navigateTo(Router.ProductCardScreen(product))
         }

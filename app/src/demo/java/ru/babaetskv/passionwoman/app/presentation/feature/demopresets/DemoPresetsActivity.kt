@@ -5,6 +5,7 @@ import android.viewbinding.library.activity.viewBinding
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.ActivityDemoPresetsBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.MainActivity
@@ -22,6 +23,7 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
     override val contentViewRes: Int = R.layout.activity_demo_presets
     override val viewModel: DemoPresetsViewModel by viewModel()
     override val applyInsets: Boolean = true
+    override val screenName: String = ScreenKeys.DEMO_PRESETS
 
     override fun initViews() {
         super.initViews()

@@ -19,7 +19,9 @@ class AuthorizeUseCase(
         val authToken = authGateway.authorize(params)
         authPreferences.authToken = authToken
         authPreferences.authType = AuthPreferences.AuthType.AUTHORIZED
-        return authGateway.getProfile()
+        return authGateway.getProfile().also {
+            authPreferences.userId = it.id
+        }
     }
 
     inner class AuthorizeException(

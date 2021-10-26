@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.SimplePager
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.datasource.ProductsDataSource
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
@@ -24,9 +25,9 @@ class ProductListViewModel(
     args: ProductListFragment.Args,
     sortingUpdateHub: SortingUpdateHub,
     val stringProvider: StringProvider,
-    notifier: Notifier,
-    productsDataSource: ProductsDataSource
-) : BaseViewModel<ProductListViewModel.Router>(notifier) {
+    productsDataSource: ProductsDataSource,
+    dependencies: ViewModelDependencies
+) : BaseViewModel<ProductListViewModel.Router>(dependencies) {
     private val sortingUpdateFlow: Flow<Sorting> = sortingUpdateHub.flow
         .onEach(::onSortingUpdated)
     private val productsPager = SimplePager(PAGE_SIZE) { productsDataSource }
@@ -49,6 +50,7 @@ class ProductListViewModel(
     }
 
     fun onProductPressed(product: Product) {
+        analyticsHandler.log(SelectProductEvent(product))
         launch {
             navigateTo(Router.ProductCardScreen(product))
         }

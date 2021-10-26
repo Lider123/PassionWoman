@@ -4,7 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
@@ -15,8 +15,8 @@ class SplashViewModel(
     private val appPreferences: AppPreferences,
     private val authPreferences: AuthPreferences,
     private val getProfileUseCase: GetProfileUseCase,
-    notifier: Notifier
-) : BaseViewModel<SplashViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<SplashViewModel.Router>(dependencies) {
 
     override fun onResume() {
         super.onResume()

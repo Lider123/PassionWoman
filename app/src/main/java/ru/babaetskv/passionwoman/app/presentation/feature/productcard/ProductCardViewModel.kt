@@ -2,9 +2,10 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.AddToFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
@@ -18,8 +19,8 @@ class ProductCardViewModel(
     private val favoritesPreferences: FavoritesPreferences,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
-    notifier: Notifier
-) : BaseViewModel<ProductCardViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<ProductCardViewModel.Router>(dependencies) {
     val productLiveData = MutableLiveData<Product>()
     val productColorsLiveData = MutableLiveData<List<ProductColorItem>>()
     val productPhotosLiveData = MutableLiveData<List<Image>>()
@@ -54,15 +55,17 @@ class ProductCardViewModel(
     }
 
     fun onFavoritePressed() {
-        val productId = productLiveData.value?.id ?: return
+        val product = productLiveData.value ?: return
 
         val isFavorite = isFavoriteLiveData.value ?: return
 
         launchWithLoading {
+            val productId = product.id
             if (isFavorite) {
                 removeFromFavoritesUseCase.execute(productId)
             } else {
                 addToFavoritesUseCase.execute(productId)
+                analyticsHandler.log(AddToWishlistEvent(product))
             }
             isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(productId))
         }

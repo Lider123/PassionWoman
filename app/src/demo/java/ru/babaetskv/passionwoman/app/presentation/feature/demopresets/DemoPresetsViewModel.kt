@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.app.utils.toDemoPresets
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
@@ -20,8 +20,8 @@ class DemoPresetsViewModel(
     private val getProfileUseCase: GetProfileUseCase,
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val resources: Resources,
-    notifier: Notifier
-) : BaseViewModel<DemoPresetsViewModel.Router>(notifier) {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<DemoPresetsViewModel.Router>(dependencies) {
     val presetsLiveData = MutableLiveData(appPrefs.toDemoPresets() + authPrefs.toDemoPresets())
 
     fun onPresetChanged(preset: DemoPreset) {
