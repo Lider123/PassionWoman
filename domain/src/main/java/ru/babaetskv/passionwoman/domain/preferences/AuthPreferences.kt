@@ -9,6 +9,7 @@ interface AuthPreferences {
     var profileIsFilled: Boolean
     val authTypeFlow: Flow<AuthType>
 
+    fun observeUserId(observer: (String) -> Unit)
     fun reset()
 
     enum class AuthType {
