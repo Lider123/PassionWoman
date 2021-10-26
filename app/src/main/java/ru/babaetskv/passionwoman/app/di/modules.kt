@@ -10,6 +10,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
+import ru.babaetskv.passionwoman.app.analytics.FirebaseErrorLogger
+import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.utils.StringProviderImpl
@@ -58,6 +60,7 @@ val appModule = module {
     single { SortingUpdateHub() }
     single { ExternalIntentHandler(androidContext()) }
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
+    single<ErrorLogger> { FirebaseErrorLogger(get()) }
 }
 
 val navigationModule = module {
@@ -67,7 +70,7 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    single { ViewModelDependencies(get(), get()) }
+    single { ViewModelDependencies(get(), get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get()) }

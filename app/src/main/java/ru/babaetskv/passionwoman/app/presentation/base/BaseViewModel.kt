@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
+import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
@@ -24,6 +25,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         get() = dependencies.notifier
     protected val analyticsHandler: AnalyticsHandler
         get() = dependencies.analyticsHandler
+    protected val errorLogger: ErrorLogger
+        get() = dependencies.errorLogger
 
     val loadingLiveData = MutableLiveData(false)
     val errorLiveData = MutableLiveData<Exception?>(null)
@@ -55,6 +58,7 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
         error.printStackTrace()
+        errorLogger.logException(error)
         when {
             error is NetworkDataException && !error.dataIsOptional -> errorLiveData.postValue(error)
             error is NetworkActionException -> {
