@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#fafafa</color>
+    <color name="primaryVariant">#e7e7e7</color>
+    <color name="secondary">#ac1734</color>
+    <color name="secondaryVariant">#76000f</color>
+    <color name="onPrimary">#000</color>
+    <color name="onSecondary">#fff</color>
+    <color name="hint">#8000</color>
+    <color name="error">#ff9494</color>
+    <color name="favorite">#bc1e1b</color>
+    <color name="input">#3000</color>
+
+    <color name="onboarding_banner_shade">#98FFFFFF</color>
+    <color name="bg_login_shade">#CFFF</color>
+    <color name="progress_shade">#98FFFFFF</color>
+    <color name="category_shade">#4FFF</color>
+</resources>

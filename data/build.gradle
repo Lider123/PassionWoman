@@ -54,6 +54,14 @@ dependencies {
     // Network
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
+    // Paging
+    api "androidx.paging:paging-runtime-ktx:3.0.1"
+
+    // Tests
+    testApi 'junit:junit:4.13.2'
+    testApi 'org.mockito.kotlin:mockito-kotlin:3.2.0'
+    androidTestApi 'androidx.test.ext:junit:1.1.3'
+    androidTestApi 'androidx.test.espresso:espresso-core:3.4.0'
 }

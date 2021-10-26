@@ -7,8 +7,8 @@
         android:icon="@drawable/ic_home"/>
 
     <item
-        android:id="@+id/menu_search"
-        android:title="@string/menu_search"
+        android:id="@+id/menu_catalog"
+        android:title="@string/menu_catalog"
         android:icon="@drawable/ic_search"/>
 
     <item

@@ -2,26 +2,31 @@ package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
     authPreferences: AuthPreferences,
-    notifier: Notifier,
-    router: Router
-) : BaseViewModel(notifier, router) {
+    private val syncFavoritesUseCase: SyncFavoritesUseCase,
+    dependencies: ViewModelDependencies
+) : BaseViewModel<NavigationViewModel.Router>(dependencies) {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     val selectedTabLiveData = MutableLiveData(Tab.HOME)
+    val dialogLiveData = MutableLiveData<Dialog?>()
+
+    override val logScreenOpening: Boolean = false
 
     init {
         authTypeFlow.launchIn(this)
@@ -29,9 +34,21 @@ class NavigationViewModel(
 
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
-            AuthPreferences.AuthType.NONE -> router.newRootScreen(Screens.auth())
+            AuthPreferences.AuthType.NONE -> navigateTo(Router.AuthScreen)
+            AuthPreferences.AuthType.AUTHORIZED -> syncFavorites()
             else -> Unit
         }
+    }
+
+    private suspend fun syncFavorites() {
+        syncFavoritesUseCase.execute(SyncFavoritesUseCase.Params { doOnAnswer ->
+            dialogLiveData.postValue(Dialog.MergeFavorites {
+                dialogLiveData.postValue(null)
+                launch {
+                    doOnAnswer.invoke(it)
+                }
+            })
+        })
     }
 
     fun onTabPressed(tab: Tab) {
@@ -40,10 +57,10 @@ class NavigationViewModel(
 
     enum class Tab(val tag: String, val menuItemId: Int, val fragmentFactory: () -> Fragment) {
         HOME("home", R.id.menu_home, {
-            CatalogFragment.create() // TODO: set up home fragment
+            HomeFragment.create()
         }),
-        SEARCH("search", R.id.menu_search, {
-            InDevelopmentFragment.create() // TODO : set up search fragment
+        CATALOG("catalog", R.id.menu_catalog, {
+            CatalogFragment.create()
         }),
         CART("cart", R.id.menu_cart, {
             InDevelopmentFragment.create() // TODO : set up cart fragment
@@ -56,5 +73,16 @@ class NavigationViewModel(
 
             fun findByMenuItemId(menuItemId: Int) = values().find { it.menuItemId == menuItemId }
         }
+    }
+
+    sealed class Router : RouterEvent {
+        object AuthScreen : Router()
+    }
+
+    sealed class Dialog {
+
+        data class MergeFavorites(
+            val callback: (merge: Boolean) -> Unit
+        ) : Dialog()
     }
 }

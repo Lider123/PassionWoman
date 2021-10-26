@@ -1,15 +1,21 @@
 <resources>
     <string name="app_name">PassionWoman</string>
+    <string name="phone" translatable="false">+442087599036</string> <!--TODO: check-->
+    <string name="email" translatable="false">example@example.com</string> <!--TODO: check-->
+    <string name="instagram" translatable="false">https://instagram.com</string> <!--TODO: check-->
+    <string name="telegram" translatable="false">https://telegram.me</string> <!--TODO: check-->
 
     <string name="in_development">Feature is in development</string>
     <string name="retry">Retry</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="deleted_text_template"><![CDATA[<del>%s</del>]]></string>
+
     <string name="categories_title">Categories</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_search">Search</string>
+    <string name="menu_catalog">Catalog</string>
     <string name="menu_cart">Cart</string>
     <string name="menu_profile">Profile</string>
 
@@ -27,6 +33,13 @@
     <string name="error_update_profile">Failed to update profile</string>
     <string name="error_log_out">Failed to log out</string>
     <string name="error_update_avatar">Failed to update avatar</string>
+    <string name="error_get_home_data">Failed to retrieve home screen data</string>
+    <string name="error_get_favorites">Failed to retrieve favorites</string>
+    <string name="error_get_product">Failed to retrieve the product</string>
+    <string name="error_add_to_favorites">Failed to add the product to favorites</string>
+    <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
+    <string name="error_sync_favorites">Failed to synchronize favorites</string>
+    <string name="error_get_products_page">Failed to retrieve additional products</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -51,13 +64,15 @@
     <string name="edit_profile_hint_surname">surname</string>
     <string name="edit_profile_done">Done</string>
 
+    <string name="navigation_merge_favorites_confirmation_message">Do you want to merge favorites?</string>
+
     <string name="profile_guest">Guest</string>
     <string name="profile_full_name_template">%s %s</string>
     <string name="profile_favorites">Favorites</string>
     <string name="profile_orders">Orders</string>
     <string name="profile_log_out">Log Out</string>
     <string name="profile_log_in">Log In</string>
-    <string name="profile_about">About app</string>
+    <string name="profile_contacts">Contacts</string>
     <string name="profile_log_out_confirmation_message">Are you sure you want to log out?</string>
     <string name="profile_edit">Edit</string>
     <string name="profile_pick_avatar_message">Pick avatar from…</string>
@@ -67,4 +82,26 @@
     <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
     <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
     <string name="product_card_add_to_cart">Add to cart</string>
+    <string name="product_card_discount_template" translatable="false">-%.0f%%</string>
+
+    <string name="home_sale_products_title">Sale</string>
+    <string name="home_popular_products_title">Popular</string>
+    <string name="home_new_products_title">New</string>
+    <string name="home_popular_brands_title">Popular brands</string>
+
+    <string name="sort_new">By new</string>
+    <string name="sort_popularity">By popularity</string>
+    <string name="sort_price_asc">By price ascending</string>
+    <string name="sort_price_desc">By price descending</string>
+
+    <string name="sorting_apply">Apply</string>
+    <string name="sorting_title">Sorting</string>
+
+    <string name="product_list_favorites">Favorites</string>
+
+    <string name="contacts_version_placeholder">v%s</string>
+    <string name="contacts_phone">Call us</string>
+    <string name="contacts_email">Send us an email</string>
+    <string name="contacts_instagram">Find us on Instagram</string>
+    <string name="contacts_telegram">Write to us on Telegram</string>
 </resources>

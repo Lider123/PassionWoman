@@ -7,15 +7,17 @@ import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragment.Args>() {
+class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
     private val productPhotosAdapter: ProductPhotosAdapter by lazy {
         ProductPhotosAdapter()
@@ -28,6 +30,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragme
     override val viewModel: ProductCardViewModel by viewModel {
         parametersOf(args)
     }
+    override val screenName: String = ScreenKeys.PRODUCT_CARD
 
     override fun initViews() {
         super.initViews()
@@ -50,7 +53,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragme
                 adapter = productColorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            btnAddToCart.setOnClickListener {
+            btnAddToCart.setOnSingleClickListener {
                 viewModel.onAddToCartPressed()
             }
         }
@@ -61,6 +64,12 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragme
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
         viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
+        viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
+    }
+
+    private fun populateFavorite(isFavorite: Boolean) {
+        val iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked
+        binding.toolbar.setActionEnd(iconRes)
     }
 
     private fun populateProductPhotos(photos: List<Image>) {
@@ -73,7 +82,21 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragme
         binding.run {
             tvProductName.text = product.name
             ratingBar.rating = product.rating
-            tvPrice.text = product.price.toPriceString()
+            if (product.discountRate > 0) {
+                tvPrice.text = product.priceWithDiscount.toPriceString()
+                tvPriceDeleted.run {
+                    isVisible = true
+                    setHtmlText(getString(R.string.deleted_text_template, product.price.toPriceString()))
+                }
+            } else {
+                tvPrice.text = product.price.toPriceString()
+                tvPriceDeleted.isVisible = false
+            }
+            tvDiscountPercent.run {
+                isVisible = product.discountRate > 0
+                text = context.getString(R.string.product_card_discount_template, product.discountRate)
+            }
+            content.isVisible = true
         }
     }
 
@@ -85,11 +108,11 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragme
 
     @Parcelize
     data class Args(
-        val product: Product
+        val productId: String
     ) : Parcelable
 
     companion object {
 
-        fun create(product: Product) = ProductCardFragment().withArgs(Args(product))
+        fun create(productId: String) = ProductCardFragment().withArgs(Args(productId))
     }
 }

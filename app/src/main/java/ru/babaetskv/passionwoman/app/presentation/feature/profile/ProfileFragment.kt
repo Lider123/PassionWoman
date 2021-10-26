@@ -10,18 +10,23 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
 import ru.babaetskv.passionwoman.domain.model.Profile
 
-class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
+class ProfileFragment :
+    BaseFragment<ProfileViewModel, ProfileViewModel.Router, FragmentComponent.NoArgs>() {
     private val guestProfile: Profile
         get() = Profile(
             id = "-1",
@@ -38,6 +43,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
 
     override val layoutRes: Int = R.layout.fragment_profile
     override val viewModel: ProfileViewModel by sharedViewModel()
+    override val screenName: String = ScreenKeys.PROFILE
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
@@ -60,17 +66,17 @@ class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
                 adapter = profileMenuItemsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
-            btnLogOut.setOnClickListener {
+            btnLogOut.setOnSingleClickListener {
                 viewModel.onLogOutPressed()
             }
             layoutHeader.run {
-                btnLogin.setOnClickListener {
+                btnLogin.setOnSingleClickListener {
                     viewModel.onLogInPressed()
                 }
-                btnEdit.setOnClickListener {
+                btnEdit.setOnSingleClickListener {
                     viewModel.onEditPressed()
                 }
-                ivAvatar.setOnClickListener {
+                ivAvatar.setOnSingleClickListener {
                     viewModel.onAvatarPressed()
                 }
             }
@@ -84,6 +90,18 @@ class ProfileFragment : BaseFragment<ProfileViewModel, BaseFragment.NoArgs>() {
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
         lifecycleScope.launchWhenResumed {
             viewModel.eventBus.collect(::handleEvent)
+        }
+    }
+
+    override fun handleRouterEvent(event: ProfileViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            ProfileViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is ProfileViewModel.Router.EditProfileScreen -> {
+                router.navigateTo(Screens.editProfile(event.profile))
+            }
+            ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
+            ProfileViewModel.Router.ContactsScreen -> router.openBottomSheet(Screens.contacts())
         }
     }
 

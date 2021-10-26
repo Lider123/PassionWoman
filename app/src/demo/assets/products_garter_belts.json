@@ -4,6 +4,7 @@
     "name": "Sexy garter belt",
     "preview": "image/product_garter_belt_1_preview.webp",
     "price": 32.0,
+    "priceWithDiscount": 28.8,
     "rating": 4.6,
     "colors": [
       {

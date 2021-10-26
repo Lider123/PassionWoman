@@ -9,16 +9,16 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.utils.hideAnimated
-import ru.babaetskv.passionwoman.app.utils.hideKeyboard
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.showAnimated
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.*
 
-class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
+class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentAuthBinding by viewBinding()
     private var smsAutoFilled = false
     private val authHandler: AuthHandler by lazy {
@@ -30,11 +30,11 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
 
     override val layoutRes: Int = R.layout.fragment_auth
     override val viewModel: AuthViewModel by viewModel()
+    override val screenName: String = ScreenKeys.LOGIN
 
     override fun initViews() {
         super.initViews()
         binding.run {
-            ivBackground.load(R.drawable.bg_login)
             layoutLogin.run {
                 countryCodePicker.run {
                     registerCarrierNumberEditText(etPhone)
@@ -42,13 +42,13 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
                         btnLogin.isEnabled = isValidNumber
                     }
                 }
-                btnLogin.setOnClickListener {
+                btnLogin.setOnSingleClickListener {
                     hideKeyboard()
                     val phone = countryCodePicker.fullNumberWithPlus
                     val formattedPhone = countryCodePicker.formattedFullNumber
                     viewModel.onLoginPressed(phone, formattedPhone)
                 }
-                btnGuest.setOnClickListener {
+                btnGuest.setOnSingleClickListener {
                     hideKeyboard()
                     viewModel.onGuestPressed()
                 }
@@ -63,7 +63,7 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
                 }
             }
             layoutSmsConfirm.run {
-                btnBack.setOnClickListener {
+                btnBack.setOnSingleClickListener {
                     viewModel.onBackPressed()
                 }
                 pevSmsCode.addTextChangedListener(object : TextWatcher {
@@ -106,6 +106,14 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
         }
     }
 
+    override fun handleRouterEvent(event: AuthViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            AuthViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+            is AuthViewModel.Router.SignUpScreen -> router.navigateTo(Screens.signUp(event.profile))
+        }
+    }
+
     private fun populateSmsCode(code: String) {
         smsAutoFilled = true
         binding.layoutSmsConfirm.pevSmsCode.setText(code)
@@ -119,24 +127,27 @@ class AuthFragment : BaseFragment<AuthViewModel, BaseFragment.NoArgs>() {
         }
     }
 
-    private fun populateMode(mode: AuthViewModel.Mode) {
+    private fun populateMode(mode: AuthMode) {
         binding.run {
             when (mode) {
-                AuthViewModel.Mode.LOGIN -> {
+                AuthMode.LOGIN -> {
                     layoutSmsConfirm.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutLogin.run {
-                        root.showAnimated(R.anim.fragment_fade_in)
-                        etPhone.requestFocus()
+                        root.showAnimated(R.anim.fragment_fade_in) {
+                            etPhone.requestFocus()
+                        }
                     }
                 }
-                AuthViewModel.Mode.SMS_CONFIRM -> {
+                AuthMode.SMS_CONFIRM -> {
                     layoutLogin.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutSmsConfirm.run {
-                        root.showAnimated(R.anim.fragment_fade_in)
-                        pevSmsCode.requestFocus()
+                        root.showAnimated(R.anim.fragment_fade_in) {
+                            pevSmsCode.requestFocus()
+                        }
                     }
                 }
             }
+            viewModel.onModeChanged(mode)
         }
     }
 

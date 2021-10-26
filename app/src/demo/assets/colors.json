@@ -22,5 +22,21 @@
   {
     "name": "yellow",
     "hex": "#e5e500"
+  },
+  {
+    "name": "blue",
+    "hex": "#4169e1"
+  },
+  {
+    "name": "beige",
+    "hex": "#f5f5dc"
+  },
+  {
+    "name": "hot pink",
+    "hex": "#ff69b4"
+  },
+  {
+    "name": "multicolor",
+    "hex": "multicolor"
   }
 ]

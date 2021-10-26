@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewErrorBinding
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class ErrorView @JvmOverloads constructor(
     context: Context,
@@ -55,10 +56,10 @@ class ErrorView @JvmOverloads constructor(
         }
         binding.run {
             ivBanner.load(R.drawable.banner_in_development)
-            btnBack.setOnClickListener {
+            btnBack.setOnSingleClickListener {
                 backButtonListener?.invoke(it)
             }
-            btnAction.setOnClickListener {
+            btnAction.setOnSingleClickListener {
                 actionButtonListener?.invoke(it)
             }
         }

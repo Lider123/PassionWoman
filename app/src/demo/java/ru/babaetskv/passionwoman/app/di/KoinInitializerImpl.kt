@@ -20,6 +20,7 @@ class KoinInitializerImpl : KoinInitializer {
                 viewModelModule,
                 preferencesModule,
                 gatewayModule,
+                dataSourceModule,
                 demoModule
             )
         }

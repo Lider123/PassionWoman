@@ -1,16 +1,25 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
+import android.app.Dialog
 import android.viewbinding.library.fragment.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
+import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 
-class NavigationFragment : BaseFragment<NavigationViewModel, BaseFragment.NoArgs>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentNavigationBinding by viewBinding()
+    private var activeDialog: Dialog? = null
 
     override val layoutRes: Int = R.layout.fragment_navigation
     override val viewModel: NavigationViewModel by viewModel()
+    override val applyTopInset: Boolean = false
+    override val applyBottomInset: Boolean = false
+    override val screenName: String = ""
 
     override fun initViews() {
         super.initViews()
@@ -26,6 +35,40 @@ class NavigationFragment : BaseFragment<NavigationViewModel, BaseFragment.NoArgs
     override fun initObservers() {
         super.initObservers()
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
+        viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
+    }
+
+    override fun handleRouterEvent(event: NavigationViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            NavigationViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+        }
+    }
+
+    private fun populateDialog(dialog: NavigationViewModel.Dialog?) {
+        dialog ?: run {
+            activeDialog?.dismiss()
+            activeDialog = null
+        }
+
+        when (dialog) {
+            is NavigationViewModel.Dialog.MergeFavorites -> showMergeFavoritesDialog(dialog)
+        }
+    }
+
+    private fun showMergeFavoritesDialog(dialog: NavigationViewModel.Dialog.MergeFavorites) {
+        activeDialog = showAlertDialog(R.string.navigation_merge_favorites_confirmation_message,
+            actions = listOf(
+                DialogAction(getString(R.string.yes),
+                    isAccent = true
+                ) {
+                  dialog.callback.invoke(true)
+                },
+                DialogAction(getString(R.string.no)) {
+                    dialog.callback.invoke(false)
+                }
+            )
+        )
     }
 
     private fun showTab(tab: NavigationViewModel.Tab) {

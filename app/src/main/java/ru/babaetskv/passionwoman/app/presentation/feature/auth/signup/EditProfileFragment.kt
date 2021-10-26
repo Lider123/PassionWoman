@@ -9,14 +9,17 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Profile
 
-class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragment.Args>() {
+class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
     private val binding: FragmentEditProfileBinding by viewBinding()
     private val profileViewModel: ProfileViewModel by sharedViewModel()
 
@@ -24,6 +27,8 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragme
     override val viewModel: EditProfileViewModel by viewModel {
         parametersOf(args, profileViewModel)
     }
+    override val screenName: String =
+        if (args.signingUp) ScreenKeys.SIGN_UP else ScreenKeys.EDIT_PROFILE
 
     override fun initViews() {
         super.initViews()
@@ -53,11 +58,11 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragme
                 }
                 return@setOnEditorActionListener false
             }
-            btnDone.setOnClickListener {
+            btnDone.setOnSingleClickListener {
                 hideKeyboard()
                 viewModel.onDonePressed()
             }
-            toolbar.setOnStartClickListener {
+            toolbar.setOnSingleClickListener {
                 viewModel.onBackPressed()
             }
         }
@@ -66,6 +71,13 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragme
     override fun initObservers() {
         super.initObservers()
         viewModel.dataIsValidLiveData.observe(viewLifecycleOwner, ::updateDoneButton)
+    }
+
+    override fun handleRouterEvent(event: EditProfileViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            EditProfileViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+        }
     }
 
     private fun updateDoneButton(dataIsValid: Boolean) {

@@ -1,9 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
+
+apply from: 'signingCredentials.gradle'
 
 android {
     compileSdkVersion 30
@@ -13,22 +16,21 @@ android {
         applicationId "ru.babaetskv.passionwoman.app"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
-        versionName "0.1.1"
+        versionCode 3
+        versionName "0.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        demo {
+            storeFile file(signingCredentials.filepath)
+            keyAlias signingCredentials.alias
+            keyPassword signingCredentials.keyPass
+            storePassword signingCredentials.storePass
         }
     }
+
     flavorDimensions "1"
     productFlavors {
         demo {
@@ -42,6 +44,20 @@ android {
             versionNameSuffix ""
         }
     }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.demo.signingConfig signingConfigs.demo
+            // TODO: add config for the full flavor
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -94,6 +110,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Country code picker
     implementation 'com.hbb20:ccp:2.4.0'
@@ -104,10 +121,9 @@ dependencies {
     // Image picker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
-    // Tests
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // AdapterDelegates
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapter_delegates_version"
+    implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapter_delegates_version"
 }
 repositories {
     mavenCentral()

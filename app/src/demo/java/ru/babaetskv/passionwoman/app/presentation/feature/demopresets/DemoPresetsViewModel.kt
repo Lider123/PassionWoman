@@ -2,14 +2,11 @@ package ru.babaetskv.passionwoman.app.presentation.feature.demopresets
 
 import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.consumeAsFlow
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.app.utils.toDemoPresets
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
@@ -23,13 +20,9 @@ class DemoPresetsViewModel(
     private val getProfileUseCase: GetProfileUseCase,
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val resources: Resources,
-    notifier: Notifier,
-    router: Router
-) : BaseViewModel(notifier, router) {
-    private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
-
+    dependencies: ViewModelDependencies
+) : BaseViewModel<DemoPresetsViewModel.Router>(dependencies) {
     val presetsLiveData = MutableLiveData(appPrefs.toDemoPresets() + authPrefs.toDemoPresets())
-    val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
 
     fun onPresetChanged(preset: DemoPreset) {
         presetsLiveData.value?.find { it.id == preset.id }?.value = preset.value
@@ -49,11 +42,11 @@ class DemoPresetsViewModel(
                     updateProfileUseCase.execute(it)
                 }
             }
-            eventChannel.send(Event.LaunchMainFlow)
+            navigateTo(Router.MainFlow)
         }
     }
 
-    sealed class Event {
-        object LaunchMainFlow : Event()
+    sealed class Router : RouterEvent {
+        object MainFlow : Router()
     }
 }

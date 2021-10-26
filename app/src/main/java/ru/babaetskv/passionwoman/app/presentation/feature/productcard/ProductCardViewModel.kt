@@ -1,21 +1,50 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.domain.interactor.AddToFavoritesUseCase
+import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
+import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
+import ru.babaetskv.passionwoman.domain.model.Image
+import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class ProductCardViewModel(
-    args: ProductCardFragment.Args,
-    notifier: Notifier,
-    router: Router
-) : BaseViewModel(notifier, router) {
-    val productLiveData = MutableLiveData(args.product)
-    val productColorsLiveData = MutableLiveData(args.product.colors.mapIndexed { index, value ->
-        ProductColorItem(value, index == 0)
-    })
-    val productPhotosLiveData = MutableLiveData(args.product.colors.first().images)
+    private val args: ProductCardFragment.Args,
+    private val getProductUseCase: GetProductUseCase,
+    private val favoritesPreferences: FavoritesPreferences,
+    private val addToFavoritesUseCase: AddToFavoritesUseCase,
+    private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    dependencies: ViewModelDependencies
+) : BaseViewModel<ProductCardViewModel.Router>(dependencies) {
+    val productLiveData = MutableLiveData<Product>()
+    val productColorsLiveData = MutableLiveData<List<ProductColorItem>>()
+    val productPhotosLiveData = MutableLiveData<List<Image>>()
+    val isFavoriteLiveData = MutableLiveData<Boolean>()
+
+    init {
+        loadData()
+    }
+
+    override fun onErrorActionPressed() {
+        loadData()
+    }
+
+    private fun loadData() {
+        launchWithLoading {
+            val product = getProductUseCase.execute(args.productId)
+            productLiveData.postValue(product)
+            productColorsLiveData.postValue(product.colors.mapIndexed { index, value ->
+                ProductColorItem(value, index == 0)
+            })
+            productPhotosLiveData.postValue(product.colors.first().images)
+            isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(product.id))
+        }
+    }
 
     fun onColorItemPressed(item: ProductColorItem) {
         val newItems = productColorsLiveData.value?.map {
@@ -26,9 +55,20 @@ class ProductCardViewModel(
     }
 
     fun onFavoritePressed() {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        val product = productLiveData.value ?: return
+
+        val isFavorite = isFavoriteLiveData.value ?: return
+
+        launchWithLoading {
+            val productId = product.id
+            if (isFavorite) {
+                removeFromFavoritesUseCase.execute(productId)
+            } else {
+                addToFavoritesUseCase.execute(productId)
+                analyticsHandler.log(AddToWishlistEvent(product))
+            }
+            isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(productId))
+        }
     }
 
     fun onAddToCartPressed() {
@@ -36,4 +76,6 @@ class ProductCardViewModel(
         notifier.newRequest(this, R.string.in_development)
             .sendAlert()
     }
+
+    sealed class Router : RouterEvent
 }

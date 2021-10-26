@@ -2,19 +2,46 @@ package ru.babaetskv.passionwoman.data.api
 
 import okhttp3.MultipartBody
 import retrofit2.http.*
-import ru.babaetskv.passionwoman.data.model.CategoryModel
-import ru.babaetskv.passionwoman.data.model.ProductModel
-import ru.babaetskv.passionwoman.data.model.ProfileModel
+import ru.babaetskv.passionwoman.data.model.*
 
 interface PassionWomanApi {
 
     @GET("api/catalog/categories")
     suspend fun getCategories(): List<CategoryModel>
 
+    @GET("api/catalog/promotions")
+    suspend fun getPromotions(): List<PromotionModel>
+
     @GET("api/catalog/products")
     suspend fun getProducts(
-        @Query("category") categoryId: String
+        @Query("category") categoryId: String?,
+        @Query("filters") filters: String,
+        @Query("sorting") sorting: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): ProductsPagedResponseModel
+
+    @GET("api/catalog/brands/popular")
+    suspend fun getPopularBrands(): List<BrandModel>
+
+    @GET("api/catalog/favorites")
+    suspend fun getFavorites(
+        @Query("ids") ids: String
     ): List<ProductModel>
+
+    @GET("api/catalog/products/{productId}")
+    suspend fun getProduct(
+        @Path("productId") productId: String
+    ): ProductModel
+
+    @GET("api/catalog/favoriteIds")
+    suspend fun getFavoriteIds(): List<String>
+
+    @Multipart
+    @POST("api/catalog/favoriteIds")
+    suspend fun setFavoriteIds(
+        @Part("favoriteIds") ids: List<String>
+    )
 
     @GET("api/auth/profile")
     suspend fun getProfile(): ProfileModel

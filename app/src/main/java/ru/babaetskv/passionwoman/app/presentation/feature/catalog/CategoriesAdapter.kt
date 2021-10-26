@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemCategoryBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Category
 
 class CategoriesAdapter(
@@ -27,7 +28,7 @@ class CategoriesAdapter(
 
         override fun bind(item: Category) {
             binding.run {
-                root.setOnClickListener {
+                root.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 tvName.text = item.name

@@ -2,15 +2,15 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.LogOutUseCase
 import ru.babaetskv.passionwoman.domain.interactor.UpdateAvatarUseCase
@@ -23,9 +23,8 @@ class ProfileViewModel(
     private val authPreferences: AuthPreferences,
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
-    notifier: Notifier,
-    router: Router
-) : BaseViewModel(notifier, router), ProfileUpdatesListener {
+    dependencies: ViewModelDependencies
+) : BaseViewModel<ProfileViewModel.Router>(dependencies), ProfileUpdatesListener {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
@@ -61,28 +60,26 @@ class ProfileViewModel(
     }
 
     fun onMenuItemPressed(item: ProfileMenuItem) {
-        when (item) {
-            ProfileMenuItem.FAVORITES -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
-            }
-            ProfileMenuItem.ORDERS -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
-            }
-            ProfileMenuItem.ABOUT -> {
-                // TODO
-                notifier.newRequest(this, R.string.in_development)
-                    .sendAlert()
+        launch {
+            when (item) {
+                ProfileMenuItem.FAVORITES -> navigateTo(Router.FavoritesScreen)
+                ProfileMenuItem.ORDERS -> {
+                    // TODO
+                    notifier.newRequest(this, R.string.in_development)
+                        .sendAlert()
+                }
+                ProfileMenuItem.CONTACTS -> {
+                    navigateTo(Router.ContactsScreen)
+                }
             }
         }
     }
 
     fun onEditPressed() {
-        profileLiveData.value?.let {
-            router.navigateTo(Screens.editProfile(it))
+        val profile = profileLiveData.value ?: return
+
+        launch {
+            navigateTo(Router.EditProfileScreen(profile))
         }
     }
 
@@ -115,7 +112,9 @@ class ProfileViewModel(
     fun onLogInPressed() {
         if (authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED) return
 
-        router.newRootScreen(Screens.auth())
+        launch {
+            navigateTo(Router.AuthScreen)
+        }
     }
 
     fun onLogOutDeclined() {
@@ -148,5 +147,18 @@ class ProfileViewModel(
 
     enum class Dialog {
         LOG_OUT_CONFIRMATION, PICK_AVATAR
+    }
+
+    sealed class Router : RouterEvent {
+
+        object AuthScreen : Router()
+
+        data class EditProfileScreen(
+            val profile: Profile
+        ) : Router()
+
+        object FavoritesScreen : Router()
+
+        object ContactsScreen: Router()
     }
 }

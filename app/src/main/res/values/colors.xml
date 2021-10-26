@@ -6,16 +6,21 @@
     <color name="secondaryVariant">#ec59d5</color>
     <color name="onPrimary">#fff</color>
     <color name="onSecondary">#fff</color>
-    <color name="background">#151515</color>
-    <color name="text">@color/onPrimary</color>
     <color name="hint">#8FFF</color>
     <color name="error">#ff9494</color>
-
-    <color name="alert_info">@color/primaryVariant</color>
-    <color name="alert_error">@color/error</color>
+    <color name="favorite">#bc1e1b</color>
+    <color name="input">#3fff</color>
 
     <color name="onboarding_banner_shade">#98000000</color>
     <color name="bg_login_shade">#C000</color>
+    <color name="progress_shade">#98000000</color>
+    <color name="category_shade">#4000</color>
+
+    <color name="background">@color/primary</color>
+    <color name="text">@color/onPrimary</color>
+
+    <color name="alert_info">@color/primaryVariant</color>
+    <color name="alert_error">@color/error</color>
 
     <color name="ucrop_color_toolbar">@color/primary</color>
     <color name="ucrop_color_statusbar">@color/primaryVariant</color>

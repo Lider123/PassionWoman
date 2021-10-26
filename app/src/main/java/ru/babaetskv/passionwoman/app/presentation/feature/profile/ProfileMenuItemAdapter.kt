@@ -8,6 +8,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemProfileMenuBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class ProfileMenuItemAdapter(
     private val onMenuItemClick: (item: ProfileMenuItem) -> Unit
@@ -28,7 +29,7 @@ class ProfileMenuItemAdapter(
 
         override fun bind(item: ProfileMenuItem) {
             binding.run {
-                root.setOnClickListener {
+                root.setOnSingleClickListener {
                     onMenuItemClick.invoke(item)
                 }
                 ivIcon.setImageResource(item.iconRes)

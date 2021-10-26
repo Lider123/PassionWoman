@@ -21,31 +21,61 @@
             tools:src="@tools:sample/backgrounds/scenic"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDiscountPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:padding="@dimen/margin_extra_small"
+            android:gravity="center"
+            android:background="@drawable/bg_discount"
+            android:textColor="@color/onSecondary"
+            android:rotation="-15"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            style="@style/Typography.PassionWoman.TextAppearance.Small"
+            tools:text="-20%"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginHorizontal="@dimen/margin_default"
+            android:layout_marginStart="@dimen/margin_default"
             android:lines="1"
             android:ellipsize="end"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/ivPreview"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvPriceDeleted"
+            tools:text="$60.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPriceDeleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/hint"
+            app:layout_constraintTop_toBottomOf="@id/ivPreview"
+            app:layout_constraintStart_toEndOf="@id/tvPrice"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             tools:text="$60.00" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_extra_small"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:lines="2"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/tvPrice"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             tools:text="@tools:sample/lorem" />
 
         <androidx.appcompat.widget.AppCompatRatingBar
@@ -55,12 +85,10 @@
             android:layout_marginTop="@dimen/margin_extra_small"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:max="5"
-            android:stepSize="0.5"
             app:layout_constraintTop_toBottomOf="@id/tvName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            style="?android:attr/ratingBarStyleSmall"
             tools:progress="4" />
 
         <com.google.android.material.button.MaterialButton

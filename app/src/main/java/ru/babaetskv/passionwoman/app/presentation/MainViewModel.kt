@@ -1,29 +1,34 @@
 package ru.babaetskv.passionwoman.app.presentation
 
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.notifier.Message
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 
-class MainViewModel(notifier: Notifier, router: Router) : BaseViewModel(notifier, router) {
+class MainViewModel(
+    dependencies: ViewModelDependencies
+) : BaseViewModel<MainViewModel.Router>(dependencies) {
     private var alertChannel: ReceiveChannel<Message>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
 
+    override val logScreenOpening: Boolean = false
+
     init {
-        router.newRootScreen(Screens.splash())
+        launch {
+            navigateTo(Router.SplashScreen)
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onStart(screenName: String) {
+        super.onStart(screenName)
         subscribeOnAlerts()
     }
 
@@ -57,5 +62,9 @@ class MainViewModel(notifier: Notifier, router: Router) : BaseViewModel(notifier
         data class ShowAlertMessage(
             val message: Message
         ) : Event()
+    }
+
+    sealed class Router : RouterEvent {
+        object SplashScreen : Router()
     }
 }

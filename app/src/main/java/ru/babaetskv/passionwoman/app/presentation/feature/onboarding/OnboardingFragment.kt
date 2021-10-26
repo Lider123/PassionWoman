@@ -1,21 +1,31 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
+import android.os.Build
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import java.util.*
+import kotlin.math.min
 
-class OnboardingFragment : BaseFragment<OnboardingViewModel, BaseFragment.NoArgs>() {
+class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
-        OnboardingPagesAdapter()
+        val insets = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requireView().rootWindowInsets
+        } else null
+        OnboardingPagesAdapter(insets)
     }
     private val binding: FragmentOnboardingBinding by viewBinding()
 
     override val layoutRes: Int = R.layout.fragment_onboarding
     override val viewModel: OnboardingViewModel by viewModel()
+    override val screenName: String = ScreenKeys.ONBOARDING
 
     override fun initViews() {
         super.initViews()
@@ -48,6 +58,13 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, BaseFragment.NoArgs
         viewModel.currPageLiveData.observe(viewLifecycleOwner, ::populateCurrPage)
     }
 
+    override fun handleRouterEvent(event: OnboardingViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            OnboardingViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+        }
+    }
+
     private fun populateCurrPage(page: Int) {
         binding.run {
             viewPager.currentItem = page
@@ -58,6 +75,7 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, BaseFragment.NoArgs
 
     private fun populatePages(pages: List<OnboardingPage>) {
         adapter.submitList(pages)
+        binding.viewPager.offscreenPageLimit = min(pages.size, 3)
     }
     
     companion object {

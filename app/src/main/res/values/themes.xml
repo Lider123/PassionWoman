@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PassionWoman" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
@@ -9,8 +12,9 @@
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSecondaryVariant">@color/secondaryVariant</item>
         <item name="colorOnSecondary">@color/onSecondary</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
 
         <item name="android:windowBackground">@color/background</item>
         <item name="android:textViewStyle">@style/Theme.PassionWoman.TextView</item>
@@ -23,6 +27,7 @@
         <item name="outlineButtonStyle">@style/Theme.PassionWoman.Button.Outline</item>
         <item name="switchStyle">@style/Theme.PassionWoman.Switch</item>
         <item name="radioButtonStyle">@style/Theme.PassionWoman.RadioButton</item>
+        <item name="ratingBarStyle">@style/Theme.PassionWoman.RatingBar</item>
     </style>
 
     <style name="Theme.PassionWoman.TextView" parent="Widget.MaterialComponents.TextView">
@@ -38,6 +43,7 @@
 
     <style name="Theme.PassionWoman.ImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@color/onPrimary</item>
     </style>
     
     <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
@@ -45,6 +51,7 @@
         <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
         <item name="android:padding">@dimen/margin_small</item>
         <item name="cornerRadius">@dimen/corners_default</item>
+        <item name="android:textColor">@color/onSecondary</item>
     </style>
 
     <style
@@ -98,5 +105,20 @@
         <item name="android:paddingStart">@dimen/margin_small</item>
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
+    </style>
+
+    <style name="Theme.PassionWoman.BottomSheetDialogFragment" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/primaryVariant</item>
+        <item name="android:windowAnimationStyle">@style/Animation.PassionWoman.BottomSheetDialog</item>
+        <item name="radioButtonStyle">@style/Theme.PassionWoman.RadioButton</item>
+    </style>
+
+    <style name="Theme.PassionWoman.RatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:stepSize">0.1</item>
+        <item name="android:progressTint">@color/secondary</item>
+        <item name="android:progressBackgroundTint">@color/hint</item>
     </style>
 </resources>

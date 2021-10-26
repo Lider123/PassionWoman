@@ -1,19 +1,59 @@
 package ru.babaetskv.passionwoman.data.gateway
 
+import com.squareup.moshi.Moshi
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
-import ru.babaetskv.passionwoman.data.model.CategoryModel
-import ru.babaetskv.passionwoman.data.model.ProductModel
+import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
-import ru.babaetskv.passionwoman.domain.model.Category
-import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class CatalogGatewayImpl(
-    private val api: PassionWomanApi
+    private val api: PassionWomanApi,
+    private val favoritesPreferences: FavoritesPreferences,
+    private val moshi: Moshi
 ) : CatalogGateway {
 
     override suspend fun getCategories(): List<Category> =
         api.getCategories().map(CategoryModel::toCategory)
 
-    override suspend fun getProducts(categoryId: String): List<Product> =
-        api.getProducts(categoryId).map(ProductModel::toProduct)
+    override suspend fun getProducts(
+        categoryId: String?,
+        limit: Int,
+        offset: Int,
+        filters: Filters,
+        sorting: Sorting
+    ): ProductsPagedResponse = api.getProducts(
+        categoryId,
+        moshi.adapter(FiltersModel::class.java).toJson(FiltersModel.fromFilters(filters)),
+        sorting.apiName,
+        limit,
+        offset
+    ).toProductPagedResponse()
+
+    override suspend fun getPromotions(): List<Promotion> =
+        api.getPromotions().map(PromotionModel::toPromotion)
+
+    override suspend fun getPopularBrands(): List<Brand> =
+        api.getPopularBrands().map(BrandModel::toBrand)
+
+    override suspend fun getFavorites(): List<Product> =
+        api.getFavorites(favoritesPreferences.getFavoriteIds().joinToString(","))
+            .map(ProductModel::toProduct)
+
+    override suspend fun getProduct(productId: String): Product =
+        api.getProduct(productId).toProduct()
+
+    override suspend fun addToFavorites(productId: String) {
+        favoritesPreferences.putFavoriteId(productId)
+    }
+
+    override suspend fun removeFromFavorites(productId: String) {
+        favoritesPreferences.deleteFavoriteId(productId)
+    }
+
+    override suspend fun getFavoriteIds(): List<String> = api.getFavoriteIds()
+
+    override suspend fun setFavoriteIds(ids: List<String>) {
+        api.setFavoriteIds(ids)
+    }
 }

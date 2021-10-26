@@ -3,4 +3,5 @@
     <item name="errorView" type="id"/>
     <item name="mockView" type="id"/>
     <item name="progressView" type="id"/>
+    <item name="contentInsetsView" type="id"/>
 </resources>
