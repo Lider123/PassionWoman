@@ -8,8 +8,11 @@ import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsEvent
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.constants.EventKeys
 import ru.babaetskv.passionwoman.app.analytics.constants.ParamsKeys
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
-class FirebaseAnalyticsHandler : AnalyticsHandler {
+class FirebaseAnalyticsHandler(
+    private val authPreferences: AuthPreferences
+) : AnalyticsHandler {
     private val analytics = Firebase.analytics.apply {
         setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
@@ -17,7 +20,9 @@ class FirebaseAnalyticsHandler : AnalyticsHandler {
     override fun log(event: AnalyticsEvent) {
         analytics.logEvent(
             event.getName(FirebaseEventKeys),
-            event.getParams(FirebaseParamsKeys)
+            event.getParams(FirebaseParamsKeys).apply {
+                putString(FirebaseParamsKeys.USER_ID, authPreferences.userId)
+            }
         )
     }
 
@@ -26,6 +31,7 @@ class FirebaseAnalyticsHandler : AnalyticsHandler {
         override val SCREEN_VIEW: String = FirebaseAnalytics.Event.SCREEN_VIEW
         override val LOGIN: String = FirebaseAnalytics.Event.LOGIN
         override val SIGN_UP: String = FirebaseAnalytics.Event.SIGN_UP
+        override val ADD_TO_WISHLIST: String = FirebaseAnalytics.Event.ADD_TO_WISHLIST
     }
 
     private object FirebaseParamsKeys : ParamsKeys {
@@ -33,5 +39,6 @@ class FirebaseAnalyticsHandler : AnalyticsHandler {
         override val ITEM_NAME: String = FirebaseAnalytics.Param.ITEM_NAME
         override val CONTENT_TYPE: String = FirebaseAnalytics.Param.CONTENT_TYPE
         override val SCREEN_NAME: String = FirebaseAnalytics.Param.SCREEN_NAME
+        override val USER_ID: String = "user_id"
     }
 }

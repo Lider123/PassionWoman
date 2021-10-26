@@ -14,6 +14,7 @@ class AuthorizeAsGuestUseCase(
 
     override suspend fun run(params: Unit) {
         authPreferences.authToken = ""
+        authPreferences.userId = "guest"
         authPreferences.authType = AuthPreferences.AuthType.GUEST
     }
 

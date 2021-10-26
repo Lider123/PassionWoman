@@ -57,7 +57,7 @@ val appModule = module {
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { SortingUpdateHub() }
     single { ExternalIntentHandler(androidContext()) }
-    single<AnalyticsHandler> { FirebaseAnalyticsHandler() }
+    single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
 }
 
 val navigationModule = module {

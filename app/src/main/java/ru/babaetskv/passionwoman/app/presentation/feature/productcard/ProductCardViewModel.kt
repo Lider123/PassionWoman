@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
@@ -54,15 +55,17 @@ class ProductCardViewModel(
     }
 
     fun onFavoritePressed() {
-        val productId = productLiveData.value?.id ?: return
+        val product = productLiveData.value ?: return
 
         val isFavorite = isFavoriteLiveData.value ?: return
 
         launchWithLoading {
+            val productId = product.id
             if (isFavorite) {
                 removeFromFavoritesUseCase.execute(productId)
             } else {
                 addToFavoritesUseCase.execute(productId)
+                analyticsHandler.log(AddToWishlistEvent(product))
             }
             isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(productId))
         }

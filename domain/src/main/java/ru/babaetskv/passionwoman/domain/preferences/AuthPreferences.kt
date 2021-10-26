@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthPreferences {
     var authType: AuthType
     var authToken: String
+    var userId: String
     var profileIsFilled: Boolean
     val authTypeFlow: Flow<AuthType>
 

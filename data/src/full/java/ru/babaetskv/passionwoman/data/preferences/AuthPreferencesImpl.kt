@@ -17,9 +17,11 @@ class AuthPreferencesImpl : KotprefModel(), AuthPreferences {
         }
     override var profileIsFilled: Boolean by booleanPref(false)
     override val authTypeFlow = MutableStateFlow(authType)
+    override val userId: String by stringPref("null")
 
     override fun reset() {
         authToken = ""
+        userId = "null"
         authType = AuthPreferences.AuthType.NONE
         profileIsFilled = false
     }
