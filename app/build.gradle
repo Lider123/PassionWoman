@@ -6,6 +6,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply from: 'signingCredentials.gradle'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -20,16 +22,15 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        demo {
+            storeFile file(signingCredentials.filepath)
+            keyAlias signingCredentials.alias
+            keyPassword signingCredentials.keyPass
+            storePassword signingCredentials.storePass
         }
     }
+
     flavorDimensions "1"
     productFlavors {
         demo {
@@ -43,6 +44,20 @@ android {
             versionNameSuffix ""
         }
     }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.demo.signingConfig signingConfigs.demo
+            // TODO: add config for the full flavor
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

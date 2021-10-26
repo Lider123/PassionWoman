@@ -1,1 +1,3 @@
 /build
+signingCredentials.gradle
+*.jks
