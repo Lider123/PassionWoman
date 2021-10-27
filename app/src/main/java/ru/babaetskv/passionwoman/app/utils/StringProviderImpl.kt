@@ -21,6 +21,10 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val REMOVE_FROM_FAVORITES_ERROR: String = resources.getString(R.string.error_remove_from_favorites)
     override val SYNC_FAVORITES_ERROR: String = resources.getString(R.string.error_sync_favorites)
 
+    override val EMPTY_CATEGORIES_ERROR: String = resources.getString(R.string.error_no_categories)
+    override val EMPTY_FAVORITES_ERROR: String = resources.getString(R.string.error_no_favorites)
+    override val EMPTY_PRODUCTS_ERROR: String = resources.getString(R.string.error_no_products)
+
     override val SORT_NEW: String = resources.getString(R.string.sort_new)
     override val SORT_POPULARITY: String = resources.getString(R.string.sort_popularity)
     override val SORT_PRICE_ASC: String = resources.getString(R.string.sort_price_asc)

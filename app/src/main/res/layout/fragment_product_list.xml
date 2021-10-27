@@ -61,15 +61,15 @@
         app:spanCount="2"
         tools:listitem="@layout/view_item_product"/>
 
-    <ru.babaetskv.passionwoman.app.presentation.view.ErrorView
-        android:id="@id/errorView"
+    <ru.babaetskv.passionwoman.app.presentation.view.StubView
+        android:id="@id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:ev_action="@string/retry"
-        app:ev_isBackVisible="false" />
+        app:sv_action="@string/retry"
+        app:sv_isBackVisible="false" />
 
     <ru.babaetskv.passionwoman.app.presentation.view.ProgressView
         android:id="@id/progressView"

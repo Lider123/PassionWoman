@@ -22,6 +22,7 @@
     <string name="item_product_button_buy">Buy now</string>
 
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_no_data">No data available</string>
     <string name="error_get_categories">Failed to retrieve categories</string>
     <string name="error_get_products">Failed to retrieve products</string>
     <string name="error_phone_number_is_null">Phone number is empty</string>
@@ -40,6 +41,9 @@
     <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
     <string name="error_sync_favorites">Failed to synchronize favorites</string>
     <string name="error_get_products_page">Failed to retrieve additional products</string>
+    <string name="error_no_categories">The list of categories is empty</string>
+    <string name="error_no_favorites">The list of favorites is empty</string>
+    <string name="error_no_products">The list of products is empty</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>

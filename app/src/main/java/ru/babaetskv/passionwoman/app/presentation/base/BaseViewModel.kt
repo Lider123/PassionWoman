@@ -12,6 +12,7 @@ import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import kotlin.coroutines.CoroutineContext
@@ -57,10 +58,17 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
 
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
-        error.printStackTrace()
-        errorLogger.logException(error)
+        if (error !is EmptyDataException && error.cause !is EmptyDataException) {
+            error.printStackTrace()
+            errorLogger.logException(error)
+        }
         when {
-            error is NetworkDataException && !error.dataIsOptional -> errorLiveData.postValue(error)
+            error is NetworkDataException && !error.dataIsOptional -> {
+                (error.cause as? EmptyDataException)?.let {
+                    errorLiveData.postValue(it)
+                } ?: errorLiveData.postValue(error)
+            }
+            error is EmptyDataException -> errorLiveData.postValue(error)
             error is NetworkActionException -> {
                 notifier.newRequest(this, error.message)
                     .sendError()
