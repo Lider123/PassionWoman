@@ -207,12 +207,12 @@
         android:visibility="gone"
         tools:visibility="visible"/>
 
-    <ru.babaetskv.passionwoman.app.presentation.view.ErrorView
-        android:id="@id/errorView"
+    <ru.babaetskv.passionwoman.app.presentation.view.StubView
+        android:id="@id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:ev_action="@string/retry"
-        app:ev_isActionVisible="true"
-        app:ev_isBackVisible="true" />
+        app:sv_action="@string/retry"
+        app:sv_isActionVisible="true"
+        app:sv_isBackVisible="true" />
 </FrameLayout>

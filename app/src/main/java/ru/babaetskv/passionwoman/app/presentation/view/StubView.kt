@@ -7,16 +7,16 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.databinding.ViewErrorBinding
+import ru.babaetskv.passionwoman.app.databinding.ViewStubBinding
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
-class ErrorView @JvmOverloads constructor(
+class StubView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-    private val binding: ViewErrorBinding
+    private val binding = ViewStubBinding.inflate(LayoutInflater.from(context), this, true)
     private var backButtonListener: ((View) -> Unit)? = null
     private var actionButtonListener: ((View) -> Unit)? = null
 
@@ -42,14 +42,12 @@ class ErrorView @JvmOverloads constructor(
         }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_error, this)
-        binding = ViewErrorBinding.bind(this)
-        context.theme.obtainStyledAttributes(attrs, R.styleable.ErrorView, 0, 0).apply {
+        context.theme.obtainStyledAttributes(attrs, R.styleable.StubView, 0, 0).apply {
             try {
-                action = getString(R.styleable.ErrorView_ev_action) ?: ""
-                message = getString(R.styleable.ErrorView_ev_message) ?: ""
-                isBackButtonVisible = getBoolean(R.styleable.ErrorView_ev_isBackVisible, true)
-                isActionButtonVisible = getBoolean(R.styleable.ErrorView_ev_isActionVisible, true)
+                action = getString(R.styleable.StubView_sv_action) ?: ""
+                message = getString(R.styleable.StubView_sv_message) ?: ""
+                isBackButtonVisible = getBoolean(R.styleable.StubView_sv_isBackVisible, true)
+                isActionButtonVisible = getBoolean(R.styleable.StubView_sv_isActionVisible, true)
             } finally {
                 recycle()
             }

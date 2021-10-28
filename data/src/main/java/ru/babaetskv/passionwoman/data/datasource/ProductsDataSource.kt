@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
+import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Filters
@@ -30,6 +31,8 @@ class ProductsDataSource(
                 sorting = sorting,
             )
             val products = response.products
+            if (products.isEmpty() && currentPage == START_PAGE) throw EmptyProductsException()
+
             LoadResult.Page(
                 data = products,
                 prevKey = if (currentPage == START_PAGE) null else currentPage - 1,
@@ -52,6 +55,8 @@ class ProductsDataSource(
     inner class GetProductsPageException(
         cause: Exception?
     ) : NetworkDataException(stringProvider.GET_PRODUCTS_PAGE_ERROR, cause, dataIsOptional = true)
+
+    inner class EmptyProductsException : EmptyDataException(stringProvider.EMPTY_PRODUCTS_ERROR)
 
     companion object {
         private const val START_PAGE = 1

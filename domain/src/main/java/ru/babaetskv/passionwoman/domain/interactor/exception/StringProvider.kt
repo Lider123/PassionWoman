@@ -17,6 +17,10 @@ interface StringProvider {
     val SYNC_FAVORITES_ERROR: String
     val GET_PRODUCTS_PAGE_ERROR: String
 
+    val EMPTY_CATEGORIES_ERROR: String
+    val EMPTY_FAVORITES_ERROR: String
+    val EMPTY_PRODUCTS_ERROR: String
+
     val SORT_NEW: String
     val SORT_POPULARITY: String
     val SORT_PRICE_ASC: String

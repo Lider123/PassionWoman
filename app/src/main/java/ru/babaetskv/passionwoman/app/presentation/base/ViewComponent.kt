@@ -7,9 +7,10 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.flow.collect
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.presentation.view.ErrorView
+import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
+import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 
 interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel<TRouterEvent> {
@@ -46,23 +47,31 @@ interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel
     }
 
     fun showError(exception: Exception?) {
-        val errorView = componentView.findViewById<ErrorView>(R.id.errorView) ?: return
+        val emptyView = componentView.findViewById<StubView>(R.id.emptyView) ?: return
 
         exception ?: run {
-            errorView.isVisible = false
+            emptyView.isVisible = false
             return
         }
 
         when (exception) {
             is NetworkDataException -> {
-                errorView.isVisible = true
-                errorView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
-                errorView.setBackButtonListener {
+                emptyView.isVisible = true
+                emptyView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
+                emptyView.setBackButtonListener {
                     onBackPressed()
                 }
-                errorView.setActionButtonListener {
+                emptyView.setActionButtonListener {
                     viewModel.onErrorActionPressed()
                 }
+            }
+            is EmptyDataException -> {
+                emptyView.isVisible = true
+                emptyView.message = exception.message ?: componentContext.getString(R.string.error_no_data)
+                emptyView.setBackButtonListener {
+                    onBackPressed()
+                }
+                emptyView.isActionButtonVisible = false
             }
         }
     }
