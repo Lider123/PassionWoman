@@ -23,6 +23,9 @@ class PassionWomanApiImpl(
 ) : PassionWomanApi {
     private var profileMock: ProfileModel? = null
     private var favoriteIdsMock: List<String>? = null
+    private val popularProductsCache = mutableListOf<ProductModel>()
+    private val newProductsCache = mutableListOf<ProductModel>()
+    private val saleProductsCache = mutableListOf<ProductModel>()
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
@@ -44,29 +47,24 @@ class PassionWomanApiImpl(
         delay(DELAY_LOADING)
         val filtersObject = moshi.adapter(FiltersModel::class.java).fromJson(filters)?.toFilters()
         val sortingObject = Sorting.findValueByApiName(sorting)
-        val filename = if (categoryId != null) {
-            CategoryProducts.findByCategoryId(categoryId)!!.productsFileName
-        } else {
-            when {
-                filtersObject?.discountOnly == true -> "products_sale.json"
-                sortingObject == Sorting.POPULARITY -> "products_popular.json"
-                sortingObject == Sorting.NEW -> "products_new.json"
-                else -> "products_popular.json"
-            }
+        var products: List<ProductModel> = if (categoryId != null) {
+            getCategoryProducts(CategoryProducts.findByCategoryId(categoryId)!!)
+        } else when {
+            filtersObject?.discountOnly == true -> getSaleProducts()
+            sortingObject == Sorting.POPULARITY -> getPopularProducts()
+            sortingObject == Sorting.NEW -> getNewProducts()
+            else -> getPopularProducts()
         }
-        var products = loadListFromAsset<ProductModel>(filename)
         if (filtersObject != null) {
-            products = products.filter {
-                it.filter(filtersObject)
-            }
+            products = products.applyFilters(filtersObject)
         }
         val pagingIndices = IntRange(offset, offset + limit - 1)
-        return@withContext products.slice(products.indices.intersect(pagingIndices)).let { result ->
+        return@withContext products.let { result ->
             when (sortingObject) {
                 Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
                 Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
                 else -> result
-            }
+            }.slice(products.indices.intersect(pagingIndices))
         }.let {
             ProductsPagedResponseModel(
                 products = it,
@@ -124,6 +122,35 @@ class PassionWomanApiImpl(
         favoriteIdsMock = ids
     }
 
+    private fun getCategoryProducts(category: CategoryProducts): List<ProductModel> =
+        loadListFromAsset(category.productsFileName)
+
+    private fun getAllProducts(cache: MutableList<ProductModel>?): List<ProductModel> =
+        if (cache?.isNotEmpty() == true) {
+            cache
+        } else {
+            CategoryProducts.values().asList()
+                .flatMap { loadListFromAsset<ProductModel>(it.productsFileName) }
+                .shuffled()
+                .also {
+                    cache?.addAll(it)
+                }
+        }
+
+    private fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
+        getAllProducts(null)
+            .applyFilters(Filters.DEFAULT.copy(
+                discountOnly = true
+            ))
+            .also {
+                saleProductsCache.addAll(it)
+            }
+    }
+
+    private fun getPopularProducts() = getAllProducts(popularProductsCache)
+
+    private fun getNewProducts() = getAllProducts(newProductsCache)
+
     private inline fun <reified T> loadObjectFromAsset(filename: String): T {
         val json = assetManager.open(filename).bufferedReader().use{ it.readText()}
         val adapter: JsonAdapter<T> = moshi.adapter(T::class.java)
@@ -137,11 +164,14 @@ class PassionWomanApiImpl(
         return adapter.fromJson(json) ?: emptyList()
     }
 
-    private fun ProductModel.filter(filters: Filters): Boolean {
+    private fun ProductModel.matchesFilters(filters: Filters): Boolean {
         if (filters.discountOnly && priceWithDiscount == price) return false
 
         return true
     }
+
+    private fun Collection<ProductModel>.applyFilters(filters: Filters) =
+        filter { it.matchesFilters(filters) }
 
     private fun getNotFoundException(message: String) : HttpException =
         message.toResponseBody("text/plain".toMediaType()).let {

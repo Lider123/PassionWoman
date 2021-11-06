@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
@@ -95,6 +96,12 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             tvDiscountPercent.run {
                 isVisible = product.discountRate > 0
                 text = context.getString(R.string.product_card_discount_template, product.discountRate)
+            }
+            layoutBrand.run {
+                root.isVisible = product.brand?.let {
+                    ivLogo.load(it.logo, R.drawable.ic_logo, resizeAsItem = true)
+                    true
+                } ?: false
             }
             content.isVisible = true
         }
