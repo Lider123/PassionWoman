@@ -37,6 +37,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     val networkAvailabilityFlow: Flow<Boolean> =
         networkStateChecker.networkAvailabilityFlowDebounced.onEach { isConnected ->
             if (!isConnected) {
+                // TODO: Being called from nested ViewComponents leads to multiple toasts are shown.
+                //  Using snackbars instead of toasts should solve this problem.
                 notifier.newRequest(this, R.string.error_network_unavailable)
                     .withIcon(R.drawable.ic_no_internet)
                     .sendError()
