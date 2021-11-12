@@ -22,6 +22,7 @@
     <string name="item_product_button_buy">Buy now</string>
 
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_network_unavailable">Network error. Please check your internet connection</string>
     <string name="error_no_data">No data available</string>
     <string name="error_get_categories">Failed to retrieve categories</string>
     <string name="error_get_products">Failed to retrieve products</string>

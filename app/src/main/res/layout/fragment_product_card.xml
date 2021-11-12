@@ -45,7 +45,7 @@
                     app:ci_width="8dp"
                     app:ci_margin="@dimen/margin_extra_small" />
 
-                <!-- TODO: replace with EmptyView -->
+                <!-- TODO: replace with StubView -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layoutEmpty"
                     android:layout_width="match_parent"
@@ -208,7 +208,7 @@
         tools:visibility="visible"/>
 
     <ru.babaetskv.passionwoman.app.presentation.view.StubView
-        android:id="@id/emptyView"
+        android:id="@id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"

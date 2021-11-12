@@ -41,6 +41,7 @@ class NavigationViewModel(
     }
 
     private suspend fun syncFavorites() {
+        // TODO: reset sync later if it failed
         syncFavoritesUseCase.execute(SyncFavoritesUseCase.Params { doOnAnswer ->
             dialogLiveData.postValue(Dialog.MergeFavorites {
                 dialogLiveData.postValue(null)

@@ -47,31 +47,31 @@ interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel
     }
 
     fun showError(exception: Exception?) {
-        val emptyView = componentView.findViewById<StubView>(R.id.emptyView) ?: return
+        val errorView = componentView.findViewById<StubView>(R.id.errorView) ?: return
 
         exception ?: run {
-            emptyView.isVisible = false
+            errorView.isVisible = false
             return
         }
 
         when (exception) {
             is NetworkDataException -> {
-                emptyView.isVisible = true
-                emptyView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
-                emptyView.setBackButtonListener {
+                errorView.isVisible = true
+                errorView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
+                errorView.setBackButtonListener {
                     onBackPressed()
                 }
-                emptyView.setActionButtonListener {
+                errorView.setActionButtonListener {
                     viewModel.onErrorActionPressed()
                 }
             }
             is EmptyDataException -> {
-                emptyView.isVisible = true
-                emptyView.message = exception.message ?: componentContext.getString(R.string.error_no_data)
-                emptyView.setBackButtonListener {
+                errorView.isVisible = true
+                errorView.message = exception.message ?: componentContext.getString(R.string.error_no_data)
+                errorView.setBackButtonListener {
                     onBackPressed()
                 }
-                emptyView.isActionButtonVisible = false
+                errorView.isActionButtonVisible = false
             }
         }
     }

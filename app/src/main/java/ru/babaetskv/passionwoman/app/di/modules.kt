@@ -38,6 +38,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdates
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
+import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
@@ -61,6 +62,7 @@ val appModule = module {
     single { ExternalIntentHandler(androidContext()) }
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
+    single { NetworkStateChecker(androidContext()) }
 }
 
 val navigationModule = module {
@@ -70,7 +72,7 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    single { ViewModelDependencies(get(), get(), get()) }
+    single { ViewModelDependencies(get(), get(), get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get(), get()) }
     viewModel { CatalogViewModel(get(), get()) }
