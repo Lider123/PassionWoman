@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.AlertView
 import ru.babaetskv.passionwoman.app.utils.color
 
-// TODO: think about using snackbar instead of toast
+@Deprecated("Use AlertSnackbar instead")
 class AlertToast private constructor(
     private val context: Context
 ): Toast(context) {

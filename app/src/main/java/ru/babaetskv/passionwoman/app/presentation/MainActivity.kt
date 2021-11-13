@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation
 
+import android.graphics.Rect
+import android.os.Build
 import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.NavigatorHolder
 import kotlinx.coroutines.flow.collect
@@ -11,7 +13,8 @@ import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
 import ru.babaetskv.passionwoman.app.presentation.base.ViewComponent
-import ru.babaetskv.passionwoman.app.utils.notifier.AlertToast
+import ru.babaetskv.passionwoman.app.utils.notifier.AlertSnackbarFactory
+import ru.babaetskv.passionwoman.app.utils.notifier.Message
 
 class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private val navigatorHolder: NavigatorHolder by inject()
@@ -19,6 +22,15 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private val currentFragment: ViewComponent<*, *>?
         get() = supportFragmentManager.findFragmentById(R.id.container) as? ViewComponent<*, *>
     private val navigator = MainAppNavigator(this, R.id.container)
+    private val snackbarFactory: AlertSnackbarFactory by lazy {
+        AlertSnackbarFactory(this, componentView)
+    }
+    private val statusBarHeight: Int
+        get() {
+            val rectangle = Rect()
+            window.decorView.getWindowVisibleDisplayFrame(rectangle)
+            return rectangle.top
+        }
 
     override val contentViewRes: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModel()
@@ -55,10 +67,15 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
 
     private fun handleEvent(event: MainViewModel.Event) {
         when (event) {
-            is MainViewModel.Event.ShowAlertMessage -> {
-                AlertToast.create(this, event.message)
-                    .show()
-            }
+            is MainViewModel.Event.ShowAlertMessage -> showMessage(event.message)
         }
+    }
+
+    private fun showMessage(message: Message) {
+        val topInset: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            statusBarHeight
+        } else 0
+        snackbarFactory.create(topInset, message)
+            .show()
     }
 }
