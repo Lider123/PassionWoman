@@ -10,9 +10,9 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.launch
 
 class Notifier(private val context: Context) {
-    private val channel = BroadcastChannel<Message>(Channel.BUFFERED)
+    private val channel = BroadcastChannel<AlertMessage>(Channel.BUFFERED)
 
-    fun subscribe(): ReceiveChannel<Message> = channel.openSubscription()
+    fun subscribe(): ReceiveChannel<AlertMessage> = channel.openSubscription()
 
     fun newRequest(scope: CoroutineScope, text: String): Request =
         NotifierRequest(scope, text)
@@ -24,6 +24,8 @@ class Notifier(private val context: Context) {
 
         abstract fun withIcon(@DrawableRes iconRes: Int): Request
 
+        abstract fun isImportant(value: Boolean): Request
+
         abstract fun sendAlert()
 
         abstract fun sendError()
@@ -34,6 +36,7 @@ class Notifier(private val context: Context) {
     ) : Request() {
         private var text: String = ""
         private var iconRes: Int? = null
+        private var isImportant = true
 
         constructor(scope: CoroutineScope, text: String) : this(scope) {
             this.text = text
@@ -45,10 +48,15 @@ class Notifier(private val context: Context) {
             this.iconRes = iconRes
         }
 
+        override fun isImportant(value: Boolean) = apply {
+            isImportant = value
+        }
+
         override fun sendAlert() {
-            val message = Message(
+            val message = AlertMessage(
                 text = text,
-                iconRes = iconRes
+                iconRes = iconRes,
+                isImportant = isImportant
             )
             scope.launch {
                 channel.send(message)
@@ -56,10 +64,11 @@ class Notifier(private val context: Context) {
         }
 
         override fun sendError() {
-            val message = Message(
+            val message = AlertMessage(
                 text = text,
                 iconRes = iconRes,
-                type = Message.Type.ERROR
+                type = AlertMessage.Type.ERROR,
+                isImportant = isImportant
             )
             scope.launch {
                 channel.send(message)

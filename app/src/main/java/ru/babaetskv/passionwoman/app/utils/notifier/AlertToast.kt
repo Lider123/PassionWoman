@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.AlertView
 import ru.babaetskv.passionwoman.app.utils.color
 
+@Deprecated("Use AlertSnackbar instead")
 class AlertToast private constructor(
     private val context: Context
 ): Toast(context) {
@@ -18,14 +19,14 @@ class AlertToast private constructor(
         duration = LENGTH_LONG
     }
 
-    private fun setMessage(message: Message) {
+    private fun setMessage(message: AlertMessage) {
         val alertView = LayoutInflater.from(context).inflate(
             R.layout.layout_alert_view,
             null,
             false
         ) as AlertView
         alertView.apply {
-            val iconRes: Int? = if (message.type == Message.Type.ERROR && message.iconRes == null) {
+            val iconRes: Int? = if (message.type == AlertMessage.Type.ERROR && message.iconRes == null) {
                 R.drawable.ic_error
             } else {
                 message.iconRes
@@ -33,8 +34,8 @@ class AlertToast private constructor(
             setIcon(iconRes)
             this.message = message.text
             when (message.type) {
-                Message.Type.INFO -> R.color.alert_info
-                Message.Type.ERROR -> R.color.alert_error
+                AlertMessage.Type.INFO -> R.color.alert_info
+                AlertMessage.Type.ERROR -> R.color.alert_error
             }.let {
                 setAlertColor(it)
             }
@@ -52,7 +53,7 @@ class AlertToast private constructor(
 
     companion object {
 
-        fun create(context: Context, message: Message) =
+        fun create(context: Context, message: AlertMessage) =
             AlertToast(context).apply {
                 setMessage(message)
             }

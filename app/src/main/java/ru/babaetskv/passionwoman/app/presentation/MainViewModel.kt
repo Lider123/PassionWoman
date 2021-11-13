@@ -9,12 +9,12 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.utils.notifier.Message
+import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 
 class MainViewModel(
     dependencies: ViewModelDependencies
 ) : BaseViewModel<MainViewModel.Router>(dependencies) {
-    private var alertChannel: ReceiveChannel<Message>? = null
+    private var alertChannel: ReceiveChannel<AlertMessage>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
@@ -49,7 +49,7 @@ class MainViewModel(
         alertChannel = null
     }
 
-    private fun onNextAlertMessage(message: Message) {
+    private fun onNextAlertMessage(message: AlertMessage) {
         if (message.text.isBlank()) return
 
         launch {
@@ -60,7 +60,7 @@ class MainViewModel(
     sealed class Event {
 
         data class ShowAlertMessage(
-            val message: Message
+            val message: AlertMessage
         ) : Event()
     }
 

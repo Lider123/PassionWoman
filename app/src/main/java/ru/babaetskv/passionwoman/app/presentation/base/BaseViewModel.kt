@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
+import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
@@ -28,15 +28,30 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         get() = dependencies.analyticsHandler
     protected val errorLogger: ErrorLogger
         get() = dependencies.errorLogger
+    protected val networkStateChecker: NetworkStateChecker
+        get() = dependencies.networkStateChecker
 
     val loadingLiveData = MutableLiveData(false)
     val errorLiveData = MutableLiveData<Exception?>(null)
     val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()
+    val networkAvailabilityFlow: Flow<Boolean> =
+        networkStateChecker.networkAvailabilityFlowDebounced.onEach { isConnected ->
+            if (!isConnected) {
+                notifier.newRequest(this, R.string.error_network_unavailable)
+                    .withIcon(R.drawable.ic_no_internet)
+                    .isImportant(false)
+                    .sendError()
+            }
+        }
 
     protected open val logScreenOpening: Boolean = true
 
     override val coroutineContext: CoroutineContext =
         viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
+
+    init {
+        networkAvailabilityFlow.launchIn(viewModelScope)
+    }
 
     open fun onStart(screenName: String) {
         if (logScreenOpening) analyticsHandler.log(OpenScreenEvent(screenName))
