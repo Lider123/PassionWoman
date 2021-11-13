@@ -11,6 +11,7 @@ data class ProductModel(
     @Json(name = "price") val price: Float,
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
     @Json(name = "rating") val rating: Float,
+    @Json(name = "brand") val brand: BrandModel?,
     @Json(name = "colors") val colors: List<ProductColorModel>
 ) {
 
@@ -22,6 +23,7 @@ data class ProductModel(
             price = price,
             priceWithDiscount = priceWithDiscount,
             rating = rating,
+            brand = brand?.toBrand(),
             colors = colors.map(ProductColorModel::toProductColor)
         )
 }

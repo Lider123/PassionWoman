@@ -26,7 +26,11 @@
     "price": 35.70,
     "priceWithDiscount": 2.69,
     "rating": 5.0,
-    "brandId": "brand_7",
+    "brand": {
+      "id": "brand_7",
+      "logo": "image/brand_7.png",
+      "name": "Lui et Elle"
+    },
     "colors": [
       {
         "color": {
@@ -85,7 +89,11 @@
     "price": 35.70,
     "priceWithDiscount": 2.69,
     "rating": 5.0,
-    "brandId": "brand_7",
+    "brand": {
+      "id": "brand_7",
+      "logo": "image/brand_7.png",
+      "name": "Lui et Elle"
+    },
     "colors": [
       {
         "color": {
@@ -144,7 +152,11 @@
     "price": 10.66,
     "priceWithDiscount": 3.77,
     "rating": 5.0,
-    "brandId": "brand_7",
+    "brand": {
+      "id": "brand_7",
+      "logo": "image/brand_7.png",
+      "name": "Lui et Elle"
+    },
     "colors": [
       {
         "color": {
@@ -175,7 +187,11 @@
     "price": 9.57,
     "priceWithDiscount": 4.31,
     "rating": 5.0,
-    "brandId": "brand_14",
+    "brand": {
+      "id": "brand_14",
+      "logo": "image/brand_14.jpg",
+      "name": "Mark Formelle"
+    },
     "colors": [
       {
         "color": {
@@ -196,7 +212,11 @@
     "price": 13.38,
     "priceWithDiscount": 13.38,
     "rating": 5.0,
-    "brandId": "brand_3",
+    "brand": {
+      "id": "brand_3",
+      "logo": "image/brand_3.jpg",
+      "name": "MilaVitsa"
+    },
     "colors": [
       {
         "color": {
@@ -227,7 +247,11 @@
     "price": 6.02,
     "priceWithDiscount": 3.49,
     "rating": 5.0,
-    "brandId": "brand_11",
+    "brand": {
+      "id": "brand_11",
+      "logo": "image/brand_11.png",
+      "name": "Vis-A-Vis"
+    },
     "colors": [
       {
         "color": {
@@ -259,7 +283,11 @@
     "price": 10.01,
     "priceWithDiscount": 4.95,
     "rating": 4.9,
-    "brandId": "brand_15",
+    "brand": {
+      "id": "brand_15",
+      "logo": "image/brand_15.png",
+      "name": "Infinity lingerie"
+    },
     "colors": [
       {
         "color": {
@@ -292,7 +320,11 @@
     "price": 8.02,
     "priceWithDiscount": 3.41,
     "rating": 4.8,
-    "brandId": "brand_15",
+    "brand": {
+      "id": "brand_15",
+      "logo": "image/brand_15.png",
+      "name": "Infinity lingerie"
+    },
     "colors": [
       {
         "color": {
