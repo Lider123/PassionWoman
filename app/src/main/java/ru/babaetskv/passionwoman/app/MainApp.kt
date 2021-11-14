@@ -5,17 +5,23 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.chibatching.kotpref.Kotpref
 import ru.babaetskv.passionwoman.app.di.*
+import timber.log.Timber
 
 class MainApp : Application() {
     private val koinInitializer: KoinInitializer = KoinInitializerImpl()
 
     override fun onCreate() {
         super.onCreate()
+        initTimber()
         initKoin()
         initKotpref()
         if (Build.VERSION.SDK_INT < 29) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
+    }
+
+    private fun initTimber() {
+        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
     private fun initKotpref() {

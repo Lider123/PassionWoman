@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.domain.interactor.base
 
-import android.util.Log
+import timber.log.Timber
 
 abstract class BaseUseCase<in P, out R> {
 
@@ -9,9 +9,14 @@ abstract class BaseUseCase<in P, out R> {
     protected abstract fun getUseCaseException(cause: Exception): Exception
 
     suspend fun execute(params: P): R = try {
-        Log.i("Interactor", "Executing ${this::class.simpleName}") // TODO: replace with timber
+        Timber.tag(TAG).i("Executing ${this::class.simpleName}")
         run(params)
     } catch (e: Exception) {
+        Timber.tag(TAG).w("Failed to execute ${this::class.simpleName}")
         throw getUseCaseException(e)
+    }
+
+    companion object {
+        private const val TAG = "Interactor"
     }
 }
