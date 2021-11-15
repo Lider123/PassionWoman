@@ -1,10 +1,11 @@
 [
   {
     "id": "product_swim_1",
-    "name": "Cute swimsuit",
+    "name": "Separate swimsuit Nothing but love",
+    "description" : "The swimsuit is made of soft elastic ribbed material. The upper part of the leotard has the shape of a top with sealed cups, the seals are removable, the length of the straps is adjustable. The model's parameters are 88-60-88 and is 166 cm tall. She wears a size S swimsuit.",
     "preview": "image/product_swim_1_preview.webp",
-    "price": 65.0,
-    "priceWithDiscount": 65.0,
+    "price": 41.41,
+    "priceWithDiscount": 41.41,
     "rating": 3.4,
     "colors": [
       {

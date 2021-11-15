@@ -162,6 +162,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="$60" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDesription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tvPrice"
+                tools:text="@tools:sample/lorem/random"
+                tools:lines="3"
+                tools:visibility="visible"/>
+
             <include
                 android:id="@+id/layoutBrand"
                 android:layout_width="64dp"
@@ -169,7 +181,7 @@
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginStart="@dimen/margin_default"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/tvPrice"
+                app:layout_constraintTop_toBottomOf="@id/tvDesription"
                 app:layout_constraintStart_toStartOf="parent"
                 layout="@layout/view_item_brand"
                 tools:visibility="visible"/>
