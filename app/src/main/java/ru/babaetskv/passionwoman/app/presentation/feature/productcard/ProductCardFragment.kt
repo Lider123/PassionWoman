@@ -97,6 +97,10 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                 isVisible = product.discountRate > 0
                 text = context.getString(R.string.product_card_discount_template, product.discountRate)
             }
+            tvDesription.run {
+                isVisible = product.description.isNullOrBlank().not()
+                text = product.description
+            }
             layoutBrand.run {
                 root.isVisible = product.brand?.let {
                     ivLogo.load(it.logo, R.drawable.ic_logo, resizeAsItem = true)

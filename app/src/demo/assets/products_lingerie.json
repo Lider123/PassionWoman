@@ -2,6 +2,7 @@
   {
     "id": "product_lingerie_1",
     "name": "Cute set",
+    "description": "Lingerie set, consisting of a balconette bra with tanga panties. Made in white combined with lace details. Adjustable straps.",
     "preview": "image/product_lingerie_1_preview.webp",
     "price": 75.0,
     "priceWithDiscount": 75.0,

@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 data class ProductModel(
     @Json(name = "id") val id: String,
     @Json(name = "name") val name: String,
+    @Json(name = "description") val description: String?,
     @Json(name = "preview") val preview: String,
     @Json(name = "price") val price: Float,
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
@@ -19,6 +20,7 @@ data class ProductModel(
         Product(
             id = id,
             name = name,
+            description = description,
             preview = Image(preview),
             price = price,
             priceWithDiscount = priceWithDiscount,
