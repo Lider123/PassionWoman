@@ -7,6 +7,7 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 
 class EmptyDividerDecoration(
     context: Context,
@@ -59,11 +60,18 @@ class EmptyDividerDecoration(
                 outRect.top = spacing
                 outRect.bottom = spacing
             }
+            FLEX -> {
+                outRect.left = spacing
+                outRect.right = spacing
+                outRect.top = spacing
+                outRect.bottom = spacing
+            }
         }
     }
 
     private fun resolveDisplayMode(layoutManager: RecyclerView.LayoutManager?): Int {
         return when (layoutManager) {
+            is FlexboxLayoutManager -> FLEX
             is StaggeredGridLayoutManager -> GRID
             is GridLayoutManager -> GRID
             else -> if (layoutManager!!.canScrollHorizontally()) HORIZONTAL else VERTICAL
@@ -74,5 +82,6 @@ class EmptyDividerDecoration(
         private const val HORIZONTAL = 0
         private const val VERTICAL = 1
         private const val GRID = 2
+        private const val FLEX = 4
     }
 }

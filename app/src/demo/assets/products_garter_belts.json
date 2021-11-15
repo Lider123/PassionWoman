@@ -13,6 +13,8 @@
           "name": "black",
           "hex": "#000000"
         },
+        "sizes": ["L"],
+        "availableSizes": ["L"],
         "images": [
           "image/product_garter_belt_1_item_1_1.webp",
           "image/product_garter_belt_1_item_1_2.webp"

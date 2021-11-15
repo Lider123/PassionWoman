@@ -51,6 +51,8 @@
           "name": "blue",
           "hex": "#4169e1"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
           "image/product_panties_2_blue_1.webp",
           "image/product_panties_2_blue_2.webp",
@@ -63,6 +65,8 @@
           "name": "red",
           "hex": "#ff0000"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["S", "M", "L"],
         "images": [
           "image/product_panties_2_red_1.webp",
           "image/product_panties_2_red_2.webp",
@@ -75,6 +79,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["S", "M", "L", "XL"],
         "images": [
           "image/product_panties_2_white_1.webp",
           "image/product_panties_2_white_2.webp",
@@ -115,6 +121,8 @@
           "name": "blue",
           "hex": "#4169e1"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
           "image/product_panties_3_blue_1.webp",
           "image/product_panties_3_blue_2.webp",
@@ -127,6 +135,8 @@
           "name": "red",
           "hex": "#ff0000"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
           "image/product_panties_3_red_1.webp",
           "image/product_panties_3_red_2.webp",
@@ -139,6 +149,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "S", "M", "XL"],
         "images": [
           "image/product_panties_3_white_1.webp",
           "image/product_panties_3_white_2.webp",
@@ -167,6 +179,8 @@
           "name": "black",
           "hex": "#000000"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["M", "L", "XL"],
         "images": [
           "image/product_panties_4_black_1.webp",
           "image/product_panties_4_black_2.webp"
@@ -177,6 +191,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "M"],
         "images": [
           "image/product_panties_4_white_1.webp",
           "image/product_panties_4_white_2.webp"
@@ -203,6 +219,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["90", "94", "98", "102", "106", "110"],
+        "availableSizes": ["90", "94", "98", "102", "110"],
         "images": [
           "image/product_panties_5_white_1.webp",
           "image/product_panties_5_white_2.webp"
@@ -229,6 +247,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["86", "90", "94", "98", "102", "106"],
+        "availableSizes": ["90", "106"],
         "images": [
           "image/product_panties_6_white_1.webp",
           "image/product_panties_6_white_2.webp"
@@ -239,6 +259,8 @@
           "name": "black",
           "hex": "#000000"
         },
+        "sizes": ["86", "90", "94", "98", "102", "106"],
+        "availableSizes": ["90", "94"],
         "images": [
           "image/product_panties_6_black_1.webp",
           "image/product_panties_6_black_2.webp"
@@ -265,6 +287,8 @@
           "name": "black",
           "hex": "#000000"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS"],
         "images": [
           "image/product_panties_7_black_1.webp",
           "image/product_panties_7_black_2.webp",
@@ -276,6 +300,8 @@
           "name": "white",
           "hex": "#ffffff"
         },
+        "sizes": ["XS", "S", "M", "L", "XL"],
+        "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
           "image/product_panties_7_white_1.webp",
           "image/product_panties_7_white_2.webp"

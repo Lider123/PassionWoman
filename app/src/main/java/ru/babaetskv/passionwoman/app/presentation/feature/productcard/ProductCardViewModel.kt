@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class ProductCardViewModel(
@@ -24,6 +25,7 @@ class ProductCardViewModel(
     val productLiveData = MutableLiveData<Product>()
     val productColorsLiveData = MutableLiveData<List<ProductColorItem>>()
     val productPhotosLiveData = MutableLiveData<List<Image>>()
+    val productSizesLiveData = MutableLiveData<List<ProductSize>>()
     val isFavoriteLiveData = MutableLiveData<Boolean>()
 
     init {
@@ -42,8 +44,17 @@ class ProductCardViewModel(
                 ProductColorItem(value, index == 0)
             })
             productPhotosLiveData.postValue(product.colors.first().images)
+            productSizesLiveData.postValue(product.colors.first().sizes)
             isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(product.id))
         }
+    }
+
+    fun onSizePressed(size: ProductSize) {
+        if (!size.isAvailable) return
+
+        // TODO
+        notifier.newRequest(this, R.string.in_development)
+            .sendAlert()
     }
 
     fun onColorItemPressed(item: ProductColorItem) {
@@ -52,6 +63,7 @@ class ProductCardViewModel(
         }
         productColorsLiveData.postValue(newItems)
         productPhotosLiveData.postValue(item.productColor.images)
+        productSizesLiveData.postValue(item.productColor.sizes)
     }
 
     fun onFavoritePressed() {
