@@ -45,7 +45,6 @@
                     app:ci_width="8dp"
                     app:ci_margin="@dimen/margin_extra_small" />
 
-                <!-- TODO: replace with StubView -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layoutEmpty"
                     android:layout_width="match_parent"
@@ -92,22 +91,16 @@
                 app:tv_actionEndTint="@color/favorite"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDiscountPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+            <include
+                android:id="@+id/layoutBrand"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginEnd="@dimen/margin_default"
-                android:padding="@dimen/margin_extra_small"
-                android:gravity="center"
-                android:background="@drawable/bg_discount"
-                android:rotation="-15"
                 android:visibility="gone"
-                android:textColor="@color/onSecondary"
                 app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintDimensionRatio="1:1"
-                tools:text="-20%"
+                layout="@layout/view_item_brand"
                 tools:visibility="visible"/>
 
             <androidx.appcompat.widget.AppCompatRatingBar
@@ -130,7 +123,7 @@
                 android:textSize="22sp"
                 app:layout_constraintTop_toBottomOf="@id/ratingBar"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvDiscountPercent"
+                app:layout_constraintEnd_toStartOf="@id/layoutBrand"
                 app:layout_goneMarginTop="@dimen/margin_default"
                 tools:text="@tools:sample/lorem" />
 
@@ -146,7 +139,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvProductName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tvPriceDeleted"
-                tools:text="$60" />
+                tools:text="$120.00" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPriceDeleted"
@@ -160,30 +153,23 @@
                 app:layout_constraintTop_toBottomOf="@id/tvProductName"
                 app:layout_constraintStart_toEndOf="@id/tvPrice"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="$60" />
+                tools:text="$120.00" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDesription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_default"
-                android:layout_marginHorizontal="@dimen/margin_default"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/tvPrice"
-                tools:text="@tools:sample/lorem/random"
-                tools:lines="3"
-                tools:visibility="visible"/>
-
-            <include
-                android:id="@+id/layoutBrand"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginTop="@dimen/margin_default"
+                android:id="@+id/tvDiscountPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="@dimen/margin_default"
+                android:padding="@dimen/margin_extra_small"
+                android:gravity="center"
+                android:background="@drawable/bg_discount"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/tvDesription"
-                app:layout_constraintStart_toStartOf="parent"
-                layout="@layout/view_item_brand"
+                android:textColor="@color/onSecondary"
+                app:layout_constraintTop_toTopOf="@id/tvPriceDeleted"
+                app:layout_constraintBottom_toBottomOf="@id/tvPriceDeleted"
+                app:layout_constraintStart_toEndOf="@id/tvPriceDeleted"
+                app:layout_constraintDimensionRatio="1:1"
+                tools:text="-20%"
                 tools:visibility="visible"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -193,7 +179,7 @@
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginStart="@dimen/margin_default"
                 android:text="@string/product_card_color_placeholder"
-                app:layout_constraintTop_toBottomOf="@id/layoutBrand"
+                app:layout_constraintTop_toBottomOf="@id/tvPrice"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -211,13 +197,25 @@
                 tools:listitem="@layout/view_item_product_color"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDesription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/rvColors"
+                tools:text="@tools:sample/lorem/random"
+                tools:lines="3"
+                tools:visibility="visible"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvSizes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginStart="@dimen/margin_default"
                 android:text="@string/product_card_sizes"
-                app:layout_constraintTop_toBottomOf="@id/rvColors"
+                app:layout_constraintTop_toBottomOf="@id/tvDesription"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView
