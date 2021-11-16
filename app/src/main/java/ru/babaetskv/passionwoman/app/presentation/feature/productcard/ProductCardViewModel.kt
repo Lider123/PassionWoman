@@ -24,6 +24,7 @@ class ProductCardViewModel(
     val productLiveData = MutableLiveData<Product>()
     val productColorsLiveData = MutableLiveData<List<ProductColorItem>>()
     val productPhotosLiveData = MutableLiveData<List<Image>>()
+    val productSizesLiveData = MutableLiveData<List<ProductSizeItem>>()
     val isFavoriteLiveData = MutableLiveData<Boolean>()
 
     init {
@@ -41,9 +42,24 @@ class ProductCardViewModel(
             productColorsLiveData.postValue(product.colors.mapIndexed { index, value ->
                 ProductColorItem(value, index == 0)
             })
-            productPhotosLiveData.postValue(product.colors.first().images)
+            val firstColor = product.colors.first()
+            productPhotosLiveData.postValue(firstColor.images)
+            val firstAvailableSize = firstColor.sizes.firstOrNull { it.isAvailable }
+            productSizesLiveData.postValue(firstColor.sizes.map {
+                ProductSizeItem(it, it == firstAvailableSize)
+            })
             isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(product.id))
         }
+    }
+
+    fun onSizeItemPressed(item: ProductSizeItem) {
+        val size = item.size
+        if (!size.isAvailable) return
+
+        val newItems = productSizesLiveData.value?.map {
+            it.copy(isSelected = size == it.size)
+        }
+        productSizesLiveData.postValue(newItems)
     }
 
     fun onColorItemPressed(item: ProductColorItem) {
@@ -52,6 +68,10 @@ class ProductCardViewModel(
         }
         productColorsLiveData.postValue(newItems)
         productPhotosLiveData.postValue(item.productColor.images)
+        val firstAvailableSize = item.productColor.sizes.firstOrNull { it.isAvailable }
+        productSizesLiveData.postValue(item.productColor.sizes.map {
+            ProductSizeItem(it, it == firstAvailableSize)
+        })
     }
 
     fun onFavoritePressed() {

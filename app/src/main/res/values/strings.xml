@@ -86,7 +86,9 @@
 
     <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
     <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
+    <string name="product_card_sizes">Sizes</string>
     <string name="product_card_add_to_cart">Add to cart</string>
+    <string name="product_card_not_available">Not available</string>
     <string name="product_card_discount_template" translatable="false">-%.0f%%</string>
 
     <string name="home_sale_products_title">Sale</string>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvSize"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="@drawable/bg_product_size"
+    android:textColor="@color/item_size_color_selector"
+    android:padding="0dp"
+    android:textSize="14sp"
+    android:gravity="center"
+    android:enabled="false"
+    tools:text="XXXL" />

@@ -23,6 +23,9 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     private val productPhotosAdapter: ProductPhotosAdapter by lazy {
         ProductPhotosAdapter()
     }
+    private val productSizesAdapter: ProductSizesAdapter by lazy {
+        ProductSizesAdapter(viewModel::onSizeItemPressed)
+    }
     private val productColorsAdapter: ProductColorsAdapter by lazy {
         ProductColorsAdapter(viewModel::onColorItemPressed)
     }
@@ -54,6 +57,11 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                 adapter = productColorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
+            rvSizes.run {
+                adapter = productSizesAdapter
+                itemAnimator = null
+                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_extra_small))
+            }
             btnAddToCart.setOnSingleClickListener {
                 viewModel.onAddToCartPressed()
             }
@@ -65,6 +73,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
         viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
+        viewModel.productSizesLiveData.observe(viewLifecycleOwner, ::populateProductSizeItems)
         viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
     }
 
@@ -115,6 +124,17 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         val selectedColorName = items.find { it.selected }?.productColor?.color?.name ?: ""
         binding.tvColors.setHtmlText(getString(R.string.product_card_color_placeholder, selectedColorName))
         productColorsAdapter.submitList(items)
+    }
+
+    private fun populateProductSizeItems(items: List<ProductSizeItem>) {
+        val productIsAvailable = items.any { it.size.isAvailable }
+        binding.btnAddToCart.run {
+            isEnabled = productIsAvailable
+            setText(if (productIsAvailable) R.string.product_card_add_to_cart else R.string.product_card_not_available)
+        }
+        productSizesAdapter.submitList(items) {
+            binding.groupSizes.isVisible = items.isNotEmpty()
+        }
     }
 
     @Parcelize

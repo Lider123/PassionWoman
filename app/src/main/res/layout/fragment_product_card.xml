@@ -210,17 +210,48 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/view_item_product_color"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSizes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginStart="@dimen/margin_default"
+                android:text="@string/product_card_sizes"
+                app:layout_constraintTop_toBottomOf="@id/rvColors"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSizes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:paddingHorizontal="@dimen/margin_small"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/tvSizes"
+                app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/view_item_product_size"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupSizes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tvSizes, rvSizes"/>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddToCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_default"
                 android:layout_marginHorizontal="@dimen/margin_default"
-                android:text="@string/product_card_add_to_cart"
-                app:layout_constraintTop_toBottomOf="@id/rvColors"
+                android:enabled="false"
+                app:layout_constraintTop_toBottomOf="@id/rvSizes"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0"
-                style="@style/Theme.PassionWoman.Button.Colored"/>
+                style="@style/Theme.PassionWoman.Button.Colored"
+                tools:enabled="true"
+                tools:text="@string/product_card_add_to_cart"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

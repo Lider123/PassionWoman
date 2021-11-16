@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductColor(
-    val color: Color,
-    val sizes: List<ProductSize>,
-    val images: List<Image>
+data class ProductSize(
+    val value: String,
+    val isAvailable: Boolean
 ) : Parcelable

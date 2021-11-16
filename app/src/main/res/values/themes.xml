@@ -47,7 +47,7 @@
     </style>
     
     <style name="Theme.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/secondary</item>
+        <item name="android:backgroundTint">@color/button_color_selector</item>
         <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
         <item name="android:padding">@dimen/margin_small</item>
         <item name="cornerRadius">@dimen/corners_default</item>
@@ -60,16 +60,16 @@
         <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
         <item name="android:padding">@dimen/margin_small</item>
         <item name="cornerRadius">@dimen/corners_default</item>
-        <item name="strokeColor">@color/secondary</item>
+        <item name="strokeColor">@color/button_color_selector</item>
         <item name="strokeWidth">2dp</item>
-        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textColor">@color/button_color_selector</item>
     </style>
 
     <style
         name="Theme.PassionWoman.Button.Text"
         parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
-        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textColor">@color/button_color_selector</item>
         <item name="android:padding">@dimen/margin_small</item>
     </style>
 

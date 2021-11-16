@@ -124,6 +124,9 @@ dependencies {
     // AdapterDelegates
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapter_delegates_version"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapter_delegates_version"
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
 repositories {
     mavenCentral()
