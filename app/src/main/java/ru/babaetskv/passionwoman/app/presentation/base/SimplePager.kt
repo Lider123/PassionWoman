@@ -1,24 +1,22 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
-import androidx.paging.InvalidatingPagingSourceFactory
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingSource
+import ru.babaetskv.passionwoman.data.datasource.base.InvalidatingPagingSourceFactory
 
-class SimplePager<Key : Any, Value : Any>(
+abstract class SimplePager<Key : Any, Value : Any>(
     pageSize: Int,
-    pagingSourceFactory: () -> PagingSource<Key, Value>
+    protected val pagingSourceFactory: InvalidatingPagingSourceFactory<Key, Value>
 ) {
-    private val invalidatingPagingSourceFactory = InvalidatingPagingSourceFactory(pagingSourceFactory)
     private val pager = Pager(
         config = PagingConfig(
             pageSize = pageSize,
             initialLoadSize = pageSize
         ),
-        pagingSourceFactory = invalidatingPagingSourceFactory
+        pagingSourceFactory = pagingSourceFactory
     )
 
     val flow = pager.flow
 
-    fun invalidate() = invalidatingPagingSourceFactory.invalidate()
+    fun invalidate() = pagingSourceFactory.invalidate()
 }

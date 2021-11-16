@@ -87,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent=".8"
-        style="@style/Theme.PassionWoman.Button.Colored"/>
+        style="@style/Widget.PassionWoman.Button.Colored"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvOr"
@@ -110,5 +110,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent=".8"
-        style="@style/Theme.PassionWoman.Button.Text"/>
+        style="@style/Widget.PassionWoman.Button.Text"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

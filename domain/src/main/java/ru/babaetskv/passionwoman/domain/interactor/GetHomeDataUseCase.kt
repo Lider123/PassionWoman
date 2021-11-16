@@ -4,9 +4,9 @@ import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
-import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.HomeData
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class GetHomeDataUseCase(
     private val catalogGateway: CatalogGateway,
@@ -20,8 +20,8 @@ class GetHomeDataUseCase(
             promotions = catalogGateway.getPromotions(),
             saleProducts = catalogGateway.getProducts(
                 categoryId = null,
-                filters = Filters.DEFAULT.copy(
-                    discountOnly = true
+                filters = listOf(
+                    Filter.DiscountOnly(stringProvider, true)
                 ),
                 sorting = Sorting.DEFAULT,
                 limit = PRODUCTS_LIMIT,
@@ -29,14 +29,14 @@ class GetHomeDataUseCase(
             ).products,
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
-                filters = Filters.DEFAULT,
+                filters = listOf(),
                 sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
             ).products,
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
-                filters = Filters.DEFAULT,
+                filters = listOf(),
                 sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,
                 offset = 0

@@ -14,7 +14,8 @@
     "colors": [
       {
         "color": {
-          "name": "light blue",
+          "code": "light_blue",
+          "uiName": "light blue",
           "hex": "#72bcd4"
         },
         "images": [
@@ -38,7 +39,8 @@
     "colors": [
       {
         "color": {
-          "name": "red",
+          "code": "red",
+          "uiName": "red",
           "hex": "#ff0000"
         },
         "images": [

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:iconTint="@color/secondary"
         app:iconPadding="@dimen/margin_default"
-        style="@style/Theme.PassionWoman.Button.Text"
+        style="@style/Widget.PassionWoman.Button.Text"
         tools:text="Option name"
         tools:icon="@drawable/ic_info" />
 </FrameLayout>

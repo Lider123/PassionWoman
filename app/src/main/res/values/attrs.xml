@@ -31,6 +31,13 @@
         <attr name="cv_border_color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="InputRangeView">
+        <attr name="irv_labelFrom" format="string"/>
+        <attr name="irv_labelTo" format="string"/>
+        <attr name="irv_fromPrefix" format="string"/>
+        <attr name="irv_toPrefix" format="string"/>
+    </declare-styleable>
+
     <attr name="coloredButtonStyle" format="reference"/>
     <attr name="textButtonStyle" format="reference"/>
     <attr name="outlineButtonStyle" format="reference"/>

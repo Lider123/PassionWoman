@@ -10,11 +10,14 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
+import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.utils.execute
 
 class HomeViewModel(
     private val getHomeDataUseCase: GetHomeDataUseCase,
+    private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<HomeViewModel.Router>(dependencies) {
     val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
@@ -58,8 +61,8 @@ class HomeViewModel(
             HEADER_PRODUCTS_SALE -> launch {
                 navigateTo(Router.ProductListScreen(
                     R.string.home_sale_products_title,
-                    Filters.DEFAULT.copy(
-                        discountOnly = true
+                    listOf(
+                        Filter.DiscountOnly(stringProvider, true)
                     ),
                     Sorting.DEFAULT
                 ))
@@ -67,14 +70,14 @@ class HomeViewModel(
             HEADER_PRODUCTS_POPULAR -> launch {
                 navigateTo(Router.ProductListScreen(
                     R.string.home_popular_products_title,
-                    Filters.DEFAULT,
+                    listOf(),
                     Sorting.POPULARITY
                 ))
             }
             HEADER_PRODUCTS_NEW -> launch {
                 navigateTo(Router.ProductListScreen(
                     R.string.home_new_products_title,
-                    Filters.DEFAULT,
+                    listOf(),
                     Sorting.NEW
                 ))
             }
@@ -115,7 +118,7 @@ class HomeViewModel(
 
         data class ProductListScreen(
             @StringRes val titleRes: Int,
-            val filters: Filters,
+            val filters: List<Filter>,
             val sorting: Sorting
         ) : Router()
     }

@@ -1,16 +1,18 @@
 package ru.babaetskv.passionwoman.data.gateway
 
-import com.squareup.moshi.Moshi
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.model.*
+import ru.babaetskv.passionwoman.data.utils.toJsonArray
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
+import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class CatalogGatewayImpl(
     private val api: PassionWomanApi,
     private val favoritesPreferences: FavoritesPreferences,
-    private val moshi: Moshi
+    private val stringProvider: StringProvider
 ) : CatalogGateway {
 
     override suspend fun getCategories(): List<Category> =
@@ -20,15 +22,15 @@ class CatalogGatewayImpl(
         categoryId: String?,
         limit: Int,
         offset: Int,
-        filters: Filters,
+        filters: List<Filter>,
         sorting: Sorting
     ): ProductsPagedResponse = api.getProducts(
         categoryId,
-        moshi.adapter(FiltersModel::class.java).toJson(FiltersModel.fromFilters(filters)),
+        filters.mapNotNull { it.toJsonObject() }.toJsonArray().toString(),
         sorting.apiName,
         limit,
         offset
-    ).toProductPagedResponse()
+    ).toProductPagedResponse(stringProvider)
 
     override suspend fun getPromotions(): List<Promotion> =
         api.getPromotions().map(PromotionModel::toPromotion)

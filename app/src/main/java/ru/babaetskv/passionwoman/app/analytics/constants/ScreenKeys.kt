@@ -16,4 +16,5 @@ object ScreenKeys {
     const val SORTING = "sorting"
     const val PROFILE = "profile"
     const val SPLASH = "splash"
+    const val FILTERS = "filters"
 }

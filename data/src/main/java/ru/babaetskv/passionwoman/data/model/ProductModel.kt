@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.data.model
 
 import com.squareup.moshi.Json
 import ru.babaetskv.passionwoman.domain.model.Image
+import ru.babaetskv.passionwoman.domain.model.Price
 import ru.babaetskv.passionwoman.domain.model.Product
 
 data class ProductModel(
@@ -14,6 +15,7 @@ data class ProductModel(
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
     @Json(name = "rating") val rating: Float,
     @Json(name = "brand") val brand: BrandModel?,
+    @Json(name = "model") val model: String?,
     @Json(name = "colors") val colors: List<ProductColorModel>
 ) {
 
@@ -24,8 +26,8 @@ data class ProductModel(
             name = name,
             description = description,
             preview = Image(preview),
-            price = price,
-            priceWithDiscount = priceWithDiscount,
+            price = Price(price),
+            priceWithDiscount = Price(priceWithDiscount),
             rating = rating,
             brand = brand?.toBrand(),
             colors = colors.map(ProductColorModel::toProductColor)

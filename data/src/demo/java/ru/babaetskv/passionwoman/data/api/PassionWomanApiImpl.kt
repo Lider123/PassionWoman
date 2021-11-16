@@ -10,11 +10,16 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
+import ru.babaetskv.passionwoman.data.Filters
 import ru.babaetskv.passionwoman.data.model.*
+import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.BAD_REQUEST
+import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.INTERNAL_SERVER_ERROR
 import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.NOT_FOUND
-import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
 class PassionWomanApiImpl(
@@ -44,32 +49,43 @@ class PassionWomanApiImpl(
         limit: Int,
         offset: Int
     ): ProductsPagedResponseModel = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        val filtersObject = moshi.adapter(FiltersModel::class.java).fromJson(filters)?.toFilters()
-        val sortingObject = Sorting.findValueByApiName(sorting)
-        var products: List<ProductModel> = if (categoryId != null) {
-            getCategoryProducts(CategoryProducts.findByCategoryId(categoryId)!!)
-        } else when {
-            filtersObject?.discountOnly == true -> getSaleProducts()
-            sortingObject == Sorting.POPULARITY -> getPopularProducts()
-            sortingObject == Sorting.NEW -> getNewProducts()
-            else -> getPopularProducts()
-        }
-        if (filtersObject != null) {
-            products = products.applyFilters(filtersObject)
-        }
-        val pagingIndices = IntRange(offset, offset + limit - 1)
-        return@withContext products.let { result ->
-            when (sortingObject) {
-                Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
-                Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
-                else -> result
-            }.slice(products.indices.intersect(pagingIndices))
-        }.let {
-            ProductsPagedResponseModel(
-                products = it,
-                total = products.size
-            )
+        try {
+            delay(DELAY_LOADING)
+            val filtersObject = Filters(JSONArray(filters))
+            val sortingObject = Sorting.findValueByApiName(sorting)
+            var products: List<ProductModel> = if (categoryId != null) {
+                getCategoryProducts(CategoryProducts.findByCategoryId(categoryId)!!)
+            } else when {
+                filtersObject.isDiscountOnly -> getSaleProducts()
+                sortingObject == Sorting.POPULARITY -> getPopularProducts()
+                sortingObject == Sorting.NEW -> getNewProducts()
+                else -> getPopularProducts()
+            }
+            products = filtersObject.applyToProducts(products)
+            val availableFilters = mutableListOf<JSONObject>().apply {
+                addAll(loadArrayOfJsonFromAsset("filters_common.json"))
+                addAll(CategoryProducts.values().mapNotNull { it.filtersFileName }.flatMap { loadArrayOfJsonFromAsset(it) })
+            }.selectAvailableFilters(products)
+            val pagingIndices = IntRange(offset, offset + limit - 1)
+            return@withContext products.let { result ->
+                when (sortingObject) {
+                    Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
+                    Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
+                    else -> result
+                }.slice(products.indices.intersect(pagingIndices))
+            }.let {
+                ProductsPagedResponseModel(
+                    products = it,
+                    total = products.size,
+                    availableFilters = availableFilters
+                )
+            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            throw getBadRequestException("Failed to process filters")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw getInternalServerErrorException("Internal server error")
         }
     }
 
@@ -122,6 +138,18 @@ class PassionWomanApiImpl(
         favoriteIdsMock = ids
     }
 
+    private fun List<JSONObject>.selectAvailableFilters(products: List<ProductModel>): List<JSONObject> {
+        val array =  JSONArray().apply {
+            this@selectAvailableFilters.forEach {
+                put(it)
+            }
+        }
+        val availableArray = Filters(array).selectAvailable(products)
+        return mutableListOf<JSONObject>().apply {
+            for (i in 0 until availableArray.length()) add(availableArray.getJSONObject(i))
+        }
+    }
+
     private fun getCategoryProducts(category: CategoryProducts): List<ProductModel> =
         loadListFromAsset(category.productsFileName)
 
@@ -138,13 +166,11 @@ class PassionWomanApiImpl(
         }
 
     private fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
-        getAllProducts(null)
-            .applyFilters(Filters.DEFAULT.copy(
-                discountOnly = true
-            ))
-            .also {
-                saleProductsCache.addAll(it)
-            }
+        getAllProducts(null).let {
+            Filters.discountOnlyFilters.applyToProducts(it)
+        }.also {
+            saleProductsCache.addAll(it)
+        }
     }
 
     private fun getPopularProducts() = getAllProducts(popularProductsCache)
@@ -157,6 +183,17 @@ class PassionWomanApiImpl(
         return adapter.fromJson(json)!!
     }
 
+    private fun loadArrayOfJsonFromAsset(fileName: String): List<JSONObject> {
+        val json = assetManager.open(fileName).bufferedReader().use { it.readText() }
+        return JSONArray(json).let {
+            val values = mutableListOf<JSONObject>()
+            for (i in 0 until it.length()) {
+                values.add(it.getJSONObject(i))
+            }
+            values
+        }
+    }
+
     private inline fun <reified T> loadListFromAsset(filename: String): List<T> {
         val json = assetManager.open(filename).bufferedReader().use{ it.readText()}
         val listType = Types.newParameterizedType(List::class.java, T::class.java)
@@ -164,15 +201,7 @@ class PassionWomanApiImpl(
         return adapter.fromJson(json) ?: emptyList()
     }
 
-    private fun ProductModel.matchesFilters(filters: Filters): Boolean {
-        if (filters.discountOnly && priceWithDiscount == price) return false
-
-        return true
-    }
-
-    private fun Collection<ProductModel>.applyFilters(filters: Filters) =
-        filter { it.matchesFilters(filters) }
-
+    @Suppress("SameParameterValue")
     private fun getNotFoundException(message: String) : HttpException =
         message.toResponseBody("text/plain".toMediaType()).let {
             Response.error<Nothing>(NOT_FOUND, it)
@@ -180,17 +209,35 @@ class PassionWomanApiImpl(
             HttpException(it)
         }
 
-    private enum class CategoryProducts(val categoryId: String, val productsFileName: String) {
-        BRA("category_bra", "products_bra.json"),
-        PANTIES("category_panties", "products_panties.json"),
-        LINGERIE("category_lingerie", "products_lingerie.json"),
-        EROTIC("category_erotic", "products_erotic.json"),
-        SWIM("category_swim", "products_swim.json"),
-        CORSET("category_corsets", "products_corset.json"),
-        GARTERBELT("category_garter_belts", "products_garter_belts.json"),
-        BABYDOLL("category_babydolls", "products_babydoll.json"),
-        STOCKINGS("category_stockings", "products_stockings.json"),
-        PANTYHOSE("category_pantyhose", "products_pantyhose.json");
+    private fun getBadRequestException(message: String) : HttpException =
+        message.toResponseBody("text/plain".toMediaType()).let {
+            Response.error<Nothing>(BAD_REQUEST, it)
+        }.let {
+            HttpException(it)
+        }
+
+    private fun getInternalServerErrorException(message: String) : HttpException =
+        message.toResponseBody("text/plain".toMediaType()).let {
+            Response.error<Nothing>(INTERNAL_SERVER_ERROR, it)
+        }.let {
+            HttpException(it)
+        }
+
+    private enum class CategoryProducts(
+        val categoryId: String,
+        val productsFileName: String,
+        val filtersFileName: String?
+    ) {
+        BRA("category_bra", "products_bra.json", null),
+        PANTIES("category_panties", "products_panties.json", "filters_panties.json"),
+        LINGERIE("category_lingerie", "products_lingerie.json", null),
+        EROTIC("category_erotic", "products_erotic.json", null),
+        SWIM("category_swim", "products_swim.json", null),
+        CORSET("category_corsets", "products_corset.json", null),
+        GARTERBELT("category_garter_belts", "products_garter_belts.json", null),
+        BABYDOLL("category_babydolls", "products_babydoll.json", null),
+        STOCKINGS("category_stockings", "products_stockings.json", null),
+        PANTYHOSE("category_pantyhose", "products_pantyhose.json", null);
 
         companion object {
 

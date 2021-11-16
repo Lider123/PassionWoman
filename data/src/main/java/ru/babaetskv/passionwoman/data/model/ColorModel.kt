@@ -4,13 +4,15 @@ import com.squareup.moshi.Json
 import ru.babaetskv.passionwoman.domain.model.Color
 
 data class ColorModel(
-    @Json(name = "name") val name: String,
+    @Json(name = "code") val code: String,
+    @Json(name = "uiName") val uiName: String,
     @Json(name = "hex") val hex: String
 ) {
 
     fun toColor() =
         Color(
-            name = name,
+            code = code,
+            uiName = uiName,
             hex = hex
         )
 }

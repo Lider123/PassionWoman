@@ -256,7 +256,7 @@
                 app:layout_constraintTop_toBottomOf="@id/rvSizes"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0"
-                style="@style/Theme.PassionWoman.Button.Colored"
+                style="@style/Widget.PassionWoman.Button.Colored"
                 tools:enabled="true"
                 tools:text="@string/product_card_add_to_cart"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

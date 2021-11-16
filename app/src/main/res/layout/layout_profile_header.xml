@@ -59,7 +59,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Theme.PassionWoman.Button.Text"
+        style="@style/Widget.PassionWoman.Button.Text"
         tools:visibility="visible"/>
 
     <com.google.android.material.button.MaterialButton
@@ -70,5 +70,5 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Theme.PassionWoman.Button.Text" />
+        style="@style/Widget.PassionWoman.Button.Text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

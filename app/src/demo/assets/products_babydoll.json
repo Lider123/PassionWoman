@@ -14,7 +14,8 @@
     "colors": [
       {
         "color": {
-          "name": "red",
+          "code": "red",
+          "uiName": "red",
           "hex": "#FF0000"
         },
         "images": [

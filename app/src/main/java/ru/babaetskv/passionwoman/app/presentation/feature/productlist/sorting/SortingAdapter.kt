@@ -10,34 +10,39 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
 class SortingAdapter(
     private val stringProvider: StringProvider,
-    private val onItemClick: (SortingItem) -> Unit
-) : BaseAdapter<SortingItem>(SortingItemDiffUtilCallback()) {
+    private val onItemClick: (SelectableItem<Sorting>) -> Unit
+) : BaseAdapter<SelectableItem<Sorting>>(SortingItemDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<SortingItem> =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<SelectableItem<Sorting>> =
         LayoutInflater.from(parent.context)
             .inflate(R.layout.view_item_sorting, parent, false)
             .let {
                 ViewHolder(it)
             }
 
-    private inner class ViewHolder(v: View) : BaseViewHolder<SortingItem>(v) {
+    private inner class ViewHolder(v: View) : BaseViewHolder<SelectableItem<Sorting>>(v) {
         private val binding = ViewItemSortingBinding.bind(v)
 
-        override fun bind(item: SortingItem) {
+        override fun bind(item: SelectableItem<Sorting>) {
             binding.radioSorting.run {
-                text = item.sorting.getUiName(stringProvider)
-                isChecked = item.selected
+                text = item.value.getUiName(stringProvider)
+                isChecked = item.isSelected
                 setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
             }
         }
 
-        override fun bind(item: SortingItem, payload: Any) {
-            if (payload == PAYLOAD_SELECTED) setSelected(item.selected)
+        override fun bind(item: SelectableItem<Sorting>, payload: Any) {
+            if (payload == PAYLOAD_SELECTED) setSelected(item.isSelected)
         }
 
         private fun setSelected(selected: Boolean) {
@@ -45,16 +50,23 @@ class SortingAdapter(
         }
     }
 
-    private class SortingItemDiffUtilCallback : DiffUtil.ItemCallback<SortingItem>() {
+    private class SortingItemDiffUtilCallback : DiffUtil.ItemCallback<SelectableItem<Sorting>>() {
 
-        override fun areContentsTheSame(oldItem: SortingItem, newItem: SortingItem): Boolean =
-            oldItem == newItem
+        override fun areContentsTheSame(
+            oldItem: SelectableItem<Sorting>,
+            newItem: SelectableItem<Sorting>
+        ): Boolean = oldItem == newItem
 
-        override fun areItemsTheSame(oldItem: SortingItem, newItem: SortingItem): Boolean =
-            oldItem.sorting == newItem.sorting
+        override fun areItemsTheSame(
+            oldItem: SelectableItem<Sorting>,
+            newItem: SelectableItem<Sorting>
+        ): Boolean = oldItem.value == newItem.value
 
-        override fun getChangePayload(oldItem: SortingItem, newItem: SortingItem): Any? {
-            if (oldItem.selected != newItem.selected) return PAYLOAD_SELECTED
+        override fun getChangePayload(
+            oldItem: SelectableItem<Sorting>,
+            newItem: SelectableItem<Sorting>
+        ): Any? {
+            if (oldItem.isSelected != newItem.isSelected) return PAYLOAD_SELECTED
 
             return null
         }

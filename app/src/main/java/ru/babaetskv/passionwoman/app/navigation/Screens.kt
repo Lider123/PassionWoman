@@ -1,7 +1,6 @@
 package ru.babaetskv.passionwoman.app.navigation
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import ru.babaetskv.passionwoman.app.navigation.BottomSheetDialogFragmentScreen
 import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
@@ -10,10 +9,12 @@ import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationF
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 object Screens {
 
@@ -33,13 +34,13 @@ object Screens {
         ProductListFragment.create(
             categoryId = category.id,
             title = category.name,
-            filters = Filters.DEFAULT,
+            filters = listOf(),
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
         )
     }
 
-    fun productList(title: String, filters: Filters, sorting: Sorting) = FragmentScreen {
+    fun productList(title: String, filters: List<Filter>, sorting: Sorting) = FragmentScreen {
         ProductListFragment.create(
             categoryId = null,
             title = title,
@@ -76,4 +77,13 @@ object Screens {
     fun contacts() = BottomSheetDialogFragmentScreen {
         ContactsFragment.create()
     }
+
+    fun filters(
+        categoryId: String?,
+        filters: List<Filter>,
+        productsCount: Int
+    ) =
+        BottomSheetDialogFragmentScreen {
+            FiltersFragment.create(categoryId, filters, productsCount)
+        }
 }

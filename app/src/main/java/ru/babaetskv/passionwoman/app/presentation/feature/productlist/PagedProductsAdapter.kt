@@ -13,7 +13,6 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class PagedProductsAdapter(
@@ -42,13 +41,13 @@ class PagedProductsAdapter(
                     onItemClick.invoke(item)
                 }
                 if (item.discountRate > 0) {
-                    tvPrice.text = item.priceWithDiscount.toPriceString()
+                    tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
                         isVisible = true
-                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toPriceString()))
+                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toFormattedString()))
                     }
                 } else {
-                    tvPrice.text = item.price.toPriceString()
+                    tvPrice.text = item.price.toFormattedString()
                     tvPriceDeleted.isVisible = false
                 }
                 ratingBar.rating = item.rating

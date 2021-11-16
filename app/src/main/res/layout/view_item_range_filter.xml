@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Typography.PassionWoman.TextAppearance.Large"
+        tools:text="@tools:sample/lorem/random"
+        tools:lines="2"/>
+
+    <ru.babaetskv.passionwoman.app.presentation.view.InputRangeView
+        android:id="@+id/rangeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:irv_labelFrom="@string/filters_range_from"
+        app:irv_labelTo="@string/filters_range_to"
+        app:irv_fromPrefix="$"
+        app:irv_toPrefix="$"
+        tools:valueFrom="0"
+        tools:valueTo="100"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,10 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCar
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersUpdateHub
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersViewModel
+import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModel
@@ -48,7 +52,6 @@ import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
-import ru.babaetskv.passionwoman.data.datasource.ProductsDataSource
 import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
 import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
@@ -56,8 +59,8 @@ import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.domain.interactor.*
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
-import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -65,6 +68,7 @@ val appModule = module {
     single<StringProvider> { StringProviderImpl(get()) }
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { SortingUpdateHub() }
+    single { FiltersUpdateHub() }
     single { ExternalIntentHandler(androidContext()) }
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
@@ -89,8 +93,9 @@ val viewModelModule = module {
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModel(args,
             sortingUpdateHub = get(),
+            filtersUpdateHub = get(),
             stringProvider = get(),
-            productsDataSource = get { parametersOf(args.categoryId, args.filters, args.sorting) },
+            productsPagingSourceFactory = get { parametersOf(args.categoryId, args.filters, args.sorting) },
             dependencies = get()
         )
     }
@@ -106,17 +111,20 @@ val viewModelModule = module {
     viewModel { (args: ProductCardFragment.Args) ->
         ProductCardViewModel(args, get(), get(), get(), get(), get(), get(), get())
     }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
         SortingViewModel(args, get(), get(), get())
     }
     viewModel { FavoritesViewModel(get(), get(), get(), get(), get()) }
     viewModel { ContactsViewModel(get(), get()) }
+    viewModel { (args: FiltersFragment.Args) ->
+        FiltersViewModel(args, get(), get(), get())
+    }
 }
 
 val dataSourceModule = module {
-    factory { (categoryId: String, filters: Filters, sorting: Sorting) ->
-        ProductsDataSource(get(), get(),
+    factory { (categoryId: String, filters: List<Filter>, sorting: Sorting) ->
+        ProductsPagingSourceFactory(get(), get(),
             categoryId = categoryId,
             filters = filters,
             sorting = sorting
@@ -138,6 +146,7 @@ val interactorModule = module {
     factory { AddToFavoritesUseCase(get(), get()) }
     factory { RemoveFromFavoritesUseCase(get(), get()) }
     factory { SyncFavoritesUseCase(get(), get(), get()) }
+    factory { GetProductsUseCase(get(), get()) }
 }
 
 val gatewayModule = module {

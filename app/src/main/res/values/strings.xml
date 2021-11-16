@@ -104,11 +104,29 @@
     <string name="sorting_apply">Apply</string>
     <string name="sorting_title">Sorting</string>
 
+    <plurals name="filters_apply_placeholder">
+        <item quantity="zero">No products</item>
+        <item quantity="one">Apply: %d product</item>
+        <item quantity="two">Apply :%d products</item>
+        <item quantity="few">Apply: %d products</item>
+        <item quantity="many">Apply: %d products</item>
+        <item quantity="other">Apply: %d products</item>
+    </plurals>
+    <string name="filters_title">Filters</string>
+    <string name="filters_clear">Clear</string>
+    <string name="filters_range_from">from</string>
+    <string name="filters_range_to">to</string>
+
+    <string name="filter_discount">Discount</string>
+
     <string name="product_list_favorites">Favorites</string>
+    <string name="product_list_no_filters">No filters available</string>
 
     <string name="contacts_version_placeholder">v%s</string>
     <string name="contacts_phone">Call us</string>
     <string name="contacts_email">Send us an email</string>
     <string name="contacts_instagram">Find us on Instagram</string>
     <string name="contacts_telegram">Write to us on Telegram</string>
+
+    <string name="view_input_range_hint">0</string>
 </resources>
