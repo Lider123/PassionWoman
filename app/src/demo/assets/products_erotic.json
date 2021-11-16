@@ -1,6 +1,11 @@
 [
   {
     "id": "product_erotic_1",
+    "category": {
+      "id": "category_erotic",
+      "name": "Erotic",
+      "image": "image/category_erotic.jpg"
+    },
     "name": "Sexy lingerie",
     "description": "A sexy, open-back bodysuit.",
     "preview": "image/product_erotic_1_preview.jpg",

@@ -40,5 +40,7 @@ class FirebaseAnalyticsHandler(
         override val CONTENT_TYPE: String = FirebaseAnalytics.Param.CONTENT_TYPE
         override val SCREEN_NAME: String = FirebaseAnalytics.Param.SCREEN_NAME
         override val USER_ID: String = "user_id"
+        override val BRAND_NAME: String = FirebaseAnalytics.Param.ITEM_BRAND
+        override val CATEGORY_NAME: String = FirebaseAnalytics.Param.ITEM_CATEGORY
     }
 }

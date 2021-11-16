@@ -1,6 +1,11 @@
 [
   {
     "id": "product_garter_belt_1",
+    "category": {
+      "id": "category_garter_belts",
+      "name": "Garter belts",
+      "image": "image/category_garter_belts.jpg"
+    },
     "name": "Sexy garter belt",
     "description": "Suspender belt. Made of soft, elastic lace. The belt is decorated with an organza bow with a gold accessory.",
     "preview": "image/product_garter_belt_1_preview.webp",

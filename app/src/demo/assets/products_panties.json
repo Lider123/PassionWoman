@@ -1,6 +1,11 @@
 [
   {
     "id": "product_panties_1",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Cute panties",
     "description": "Best choice for yourself or your girlfriend!",
     "preview": "image/product_panties_1_preview.jpg",
@@ -22,6 +27,11 @@
   },
   {
     "id": "product_panties_2",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties string Lui et Elle Resille",
     "description": "We present to you luxurious women's lace thong panties. Delicate lace with a beautiful floral design is spicy and attractive in French. The verified classic designs of the panties emphasize the grace of the figure and create comfort. In this model you will feel unique and sexy. The product is not afraid of multiple washings. Over time, the linen does not change color and does not stretch. The collection is presented in several delightful colors, each of which is able to lift the mood and tune in the desired way. The gusset is backed up with 100% cotton. Buy and feel the softness and comfort in our lingerie every day!",
     "preview": "image/product_panties_2_preview.jpg",
@@ -92,6 +102,11 @@
   },
   {
     "id": "product_panties_3",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties brazilian Lui et Elle Resille",
     "description": "Luxurious, romantic women's lace Brazilian panties from TM LUI et ELLE. The front is made of delicate, exquisite lace with a beautiful floral design. The back is a fine mesh (tulle). Our ladies 'briefs have a perfect fit, while the classic panties' designs accentuate the grace of the figure and create comfort. Irreplaceable linen for spring and summer. In our transparent and light Brazilian girls, you will feel unique and sexy. The product is not afraid of multiple washes, does not change color and does not stretch. Buy and feel the softness and comfort in our underwear every day from the LUI et ELLE brand!",
     "preview": "image/product_panties_3_preview.webp",
@@ -162,6 +177,11 @@
   },
   {
     "id": "product_panties_4",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties string Lui et Elle Helena",
     "description": "Women's briefs, thongs with a low rise. Exquisite panties made of eco-friendly cotton with delicate lace inserts from one of the popular Lui et Elle collections. The material of the panties is made using a special technology, which makes the fabric incredibly soft and hypoallergenic. The panties allow your body to breathe and feel comfortable to wear, they are not visible under the clothes. The front part along the upper cut is trimmed with a 5 cm lace ribbon and decorated with a bow, the back part is smooth. Side detail - thin elastic lace band, elastic at the legs and waist with soft lace scallop. Body material: 95% cotton, 5% elastane. Gusset material: 100% cotton.",
     "preview": "image/product_panties_4_preview.webp",
@@ -202,6 +222,11 @@
   },
   {
     "id": "product_panties_5",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties Mark Formelle",
     "description": "Spectacular briefs with a slightly dropped waistline and cotton gusset. The model is decorated with embroidery on a non-elastic mesh and will make a sophisticated set with bras from the same collection.",
     "preview": "image/product_panties_5_preview.webp",
@@ -230,6 +255,11 @@
   },
   {
     "id": "product_panties_6",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties thong Milavitsa",
     "description": "Briefs tanga with an average waistline, The model is made of translucent elastic mesh fabric. Cotton gusset.",
     "preview": "image/product_panties_6_preview.webp",
@@ -270,6 +300,11 @@
   },
   {
     "id": "product_panties_7",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties string Vis-A-Vis",
     "description": "The mini thong panties, made of high quality cotton with elastane, have a low rise at the waist. The model is decorated with a central lace insert at the front.",
     "preview": "image/product_panties_7_preview.webp",
@@ -311,6 +346,11 @@
   },
   {
     "id": "product_panties_8",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties Infinity Lingerie",
     "preview": "image/product_panties_8_preview.webp",
     "price": 10.01,
@@ -348,6 +388,11 @@
   },
   {
     "id": "product_panties_9",
+    "category": {
+      "id": "category_panties",
+      "name": "Panties",
+      "image": "image/category_panties.jpg"
+    },
     "name": "Panties Infinity Lingerie",
     "preview": "image/product_panties_9_preview.webp",
     "price": 8.02,

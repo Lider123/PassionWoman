@@ -1,6 +1,11 @@
 [
   {
     "id": "product_lingerie_1",
+    "category": {
+      "id": "category_lingerie",
+      "name": "Lingerie",
+      "image": "image/category_lingerie.jpg"
+    },
     "name": "Cute set",
     "description": "Lingerie set, consisting of a balconette bra with tanga panties. Made in white combined with lace details. Adjustable straps.",
     "preview": "image/product_lingerie_1_preview.webp",
@@ -24,6 +29,11 @@
   },
   {
     "id": "product_lingerie_2",
+    "category": {
+      "id": "category_lingerie",
+      "name": "Lingerie",
+      "image": "image/category_lingerie.jpg"
+    },
     "name": "Set Infinity Lingerie",
     "preview": "image/product_lingerie_2_preview.webp",
     "price": 26.62,
