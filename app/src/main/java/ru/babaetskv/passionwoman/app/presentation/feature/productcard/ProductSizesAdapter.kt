@@ -7,30 +7,29 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.domain.model.ProductSize
 
 class ProductSizesAdapter(
-    private val onItemClick: (ProductSize) -> Unit
-): BaseAdapter<ProductSize>(EqualDiffUtilCallback()) {
+    private val onItemClick: (ProductSizeItem) -> Unit
+): BaseAdapter<ProductSizeItem>(EqualDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductSize> =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductSizeItem> =
         LayoutInflater.from(parent.context)
             .let { ViewItemProductSizeBinding.inflate(it, parent, false) }
             .let { ViewHolder(it) }
 
     inner class ViewHolder(
         private val binding: ViewItemProductSizeBinding
-    ) : BaseViewHolder<ProductSize>(binding.root) {
+    ) : BaseViewHolder<ProductSizeItem>(binding.root) {
 
-        override fun bind(item: ProductSize) {
+        override fun bind(item: ProductSizeItem) {
             binding.run {
                 root.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
-                btnSize.run {
-                    text = item.value
-                    isEnabled = item.isAvailable
-                    // TODO: change stroke color when item is selected
+                tvSize.run {
+                    text = item.size.value
+                    isEnabled = item.size.isAvailable
+                    isSelected = item.isSelected
                 }
             }
         }

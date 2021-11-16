@@ -11,7 +11,6 @@ import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 
 class ProductCardViewModel(
@@ -25,7 +24,7 @@ class ProductCardViewModel(
     val productLiveData = MutableLiveData<Product>()
     val productColorsLiveData = MutableLiveData<List<ProductColorItem>>()
     val productPhotosLiveData = MutableLiveData<List<Image>>()
-    val productSizesLiveData = MutableLiveData<List<ProductSize>>()
+    val productSizesLiveData = MutableLiveData<List<ProductSizeItem>>()
     val isFavoriteLiveData = MutableLiveData<Boolean>()
 
     init {
@@ -43,18 +42,24 @@ class ProductCardViewModel(
             productColorsLiveData.postValue(product.colors.mapIndexed { index, value ->
                 ProductColorItem(value, index == 0)
             })
-            productPhotosLiveData.postValue(product.colors.first().images)
-            productSizesLiveData.postValue(product.colors.first().sizes)
+            val firstColor = product.colors.first()
+            productPhotosLiveData.postValue(firstColor.images)
+            val firstAvailableSize = firstColor.sizes.firstOrNull { it.isAvailable }
+            productSizesLiveData.postValue(firstColor.sizes.map {
+                ProductSizeItem(it, it == firstAvailableSize)
+            })
             isFavoriteLiveData.postValue(favoritesPreferences.isFavorite(product.id))
         }
     }
 
-    fun onSizePressed(size: ProductSize) {
+    fun onSizeItemPressed(item: ProductSizeItem) {
+        val size = item.size
         if (!size.isAvailable) return
 
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        val newItems = productSizesLiveData.value?.map {
+            it.copy(isSelected = size == it.size)
+        }
+        productSizesLiveData.postValue(newItems)
     }
 
     fun onColorItemPressed(item: ProductColorItem) {
@@ -63,7 +68,10 @@ class ProductCardViewModel(
         }
         productColorsLiveData.postValue(newItems)
         productPhotosLiveData.postValue(item.productColor.images)
-        productSizesLiveData.postValue(item.productColor.sizes)
+        val firstAvailableSize = item.productColor.sizes.firstOrNull { it.isAvailable }
+        productSizesLiveData.postValue(item.productColor.sizes.map {
+            ProductSizeItem(it, it == firstAvailableSize)
+        })
     }
 
     fun onFavoritePressed() {

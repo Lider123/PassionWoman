@@ -17,7 +17,6 @@ import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.model.ProductSize
 
 class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
@@ -25,7 +24,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         ProductPhotosAdapter()
     }
     private val productSizesAdapter: ProductSizesAdapter by lazy {
-        ProductSizesAdapter(viewModel::onSizePressed)
+        ProductSizesAdapter(viewModel::onSizeItemPressed)
     }
     private val productColorsAdapter: ProductColorsAdapter by lazy {
         ProductColorsAdapter(viewModel::onColorItemPressed)
@@ -60,6 +59,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             }
             rvSizes.run {
                 adapter = productSizesAdapter
+                itemAnimator = null
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_extra_small))
             }
             btnAddToCart.setOnSingleClickListener {
@@ -73,7 +73,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
         viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
-        viewModel.productSizesLiveData.observe(viewLifecycleOwner, ::populateProductSizes)
+        viewModel.productSizesLiveData.observe(viewLifecycleOwner, ::populateProductSizeItems)
         viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
     }
 
@@ -126,14 +126,14 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         productColorsAdapter.submitList(items)
     }
 
-    private fun populateProductSizes(sizes: List<ProductSize>) {
-        val productIsAvailable = sizes.any { it.isAvailable }
+    private fun populateProductSizeItems(items: List<ProductSizeItem>) {
+        val productIsAvailable = items.any { it.size.isAvailable }
         binding.btnAddToCart.run {
             isEnabled = productIsAvailable
             setText(if (productIsAvailable) R.string.product_card_add_to_cart else R.string.product_card_not_available)
         }
-        productSizesAdapter.submitList(sizes) {
-            binding.groupSizes.isVisible = sizes.isNotEmpty()
+        productSizesAdapter.submitList(items) {
+            binding.groupSizes.isVisible = items.isNotEmpty()
         }
     }
 
