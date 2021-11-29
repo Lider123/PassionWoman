@@ -1,6 +1,11 @@
 [
   {
     "id": "product_stockings_1",
+    "category": {
+      "id": "category_stockings",
+      "name": "Stockings",
+      "image": "image/category_stockings.jpg"
+    },
     "name": "Sexy stockings",
     "preview": "image/product_stockings_1_preview.jpg",
     "price": 37.0,

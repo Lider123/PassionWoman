@@ -1,6 +1,11 @@
 [
   {
     "id": "product_corset_1",
+    "category": {
+      "id": "category_corsets",
+      "name": "Corsets",
+      "image": "image/category_corsets.jpg"
+    },
     "name": "Nice corset",
     "preview": "image/product_corset_1_preview.jpg",
     "price": 75.0,
@@ -20,6 +25,11 @@
   },
   {
     "id": "product_corset_2",
+    "category": {
+      "id": "category_corsets",
+      "name": "Corsets",
+      "image": "image/category_corsets.jpg"
+    },
     "name": "Sexy corset",
     "preview": "image/product_corset_2_preview.jpg",
     "price": 80.0,

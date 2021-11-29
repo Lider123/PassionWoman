@@ -1,6 +1,11 @@
 [
   {
     "id": "product_bra_1",
+    "category": {
+      "id": "category_bra",
+      "name": "Bra",
+      "image": "image/category_bra.jpg"
+    },
     "name": "Cute bra",
     "preview": "image/product_bra_1_preview.jpg",
     "price": 55.0,

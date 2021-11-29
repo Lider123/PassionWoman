@@ -1,6 +1,11 @@
 [
   {
     "id": "product_babydoll_1",
+    "category": {
+      "id": "category_babydolls",
+      "name": "Babydolls",
+      "image": "image/category_babydolls.jpg"
+    },
     "name": "Cute babydoll",
     "preview": "image/product_babydoll_1_preview.jpg",
     "price": 75.0,
