@@ -109,7 +109,9 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
     override fun handleRouterEvent(event: AuthViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            AuthViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+            AuthViewModel.Router.NavigationScreen -> {
+                router.newRootScreen(Screens.navigation(null))
+            }
             is AuthViewModel.Router.SignUpScreen -> router.navigateTo(Screens.signUp(event.profile))
         }
     }

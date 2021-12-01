@@ -47,6 +47,9 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                     viewModel.onFavoritePressed()
                 }
             }
+            btnShare.setOnSingleClickListener {
+                viewModel.onSharePressed()
+            }
             vpPhotos.run {
                 adapter = productPhotosAdapter.apply {
                     registerAdapterDataObserver(pageIndicator.adapterDataObserver)

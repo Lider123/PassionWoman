@@ -13,10 +13,12 @@ import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class NavigationViewModel(
+    args: NavigationFragment.Args,
     authPreferences: AuthPreferences,
     private val syncFavoritesUseCase: SyncFavoritesUseCase,
     dependencies: ViewModelDependencies
@@ -30,6 +32,13 @@ class NavigationViewModel(
 
     init {
         authTypeFlow.launchIn(this)
+        args.payload?.let {
+            when (it) {
+                is DeeplinkPayload.Product -> launch {
+                    navigateTo(Router.ProductScreen(it.productId))
+                }
+            }
+        }
     }
 
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
@@ -77,7 +86,12 @@ class NavigationViewModel(
     }
 
     sealed class Router : RouterEvent {
+
         object AuthScreen : Router()
+
+        data class ProductScreen(
+            val productId: String
+        ) : Router()
     }
 
     sealed class Dialog {

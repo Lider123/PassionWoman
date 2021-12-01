@@ -91,6 +91,15 @@
                 app:tv_actionEndTint="@color/favorite"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_default"
+                android:src="@drawable/ic_share"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <include
                 android:id="@+id/layoutBrand"
                 android:layout_width="64dp"

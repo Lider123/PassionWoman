@@ -76,7 +76,9 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     override fun handleRouterEvent(event: EditProfileViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            EditProfileViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+            EditProfileViewModel.Router.NavigationScreen -> {
+                router.newRootScreen(Screens.navigation(null))
+            }
         }
     }
 

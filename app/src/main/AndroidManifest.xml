@@ -26,10 +26,22 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
-        <activity android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity">
+        <activity
+            android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity"
+            android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="passionwoman.page.link"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
     </application>

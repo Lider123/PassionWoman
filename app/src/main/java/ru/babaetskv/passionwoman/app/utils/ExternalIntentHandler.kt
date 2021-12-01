@@ -19,6 +19,15 @@ class ExternalIntentHandler(
             false
         }
 
+    fun handleText(text: String): Boolean {
+        val intent = Intent(ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(EXTRA_TEXT, text)
+            addFlags(FLAG_ACTIVITY_NEW_TASK)
+        }
+        return context.startActivitySafely(intent)
+    }
+
     fun handleCall(phoneNumber: String): Boolean {
         val intent = Intent(ACTION_DIAL).apply {
             data = Uri.fromParts("tel", phoneNumber, null)

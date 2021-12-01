@@ -12,20 +12,21 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCar
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.model.*
 
 object Screens {
 
-    fun splash() = FragmentScreen {
-        SplashFragment.create()
+    fun splash(payload: DeeplinkPayload?) = FragmentScreen {
+        SplashFragment.create(payload)
     }
 
     fun onboarding() = FragmentScreen {
         OnboardingFragment.create()
     }
 
-    fun navigation() = FragmentScreen {
-        NavigationFragment.create()
+    fun navigation(payload: DeeplinkPayload?) = FragmentScreen {
+        NavigationFragment.create(payload)
     }
 
     fun category(category: Category) = FragmentScreen {
@@ -64,8 +65,8 @@ object Screens {
         EditProfileFragment.create(profile, false)
     }
 
-    fun productCard(product: Product) = FragmentScreen {
-        ProductCardFragment.create(product.id)
+    fun productCard(productId: String) = FragmentScreen {
+        ProductCardFragment.create(productId)
     }
 
     fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {

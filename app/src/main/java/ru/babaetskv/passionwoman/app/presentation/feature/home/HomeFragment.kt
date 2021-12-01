@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
         super.handleRouterEvent(event)
         when (event) {
             is HomeViewModel.Router.ProductCardScreen -> {
-                router.navigateTo(Screens.productCard(event.product))
+                router.navigateTo(Screens.productCard(event.product.id))
             }
             is HomeViewModel.Router.ProductListScreen -> {
                 router.navigateTo(
