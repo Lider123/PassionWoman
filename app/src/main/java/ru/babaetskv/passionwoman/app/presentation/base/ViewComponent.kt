@@ -8,7 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.flow.collect
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.StubView
-import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
 import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
@@ -42,7 +41,7 @@ interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel
     fun handleRouterEvent(event: TRouterEvent) = Unit
 
     fun showLoading(show: Boolean) {
-        componentView.findViewById<LinearMockView>(R.id.mockView)?.isVisible = show
+        componentView.findViewById<View>(R.id.mockView)?.isVisible = show
         componentView.findViewById<ProgressView>(R.id.progressView)?.isVisible = show
     }
 
