@@ -1,15 +1,20 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.splash
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 
 class SplashFragment :
-    BaseFragment<SplashViewModel, SplashViewModel.Router, FragmentComponent.NoArgs>() {
-    override val viewModel: SplashViewModel by viewModel()
+    BaseFragment<SplashViewModel, SplashViewModel.Router, SplashFragment.Args>() {
+    override val viewModel: SplashViewModel by viewModel {
+        parametersOf(args)
+    }
     override val layoutRes: Int = R.layout.fragment_splash
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
@@ -23,12 +28,19 @@ class SplashFragment :
             is SplashViewModel.Router.SignUpScreen -> {
                 router.newRootScreen(Screens.signUp(event.profile))
             }
-            SplashViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
+            is SplashViewModel.Router.NavigationScreen -> {
+                router.newRootScreen(Screens.navigation(event.payload))
+            }
         }
     }
 
+    @Parcelize
+    data class Args(
+        val payload: DeeplinkPayload?
+    ) : Parcelable
+
     companion object {
 
-        fun create() = SplashFragment()
+        fun create(payload: DeeplinkPayload?) = SplashFragment().withArgs(Args(payload))
     }
 }

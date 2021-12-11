@@ -1,7 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
+import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.NavigatorHolder
 import kotlinx.coroutines.flow.collect
@@ -40,6 +42,11 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override val applyInsets: Boolean = false
     override val screenName: String = ""
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.handleIntent(intent, true)
+    }
+
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.setNavigator(navigator)
@@ -48,6 +55,11 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override fun onPause() {
         navigatorHolder.removeNavigator()
         super.onPause()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        viewModel.handleIntent(intent, false)
     }
 
     override fun onBackPressed() {
@@ -64,7 +76,12 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override fun handleRouterEvent(event: MainViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            MainViewModel.Router.SplashScreen -> router.newRootScreen(Screens.splash())
+            is MainViewModel.Router.SplashScreen -> {
+                router.newRootScreen(Screens.splash(event.payload))
+            }
+            is MainViewModel.Router.ProductScreen -> {
+                router.navigateTo(Screens.productCard(event.productId))
+            }
         }
     }
 

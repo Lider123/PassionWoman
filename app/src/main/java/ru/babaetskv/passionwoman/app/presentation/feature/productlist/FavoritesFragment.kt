@@ -51,7 +51,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
         super.handleRouterEvent(event)
         when (event) {
             is FavoritesViewModel.Router.ProductCardScreen -> {
-                router.navigateTo(Screens.productCard(event.product))
+                router.navigateTo(Screens.productCard(event.product.id))
             }
         }
     }

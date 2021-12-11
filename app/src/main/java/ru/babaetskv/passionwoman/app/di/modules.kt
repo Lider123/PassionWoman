@@ -24,6 +24,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfil
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
@@ -36,9 +37,14 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.So
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
 import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
+import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
@@ -63,6 +69,8 @@ val appModule = module {
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
     single { NetworkStateChecker(androidContext()) }
+    single<DeeplinkGenerator> { FirebaseDeeplinkGenerator() }
+    single<DeeplinkHandler> { FirebaseDeeplinkHandler() }
 }
 
 val navigationModule = module {
@@ -73,8 +81,10 @@ val navigationModule = module {
 
 val viewModelModule = module {
     single { ViewModelDependencies(get(), get(), get(), get()) }
-    viewModel { MainViewModel(get()) }
-    viewModel { SplashViewModel(get(), get(), get(), get()) }
+    viewModel { MainViewModel(get(), get()) }
+    viewModel { (args: SplashFragment.Args) ->
+        SplashViewModel(args, get(), get(), get(), get())
+    }
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModel(args,
@@ -84,7 +94,9 @@ val viewModelModule = module {
             dependencies = get()
         )
     }
-    viewModel { NavigationViewModel(get(), get(), get()) }
+    viewModel { (args: NavigationFragment.Args) ->
+        NavigationViewModel(args, get(), get(), get())
+    }
     viewModel { OnboardingViewModel(get(), get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
@@ -92,7 +104,7 @@ val viewModelModule = module {
     }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
-        ProductCardViewModel(args, get(), get(), get(), get(), get())
+        ProductCardViewModel(args, get(), get(), get(), get(), get(), get(), get())
     }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { (args: SortingFragment.Args) ->

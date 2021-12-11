@@ -1,22 +1,27 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import android.app.Dialog
+import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 
-class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, FragmentComponent.NoArgs>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
     private var activeDialog: Dialog? = null
 
     override val layoutRes: Int = R.layout.fragment_navigation
-    override val viewModel: NavigationViewModel by viewModel()
+    override val viewModel: NavigationViewModel by viewModel {
+        parametersOf(args)
+    }
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
     override val screenName: String = ""
@@ -42,6 +47,9 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         super.handleRouterEvent(event)
         when (event) {
             NavigationViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is NavigationViewModel.Router.ProductScreen -> {
+                router.navigateTo(Screens.productCard(event.productId))
+            }
         }
     }
 
@@ -89,8 +97,13 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         binding.navView.menu.findItem(tab.menuItemId).isChecked = true
     }
 
+    @Parcelize
+    data class Args(
+        val payload: DeeplinkPayload?
+    ) : Parcelable
+
     companion object {
 
-        fun create() = NavigationFragment()
+        fun create(payload: DeeplinkPayload?) = NavigationFragment().withArgs(Args(payload))
     }
 }

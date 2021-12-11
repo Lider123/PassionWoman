@@ -1,11 +1,14 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.domain.interactor.AddToFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
@@ -19,6 +22,8 @@ class ProductCardViewModel(
     private val favoritesPreferences: FavoritesPreferences,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    private val deeplinkGenerator: DeeplinkGenerator,
+    private val externalIntentHandler: ExternalIntentHandler,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductCardViewModel.Router>(dependencies) {
     val productLiveData = MutableLiveData<Product>()
@@ -95,6 +100,16 @@ class ProductCardViewModel(
         // TODO
         notifier.newRequest(this, R.string.in_development)
             .sendAlert()
+    }
+
+    fun onSharePressed() {
+        val product = productLiveData.value ?: return
+
+        launch {
+            val deeplink = deeplinkGenerator.createProductDeeplink(product) ?: return@launch
+            
+            externalIntentHandler.handleText(deeplink)
+        }
     }
 
     sealed class Router : RouterEvent
