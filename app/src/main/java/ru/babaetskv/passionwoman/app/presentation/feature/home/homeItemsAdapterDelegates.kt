@@ -3,17 +3,16 @@ package ru.babaetskv.passionwoman.app.presentation.feature.home
 import androidx.lifecycle.LifecycleOwner
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeBrandsBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeHeaderBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeProductsBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomePromotionsBinding
+import ru.babaetskv.passionwoman.app.databinding.*
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.PagedProductsAdapter
 import ru.babaetskv.passionwoman.domain.model.Brand
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Promotion
+import ru.babaetskv.passionwoman.domain.model.Story
 
 private const val HOME_PRODUCT_ITEM_WIDTH_RATIO = 0.41f
+private const val HOME_STORY_ITEM_WIDTH_RATIO = 0.26f
 
 fun headerHomeItemAdapterDelegate(onClickListener: (item: HomeItem.Header) -> Unit) =
     adapterDelegateViewBinding<HomeItem.Header, HomeItem, ViewItemHomeHeaderBinding>(
@@ -52,6 +51,25 @@ fun promotionsHomeItemDelegate(onPromotionClickListener: (item: Promotion) -> Un
         }
         bind {
             with (binding.vpPromotions.adapter as PromotionsAdapter) {
+                submitList(item.data)
+            }
+        }
+    }
+
+fun storiesHomeItemDelegate(onStoryClickListener: (item: Story) -> Unit) =
+    adapterDelegateViewBinding<HomeItem.Stories, HomeItem, ViewItemHomeStoriesBinding>(
+        { layoutInflater, parent ->
+            ViewItemHomeStoriesBinding.inflate(layoutInflater, parent, false)
+        }
+    ) {
+        binding.root.run {
+            adapter = StoriesAdapter(onStoryClickListener,
+                itemWidthRatio = HOME_STORY_ITEM_WIDTH_RATIO
+            )
+            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_default))
+        }
+        bind {
+            with (binding.root.adapter as StoriesAdapter) {
                 submitList(item.data)
             }
         }

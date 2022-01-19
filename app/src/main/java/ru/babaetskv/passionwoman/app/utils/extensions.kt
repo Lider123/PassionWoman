@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -34,6 +35,17 @@ fun View.dip(value: Int): Int = context.dip(value)
 fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorRes)
 
 fun View.color(@ColorRes colorRes: Int) = context.color(colorRes)
+
+fun Context.dimen(@DimenRes dimenRes: Int) = resources.getDimensionPixelSize(dimenRes)
+
+fun View.dimen(@DimenRes dimenRes: Int) = context.dimen(dimenRes)
+
+fun Context.drawable(@DrawableRes drawableRes: Int) =
+    ContextCompat.getDrawable(this, drawableRes)
+
+fun View.drawable(@DrawableRes drawableRes: Int) = context.drawable(drawableRes)
+
+fun Float.toPriceString() = String.format("$%.2f", this)
 
 fun TextView.setHtmlText(text: String) {
     this.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)

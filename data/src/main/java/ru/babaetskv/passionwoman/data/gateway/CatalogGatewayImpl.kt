@@ -17,6 +17,7 @@ class CatalogGatewayImpl(
 
     override suspend fun getCategories(): List<Category> =
         api.getCategories().map(CategoryModel::toCategory)
+    // TODO: think about creation of ApiModel class with transform method
 
     override suspend fun getProducts(
         categoryId: String?,
@@ -58,4 +59,7 @@ class CatalogGatewayImpl(
     override suspend fun setFavoriteIds(ids: List<String>) {
         api.setFavoriteIds(ids)
     }
+
+    override suspend fun getStories(): List<Story> =
+        api.getStories().map(StoryModel::toStory)
 }

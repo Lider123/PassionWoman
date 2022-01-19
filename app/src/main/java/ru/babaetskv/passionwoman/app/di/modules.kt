@@ -24,6 +24,8 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfil
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
@@ -119,6 +121,9 @@ val viewModelModule = module {
     viewModel { ContactsViewModel(get(), get()) }
     viewModel { (args: FiltersFragment.Args) ->
         FiltersViewModel(args, get(), get(), get())
+    }
+    viewModel { (args: StoriesFragment.Args) ->
+        StoriesViewModel(args, get())
     }
 }
 

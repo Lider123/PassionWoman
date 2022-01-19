@@ -36,6 +36,7 @@ class HomeViewModel(
             val data = getHomeDataUseCase.execute()
             homeItemsLiveData.postValue(mutableListOf<HomeItem>().apply {
                 if (data.promotions.isNotEmpty()) add(HomeItem.Promotions(data.promotions))
+                if (data.stories.isNotEmpty()) add(HomeItem.Stories(data.stories))
                 if (data.saleProducts.isNotEmpty()) {
                     add(HEADER_PRODUCTS_SALE)
                     add(HomeItem.Products(data.saleProducts))
@@ -90,6 +91,20 @@ class HomeViewModel(
             .sendAlert()
     }
 
+    fun onStoryPressed(story: Story) {
+        val storiesItem = homeItemsLiveData.value?.find { it is HomeItem.Stories }
+        with (storiesItem as? HomeItem.Stories) {
+            val stories = this?.data ?: return
+
+            val initialStoryIndex = stories.indexOfFirst { it.id == story.id }
+            if (initialStoryIndex < 0) return
+
+            launchWithLoading {
+                navigateTo(Router.StoriesScreen(stories, initialStoryIndex))
+            }
+        }
+    }
+
     fun onBuyProductPressed(product: Product) {
         // TODO
         notifier.newRequest(this, R.string.in_development)
@@ -120,6 +135,11 @@ class HomeViewModel(
             @StringRes val titleRes: Int,
             val filters: List<Filter>,
             val sorting: Sorting
+        ) : Router()
+
+        data class StoriesScreen(
+            val stories: List<Story>,
+            val initialStoryIndex: Int
         ) : Router()
     }
 

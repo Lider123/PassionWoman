@@ -16,6 +16,50 @@
             app:layout_constraintTop_toTopOf="parent"
             layout="@layout/view_item_home_promotions_mock"/>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mockStories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            app:layout_constraintTop_toBottomOf="@id/mockPromotions">
+
+            <include
+                android:id="@+id/mockStory1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent=".26"
+                layout="@layout/view_item_story_mock"/>
+
+            <include
+                android:id="@+id/mockStory2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                app:layout_constraintStart_toEndOf="@+id/mockStory1"
+                app:layout_constraintWidth_percent=".26"
+                layout="@layout/view_item_story_mock"/>
+
+            <include
+                android:id="@+id/mockStory3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                app:layout_constraintStart_toEndOf="@+id/mockStory2"
+                app:layout_constraintWidth_percent=".26"
+                layout="@layout/view_item_story_mock"/>
+
+            <include
+                android:id="@+id/mockStory4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                app:layout_constraintStart_toEndOf="@+id/mockStory3"
+                app:layout_constraintWidth_percent=".26"
+                layout="@layout/view_item_story_mock"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <include
             android:id="@+id/mockHeader1"
             android:layout_width="0dp"
@@ -24,7 +68,7 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             app:layout_constraintWidth_percent=".4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mockPromotions"
+            app:layout_constraintTop_toBottomOf="@id/mockStories"
             layout="@layout/view_item_home_header_mock"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
