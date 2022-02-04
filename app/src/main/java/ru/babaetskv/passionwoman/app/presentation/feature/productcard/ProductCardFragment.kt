@@ -14,9 +14,11 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.ProductColor
+import ru.babaetskv.passionwoman.domain.model.ProductSize
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
 class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
@@ -96,13 +98,13 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             tvProductName.text = product.name
             ratingBar.rating = product.rating
             if (product.discountRate > 0) {
-                tvPrice.text = product.priceWithDiscount.toPriceString()
+                tvPrice.text = product.priceWithDiscount.toFormattedString()
                 tvPriceDeleted.run {
                     isVisible = true
-                    setHtmlText(getString(R.string.deleted_text_template, product.price.toPriceString()))
+                    setHtmlText(getString(R.string.deleted_text_template, product.price.toFormattedString()))
                 }
             } else {
-                tvPrice.text = product.price.toPriceString()
+                tvPrice.text = product.price.toFormattedString()
                 tvPriceDeleted.isVisible = false
             }
             tvDiscountPercent.run {
@@ -123,14 +125,14 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         }
     }
 
-    private fun populateProductColorItems(items: List<ProductColorItem>) {
-        val selectedColorName = items.find { it.selected }?.productColor?.color?.name ?: ""
+    private fun populateProductColorItems(items: List<SelectableItem<ProductColor>>) {
+        val selectedColorName = items.find { it.isSelected }?.value?.color?.uiName ?: ""
         binding.tvColors.setHtmlText(getString(R.string.product_card_color_placeholder, selectedColorName))
         productColorsAdapter.submitList(items)
     }
 
-    private fun populateProductSizeItems(items: List<ProductSizeItem>) {
-        val productIsAvailable = items.any { it.size.isAvailable }
+    private fun populateProductSizeItems(items: List<SelectableItem<ProductSize>>) {
+        val productIsAvailable = items.any { it.value.isAvailable }
         binding.btnAddToCart.run {
             isEnabled = productIsAvailable
             setText(if (productIsAvailable) R.string.product_card_add_to_cart else R.string.product_card_not_available)

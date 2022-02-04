@@ -1,0 +1,319 @@
+[
+  {
+    "type": "multi",
+    "code": "categories",
+    "uiName": "Categories",
+    "values": [
+      {
+        "code": "category_bra",
+        "uiName": "Bra"
+      },
+      {
+        "code": "category_panties",
+        "uiName": "Panties"
+      },
+      {
+        "code": "category_lingerie",
+        "uiName": "Lingerie"
+      },
+      {
+        "code": "category_erotic",
+        "uiName": "Erotic"
+      },
+      {
+        "code": "category_swim",
+        "uiName": "Swim"
+      },
+      {
+        "code": "category_corsets",
+        "uiName": "Corsets"
+      },
+      {
+        "code": "category_garter_belts",
+        "uiName": "Garter belts"
+      },
+      {
+        "code": "category_babydolls",
+        "uiName": "Babydolls"
+      },
+      {
+        "code": "category_stockings",
+        "uiName": "Stockings"
+      },
+      {
+        "code": "category_pantyhose",
+        "uiName": "Pantyhose"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "brands",
+    "uiName": "Brands",
+    "values": [
+      {
+        "code": "brand_12",
+        "uiName": "Fiore"
+      },
+      {
+        "code": "brand_5",
+        "uiName": "Fleur du Mal"
+      },
+      {
+        "code": "brand_13",
+        "uiName": "Incanto"
+      },
+      {
+        "code": "brand_15",
+        "uiName": "Infinity lingerie"
+      },
+      {
+        "code": "brand_2",
+        "uiName": "Intimissimi"
+      },
+      {
+        "code": "brand_4",
+        "uiName": "La Perla"
+      },
+      {
+        "code": "brand_8",
+        "uiName": "Lowry"
+      },
+      {
+        "code": "brand_7",
+        "uiName": "Lui et Elle"
+      },
+      {
+        "code": "brand_6",
+        "uiName": "Maison Lejaby"
+      },
+      {
+        "code": "brand_14",
+        "uiName": "Mark Formelle"
+      },
+      {
+        "code": "brand_3",
+        "uiName": "MilaVitsa"
+      },
+      {
+        "code": "brand_9",
+        "uiName": "MiNiMi"
+      },
+      {
+        "code": "brand_10",
+        "uiName": "SiSi"
+      },
+      {
+        "code": "brand_1",
+        "uiName": "Victoria's Secret"
+      },
+      {
+        "code": "brand_11",
+        "uiName": "Vis-A-Vis"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "sizes",
+    "uiName": "Sizes",
+    "values": [
+      {
+        "code": "XS",
+        "uiName": "XS"
+      },
+      {
+        "code": "S",
+        "uiName": "S"
+      },
+      {
+        "code": "M",
+        "uiName": "M"
+      },
+      {
+        "code": "L",
+        "uiName": "L"
+      },
+      {
+        "code": "XL",
+        "uiName": "XL"
+      },
+      {
+        "code": "XXL",
+        "uiName": "XXL"
+      },
+      {
+        "code": "XXXL",
+        "uiName": "XXXL"
+      },
+      {
+        "code": "80",
+        "uiName": "80"
+      },
+      {
+        "code": "82",
+        "uiName": "82"
+      },
+      {
+        "code": "84",
+        "uiName": "84"
+      },
+      {
+        "code": "86",
+        "uiName": "86"
+      },
+      {
+        "code": "88",
+        "uiName": "88"
+      },
+      {
+        "code": "90",
+        "uiName": "90"
+      },
+      {
+        "code": "92",
+        "uiName": "92"
+      },
+      {
+        "code": "94",
+        "uiName": "94"
+      },
+      {
+        "code": "96",
+        "uiName": "96"
+      },
+      {
+        "code": "98",
+        "uiName": "98"
+      },
+      {
+        "code": "100",
+        "uiName": "100"
+      },
+      {
+        "code": "102",
+        "uiName": "102"
+      },
+      {
+        "code": "104",
+        "uiName": "104"
+      },
+      {
+        "code": "106",
+        "uiName": "106"
+      },
+      {
+        "code": "108",
+        "uiName": "108"
+      },
+      {
+        "code": "110",
+        "uiName": "110"
+      },
+      {
+        "code": "85B",
+        "uiName": "85B"
+      },
+      {
+        "code": "85C",
+        "uiName": "85C"
+      },
+      {
+        "code": "90B",
+        "uiName": "90B"
+      },
+      {
+        "code": "90C",
+        "uiName": "90C"
+      },
+      {
+        "code": "95B",
+        "uiName": "95B"
+      },
+      {
+        "code": "95C",
+        "uiName": "95C"
+      },
+      {
+        "code": "100B",
+        "uiName": "100B"
+      },
+      {
+        "code": "100C",
+        "uiName": "100C"
+      },
+      {
+        "code": "105B",
+        "uiName": "105B"
+      },
+      {
+        "code": "105C",
+        "uiName": "105C"
+      }
+    ]
+  },
+  {
+    "type": "range",
+    "code": "price",
+    "uiName": "Price",
+    "minValue": 0.0,
+    "maxValue": 200.0
+  },
+  {
+    "type": "color",
+    "code": "color",
+    "uiName": "Color",
+    "values": [
+      {
+        "code": "white",
+        "uiName": "white",
+        "hex": "#ffffff"
+      },
+      {
+        "code": "black",
+        "uiName": "black",
+        "hex": "#000000"
+      },
+      {
+        "code": "red",
+        "uiName": "red",
+        "hex": "#ff0000"
+      },
+      {
+        "code": "light_blue",
+        "uiName": "light blue",
+        "hex": "#72bcd4"
+      },
+      {
+        "code": "purple",
+        "uiName": "purple",
+        "hex": "#800080"
+      },
+      {
+        "code": "yellow",
+        "uiName": "yellow",
+        "hex": "#e5e500"
+      },
+      {
+        "code": "blue",
+        "uiName": "blue",
+        "hex": "#4169e1"
+      },
+      {
+        "code": "beige",
+        "uiName": "beige",
+        "hex": "#f5f5dc"
+      },
+      {
+        "code": "hot_pink",
+        "uiName": "hot pink",
+        "hex": "#ff69b4"
+      },
+      {
+        "code": "multicolor",
+        "uiName": "multicolor",
+        "hex": "multicolor"
+      }
+    ]
+  }
+]

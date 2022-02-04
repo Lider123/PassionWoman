@@ -78,7 +78,6 @@ class FavoritesViewModel(
     private fun loadFavorites() {
         launchWithLoading {
             val products = getFavoritesUseCase.execute()
-            // TODO: handle empty products list
             productsLiveData.postValue(products)
         }
     }

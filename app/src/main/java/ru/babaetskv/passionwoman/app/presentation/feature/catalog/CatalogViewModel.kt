@@ -29,7 +29,6 @@ class CatalogViewModel(
     private fun loadData() {
         launchWithLoading {
             val categories = getCategoriesUseCase.execute()
-            // TODO: handle empty categories list
             categoriesLiveData.postValue(categories)
         }
     }

@@ -16,9 +16,9 @@ import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.domain.model.Filters
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewModel.Router, ProductListFragment.Args>() {
     private val binding: FragmentProductListBinding by viewBinding()
@@ -61,6 +61,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
             viewModel.productsFlow.collect(::populateProducts)
         }
         viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
+        viewModel.appliedFiltersCountLiveData.observe(viewLifecycleOwner, ::populateFiltersBadge)
     }
 
     override fun handleRouterEvent(event: ProductListViewModel.Router) {
@@ -72,6 +73,20 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
             is ProductListViewModel.Router.SortingScreen -> {
                 router.openBottomSheet(Screens.sorting(event.selectedSorting))
             }
+            is ProductListViewModel.Router.FiltersScreen -> {
+                router.openBottomSheet(Screens.filters(
+                    args.categoryId,
+                    event.filters,
+                    event.productsCount
+                ))
+            }
+        }
+    }
+
+    private fun populateFiltersBadge(appliedFiltersCount: Int) {
+        binding.tvFiltersCount.run {
+            isVisible = appliedFiltersCount > 0
+            text = appliedFiltersCount.toString()
         }
     }
 
@@ -89,7 +104,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
     data class Args(
         val categoryId: String?,
         val title: String,
-        val filters: Filters,
+        val filters: List<Filter>,
         val sorting: Sorting,
         val actionsAvailable: Boolean
     ) : Parcelable
@@ -99,7 +114,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         fun create(
             categoryId: String?,
             title: String,
-            filters: Filters,
+            filters: List<Filter>,
             sorting: Sorting,
             actionsAvailable: Boolean
         ) = ProductListFragment().withArgs(Args(

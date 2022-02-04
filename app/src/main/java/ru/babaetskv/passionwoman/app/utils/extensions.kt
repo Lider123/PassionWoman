@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
+import android.text.Editable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -33,8 +34,6 @@ fun View.dip(value: Int): Int = context.dip(value)
 fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorRes)
 
 fun View.color(@ColorRes colorRes: Int) = context.color(colorRes)
-
-fun Float.toPriceString() = String.format("$%.2f", this)
 
 fun TextView.setHtmlText(text: String) {
     this.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
@@ -147,3 +146,5 @@ fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
 }
 
 operator fun Bundle.plus(other: Bundle): Bundle = this.apply { putAll(other) }
+
+fun Editable?.toFloat() = this.toString().toFloat()

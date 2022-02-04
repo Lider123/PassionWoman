@@ -7,29 +7,34 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.domain.model.ProductSize
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
 class ProductSizesAdapter(
-    private val onItemClick: (ProductSizeItem) -> Unit
-): BaseAdapter<ProductSizeItem>(EqualDiffUtilCallback()) {
+    private val onItemClick: (SelectableItem<ProductSize>) -> Unit
+): BaseAdapter<SelectableItem<ProductSize>>(EqualDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductSizeItem> =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<SelectableItem<ProductSize>> =
         LayoutInflater.from(parent.context)
             .let { ViewItemProductSizeBinding.inflate(it, parent, false) }
             .let { ViewHolder(it) }
 
     inner class ViewHolder(
         private val binding: ViewItemProductSizeBinding
-    ) : BaseViewHolder<ProductSizeItem>(binding.root) {
+    ) : BaseViewHolder<SelectableItem<ProductSize>>(binding.root) {
 
-        override fun bind(item: ProductSizeItem) {
+        override fun bind(item: SelectableItem<ProductSize>) {
             binding.run {
                 root.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
-                tvSize.run {
-                    text = item.size.value
-                    isEnabled = item.size.isAvailable
-                    isSelected = item.isSelected
+                btnSize.run {
+                    text = item.value.value
+                    isEnabled = item.value.isAvailable
+                    isChecked = item.isSelected
                 }
             }
         }

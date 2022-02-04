@@ -53,7 +53,7 @@
                     android:layout_marginBottom="@dimen/margin_default"
                     android:text="@string/demo_presets_apply"
                     app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-                    style="@style/Theme.PassionWoman.Button.Colored"/>
+                    style="@style/Widget.PassionWoman.Button.Colored"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

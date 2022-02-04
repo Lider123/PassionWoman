@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.PassionWoman.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+    </style>
+
+    <style name="Widget.PassionWoman.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/corners_default</item>
+        <item name="android:foreground">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="cardBackgroundColor">@color/primaryVariant</item>
+    </style>
+
+    <style name="Widget.PassionWoman.ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">@color/onPrimary</item>
+    </style>
+
+    <style name="Widget.PassionWoman.Button.Colored" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/button_color_selector</item>
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="cornerRadius">@dimen/corners_default</item>
+        <item name="android:textColor">@color/onSecondary</item>
+    </style>
+
+    <style
+        name="Widget.PassionWoman.Button.Outline"
+        parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="cornerRadius">@dimen/corners_default</item>
+        <item name="strokeColor">@color/button_color_selector</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textColor">@color/button_color_selector</item>
+    </style>
+
+    <style
+        name="Widget.PassionWoman.Button.Text"
+        parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance.Button</item>
+        <item name="android:textColor">@color/button_color_selector</item>
+        <item name="android:padding">@dimen/margin_small</item>
+    </style>
+
+    <style name="Widget.PassionWoman.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:fontFamily">@font/lora_italic</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style
+        name="Widget.PassionWoman.TextInput"
+        parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="hintTextColor">@color/hint</item>
+        <item name="android:textColorHint">@color/text_input_label_color</item>
+    </style>
+
+    <style name="Widget.PassionWoman.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="track">@drawable/switch_track</item>
+        <item name="android:thumb">@drawable/switch_thumb</item>
+    </style>
+
+    <style
+        name="Widget.PassionWoman.RadioButton"
+        parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+        <item name="android:textColor">@color/onPrimary</item>
+        <item name="android:button">@drawable/radio_button</item>
+        <item name="android:paddingStart">@dimen/margin_small</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+    </style>
+
+    <style name="Widget.PassionWoman.RatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:stepSize">0.1</item>
+        <item name="android:progressTint">@color/secondary</item>
+        <item name="android:progressBackgroundTint">@color/hint</item>
+    </style>
+
+    <style name="Widget.PassionWoman.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+        <item name="android:textColor">@color/onPrimary</item>
+    </style>
+
+    <style name="Widget.PassionWoman.ToggleButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_toggle</item>
+        <item name="android:textColor">@color/toggle_color_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="android:textAppearance">@style/Typography.PassionWoman.TextAppearance</item>
+    </style>
+
+    <style name="Widget.PassionWoman.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="minSeparation">1dp</item>
+        <item name="labelBehavior">gone</item>
+        <item name="trackColorActive">@color/secondaryVariant</item>
+        <item name="trackColorInactive">@color/hint</item>
+        <item name="trackHeight">6dp</item>
+        <item name="thumbColor">@color/secondary</item>
+        <item name="thumbRadius">16dp</item>
+        <item name="haloRadius">0dp</item>
+        <item name="haloColor">@android:color/transparent</item>
+    </style>
+</resources>

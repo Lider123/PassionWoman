@@ -29,4 +29,6 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val SORT_POPULARITY: String = resources.getString(R.string.sort_popularity)
     override val SORT_PRICE_ASC: String = resources.getString(R.string.sort_price_asc)
     override val SORT_PRICE_DESC: String = resources.getString(R.string.sort_price_desc)
+
+    override val FILTER_DISCOUNT: String = resources.getString(R.string.filter_discount)
 }

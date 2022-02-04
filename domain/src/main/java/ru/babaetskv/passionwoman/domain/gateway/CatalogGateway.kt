@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.domain.gateway
 
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 interface CatalogGateway {
 
@@ -10,7 +11,7 @@ interface CatalogGateway {
         categoryId: String?,
         limit: Int,
         offset: Int,
-        filters: Filters,
+        filters: List<Filter>,
         sorting: Sorting
     ): ProductsPagedResponse
 

@@ -15,7 +15,8 @@
     "colors": [
       {
         "color": {
-          "name": "white",
+          "code": "white",
+          "uiName": "white",
           "hex": "#ffffff"
         },
         "availableSizes": ["85B", "85C", "90C", "95B", "95C", "100B", "100C", "105B"],
@@ -42,7 +43,8 @@
     "colors": [
       {
         "color": {
-          "name": "multicolor",
+          "code": "multicolor",
+          "uiName": "multicolor",
           "hex": "multicolor"
         },
         "images": [

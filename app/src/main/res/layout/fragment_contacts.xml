@@ -54,7 +54,6 @@
             android:textAlignment="center"
             app:layout_constraintTop_toBottomOf="@id/rvOptions"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/Theme.PassionWoman.TextView"
             tools:text="v1.0.0"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

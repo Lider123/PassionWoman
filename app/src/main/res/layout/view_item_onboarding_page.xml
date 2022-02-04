@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent=".5"
-            style="@style/Theme.PassionWoman.Button.Colored"
+            style="@style/Widget.PassionWoman.Button.Colored"
             tools:text="@tools:sample/lorem"/>
 
         <androidx.appcompat.widget.AppCompatTextView

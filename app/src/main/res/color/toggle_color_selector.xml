@@ -6,7 +6,7 @@
         android:color="@color/primaryVariant"  />
 
     <item
-        android:state_selected="false"
+        android:state_checked="false"
         android:color="@color/hint" />
 
     <item android:color="@color/secondary"/>

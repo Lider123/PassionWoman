@@ -10,36 +10,41 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemProductColorBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.domain.model.ProductColor
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
 class ProductColorsAdapter(
-    private val onItemClick: (item: ProductColorItem) -> Unit
-) : BaseAdapter<ProductColorItem>(ProductColorItemDiffUtilCallback()) {
+    private val onItemClick: (item: SelectableItem<ProductColor>) -> Unit
+) : BaseAdapter<SelectableItem<ProductColor>>(ProductColorItemDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductColorItem> =
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<SelectableItem<ProductColor>> =
         LayoutInflater.from(parent.context)
             .inflate(R.layout.view_item_product_color, parent, false)
             .let {
                 ViewHolder(it)
             }
 
-    inner class ViewHolder(v: View) : BaseViewHolder<ProductColorItem>(v) {
+    inner class ViewHolder(v: View) : BaseViewHolder<SelectableItem<ProductColor>>(v) {
         private val binding = ViewItemProductColorBinding.bind(v)
 
-        override fun bind(item: ProductColorItem) {
+        override fun bind(item: SelectableItem<ProductColor>) {
             binding.colorView.run {
-                val color = item.productColor.color
+                val color = item.value.color
                 if (color.isMulticolor) {
                     setMulticolor()
                 } else setColor(color.hex.toColorInt())
-                borderVisible = item.selected
+                borderVisible = item.isSelected
                 setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
             }
         }
 
-        override fun bind(item: ProductColorItem, payload: Any) {
-            if (payload == PAYLOAD_SELECTED) setSelected(item.selected)
+        override fun bind(item: SelectableItem<ProductColor>, payload: Any) {
+            if (payload == PAYLOAD_SELECTED) setSelected(item.isSelected)
         }
 
         private fun setSelected(selected: Boolean) {
@@ -47,16 +52,24 @@ class ProductColorsAdapter(
         }
     }
 
-    private class ProductColorItemDiffUtilCallback : DiffUtil.ItemCallback<ProductColorItem>() {
+    private class ProductColorItemDiffUtilCallback :
+        DiffUtil.ItemCallback<SelectableItem<ProductColor>>() {
 
-        override fun areContentsTheSame(oldItem: ProductColorItem, newItem: ProductColorItem): Boolean =
-            oldItem == newItem
+        override fun areContentsTheSame(
+            oldItem: SelectableItem<ProductColor>,
+            newItem: SelectableItem<ProductColor>
+        ): Boolean = oldItem == newItem
 
-        override fun areItemsTheSame(oldItem: ProductColorItem, newItem: ProductColorItem): Boolean =
-            oldItem.productColor == newItem.productColor
+        override fun areItemsTheSame(
+            oldItem: SelectableItem<ProductColor>,
+            newItem: SelectableItem<ProductColor>
+        ): Boolean = oldItem.value == newItem.value
 
-        override fun getChangePayload(oldItem: ProductColorItem, newItem: ProductColorItem): Any? {
-            if (oldItem.selected != newItem.selected) return PAYLOAD_SELECTED
+        override fun getChangePayload(
+            oldItem: SelectableItem<ProductColor>,
+            newItem: SelectableItem<ProductColor>
+        ): Any? {
+            if (oldItem.isSelected != newItem.isSelected) return PAYLOAD_SELECTED
 
             return null
         }

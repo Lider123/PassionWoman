@@ -14,7 +14,8 @@
     "colors": [
       {
         "color": {
-          "name": "black",
+          "code": "black",
+          "uiName": "black",
           "hex": "#000000"
         },
         "images": [
@@ -24,7 +25,8 @@
       },
       {
         "color": {
-          "name": "white",
+          "code": "white",
+          "uiName": "white",
           "hex": "#ffffff"
         },
         "images": [

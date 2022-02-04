@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import ru.babaetskv.passionwoman.domain.utils.*
 
 @Parcelize
 data class Product(
@@ -10,12 +11,12 @@ data class Product(
     val name: String,
     val description: String?,
     val preview: Image,
-    val price: Float,
-    val priceWithDiscount: Float,
+    val price: Price,
+    val priceWithDiscount: Price,
     val rating: Float,
     val brand: Brand?,
     val colors: List<ProductColor>
 ) : Parcelable {
     val discountRate: Float
-        get() = 100 * (1 - priceWithDiscount / price)
+        get() = (100 * (1 - priceWithDiscount / price)).toFloat()
 }

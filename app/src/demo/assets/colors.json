@@ -1,42 +1,52 @@
 [
   {
-    "name": "white",
+    "code": "white",
+    "uiName": "white",
     "hex": "#ffffff"
   },
   {
-    "name": "black",
+    "code": "black",
+    "uiName": "black",
     "hex": "#000000"
   },
   {
-    "name": "red",
+    "code": "red",
+    "uiName": "red",
     "hex": "#ff0000"
   },
   {
-    "name": "light blue",
+    "code": "light_blue",
+    "uiName": "light blue",
     "hex": "#72bcd4"
   },
   {
-    "name": "purple",
+    "code": "purple",
+    "uiName": "purple",
     "hex": "#800080"
   },
   {
-    "name": "yellow",
+    "code": "yellow",
+    "uiName": "yellow",
     "hex": "#e5e500"
   },
   {
-    "name": "blue",
+    "code": "blue",
+    "uiName": "blue",
     "hex": "#4169e1"
   },
   {
-    "name": "beige",
+    "code": "beige",
+    "uiName": "beige",
     "hex": "#f5f5dc"
   },
   {
-    "name": "hot pink",
+    "code": "hot_pink",
+    "uiName": "hot pink",
     "hex": "#ff69b4"
   },
   {
-    "name": "multicolor",
+    "code": "multicolor",
+    "uiName": "multicolor",
     "hex": "multicolor"
   }
 ]

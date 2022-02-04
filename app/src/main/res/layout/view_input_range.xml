@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        app:layout_constraintTop_toTopOf="@id/layoutInputFrom"
+        app:layout_constraintBottom_toBottomOf="@id/layoutInputFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="from"/>
+
+    <LinearLayout
+        android:id="@+id/layoutInputFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_input"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingEnd="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvFrom">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFromPrefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/inputFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:minEms="1"
+            android:maxEms="3"
+            android:lines="1"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/margin_small"
+            android:textAlignment="viewEnd"
+            android:hint="@string/view_input_range_hint"
+            tools:text="1"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        app:layout_constraintTop_toTopOf="@id/layoutInputTo"
+        app:layout_constraintBottom_toBottomOf="@id/layoutInputTo"
+        app:layout_constraintEnd_toStartOf="@id/layoutInputTo"
+        tools:text="to"/>
+
+    <LinearLayout
+        android:id="@+id/layoutInputTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_input"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingEnd="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvToPrefix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/inputTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:minEms="1"
+            android:maxEms="3"
+            android:lines="1"
+            android:textAlignment="viewEnd"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/margin_small"
+            android:hint="@string/view_input_range_hint"
+            tools:text="1000"/>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="tvFrom,tvTo,layoutInputFrom,layoutInputTo"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rangeSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
+        tools:valueFrom="0"
+        tools:valueTo="100"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
