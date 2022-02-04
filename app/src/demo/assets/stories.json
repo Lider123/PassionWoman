@@ -1,0 +1,61 @@
+[
+  {
+    "id": "story_1",
+    "image": "image/story_1.png",
+    "contents": [
+      {
+        "id": "story_1_content_1",
+        "title": "New passionate lingerie",
+        "text": "We have new collection specially for you!",
+        "media": "video/story_1_content_1.mp4",
+        "type": "video"
+      }
+    ]
+  },
+  {
+    "id": "story_2",
+    "image": "image/story_2.png",
+    "contents": [
+      {
+        "id": "story_2_content_1",
+        "title": "Feel comfort",
+        "text": "Try out comfortable daily underwear.",
+        "media": "video/story_2_content_1.mp4",
+        "type": "video"
+      }
+    ]
+  },
+  {
+    "id": "story_3",
+    "image": "image/story_3.png",
+    "contents": [
+      {
+        "id": "story_3_content_2",
+        "title": "Summer time!",
+        "text": "Try our new swimsuits collection.",
+        "media": "video/story_3_content_1.mp4",
+        "type": "video"
+      },
+      {
+        "id": "story_3_content_1",
+        "title": "Summer time!",
+        "text": "The new models are comfortable and very stylish.",
+        "media": "image/story_3_content_2.jpg",
+        "type": "image"
+      }
+    ]
+  },
+  {
+    "id": "story_4",
+    "image": "image/story_4.jpg",
+    "contents": [
+      {
+        "id": "story_4_content_1",
+        "title": "Merry Christmas!",
+        "text": "The best Christmas present is you.",
+        "media": "image/story_4_content_1.jpg",
+        "type": "image"
+      }
+    ]
+  }
+]

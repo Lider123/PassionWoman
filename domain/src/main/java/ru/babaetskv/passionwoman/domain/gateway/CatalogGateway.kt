@@ -30,4 +30,6 @@ interface CatalogGateway {
     suspend fun getFavoriteIds(): List<String>
 
     suspend fun setFavoriteIds(ids: List<String>)
+
+    suspend fun getStories(): List<Story>
 }

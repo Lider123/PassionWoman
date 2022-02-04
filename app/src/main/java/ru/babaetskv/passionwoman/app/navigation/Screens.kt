@@ -5,6 +5,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsFragm
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
@@ -86,4 +87,8 @@ object Screens {
         BottomSheetDialogFragmentScreen {
             FiltersFragment.create(categoryId, filters, productsCount)
         }
+
+    fun stories(stories: List<Story>, initialStoryIndex: Int) = FragmentScreen {
+        StoriesFragment.create(stories, initialStoryIndex)
+    }
 }

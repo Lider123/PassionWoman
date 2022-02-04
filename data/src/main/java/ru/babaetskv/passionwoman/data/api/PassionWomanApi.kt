@@ -56,4 +56,7 @@ interface PassionWomanApi {
     suspend fun uploadAvatar(
         @Part image: MultipartBody.Part
     )
+
+    @GET("api/catalog/stories")
+    suspend fun getStories(): List<StoryModel>
 }

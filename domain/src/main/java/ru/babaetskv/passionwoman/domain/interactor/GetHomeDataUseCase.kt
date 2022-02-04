@@ -18,6 +18,7 @@ class GetHomeDataUseCase(
     override suspend fun run(params: Unit): HomeData =
         HomeData(
             promotions = catalogGateway.getPromotions(),
+            stories = catalogGateway.getStories(),
             saleProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(

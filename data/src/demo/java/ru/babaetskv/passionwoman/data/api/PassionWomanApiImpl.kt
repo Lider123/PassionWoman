@@ -42,6 +42,11 @@ class PassionWomanApiImpl(
         return@withContext loadListFromAsset("promotions.json")
     }
 
+    override suspend fun getStories(): List<StoryModel> = withContext(Dispatchers.IO) {
+        delay(DELAY_LOADING)
+        return@withContext loadListFromAsset("stories.json")
+    }
+
     override suspend fun getProducts(
         categoryId: String?,
         filters: String,

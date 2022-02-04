@@ -18,6 +18,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
         ListDelegationAdapter(
             headerHomeItemAdapterDelegate(viewModel::onHeaderPressed),
             promotionsHomeItemDelegate(viewModel::onPromotionPressed),
+            storiesHomeItemDelegate(viewModel::onStoryPressed),
             productsHomeItemDelegate(viewModel::onProductPressed, viewModel::onBuyProductPressed),
             brandsHomeItemDelegate(viewModel::onBrandPressed)
         )
@@ -54,6 +55,9 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
                     event.filters,
                     event.sorting
                 ))
+            }
+            is HomeViewModel.Router.StoriesScreen -> {
+                router.navigateTo(Screens.stories(event.stories, event.initialStoryIndex))
             }
         }
     }

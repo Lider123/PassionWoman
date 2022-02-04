@@ -9,13 +9,13 @@ plugins {
 apply from: 'signingCredentials.gradle'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "ru.babaetskv.passionwoman.app"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 3
         versionName "0.2.0"
 
@@ -128,6 +128,9 @@ dependencies {
 
     // Flexbox
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 }
 repositories {
     mavenCentral()
