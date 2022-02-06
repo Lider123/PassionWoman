@@ -16,7 +16,7 @@ class ContactsFragment : BaseBottomSheetDialogFragment<ContactsViewModel, Contac
     }
 
     override val layoutRes: Int = R.layout.fragment_contacts
-    override val viewModel: ContactsViewModel by viewModel()
+    override val viewModel: ContactsViewModel by viewModel<ContactsViewModelImpl>()
     override val screenName: String = ScreenKeys.CONTACTS
 
     override fun initViews() {

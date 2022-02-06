@@ -1,58 +1,16 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import androidx.lifecycle.LiveData
+import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 
-class OnboardingViewModel(
-    appPreferences: AppPreferences,
-    dependencies: ViewModelDependencies
-) : BaseViewModel<OnboardingViewModel.Router>(dependencies) {
-    private val pages = listOf(
-        OnboardingPage(R.drawable.onboarding_1, R.string.onboarding_1),
-        OnboardingPage(R.drawable.onboarding_2, R.string.onboarding_2),
-        OnboardingPage(R.drawable.onboarding_3, R.string.onboarding_3),
-        OnboardingPage(R.drawable.onboarding_4, R.string.onboarding_4),
-        OnboardingPage(R.drawable.onboarding_5, R.string.onboarding_5,
-            actionRes = R.string.onboarding_next,
-            actionCallback = ::onNextPressed
-        )
-    )
+interface OnboardingViewModel : IViewModel {
+    val pagesLiveData: LiveData<List<OnboardingPage>>
+    val currPageLiveData: LiveData<Int>
 
-    val pagesLiveData = MutableLiveData(pages)
-    val currPageLiveData = MutableLiveData(0)
-
-    init {
-        appPreferences.onboardingShowed = true
-    }
-
-    private fun onNextPressed() {
-        launch {
-            navigateTo(Router.AuthScreen)
-        }
-    }
-
-    fun onCurrPageChanged(page: Int) {
-        currPageLiveData.postValue(page)
-    }
-
-    fun onPrevPagePressed() {
-        val currPage = currPageLiveData.value!!
-        if (currPage == 0) return
-
-        currPageLiveData.postValue(currPage - 1)
-    }
-
-    fun onNextPagePressed() {
-        val currPage = currPageLiveData.value!!
-        if (currPage == pagesLiveData.value!!.size - 1) return
-
-        currPageLiveData.postValue(currPage + 1)
-    }
+    fun onCurrPageChanged(page: Int)
+    fun onPrevPagePressed()
+    fun onNextPagePressed()
 
     sealed class Router : RouterEvent {
         object AuthScreen : Router()

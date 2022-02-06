@@ -2,8 +2,8 @@ package ru.babaetskv.passionwoman.app.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.babaetskv.passionwoman.app.presentation.feature.demopresets.DemoPresetsViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.demopresets.DemoPresetsViewModelImpl
 
 val demoModule = module {
-    viewModel { DemoPresetsViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { DemoPresetsViewModelImpl(get(), get(), get(), get(), get(), get()) }
 }

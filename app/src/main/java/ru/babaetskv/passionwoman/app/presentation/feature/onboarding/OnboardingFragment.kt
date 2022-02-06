@@ -24,7 +24,7 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
     private val binding: FragmentOnboardingBinding by viewBinding()
 
     override val layoutRes: Int = R.layout.fragment_onboarding
-    override val viewModel: OnboardingViewModel by viewModel()
+    override val viewModel: OnboardingViewModel by viewModel<OnboardingViewModelImpl>()
     override val screenName: String = ScreenKeys.ONBOARDING
 
     override fun initViews() {

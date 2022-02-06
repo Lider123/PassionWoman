@@ -19,31 +19,31 @@ import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
-import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersViewModelImpl
 import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModelImpl
 import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
@@ -87,39 +87,39 @@ val viewModelModule = module {
     single { ViewModelDependencies(get(), get(), get(), get(), get()) }
     viewModel { MainViewModel(get(), get()) }
     viewModel { (args: SplashFragment.Args) ->
-        SplashViewModel(args, get(), get(), get(), get())
+        SplashViewModelImpl(args, get(), get(), get(), get())
     }
-    viewModel { CatalogViewModel(get(), get()) }
+    viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModel(args,
+        ProductListViewModelImpl(args,
             stringProvider = get(),
             productsPagingSourceFactory = get { parametersOf(args.categoryId, args.filters, args.sorting) },
             dependencies = get()
         )
     }
     viewModel { (args: NavigationFragment.Args) ->
-        NavigationViewModel(args, get(), get(), get())
+        NavigationViewModelImpl(args, get(), get(), get())
     }
-    viewModel { OnboardingViewModel(get(), get()) }
-    viewModel { AuthViewModel(get(), get(), get(), get()) }
+    viewModel { OnboardingViewModelImpl(get(), get()) }
+    viewModel { AuthViewModelImpl(get(), get(), get(), get()) }
     viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
-        EditProfileViewModel(args, profileUpdatesListener, get(), get())
+        EditProfileViewModelImpl(args, profileUpdatesListener, get(), get())
     }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
-        ProductCardViewModel(args, get(), get(), get(), get(), get(), get(), get())
+        ProductCardViewModelImpl(args, get(), get(), get(), get(), get(), get(), get())
     }
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModelImpl(get(), get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
-        SortingViewModel(args, get(), get())
+        SortingViewModelImpl(args, get(), get())
     }
-    viewModel { FavoritesViewModel(get(), get(), get(), get(), get()) }
-    viewModel { ContactsViewModel(get(), get()) }
+    viewModel { FavoritesViewModelImpl(get(), get(), get(), get(), get()) }
+    viewModel { ContactsViewModelImpl(get(), get()) }
     viewModel { (args: FiltersFragment.Args) ->
-        FiltersViewModel(args, get(), get())
+        FiltersViewModelImpl(args, get(), get())
     }
     viewModel { (args: StoriesFragment.Args) ->
-        StoriesViewModel(args, get())
+        StoriesViewModelImpl(args, get())
     }
 }
 

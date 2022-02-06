@@ -11,10 +11,9 @@ import ru.babaetskv.passionwoman.app.presentation.SimpleKeyboardAnimator
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
-abstract class BaseActivity<VM, TRouterEvent : RouterEvent> :
+abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
     AppCompatActivity(),
-    ViewComponent<VM, TRouterEvent>
-    where VM : BaseViewModel<TRouterEvent> {
+    ViewComponent<VM, TRouterEvent> {
     private val keyboardAnimator: SimpleKeyboardAnimator by lazy {
         SimpleKeyboardAnimator(window)
     }

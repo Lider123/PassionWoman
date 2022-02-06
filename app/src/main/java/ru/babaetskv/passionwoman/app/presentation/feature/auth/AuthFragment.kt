@@ -29,7 +29,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
     }
 
     override val layoutRes: Int = R.layout.fragment_auth
-    override val viewModel: AuthViewModel by viewModel()
+    override val viewModel: AuthViewModel by viewModel<AuthViewModelImpl>()
     override val screenName: String = ScreenKeys.LOGIN
 
     override fun initViews() {
@@ -129,10 +129,10 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         }
     }
 
-    private fun populateMode(mode: AuthMode) {
+    private fun populateMode(mode: AuthViewModel.AuthMode) {
         binding.run {
             when (mode) {
-                AuthMode.LOGIN -> {
+                AuthViewModel.AuthMode.LOGIN -> {
                     layoutSmsConfirm.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutLogin.run {
                         root.showAnimated(R.anim.fragment_fade_in) {
@@ -140,7 +140,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                         }
                     }
                 }
-                AuthMode.SMS_CONFIRM -> {
+                AuthViewModel.AuthMode.SMS_CONFIRM -> {
                     layoutLogin.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutSmsConfirm.run {
                         root.showAnimated(R.anim.fragment_fade_in) {

@@ -33,7 +33,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     }
 
     override val layoutRes: Int = R.layout.fragment_product_card
-    override val viewModel: ProductCardViewModel by viewModel {
+    override val viewModel: ProductCardViewModel by viewModel<ProductCardViewModelImpl> {
         parametersOf(args)
     }
     override val screenName: String = ScreenKeys.PRODUCT_CARD

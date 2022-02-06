@@ -16,10 +16,9 @@ import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
-abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     Fragment(),
-    FragmentComponent<VM, TRouterEvent, TArgs>
-    where VM : BaseViewModel<TRouterEvent> {
+    FragmentComponent<VM, TRouterEvent, TArgs> {
     protected val router: AppRouter by inject()
     protected open val applyTopInset: Boolean = true
     protected open val applyBottomInset: Boolean = true

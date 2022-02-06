@@ -14,6 +14,7 @@ import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
@@ -21,10 +22,10 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 
 class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
     private val binding: FragmentEditProfileBinding by viewBinding()
-    private val profileViewModel: ProfileViewModel by sharedViewModel()
+    private val profileViewModel: ProfileViewModel by sharedViewModel<ProfileViewModelImpl>()
 
     override val layoutRes: Int = R.layout.fragment_edit_profile
-    override val viewModel: EditProfileViewModel by viewModel {
+    override val viewModel: EditProfileViewModel by viewModel<EditProfileViewModelImpl> {
         parametersOf(args, profileViewModel)
     }
     override val screenName: String =

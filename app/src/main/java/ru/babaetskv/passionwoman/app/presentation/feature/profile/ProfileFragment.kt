@@ -27,14 +27,6 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 
 class ProfileFragment :
     BaseFragment<ProfileViewModel, ProfileViewModel.Router, FragmentComponent.NoArgs>() {
-    private val guestProfile: Profile
-        get() = Profile(
-            id = "-1",
-            name = getString(R.string.profile_guest),
-            surname = "",
-            phone = "",
-            avatar = null
-        )
     private val binding: FragmentProfileBinding by viewBinding()
     private val profileMenuItemsAdapter: ProfileMenuItemAdapter by lazy {
         ProfileMenuItemAdapter(viewModel::onMenuItemPressed)
@@ -42,7 +34,7 @@ class ProfileFragment :
     private var activeDialog: AlertDialog? = null
 
     override val layoutRes: Int = R.layout.fragment_profile
-    override val viewModel: ProfileViewModel by sharedViewModel()
+    override val viewModel: ProfileViewModel by sharedViewModel<ProfileViewModelImpl>()
     override val screenName: String = ScreenKeys.PROFILE
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -176,6 +168,7 @@ class ProfileFragment :
     }
 
     private fun populateProfile(profile: Profile?) {
+        val guestProfile = viewModel.guestProfile
         profile ?: run {
             populateProfile(guestProfile)
             return

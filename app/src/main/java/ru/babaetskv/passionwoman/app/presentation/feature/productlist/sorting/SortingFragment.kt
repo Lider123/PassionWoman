@@ -21,7 +21,7 @@ class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingV
     }
 
     override val layoutRes: Int = R.layout.fragment_sorting
-    override val viewModel: SortingViewModel by viewModel {
+    override val viewModel: SortingViewModel by viewModel<SortingViewModelImpl> {
         parametersOf(args)
     }
     override val screenName: String = ScreenKeys.SORTING

@@ -1,38 +1,17 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home.stories
 
-import androidx.lifecycle.MutableLiveData
-import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import androidx.lifecycle.LiveData
+import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.domain.model.Story
 
-class StoriesViewModel(
-    args: StoriesFragment.Args,
-    dependencies: ViewModelDependencies
-) : BaseViewModel<StoriesViewModel.Router>(dependencies) {
-    val storiesLiveData = MutableLiveData(args.stories)
-    val currStoryIndexLiveData = MutableLiveData(args.initialStoryIndex)
+interface StoriesViewModel : IViewModel {
+    val storiesLiveData: LiveData<List<Story>>
+    val currStoryIndexLiveData: LiveData<Int>
 
-    fun onCurrentStoryChanged(position: Int) {
-        currStoryIndexLiveData.postValue(position)
-    }
-
-    fun onPrevStoryPressed() {
-        val currIndex = currStoryIndexLiveData.value ?: return
-
-        if (currIndex > 0) {
-            currStoryIndexLiveData.postValue(currIndex - 1)
-        } else onBackPressed()
-    }
-
-    fun onNextStoryPressed() {
-        val currIndex = currStoryIndexLiveData.value ?: return
-
-        val lastIndex = storiesLiveData.value?.lastIndex ?: return
-
-        if (currIndex < lastIndex) {
-            currStoryIndexLiveData.postValue(currIndex + 1)
-        } else onBackPressed()
-    }
+    fun onCurrentStoryChanged(position: Int)
+    fun onPrevStoryPressed()
+    fun onNextStoryPressed()
 
     sealed class Router : RouterEvent
 }

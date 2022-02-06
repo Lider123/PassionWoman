@@ -29,7 +29,9 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
     }
 
     override val layoutRes: Int = R.layout.fragment_product_list
-    override val viewModel: ProductListViewModel by viewModel { parametersOf(args) }
+    override val viewModel: ProductListViewModel by viewModel<ProductListViewModelImpl> {
+        parametersOf(args)
+    }
     override val screenName: String = ScreenKeys.PRODUCT_LIST
 
     override fun initViews() {

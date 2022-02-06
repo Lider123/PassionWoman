@@ -20,7 +20,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
     }
 
     override val layoutRes: Int = R.layout.fragment_product_list
-    override val viewModel: FavoritesViewModel by viewModel()
+    override val viewModel: FavoritesViewModel by viewModel<FavoritesViewModelImpl>()
     override val screenName: String = ScreenKeys.FAVORITES
 
     override fun initViews() {

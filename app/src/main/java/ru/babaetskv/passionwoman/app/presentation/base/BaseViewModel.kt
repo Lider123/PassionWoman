@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     private val dependencies: ViewModelDependencies
-) : ViewModel(), CoroutineScope {
+) : ViewModel(), IViewModel, CoroutineScope {
     private val routerEventChannel = Channel<RouterEvent>(Channel.RENDEZVOUS)
     private val eventHub: EventHub
         get() = dependencies.eventHub
@@ -37,10 +37,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         get() = dependencies.errorLogger
     protected val networkStateChecker: NetworkStateChecker
         get() = dependencies.networkStateChecker
+    protected open val logScreenOpening: Boolean = true
 
-    val loadingLiveData = MutableLiveData(false)
-    val errorLiveData = MutableLiveData<Exception?>(null)
-    val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()
     val networkAvailabilityFlow: Flow<Boolean> =
         networkStateChecker.networkAvailabilityFlowDebounced.onEach { isConnected ->
             if (!isConnected) {
@@ -51,29 +49,30 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
             }
         }
 
-    protected open val logScreenOpening: Boolean = true
-
     override val coroutineContext: CoroutineContext =
         viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
+    override val loadingLiveData = MutableLiveData(false)
+    override val errorLiveData = MutableLiveData<Exception?>(null)
+    override val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()
 
     init {
         eventFlow.launchIn(viewModelScope)
         networkAvailabilityFlow.launchIn(viewModelScope)
     }
 
-    open fun onStart(screenName: String) {
+    override fun onStart(screenName: String) {
         if (logScreenOpening) analyticsHandler.log(OpenScreenEvent(screenName))
     }
 
-    open fun onResume() = Unit
+    override fun onResume() = Unit
 
-    open fun onPause() = Unit
+    override fun onPause() = Unit
 
-    open fun onStop() = Unit
+    override fun onStop() = Unit
 
-    open fun onErrorActionPressed() = Unit
+    override fun onErrorActionPressed() = Unit
 
-    open fun onBackPressed() {
+    override fun onBackPressed() {
         launch {
             routerEventChannel.send(RouterEvent.GoBack)
         }
@@ -113,7 +112,7 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         eventHub.post(event)
     }
 
-    fun launchWithLoading(callback: suspend () -> Unit) = launch {
+    protected fun launchWithLoading(callback: suspend () -> Unit) = launch {
         loadingLiveData.postValue(true)
         errorLiveData.postValue(null)
         callback.invoke()
