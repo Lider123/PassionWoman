@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectCategoryEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
 import ru.babaetskv.passionwoman.domain.model.Category

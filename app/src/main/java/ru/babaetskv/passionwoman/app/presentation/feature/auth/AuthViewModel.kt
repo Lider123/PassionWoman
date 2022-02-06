@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.interactor.AuthorizeUseCase

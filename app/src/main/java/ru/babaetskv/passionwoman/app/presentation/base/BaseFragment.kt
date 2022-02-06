@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
 abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :

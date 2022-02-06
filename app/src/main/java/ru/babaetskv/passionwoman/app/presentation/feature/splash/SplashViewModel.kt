@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.splash
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase

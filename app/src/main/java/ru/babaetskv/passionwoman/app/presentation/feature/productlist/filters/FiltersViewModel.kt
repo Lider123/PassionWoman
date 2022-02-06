@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
@@ -17,7 +18,6 @@ import kotlin.coroutines.CoroutineContext
 
 class FiltersViewModel(
     private val args: FiltersFragment.Args,
-    private val filtersUpdateHub: FiltersUpdateHub,
     private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<FiltersViewModel.Router>(dependencies) {
@@ -74,7 +74,7 @@ class FiltersViewModel(
 
     fun onApplyFiltersPressed() {
         launch {
-            filtersUpdateHub.post(filtersLiveData.value ?: args.filters)
+            sendEvent(InnerEvent.UpdateFilters(filtersLiveData.value ?: args.filters))
             onBackPressed()
         }
     }

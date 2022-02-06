@@ -10,6 +10,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
+import ru.babaetskv.passionwoman.app.presentation.event.EventHub
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
@@ -21,6 +24,10 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     private val dependencies: ViewModelDependencies
 ) : ViewModel(), CoroutineScope {
     private val routerEventChannel = Channel<RouterEvent>(Channel.RENDEZVOUS)
+    private val eventHub: EventHub
+        get() = dependencies.eventHub
+    private val eventFlow: Flow<InnerEvent> = eventHub.flow
+        .onEach(::onEvent)
 
     protected val notifier: Notifier
         get() = dependencies.notifier
@@ -50,6 +57,7 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
 
     init {
+        eventFlow.launchIn(viewModelScope)
         networkAvailabilityFlow.launchIn(viewModelScope)
     }
 
@@ -70,6 +78,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
             routerEventChannel.send(RouterEvent.GoBack)
         }
     }
+
+    protected open fun onEvent(event: InnerEvent) = Unit
 
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
@@ -97,6 +107,10 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
 
     protected suspend fun navigateTo(event: TRouterEvent) {
         routerEventChannel.send(event)
+    }
+
+    protected suspend fun sendEvent(event: InnerEvent) {
+        eventHub.post(event)
     }
 
     fun launchWithLoading(callback: suspend () -> Unit) = launch {

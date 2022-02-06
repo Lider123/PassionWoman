@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.auth.signup
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.analytics.event.SignUpEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
