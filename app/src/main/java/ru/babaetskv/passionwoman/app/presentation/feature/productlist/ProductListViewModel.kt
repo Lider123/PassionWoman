@@ -5,17 +5,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersUpdateHub
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
@@ -24,16 +20,10 @@ import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class ProductListViewModel(
     args: ProductListFragment.Args,
-    sortingUpdateHub: SortingUpdateHub,
-    filtersUpdateHub: FiltersUpdateHub,
     val stringProvider: StringProvider,
     productsPagingSourceFactory: ProductsPagingSourceFactory,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductListViewModel.Router>(dependencies) {
-    private val sortingUpdateFlow: Flow<Sorting> = sortingUpdateHub.flow
-        .onEach(::onSortingUpdated)
-    private val filtersUpdateFlow: Flow<List<Filter>> = filtersUpdateHub.flow
-        .onEach(::onFiltersUpdated)
     private val productsPager = ProductsPager(PAGE_SIZE, productsPagingSourceFactory.also {
         it.setOnProductsDataUpdated(::onProductsDataUpdated)
     })
@@ -44,22 +34,24 @@ class ProductListViewModel(
     val appliedFiltersCountLiveData = MutableLiveData(0)
     val productsFlow = productsPager.flow.cachedIn(viewModelScope)
 
-    init {
-        sortingUpdateFlow.launchIn(this)
-        filtersUpdateFlow.launchIn(this)
-    }
-
     override fun onErrorActionPressed() {
         super.onErrorActionPressed()
         productsPager.invalidate()
     }
 
-    private fun onSortingUpdated(sorting: Sorting) {
+    override fun onEvent(event: InnerEvent) {
+        when (event) {
+            is InnerEvent.UpdateSorting -> updateSorting(event.data)
+            is InnerEvent.UpdateFilters -> updateFilters(event.data)
+        }
+    }
+
+    private fun updateSorting(sorting: Sorting) {
         sortingLiveData.postValue(sorting)
         productsPager.updateSorting(sorting)
     }
 
-    private fun onFiltersUpdated(filters: List<Filter>) {
+    private fun updateFilters(filters: List<Filter>) {
         this.filters = filters
         productsPager.updateFilters(filters)
         appliedFiltersCountLiveData.postValue(filters.count { it.isSelected })

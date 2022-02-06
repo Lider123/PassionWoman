@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.os.bundleOf
 import kotlinx.parcelize.Parcelize
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 
 interface FragmentComponent<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     ViewComponent<VM, TRouterEvent>

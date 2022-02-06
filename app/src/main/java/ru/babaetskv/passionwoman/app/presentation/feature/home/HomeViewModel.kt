@@ -7,7 +7,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider

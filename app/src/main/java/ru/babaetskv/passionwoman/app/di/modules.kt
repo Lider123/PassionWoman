@@ -18,6 +18,7 @@ import ru.babaetskv.passionwoman.app.utils.StringProviderImpl
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.presentation.event.EventHub
 import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
@@ -35,11 +36,9 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesV
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersUpdateHub
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersViewModel
 import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModel
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
@@ -69,8 +68,7 @@ val appModule = module {
     single { Notifier(get()) }
     single<StringProvider> { StringProviderImpl(get()) }
     single<AuthHandler> { AuthHandlerImpl(get()) }
-    single { SortingUpdateHub() }
-    single { FiltersUpdateHub() }
+    single { EventHub() }
     single { ExternalIntentHandler(androidContext()) }
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
@@ -86,7 +84,7 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    single { ViewModelDependencies(get(), get(), get(), get()) }
+    single { ViewModelDependencies(get(), get(), get(), get(), get()) }
     viewModel { MainViewModel(get(), get()) }
     viewModel { (args: SplashFragment.Args) ->
         SplashViewModel(args, get(), get(), get(), get())
@@ -94,8 +92,6 @@ val viewModelModule = module {
     viewModel { CatalogViewModel(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModel(args,
-            sortingUpdateHub = get(),
-            filtersUpdateHub = get(),
             stringProvider = get(),
             productsPagingSourceFactory = get { parametersOf(args.categoryId, args.filters, args.sorting) },
             dependencies = get()
@@ -115,12 +111,12 @@ val viewModelModule = module {
     }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
-        SortingViewModel(args, get(), get(), get())
+        SortingViewModel(args, get(), get())
     }
     viewModel { FavoritesViewModel(get(), get(), get(), get(), get()) }
     viewModel { ContactsViewModel(get(), get()) }
     viewModel { (args: FiltersFragment.Args) ->
-        FiltersViewModel(args, get(), get(), get())
+        FiltersViewModel(args, get(), get())
     }
     viewModel { (args: StoriesFragment.Args) ->
         StoriesViewModel(args, get())

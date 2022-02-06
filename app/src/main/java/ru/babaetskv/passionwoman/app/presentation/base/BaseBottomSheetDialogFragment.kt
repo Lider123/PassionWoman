@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 
 abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     BottomSheetDialogFragment(),

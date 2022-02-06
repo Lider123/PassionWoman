@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.home.stories
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 
 class StoriesViewModel(

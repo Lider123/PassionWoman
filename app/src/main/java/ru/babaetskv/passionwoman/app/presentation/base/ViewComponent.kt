@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.flow.collect
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
 import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException

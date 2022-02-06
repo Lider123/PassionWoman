@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import ru.babaetskv.passionwoman.app.presentation.SimpleKeyboardAnimator
+import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
 abstract class BaseActivity<VM, TRouterEvent : RouterEvent> :
