@@ -142,7 +142,7 @@ val interactorModule = module {
     factory { LogOutUseCase(get(), get(), get()) }
     factory { UpdateAvatarUseCase(get(), get()) }
     factory { GetHomeDataUseCase(get(), get()) }
-    factory { GetFavoritesUseCase(get(), get()) }
+    factory { GetFavoritesUseCase(get(), get(), get()) }
     factory { GetProductUseCase(get(), get()) }
     factory { AddToFavoritesUseCase(get(), get()) }
     factory { RemoveFromFavoritesUseCase(get(), get()) }
@@ -151,7 +151,7 @@ val interactorModule = module {
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get(), get(), get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get()) }
     single<AuthGateway> { AuthGatewayImpl(get(), get()) }
 }
 

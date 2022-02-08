@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.data.model.AccessTokenModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
 import ru.babaetskv.passionwoman.domain.model.Profile
+import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import java.io.File
 import java.net.URI
 
@@ -18,7 +19,7 @@ class AuthGatewayImpl(
     private val commonApi: CommonApi
 ) : AuthGateway {
 
-    override suspend fun getProfile(): Profile = api.getProfile().toProfile()
+    override suspend fun getProfile(): Transformable<Unit, Profile> = api.getProfile()
 
     override suspend fun authorize(accessToken: String): String =
         commonApi.authorize(AccessTokenModel(accessToken)).token

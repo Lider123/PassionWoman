@@ -5,6 +5,7 @@ import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 class GetProductUseCase(
     private val catalogGateway: CatalogGateway,
@@ -13,7 +14,8 @@ class GetProductUseCase(
 
     override fun getUseCaseException(cause: Exception): Exception = GetProductException(cause)
 
-    override suspend fun run(params: String): Product = catalogGateway.getProduct(params)
+    override suspend fun run(params: String): Product =
+        catalogGateway.getProduct(params).transform()
 
     inner class GetProductException(
         cause: Exception?
