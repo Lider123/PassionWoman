@@ -12,7 +12,7 @@ import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 
 class SplashFragment :
     BaseFragment<SplashViewModel, SplashViewModel.Router, SplashFragment.Args>() {
-    override val viewModel: SplashViewModel by viewModel {
+    override val viewModel: SplashViewModel by viewModel<SplashViewModelImpl> {
         parametersOf(args)
     }
     override val layoutRes: Int = R.layout.fragment_splash

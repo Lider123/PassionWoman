@@ -11,7 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.MainActivity
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
 
-class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewModel.Router>() {
+class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewModelImpl.Router>() {
     private val binding: ActivityDemoPresetsBinding by viewBinding()
     private val adapter: ListDelegationAdapter<List<DemoPreset>> by lazy {
         ListDelegationAdapter(
@@ -21,7 +21,7 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
     }
 
     override val contentViewRes: Int = R.layout.activity_demo_presets
-    override val viewModel: DemoPresetsViewModel by viewModel()
+    override val viewModel: DemoPresetsViewModel by viewModel<DemoPresetsViewModelImpl>()
     override val applyInsets: Boolean = true
     override val screenName: String = ScreenKeys.DEMO_PRESETS
 
@@ -43,10 +43,10 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
         viewModel.presetsLiveData.observe(this, ::populatePresets)
     }
 
-    override fun handleRouterEvent(event: DemoPresetsViewModel.Router) {
+    override fun handleRouterEvent(event: DemoPresetsViewModelImpl.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            DemoPresetsViewModel.Router.MainFlow -> {
+            DemoPresetsViewModelImpl.Router.MainFlow -> {
                 startActivity(Intent(this@DemoPresetsActivity, MainActivity::class.java))
                 finish()
             }

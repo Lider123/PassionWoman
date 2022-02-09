@@ -18,7 +18,7 @@ import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     BottomSheetDialogFragment(),
     FragmentComponent<VM, TRouterEvent, TArgs>
-    where VM : BaseViewModel<TRouterEvent> {
+    where VM : IViewModel {
     override var componentArguments: Bundle
         get() = requireArguments()
         set(value) {

@@ -19,7 +19,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
     private var activeDialog: Dialog? = null
 
     override val layoutRes: Int = R.layout.fragment_navigation
-    override val viewModel: NavigationViewModel by viewModel {
+    override val viewModel: NavigationViewModel by viewModel<NavigationViewModelImpl> {
         parametersOf(args)
     }
     override val applyTopInset: Boolean = false

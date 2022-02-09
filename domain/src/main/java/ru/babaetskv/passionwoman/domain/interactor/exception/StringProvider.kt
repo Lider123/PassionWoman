@@ -27,4 +27,6 @@ interface StringProvider {
     val SORT_PRICE_DESC: String
 
     val FILTER_DISCOUNT: String
+
+    val GUEST_PROFILE_NAME: String
 }

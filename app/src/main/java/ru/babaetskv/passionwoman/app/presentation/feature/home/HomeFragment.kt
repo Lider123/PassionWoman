@@ -25,7 +25,7 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
     }
 
     override val layoutRes: Int = R.layout.fragment_home
-    override val viewModel: HomeViewModel by viewModel()
+    override val viewModel: HomeViewModel by viewModel<HomeViewModelImpl>()
     override val applyBottomInset: Boolean = false
     override val screenName: String = ScreenKeys.HOME
 

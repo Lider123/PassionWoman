@@ -13,7 +13,7 @@ import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
 import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 
-interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel<TRouterEvent> {
+interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     val viewModel: VM
     val screenName: String
     val componentView: View

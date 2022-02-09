@@ -22,7 +22,9 @@ class FiltersFragment :
 
     override val layoutRes: Int = R.layout.fragment_filters
     override val screenName: String = ScreenKeys.FILTERS
-    override val viewModel: FiltersViewModel by viewModel { parametersOf(args) }
+    override val viewModel: FiltersViewModel by viewModel<FiltersViewModelImpl> {
+        parametersOf(args)
+    }
 
     override fun initViews() {
         super.initViews()

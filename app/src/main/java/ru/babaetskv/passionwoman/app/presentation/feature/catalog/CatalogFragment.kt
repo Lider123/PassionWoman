@@ -12,13 +12,14 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.domain.model.Category
 
-class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
+class CatalogFragment :
+    BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
     private val categoriesAdapter: CategoriesAdapter by lazy {
         CategoriesAdapter(viewModel::onCategoryPressed)
     }
 
-    override val viewModel: CatalogViewModel by viewModel()
+    override val viewModel: CatalogViewModel by viewModel<CatalogViewModelImpl>()
     override val layoutRes: Int = R.layout.fragment_catalog
     override val applyBottomInset: Boolean = false
     override val screenName: String = ScreenKeys.CATEGORIES

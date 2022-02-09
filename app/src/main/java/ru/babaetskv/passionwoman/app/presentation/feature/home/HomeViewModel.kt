@@ -1,129 +1,21 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
-import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
-import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import androidx.lifecycle.LiveData
+import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
-import ru.babaetskv.passionwoman.domain.utils.execute
 
-class HomeViewModel(
-    private val getHomeDataUseCase: GetHomeDataUseCase,
-    private val stringProvider: StringProvider,
-    dependencies: ViewModelDependencies
-) : BaseViewModel<HomeViewModel.Router>(dependencies) {
-    val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
+interface HomeViewModel : IViewModel {
+    val homeItemsLiveData: LiveData<List<HomeItem>>
 
-    init {
-        loadData()
-    }
-
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        loadData()
-    }
-
-    private fun loadData() {
-        launchWithLoading {
-            val data = getHomeDataUseCase.execute()
-            homeItemsLiveData.postValue(mutableListOf<HomeItem>().apply {
-                if (data.promotions.isNotEmpty()) add(HomeItem.Promotions(data.promotions))
-                if (data.stories.isNotEmpty()) add(HomeItem.Stories(data.stories))
-                if (data.saleProducts.isNotEmpty()) {
-                    add(HEADER_PRODUCTS_SALE)
-                    add(HomeItem.Products(data.saleProducts))
-                }
-                if (data.popularProducts.isNotEmpty()) {
-                    add(HEADER_PRODUCTS_POPULAR)
-                    add(HomeItem.Products(data.popularProducts))
-                }
-                if (data.newProducts.isNotEmpty()) {
-                    add(HEADER_PRODUCTS_NEW)
-                    add(HomeItem.Products(data.newProducts))
-                }
-                if (data.brands.isNotEmpty()) {
-                    add(HEADER_BRANDS)
-                    add(HomeItem.Brands(data.brands))
-                }
-            })
-        }
-    }
-
-    fun onHeaderPressed(header: HomeItem.Header) {
-        when (header) {
-            HEADER_PRODUCTS_SALE -> launch {
-                navigateTo(Router.ProductListScreen(
-                    R.string.home_sale_products_title,
-                    listOf(
-                        Filter.DiscountOnly(stringProvider, true)
-                    ),
-                    Sorting.DEFAULT
-                ))
-            }
-            HEADER_PRODUCTS_POPULAR -> launch {
-                navigateTo(Router.ProductListScreen(
-                    R.string.home_popular_products_title,
-                    listOf(),
-                    Sorting.POPULARITY
-                ))
-            }
-            HEADER_PRODUCTS_NEW -> launch {
-                navigateTo(Router.ProductListScreen(
-                    R.string.home_new_products_title,
-                    listOf(),
-                    Sorting.NEW
-                ))
-            }
-        }
-    }
-
-    fun onPromotionPressed(promotion: Promotion) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
-    }
-
-    fun onStoryPressed(story: Story) {
-        val storiesItem = homeItemsLiveData.value?.find { it is HomeItem.Stories }
-        with (storiesItem as? HomeItem.Stories) {
-            val stories = this?.data ?: return
-
-            val initialStoryIndex = stories.indexOfFirst { it.id == story.id }
-            if (initialStoryIndex < 0) return
-
-            launchWithLoading {
-                navigateTo(Router.StoriesScreen(stories, initialStoryIndex))
-            }
-        }
-    }
-
-    fun onBuyProductPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
-    }
-
-    fun onProductPressed(product: Product) {
-        analyticsHandler.log(SelectProductEvent(product))
-        launch {
-            navigateTo(Router.ProductCardScreen(product))
-        }
-    }
-
-    fun onBrandPressed(brand: Brand) {
-        analyticsHandler.log(SelectBrandEvent(brand))
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
-    }
+    fun onHeaderPressed(header: HomeItem.Header)
+    fun onPromotionPressed(promotion: Promotion)
+    fun onStoryPressed(story: Story)
+    fun onBuyProductPressed(product: Product)
+    fun onProductPressed(product: Product)
+    fun onBrandPressed(brand: Brand)
 
     sealed class Router : RouterEvent {
 
@@ -141,12 +33,5 @@ class HomeViewModel(
             val stories: List<Story>,
             val initialStoryIndex: Int
         ) : Router()
-    }
-
-    companion object {
-        private val HEADER_PRODUCTS_SALE = HomeItem.Header(R.string.home_sale_products_title, true)
-        private val HEADER_PRODUCTS_POPULAR = HomeItem.Header(R.string.home_popular_products_title, true)
-        private val HEADER_PRODUCTS_NEW = HomeItem.Header(R.string.home_new_products_title, true)
-        private val HEADER_BRANDS = HomeItem.Header(R.string.home_popular_brands_title, false)
     }
 }

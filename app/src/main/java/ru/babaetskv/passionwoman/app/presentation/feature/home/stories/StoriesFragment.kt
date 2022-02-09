@@ -14,7 +14,8 @@ import ru.babaetskv.passionwoman.app.utils.CubePageTransformer
 import ru.babaetskv.passionwoman.domain.model.Story
 import kotlin.math.abs
 
-class StoriesFragment : BaseFragment<StoriesViewModel, StoriesViewModel.Router, StoriesFragment.Args>() {
+class StoriesFragment :
+    BaseFragment<StoriesViewModel, StoriesViewModel.Router, StoriesFragment.Args>() {
     private val binding: FragmentStoriesBinding by viewBinding()
     private val adapter: StoryPagesAdapter by lazy {
         StoryPagesAdapter(this,
@@ -28,7 +29,7 @@ class StoriesFragment : BaseFragment<StoriesViewModel, StoriesViewModel.Router, 
         get() = R.layout.fragment_stories
     override val screenName: String
         get() = ScreenKeys.STORIES
-    override val viewModel: StoriesViewModel by viewModel {
+    override val viewModel: StoriesViewModel by viewModel<StoriesViewModelImpl> {
         parametersOf(args)
     }
 
