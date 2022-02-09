@@ -20,7 +20,7 @@ class GetProductsUseCase(
             offset = params.offset,
             filters = params.filters,
             sorting = params.sorting
-        )
+        ).transform(stringProvider)
 
     override fun getUseCaseException(cause: Exception): Exception = GetProductsException(cause)
 

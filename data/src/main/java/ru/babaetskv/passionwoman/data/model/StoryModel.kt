@@ -4,18 +4,20 @@ import com.squareup.moshi.Json
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Story
 import ru.babaetskv.passionwoman.domain.model.Video
+import ru.babaetskv.passionwoman.domain.model.base.Transformable
+import ru.babaetskv.passionwoman.domain.utils.transformListNotNull
 
 data class StoryModel(
     @Json(name = "id") val id: String,
     @Json(name = "image") val banner: String,
     @Json(name = "contents") val contents: List<ContentModel>
-) {
+) : Transformable<Unit, Story> {
 
-    fun toStory(): Story =
+    override fun transform(params: Unit): Story =
         Story(
             id = id,
             banner = Image(banner),
-            contents = contents.mapNotNull(ContentModel::toContent)
+            contents = contents.transformListNotNull()
         )
 
     data class ContentModel(
@@ -24,9 +26,9 @@ data class StoryModel(
         @Json(name = "text") val text: String?,
         @Json(name = "media") val media: String,
         @Json(name = "type") val type: String
-    ) {
+    ) : Transformable<Unit, Story.Content?> {
 
-        fun toContent(): Story.Content? =
+        override fun transform(params: Unit): Story.Content? =
             Type.findByApiName(type)?.let {
                 when (it) {
                     Type.IMAGE -> {

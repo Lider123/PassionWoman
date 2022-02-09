@@ -5,6 +5,7 @@ import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Profile
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 class GetProfileUseCase(
     private val authGateway: AuthGateway,
@@ -13,7 +14,7 @@ class GetProfileUseCase(
 
     override fun getUseCaseException(cause: Exception): Exception = GetProfileException(cause)
 
-    override suspend fun run(params: Unit): Profile = authGateway.getProfile()
+    override suspend fun run(params: Unit): Profile = authGateway.getProfile().transform()
 
     private inner class GetProfileException(
         cause: Exception?

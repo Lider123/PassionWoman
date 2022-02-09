@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataExceptio
 import ru.babaetskv.passionwoman.domain.model.HomeData
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
+import ru.babaetskv.passionwoman.domain.utils.transformList
 
 class GetHomeDataUseCase(
     private val catalogGateway: CatalogGateway,
@@ -17,8 +18,8 @@ class GetHomeDataUseCase(
 
     override suspend fun run(params: Unit): HomeData =
         HomeData(
-            promotions = catalogGateway.getPromotions(),
-            stories = catalogGateway.getStories(),
+            promotions = catalogGateway.getPromotions().transformList(),
+            stories = catalogGateway.getStories().transformList(),
             saleProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(
@@ -27,22 +28,22 @@ class GetHomeDataUseCase(
                 sorting = Sorting.DEFAULT,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).products,
+            ).transform(stringProvider).products,
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(),
                 sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).products,
+            ).transform(stringProvider).products,
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(),
                 sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).products,
-            brands = catalogGateway.getPopularBrands()
+            ).transform(stringProvider).products,
+            brands = catalogGateway.getPopularBrands().transformList()
         )
 
     inner class GetHomeDataException(

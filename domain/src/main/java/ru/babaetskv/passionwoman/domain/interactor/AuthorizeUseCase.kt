@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 class AuthorizeUseCase(
     private val authGateway: AuthGateway,
@@ -19,7 +20,7 @@ class AuthorizeUseCase(
         val authToken = authGateway.authorize(params)
         authPreferences.authToken = authToken
         authPreferences.authType = AuthPreferences.AuthType.AUTHORIZED
-        return authGateway.getProfile().also {
+        return authGateway.getProfile().transform().also {
             authPreferences.userId = it.id
         }
     }

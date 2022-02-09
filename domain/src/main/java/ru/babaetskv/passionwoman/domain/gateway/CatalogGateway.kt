@@ -1,11 +1,13 @@
 package ru.babaetskv.passionwoman.domain.gateway
 
+import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
+import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 interface CatalogGateway {
 
-    suspend fun getCategories(): List<Category>
+    suspend fun getCategories(): List<Transformable<Unit, Category>>
 
     suspend fun getProducts(
         categoryId: String?,
@@ -13,23 +15,19 @@ interface CatalogGateway {
         offset: Int,
         filters: List<Filter>,
         sorting: Sorting
-    ): ProductsPagedResponse
+    ): Transformable<StringProvider, ProductsPagedResponse>
 
-    suspend fun getPromotions(): List<Promotion>
+    suspend fun getPromotions(): List<Transformable<Unit, Promotion>>
 
-    suspend fun getPopularBrands(): List<Brand>
+    suspend fun getPopularBrands(): List<Transformable<Unit, Brand>>
 
-    suspend fun getFavorites(): List<Product>
+    suspend fun getFavorites(favoriteIds: Collection<String>): List<Transformable<Unit, Product>>
 
-    suspend fun getProduct(productId: String): Product
-
-    suspend fun addToFavorites(productId: String)
-
-    suspend fun removeFromFavorites(productId: String)
+    suspend fun getProduct(productId: String): Transformable<Unit, Product>
 
     suspend fun getFavoriteIds(): List<String>
 
     suspend fun setFavoriteIds(ids: List<String>)
 
-    suspend fun getStories(): List<Story>
+    suspend fun getStories(): List<Transformable<Unit, Story>>
 }

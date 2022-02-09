@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Category
+import ru.babaetskv.passionwoman.domain.utils.transformList
 
 class GetCategoriesUseCase(
     private val catalogGateway: CatalogGateway,
@@ -15,7 +16,7 @@ class GetCategoriesUseCase(
     override fun getUseCaseException(cause: Exception): Exception = GetCategoriesException(cause)
 
     override suspend fun run(params: Unit): List<Category> =
-        catalogGateway.getCategories().also {
+        catalogGateway.getCategories().transformList().also {
             if (it.isEmpty()) throw EmptyCategoriesException()
         }
 

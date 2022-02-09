@@ -30,7 +30,7 @@ class ProductsDataSource(
                 offset = offset,
                 filters = filters,
                 sorting = sorting,
-            )
+            ).transform(stringProvider)
             val products = response.products
             if (products.isEmpty() && currentPage == START_PAGE) throw EmptyProductsException()
 
