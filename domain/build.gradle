@@ -1,8 +1,11 @@
 plugins {
     id 'com.android.library'
+    id 'jacoco'
     id 'kotlin-android'
     id 'kotlin-parcelize'
 }
+
+apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
     compileSdkVersion 30
