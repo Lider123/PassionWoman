@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.net.Uri
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.flow.Flow
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.domain.model.Profile
@@ -11,7 +10,6 @@ interface ProfileViewModel : IViewModel {
     val menuItemsLiveData: LiveData<List<ProfileMenuItem>>
     val profileLiveData: LiveData<Profile?>
     val dialogLiveData: LiveData<Dialog?>
-    val eventBus: Flow<Event>
     val guestProfile: Profile
 
     fun onMenuItemPressed(item: ProfileMenuItem)
@@ -25,11 +23,6 @@ interface ProfileViewModel : IViewModel {
     fun onGalleryPressed()
     fun onLogOutDeclined()
     fun onLogOutConfirmed()
-
-    sealed class Event {
-        object PickAvatarGallery : Event()
-        object PickAvatarCamera : Event()
-    }
 
     enum class Dialog {
         LOG_OUT_CONFIRMATION, PICK_AVATAR

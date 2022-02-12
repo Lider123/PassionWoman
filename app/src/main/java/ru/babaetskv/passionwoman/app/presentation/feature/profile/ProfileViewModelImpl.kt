@@ -2,14 +2,13 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.interactor.LogOutUseCase
 import ru.babaetskv.passionwoman.domain.interactor.UpdateAvatarUseCase
@@ -25,14 +24,12 @@ class ProfileViewModelImpl(
     private val updateAvatarUseCase: UpdateAvatarUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseViewModel<ProfileViewModel.Router>(dependencies), ProfileViewModel, ProfileUpdatesListener {
+) : BaseViewModel<ProfileViewModel.Router>(dependencies), ProfileViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
-    private val eventChannel = Channel<ProfileViewModel.Event>(Channel.RENDEZVOUS)
 
     override val menuItemsLiveData = MutableLiveData(ProfileMenuItem.values().asList())
     override val profileLiveData = MutableLiveData<Profile?>()
     override val dialogLiveData = MutableLiveData<ProfileViewModel.Dialog?>()
-    override val eventBus = eventChannel.receiveAsFlow()
 
     override val guestProfile: Profile
         get() = Profile(
@@ -47,8 +44,11 @@ class ProfileViewModelImpl(
         authTypeFlow.launchIn(this)
     }
 
-    override fun onProfileUpdated() {
-        loadProfile(false)
+    override fun onEvent(event: InnerEvent) {
+        when (event) {
+            InnerEvent.UpdateProfile -> loadProfile(false)
+            else -> super.onEvent(event)
+        }
     }
 
     override fun onMenuItemPressed(item: ProfileMenuItem) {
@@ -86,14 +86,14 @@ class ProfileViewModelImpl(
     override fun onGalleryPressed() {
         dialogLiveData.postValue(null)
         launchWithLoading {
-            eventChannel.send(ProfileViewModel.Event.PickAvatarGallery)
+            sendEvent(InnerEvent.PickGalleryImage)
         }
     }
 
     override fun onCameraPressed() {
         dialogLiveData.postValue(null)
         launchWithLoading {
-            eventChannel.send(ProfileViewModel.Event.PickAvatarCamera)
+            sendEvent(InnerEvent.PickCameraImage)
         }
     }
 
