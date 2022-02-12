@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.domain.interactor.base
+package ru.babaetskv.passionwoman.app.presentation.interactor.base
 
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase
 import timber.log.Timber

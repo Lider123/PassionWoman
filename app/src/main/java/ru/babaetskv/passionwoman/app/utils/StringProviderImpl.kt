@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.utils
 
 import android.content.res.Resources
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 
 class StringProviderImpl(resources: Resources): StringProvider {
     override val GET_CATEGORIES_ERROR: String = resources.getString(R.string.error_get_categories)

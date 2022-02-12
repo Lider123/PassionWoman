@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.domain.usecase
 
-import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Category
 import ru.babaetskv.passionwoman.domain.usecase.base.NoParamsUseCase
 

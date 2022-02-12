@@ -1,8 +1,8 @@
-package ru.babaetskv.passionwoman.domain.interactor
+package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseInteractor
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetFavoritesUseCase

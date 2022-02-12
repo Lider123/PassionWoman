@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.domain.interactor.exception
+package ru.babaetskv.passionwoman.domain
 
 interface StringProvider {
     val GET_CATEGORIES_ERROR: String

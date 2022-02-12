@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.domain.interactor.exception
+package ru.babaetskv.passionwoman.domain.exceptions
 
 abstract class NetworkDataException(
     override val message: String?,

@@ -57,8 +57,8 @@ import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
 import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
-import ru.babaetskv.passionwoman.domain.interactor.*
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.app.presentation.interactor.*
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter

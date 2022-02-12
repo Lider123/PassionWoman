@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 
 @Parcelize
 enum class Sorting(val apiName: String) : Parcelable {

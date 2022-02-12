@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.domain.interactor.exception
+package ru.babaetskv.passionwoman.domain
 
 object HttpCodes {
     const val NOT_FOUND = 404

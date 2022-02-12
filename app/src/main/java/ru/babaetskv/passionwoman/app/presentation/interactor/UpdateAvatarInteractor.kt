@@ -1,9 +1,9 @@
-package ru.babaetskv.passionwoman.domain.interactor
+package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import android.net.Uri
 import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseInteractor
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.usecase.UpdateAvatarUseCase
 
 class UpdateAvatarInteractor(
