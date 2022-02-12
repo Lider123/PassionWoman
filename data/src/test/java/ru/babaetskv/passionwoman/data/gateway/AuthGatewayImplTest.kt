@@ -12,6 +12,7 @@ import ru.babaetskv.passionwoman.data.model.AuthTokenModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Profile
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 @RunWith(JUnit4::class)
 class AuthGatewayImplTest {
@@ -44,7 +45,7 @@ class AuthGatewayImplTest {
             phone = "9600000001"
         )
         runBlocking {
-            val result = authGateway.getProfile()
+            val result = authGateway.getProfile().transform()
             assertEquals(expected, result)
             verify(stubApi, times(1)).getProfile()
         }
@@ -69,7 +70,7 @@ class AuthGatewayImplTest {
             phone = "9600000001"
         )
         runBlocking {
-            val result = authGateway.getProfile()
+            val result = authGateway.getProfile().transform()
             assertEquals(expected, result)
             verify(stubApi, times(1)).getProfile()
         }
