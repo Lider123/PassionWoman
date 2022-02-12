@@ -8,15 +8,15 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
-import ru.babaetskv.passionwoman.domain.interactor.AddToFavoritesUseCase
-import ru.babaetskv.passionwoman.domain.interactor.GetProductUseCase
-import ru.babaetskv.passionwoman.domain.interactor.RemoveFromFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
+import ru.babaetskv.passionwoman.domain.usecase.AddToFavoritesUseCase
+import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
+import ru.babaetskv.passionwoman.domain.usecase.RemoveFromFavoritesUseCase
 
 class ProductCardViewModelImpl(
     private val args: ProductCardFragment.Args,

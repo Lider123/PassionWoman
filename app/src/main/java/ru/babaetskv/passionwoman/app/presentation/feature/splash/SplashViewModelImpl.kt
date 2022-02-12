@@ -4,10 +4,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 
 class SplashViewModelImpl(
     private val args: SplashFragment.Args,

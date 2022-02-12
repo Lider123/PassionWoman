@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 

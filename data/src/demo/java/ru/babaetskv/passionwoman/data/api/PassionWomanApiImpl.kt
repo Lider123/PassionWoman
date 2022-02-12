@@ -17,9 +17,9 @@ import retrofit2.HttpException
 import retrofit2.Response
 import ru.babaetskv.passionwoman.data.Filters
 import ru.babaetskv.passionwoman.data.model.*
-import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.BAD_REQUEST
-import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.INTERNAL_SERVER_ERROR
-import ru.babaetskv.passionwoman.domain.interactor.exception.HttpCodes.NOT_FOUND
+import ru.babaetskv.passionwoman.domain.HttpCodes.BAD_REQUEST
+import ru.babaetskv.passionwoman.domain.HttpCodes.INTERNAL_SERVER_ERROR
+import ru.babaetskv.passionwoman.domain.HttpCodes.NOT_FOUND
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
 class PassionWomanApiImpl(

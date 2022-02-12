@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 

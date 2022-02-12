@@ -2,10 +2,10 @@ package ru.babaetskv.passionwoman.data.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
-import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter

@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
-import ru.babaetskv.passionwoman.domain.interactor.GetProductsUseCase
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
+import ru.babaetskv.passionwoman.domain.usecase.GetProductsUseCase
 import kotlin.coroutines.CoroutineContext
 
 class FiltersViewModelImpl(

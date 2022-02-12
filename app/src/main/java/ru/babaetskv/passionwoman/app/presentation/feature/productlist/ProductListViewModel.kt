@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
