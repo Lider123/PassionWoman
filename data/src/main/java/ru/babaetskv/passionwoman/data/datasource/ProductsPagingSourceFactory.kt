@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.data.datasource
 
 import ru.babaetskv.passionwoman.data.datasource.base.InvalidatingPagingSourceFactory
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter

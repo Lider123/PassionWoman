@@ -10,8 +10,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
-import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 
 interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     val viewModel: VM

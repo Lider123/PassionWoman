@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.app.analytics.event.SignUpEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
-import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
+import ru.babaetskv.passionwoman.domain.usecase.UpdateProfileUseCase
 
 class EditProfileViewModelImpl(
     private val args: EditProfileFragment.Args,

@@ -15,9 +15,9 @@ import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
-import ru.babaetskv.passionwoman.domain.interactor.exception.EmptyDataException
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkActionException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<TRouterEvent : RouterEvent>(

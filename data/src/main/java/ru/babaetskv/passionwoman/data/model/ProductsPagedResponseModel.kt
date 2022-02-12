@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.data.model
 
 import com.squareup.moshi.Json
 import org.json.JSONObject
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter

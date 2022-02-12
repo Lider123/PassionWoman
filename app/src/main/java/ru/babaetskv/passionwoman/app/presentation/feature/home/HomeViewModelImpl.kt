@@ -7,11 +7,10 @@ import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.GetHomeDataUseCase
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.GetHomeDataUseCase
 
 class HomeViewModelImpl(
     private val getHomeDataUseCase: GetHomeDataUseCase,

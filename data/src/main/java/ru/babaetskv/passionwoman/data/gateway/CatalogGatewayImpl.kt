@@ -2,8 +2,8 @@ package ru.babaetskv.passionwoman.data.gateway
 
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter

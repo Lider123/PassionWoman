@@ -10,13 +10,12 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
-import ru.babaetskv.passionwoman.domain.interactor.LogOutUseCase
-import ru.babaetskv.passionwoman.domain.interactor.UpdateAvatarUseCase
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.usecase.LogOutUseCase
+import ru.babaetskv.passionwoman.domain.usecase.UpdateAvatarUseCase
 
 class ProfileViewModelImpl(
     private val getProfileUseCase: GetProfileUseCase,
