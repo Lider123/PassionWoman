@@ -24,8 +24,6 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     private val dependencies: ViewModelDependencies
 ) : ViewModel(), IViewModel, CoroutineScope {
     private val routerEventChannel = Channel<RouterEvent>(Channel.RENDEZVOUS)
-    private val eventHub: EventHub
-        get() = dependencies.eventHub
     private val eventFlow: Flow<InnerEvent> = eventHub.flow
         .onEach(::onEvent)
 
@@ -54,6 +52,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
     override val loadingLiveData = MutableLiveData(false)
     override val errorLiveData = MutableLiveData<Exception?>(null)
     override val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()
+    final override  val eventHub: EventHub
+        get() = dependencies.eventHub
 
     init {
         eventFlow.launchIn(viewModelScope)

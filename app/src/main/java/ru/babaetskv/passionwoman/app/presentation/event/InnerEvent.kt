@@ -12,4 +12,10 @@ sealed class InnerEvent : Event {
     data class UpdateFilters(
         val data: List<Filter>
     ) : InnerEvent()
+
+    object UpdateProfile : InnerEvent()
+
+    object PickCameraImage : InnerEvent()
+
+    object PickGalleryImage : InnerEvent()
 }

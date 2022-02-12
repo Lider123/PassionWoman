@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
@@ -73,9 +75,18 @@ abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : 
         super.onStop()
     }
 
+    override fun initObservers() {
+        super.initObservers()
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            viewModel.eventHub.flow.collect(::onEvent)
+        }
+    }
+
     override fun onBackPressed() {
         router.exit()
     }
+
+    protected open fun onEvent(event: InnerEvent) = Unit
 
     fun withArgs(args: TArgs) = also { it.args = args }
 }

@@ -4,12 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.analytics.event.SignUpEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.usecase.UpdateProfileUseCase
 
 class EditProfileViewModelImpl(
     private val args: EditProfileFragment.Args,
-    private val profileUpdatesListener: ProfileUpdatesListener,
     private val updateProfileUseCase: UpdateProfileUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<EditProfileViewModel.Router>(dependencies), EditProfileViewModel {
@@ -39,7 +38,7 @@ class EditProfileViewModelImpl(
                 surname = surname
             )
             updateProfileUseCase.execute(newProfile)
-            profileUpdatesListener.onProfileUpdated()
+            sendEvent(InnerEvent.UpdateProfile)
             if (args.signingUp) {
                 analyticsHandler.log(SignUpEvent())
                 navigateTo(EditProfileViewModel.Router.NavigationScreen)

@@ -5,7 +5,6 @@ import android.view.inputmethod.EditorInfo
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.parcelize.Parcelize
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
@@ -13,8 +12,6 @@ import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
@@ -22,14 +19,14 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 
 class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
     private val binding: FragmentEditProfileBinding by viewBinding()
-    private val profileViewModel: ProfileViewModel by sharedViewModel<ProfileViewModelImpl>()
 
     override val layoutRes: Int = R.layout.fragment_edit_profile
     override val viewModel: EditProfileViewModel by viewModel<EditProfileViewModelImpl> {
-        parametersOf(args, profileViewModel)
+        parametersOf(args)
     }
-    override val screenName: String =
+    override val screenName: String by lazy {
         if (args.signingUp) ScreenKeys.SIGN_UP else ScreenKeys.EDIT_PROFILE
+    }
 
     override fun initViews() {
         super.initViews()

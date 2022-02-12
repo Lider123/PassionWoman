@@ -40,7 +40,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.Fi
 import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModelImpl
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileUpdatesListener
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModelImpl
@@ -103,8 +102,8 @@ val viewModelModule = module {
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
     viewModel { AuthViewModelImpl(get(), get(), get(), get()) }
-    viewModel { (args: EditProfileFragment.Args, profileUpdatesListener: ProfileUpdatesListener) ->
-        EditProfileViewModelImpl(args, profileUpdatesListener, get(), get())
+    viewModel { (args: EditProfileFragment.Args) ->
+        EditProfileViewModelImpl(args, get(), get())
     }
     viewModel { ProfileViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
