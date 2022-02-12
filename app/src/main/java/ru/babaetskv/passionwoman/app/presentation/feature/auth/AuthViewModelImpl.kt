@@ -9,11 +9,10 @@ import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.auth.AuthException
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.AuthorizeAsGuestUseCase
-import ru.babaetskv.passionwoman.domain.interactor.AuthorizeUseCase
 import ru.babaetskv.passionwoman.domain.model.AuthResult
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
+import ru.babaetskv.passionwoman.domain.usecase.AuthorizeUseCase
 
 class AuthViewModelImpl(
     private val authorizeUseCase: AuthorizeUseCase,

@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
-import ru.babaetskv.passionwoman.domain.interactor.SyncFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.usecase.SyncFavoritesUseCase
 
 class NavigationViewModelImpl(
     args: NavigationFragment.Args,

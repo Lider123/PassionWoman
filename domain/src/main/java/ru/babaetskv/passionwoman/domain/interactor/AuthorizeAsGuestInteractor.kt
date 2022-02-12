@@ -1,24 +1,21 @@
 package ru.babaetskv.passionwoman.domain.interactor
 
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
+import ru.babaetskv.passionwoman.domain.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
 
-class AuthorizeAsGuestUseCase(
+class AuthorizeAsGuestInteractor(
     private val authPreferences: AuthPreferences,
     private val stringProvider: StringProvider
-) : BaseUseCase<Unit, Unit>() {
+) : BaseInteractor<Unit, Unit>(), AuthorizeAsGuestUseCase {
 
-    override fun getUseCaseException(cause: Exception): Exception = AuthorizeAsGuestException(cause)
+    override fun getUseCaseException(cause: Exception): Exception =
+        AuthorizeAsGuestUseCase.AuthorizeAsGuestException(cause, stringProvider)
 
     override suspend fun run(params: Unit) {
         authPreferences.authToken = ""
         authPreferences.userId = "guest"
         authPreferences.authType = AuthPreferences.AuthType.GUEST
     }
-
-    inner class AuthorizeAsGuestException(
-        cause: Exception?
-    ) : NetworkActionException(stringProvider.AUTHORIZE_AS_GUEST_ERROR, cause)
 }

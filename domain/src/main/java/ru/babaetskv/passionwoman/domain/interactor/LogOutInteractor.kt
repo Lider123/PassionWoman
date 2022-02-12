@@ -1,23 +1,22 @@
 package ru.babaetskv.passionwoman.domain.interactor
 
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
+import ru.babaetskv.passionwoman.domain.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkActionException
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
+import ru.babaetskv.passionwoman.domain.usecase.LogOutUseCase
 
-class LogOutUseCase(
+class LogOutInteractor(
     private val authPreferences: AuthPreferences,
     private val favoritesPreferences: FavoritesPreferences,
     private val stringProvider: StringProvider
-) : BaseUseCase<Unit, Unit>() {
+) : BaseInteractor<Unit, Unit>(), LogOutUseCase {
 
-    override fun getUseCaseException(cause: Exception): Exception = LogOutException(cause)
+    override fun getUseCaseException(cause: Exception): Exception =
+        LogOutUseCase.LogOutException(cause, stringProvider)
 
     override suspend fun run(params: Unit) {
         authPreferences.reset()
         favoritesPreferences.reset()
     }
-
-    inner class LogOutException(cause: Exception?) : NetworkActionException(stringProvider.LOG_OUT_ERROR, cause)
 }

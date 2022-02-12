@@ -1,22 +1,19 @@
 package ru.babaetskv.passionwoman.domain.interactor
 
 import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
-import ru.babaetskv.passionwoman.domain.interactor.base.BaseUseCase
+import ru.babaetskv.passionwoman.domain.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Profile
+import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.utils.transform
 
-class GetProfileUseCase(
+class GetProfileInteractor(
     private val authGateway: AuthGateway,
     private val stringProvider: StringProvider
-) : BaseUseCase<Unit, Profile>() {
+) : BaseInteractor<Unit, Profile>(), GetProfileUseCase {
 
-    override fun getUseCaseException(cause: Exception): Exception = GetProfileException(cause)
+    override fun getUseCaseException(cause: Exception): Exception =
+        GetProfileUseCase.GetProfileException(cause, stringProvider)
 
     override suspend fun run(params: Unit): Profile = authGateway.getProfile().transform()
-
-    private inner class GetProfileException(
-        cause: Exception?
-    ) : NetworkDataException(stringProvider.GET_PROFILE_ERROR, cause)
 }

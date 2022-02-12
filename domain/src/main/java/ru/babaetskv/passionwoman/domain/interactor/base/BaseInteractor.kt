@@ -1,14 +1,14 @@
 package ru.babaetskv.passionwoman.domain.interactor.base
 
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase
 import timber.log.Timber
 
-abstract class BaseUseCase<in P, out R> {
+abstract class BaseInteractor<in P, out R> : UseCase<P, R> {
 
     protected abstract suspend fun run(params: P): R
-
     protected abstract fun getUseCaseException(cause: Exception): Exception
 
-    suspend fun execute(params: P): R = try {
+    override suspend fun execute(params: P): R = try {
         Timber.tag(TAG).i("Executing ${this::class.simpleName}")
         run(params)
     } catch (e: Exception) {

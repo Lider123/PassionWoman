@@ -6,9 +6,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectCategoryEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.GetCategoriesUseCase
 import ru.babaetskv.passionwoman.domain.model.Category
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.GetCategoriesUseCase
 
 class CatalogViewModelImpl(
     private val getCategoriesUseCase: GetCategoriesUseCase,

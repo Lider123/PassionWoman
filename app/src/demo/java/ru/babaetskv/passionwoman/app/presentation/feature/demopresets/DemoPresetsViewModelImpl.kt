@@ -8,11 +8,10 @@ import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
 import ru.babaetskv.passionwoman.app.utils.toDemoPresets
-import ru.babaetskv.passionwoman.domain.interactor.GetProfileUseCase
-import ru.babaetskv.passionwoman.domain.interactor.UpdateProfileUseCase
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
-import ru.babaetskv.passionwoman.domain.utils.execute
+import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.usecase.UpdateProfileUseCase
 
 class DemoPresetsViewModelImpl(
     private val appPrefs: AppPreferences,
@@ -22,7 +21,7 @@ class DemoPresetsViewModelImpl(
     private val resources: Resources,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<DemoPresetsViewModelImpl.Router>(dependencies), DemoPresetsViewModel {
-    override val presetsLiveData = MutableLiveData<List<DemoPreset>>(
+    override val presetsLiveData = MutableLiveData(
         appPrefs.toDemoPresets() + authPrefs.toDemoPresets()
     )
 

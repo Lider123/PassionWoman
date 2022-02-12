@@ -62,6 +62,7 @@ import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
+import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
     single<Resources> { androidContext().resources }
@@ -134,20 +135,20 @@ val dataSourceModule = module {
 }
 
 val interactorModule = module {
-    factory { GetCategoriesUseCase(get(), get()) }
-    factory { AuthorizeAsGuestUseCase(get(), get()) }
-    factory { AuthorizeUseCase(get(), get(), get()) }
-    factory { GetProfileUseCase(get(), get()) }
-    factory { UpdateProfileUseCase(get(), get(), get()) }
-    factory { LogOutUseCase(get(), get(), get()) }
-    factory { UpdateAvatarUseCase(get(), get()) }
-    factory { GetHomeDataUseCase(get(), get()) }
-    factory { GetFavoritesUseCase(get(), get(), get()) }
-    factory { GetProductUseCase(get(), get()) }
-    factory { AddToFavoritesUseCase(get(), get()) }
-    factory { RemoveFromFavoritesUseCase(get(), get()) }
-    factory { SyncFavoritesUseCase(get(), get(), get()) }
-    factory { GetProductsUseCase(get(), get()) }
+    factory<GetCategoriesUseCase> { GetCategoriesInteractor(get(), get()) }
+    factory<AuthorizeAsGuestUseCase> { AuthorizeAsGuestInteractor(get(), get()) }
+    factory<AuthorizeUseCase> { AuthorizeInteractor(get(), get(), get()) }
+    factory<GetProfileUseCase> { GetProfileInteractor(get(), get()) }
+    factory<UpdateProfileUseCase> { UpdateProfileInteractor(get(), get(), get()) }
+    factory<LogOutUseCase> { LogOutInteractor(get(), get(), get()) }
+    factory<UpdateAvatarUseCase> { UpdateAvatarInteractor(get(), get()) }
+    factory<GetHomeDataUseCase> { GetHomeDataInteractor(get(), get()) }
+    factory<GetFavoritesUseCase> { GetFavoritesInteractor(get(), get(), get()) }
+    factory<GetProductUseCase> { GetProductInteractor(get(), get()) }
+    factory<AddToFavoritesUseCase> { AddToFavoritesInteractor(get(), get()) }
+    factory<RemoveFromFavoritesUseCase> { RemoveFromFavoritesInteractor(get(), get()) }
+    factory<SyncFavoritesUseCase> { SyncFavoritesInteractor(get(), get(), get()) }
+    factory<GetProductsUseCase> { GetProductsInteractor(get(), get()) }
 }
 
 val gatewayModule = module {
