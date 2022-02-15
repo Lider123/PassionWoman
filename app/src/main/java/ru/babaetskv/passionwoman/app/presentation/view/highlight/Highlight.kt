@@ -17,7 +17,7 @@ class Highlight private constructor(
     private val view = HighlightView(context).apply {
         this.shape = shape
         this.frameMargin = frameMargin
-        this.outlineColor = outlineColor
+        setOutlineColor(outlineColor)
     }
 
     var showOnReady: Boolean = false
