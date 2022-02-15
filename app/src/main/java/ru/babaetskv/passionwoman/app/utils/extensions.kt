@@ -25,6 +25,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import me.philio.pinentry.PinEntryView
 import java.util.*
 
@@ -160,3 +161,6 @@ fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
 operator fun Bundle.plus(other: Bundle): Bundle = this.apply { putAll(other) }
 
 fun Editable?.toFloat() = this.toString().toFloat()
+
+fun BottomNavigationView.getMenuItemView(index: Int): View =
+    findViewById(menu.getItem(index).itemId)

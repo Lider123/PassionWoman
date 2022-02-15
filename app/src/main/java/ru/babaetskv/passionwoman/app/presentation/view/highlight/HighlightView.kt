@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.view.highlight
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.graphics.Bitmap.createBitmap
@@ -11,7 +10,6 @@ import android.view.Window
 import android.widget.RelativeLayout
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
-import ru.babaetskv.passionwoman.app.presentation.view.highlight.target.Target
 
 internal class HighlightView @JvmOverloads constructor(
     context: Context,
@@ -24,9 +22,8 @@ internal class HighlightView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private val basicPaint = Paint()
-    private var frameBorders: Rect? = null
 
-    var showOnReady: Boolean = false
+    var frameBorders: Rect? = null
     var frameMargin: Int = 0
     var shape: Shape = CircleShape()
     var outlineColor = Color.GRAY
@@ -57,12 +54,6 @@ internal class HighlightView @JvmOverloads constructor(
         return true
     }
 
-    private fun attachToWindow(window: Window) {
-        with (window.decorView as ViewGroup) {
-            addView(this@HighlightView)
-        }
-    }
-
     private fun detachFromWindow() {
         (parent as? ViewGroup)?.run {
             removeView(this@HighlightView)
@@ -73,10 +64,9 @@ internal class HighlightView @JvmOverloads constructor(
         detachFromWindow()
     }
 
-    fun prepare(target: Target, activity: Activity) {
-        target.calculateBorders {
-            frameBorders = it
-            if (showOnReady) attachToWindow(activity.window)
+    fun attachToWindow(window: Window) {
+        with (window.decorView as ViewGroup) {
+            addView(this@HighlightView)
         }
     }
 }
