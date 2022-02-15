@@ -9,13 +9,11 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.RelativeLayout
-import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.target.Target
-import ru.babaetskv.passionwoman.app.utils.color
 
-class HighlightView @JvmOverloads constructor(
+internal class HighlightView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -26,19 +24,19 @@ class HighlightView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private val basicPaint = Paint()
-    private val contentBackgroundColor = color(R.color.secondary)
     private var frameBorders: Rect? = null
 
     var showOnReady: Boolean = false
     var frameMargin: Int = 0
-    private val shape: Shape = CircleShape()
+    var shape: Shape = CircleShape()
+    var outlineColor = Color.GRAY
 
     override fun dispatchDraw(canvas: Canvas) {
         if (measuredWidth <= 0 && measuredHeight <= 0) return
 
         val overlay = createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
         Canvas(overlay).run {
-            drawColor(contentBackgroundColor)
+            drawColor(outlineColor)
             alpha = 0.8f
             frameBorders?.let {
                 val frameBordersWithMargin = Rect(
@@ -71,14 +69,14 @@ class HighlightView @JvmOverloads constructor(
         }
     }
 
+    private fun hide() {
+        detachFromWindow()
+    }
+
     fun prepare(target: Target, activity: Activity) {
         target.calculateBorders {
             frameBorders = it
             if (showOnReady) attachToWindow(activity.window)
         }
-    }
-
-    fun hide() {
-        detachFromWindow()
     }
 }
