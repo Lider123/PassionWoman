@@ -41,6 +41,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
             .build()
             .run {
                 prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity())
+                //prepare(NullTarget(), requireActivity())
                 showOnReady = true
             }
     }
