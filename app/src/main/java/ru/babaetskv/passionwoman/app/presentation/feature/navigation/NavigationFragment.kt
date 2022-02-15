@@ -10,9 +10,15 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.view.highlight.Highlight
+import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
+import ru.babaetskv.passionwoman.app.presentation.view.highlight.target.ViewTarget
+import ru.babaetskv.passionwoman.app.utils.color
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
+import ru.babaetskv.passionwoman.app.utils.dip
+import ru.babaetskv.passionwoman.app.utils.getMenuItemView
 
 class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
@@ -25,6 +31,19 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
     override val screenName: String = ""
+
+    override fun onStart() {
+        super.onStart()
+        Highlight.Builder(requireContext())
+            .setShape(CircleShape())
+            .setFrameMargin(requireContext().dip(-8))
+            .setOutlineColor(requireContext().color(R.color.secondary))
+            .build()
+            .run {
+                prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity())
+                showOnReady = true
+            }
+    }
 
     override fun initViews() {
         super.initViews()

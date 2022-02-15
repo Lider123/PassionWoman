@@ -20,13 +20,14 @@ class Highlight private constructor(
         this.outlineColor = outlineColor
     }
 
-    var showOnReady: Boolean
-        get() = view.showOnReady
-        set(value) {
-            view.showOnReady = value
-        }
+    var showOnReady: Boolean = false
 
-    fun prepare(target: Target, activity: Activity) = view.prepare(target, activity)
+    fun prepare(target: Target, activity: Activity) {
+        target.calculateBorders {
+            view.frameBorders = it
+            if (showOnReady) view.attachToWindow(activity.window)
+        }
+    }
 
     class Builder(
         private val context: Context
