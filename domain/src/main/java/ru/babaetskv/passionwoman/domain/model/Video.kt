@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Video(
-    val src: String
+    val url: String
 ) : Parcelable {
 
-    override fun toString() = src
+    override fun toString() = url
 }
