@@ -40,7 +40,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
             .setOutlineColor(requireContext().color(R.color.secondary))
             .build()
             .run {
-                prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity())
+                prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity().window)
                 //prepare(NullTarget(), requireActivity())
                 showOnReady = true
             }

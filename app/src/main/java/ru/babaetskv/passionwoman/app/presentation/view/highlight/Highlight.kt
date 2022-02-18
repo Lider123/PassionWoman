@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.view.highlight
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.view.Window
 import androidx.annotation.ColorInt
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
@@ -15,17 +15,17 @@ class Highlight private constructor(
     @ColorInt outlineColor: Int
 ) {
     private val view = HighlightView(context).apply {
-        this.shape = shape
-        this.frameMargin = frameMargin
+        setFrameShape(shape)
+        setFrameMargin(frameMargin)
         setOutlineColor(outlineColor)
     }
 
     var showOnReady: Boolean = false
 
-    fun prepare(target: Target, activity: Activity) {
+    fun prepare(target: Target, window: Window) {
         target.calculateBorders {
-            view.frameBorders = it
-            if (showOnReady) view.attachToWindow(activity.window)
+            view.setFrameBorders(it)
+            if (showOnReady) view.attachToWindow(window)
         }
     }
 
