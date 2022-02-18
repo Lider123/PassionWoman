@@ -1,54 +1,74 @@
 package ru.babaetskv.passionwoman.app.presentation.view.highlight
 
 import android.content.Context
-import android.graphics.Color
 import android.view.Window
 import androidx.annotation.ColorInt
-import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.target.Target
 
-class Highlight private constructor(
-    context: Context,
-    shape: Shape,
-    frameMargin: Int,
-    @ColorInt outlineColor: Int
-) {
-    private val view = HighlightView(context).apply {
-        setFrameShape(shape)
-        setFrameMargin(frameMargin)
-        setOutlineColor(outlineColor)
+class Highlight private constructor(context: Context) {
+    private val view = HighlightView(context)
+    private var window: Window? = null
+
+    var showOnReady: Boolean = true
+    val isPrepared: Boolean
+        get() = window != null
+
+    private fun setShape(shape: Shape) {
+        view.setFrameShape(shape)
     }
 
-    var showOnReady: Boolean = false
+    private fun setMargin(margin: Int) {
+        view.setFrameMargin(margin)
+    }
+
+    private fun setColor(@ColorInt color: Int) {
+        view.setOutlineColor(color)
+    }
 
     fun prepare(target: Target, window: Window) {
+        this.window = window
         target.calculateBorders {
             view.setFrameBorders(it)
-            if (showOnReady) view.attachToWindow(window)
+            if (showOnReady) show()
         }
     }
 
-    class Builder(
-        private val context: Context
-    ) {
-        private var shape: Shape = CircleShape()
-        private var frameMargin: Int = 0
-        @ColorInt
-        private var outlineColor: Int = Color.GRAY
+    fun show() {
+        if (!isPrepared) throw IllegalStateException("Highlight is not prepared!")
+
+        view.attachToWindow(window!!)
+    }
+
+    fun showImmediately() {
+        if (!isPrepared) throw IllegalStateException("Highlight is not prepared!")
+
+        view.attachToWindow(window!!, animate = false)
+    }
+
+    fun hide() {
+        view.detachFromWindow()
+    }
+
+    fun hideImmediately() {
+        view.detachFromWindow(animate = false)
+    }
+
+    class Builder(context: Context) {
+        private val highlight = Highlight(context)
 
         fun setShape(shape: Shape) = apply {
-            this.shape = shape
+            highlight.setShape(shape)
         }
 
         fun setFrameMargin(margin: Int) = apply {
-            frameMargin = margin
+            highlight.setMargin(margin)
         }
 
         fun setOutlineColor(@ColorInt color: Int) = apply {
-            outlineColor = color
+            highlight.setColor(color)
         }
 
-        fun build(): Highlight = Highlight(context, shape, frameMargin, outlineColor)
+        fun build(): Highlight = highlight
     }
 }
