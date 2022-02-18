@@ -3,5 +3,5 @@
   "name": "",
   "surname": "",
   "phone": "+79100000000",
-  "avatar": "image/avatar.jpg"
+  "avatar": "file:///android_asset/image/avatar.jpg"
 }

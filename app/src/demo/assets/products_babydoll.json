@@ -4,10 +4,10 @@
     "category": {
       "id": "category_babydolls",
       "name": "Babydolls",
-      "image": "image/category_babydolls.jpg"
+      "image": "file:///android_asset/image/category_babydolls.jpg"
     },
     "name": "Cute babydoll",
-    "preview": "image/product_babydoll_1_preview.jpg",
+    "preview": "file:///android_asset/image/product_babydoll_1_preview.jpg",
     "price": 75.0,
     "priceWithDiscount": 67.5,
     "rating": 3.8,
@@ -19,10 +19,10 @@
           "hex": "#FF0000"
         },
         "images": [
-          "image/product_babydoll_1_item_1_1.jpg",
-          "image/product_babydoll_1_item_1_2.jpg",
-          "image/product_babydoll_1_item_1_3.jpg",
-          "image/product_babydoll_1_item_1_4.jpg"
+          "file:///android_asset/image/product_babydoll_1_item_1_1.jpg",
+          "file:///android_asset/image/product_babydoll_1_item_1_2.jpg",
+          "file:///android_asset/image/product_babydoll_1_item_1_3.jpg",
+          "file:///android_asset/image/product_babydoll_1_item_1_4.jpg"
         ]
       }
     ]

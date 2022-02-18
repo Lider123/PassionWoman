@@ -1,77 +1,77 @@
 [
   {
     "id": "brand_1",
-    "logo": "image/brand_1.webp",
+    "logo": "file:///android_asset/image/brand_1.webp",
     "name": "Victoria's Secret"
   },
   {
     "id": "brand_2",
-    "logo": "image/brand_2.png",
+    "logo": "file:///android_asset/image/brand_2.png",
     "name": "Intimissimi"
   },
   {
     "id": "brand_3",
-    "logo": "image/brand_3.jpg",
+    "logo": "file:///android_asset/image/brand_3.jpg",
     "name": "MilaVitsa"
   },
   {
     "id": "brand_4",
-    "logo": "image/brand_4.gif",
+    "logo": "file:///android_asset/image/brand_4.gif",
     "name": "La Perla"
   },
   {
     "id": "brand_5",
-    "logo": "image/brand_5.jpg",
+    "logo": "file:///android_asset/image/brand_5.jpg",
     "name": "Fleur du Mal"
   },
   {
     "id": "brand_6",
-    "logo": "image/brand_6.png",
+    "logo": "file:///android_asset/image/brand_6.png",
     "name": "Maison Lejaby"
   },
   {
     "id": "brand_7",
-    "logo": "image/brand_7.png",
+    "logo": "file:///android_asset/image/brand_7.png",
     "name": "Lui et Elle"
   },
   {
     "id": "brand_8",
-    "logo": "image/brand_8.jpg",
+    "logo": "file:///android_asset/image/brand_8.jpg",
     "name": "Lowry"
   },
   {
     "id": "brand_9",
-    "logo": "image/brand_9.jpg",
+    "logo": "file:///android_asset/image/brand_9.jpg",
     "name": "MiNiMi"
   },
   {
     "id": "brand_10",
-    "logo": "image/brand_10.png",
+    "logo": "file:///android_asset/image/brand_10.png",
     "name": "SiSi"
   },
   {
     "id": "brand_11",
-    "logo": "image/brand_11.png",
+    "logo": "file:///android_asset/image/brand_11.png",
     "name": "Vis-A-Vis"
   },
   {
     "id": "brand_12",
-    "logo": "image/brand_12.jpg",
+    "logo": "file:///android_asset/image/brand_12.jpg",
     "name": "Fiore"
   },
   {
     "id": "brand_13",
-    "logo": "image/brand_13.jpg",
+    "logo": "file:///android_asset/image/brand_13.jpg",
     "name": "Incanto"
   },
   {
     "id": "brand_14",
-    "logo": "image/brand_14.jpg",
+    "logo": "file:///android_asset/image/brand_14.jpg",
     "name": "Mark Formelle"
   },
   {
     "id": "brand_15",
-    "logo": "image/brand_15.png",
+    "logo": "file:///android_asset/image/brand_15.png",
     "name": "Infinity lingerie"
   }
 ]

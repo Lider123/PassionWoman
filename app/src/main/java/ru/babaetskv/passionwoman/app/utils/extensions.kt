@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.text.Editable
@@ -25,7 +26,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import me.philio.pinentry.PinEntryView
+import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.domain.model.Image
 import java.util.*
 
 fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
@@ -143,6 +147,17 @@ fun String.toFormattedPhone(): String =
 fun ImageView.load(@DrawableRes imageRes: Int) {
     Glide.with(this)
         .load(imageRes)
+        .into(this)
+}
+
+fun ImageView.load(image: Image, @DrawableRes placeholder: Int, resizeAsItem: Boolean = false) {
+    val sizeRes = if (resizeAsItem) R.dimen.image_size_item else R.dimen.image_size_full
+    val imageSize = resources.getDimension(sizeRes).toInt()
+    Glide.with(this)
+        .load(Uri.parse(image.url))
+        .apply(RequestOptions().override(0, imageSize))
+        .placeholder(placeholder)
+        .error(placeholder)
         .into(this)
 }
 

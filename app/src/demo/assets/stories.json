@@ -1,7 +1,7 @@
 [
   {
     "id": "story_1",
-    "image": "image/story_1.png",
+    "image": "file:///android_asset/image/story_1.png",
     "contents": [
       {
         "id": "story_1_content_1",
@@ -14,7 +14,7 @@
   },
   {
     "id": "story_2",
-    "image": "image/story_2.png",
+    "image": "file:///android_asset/image/story_2.png",
     "contents": [
       {
         "id": "story_2_content_1",
@@ -27,7 +27,7 @@
   },
   {
     "id": "story_3",
-    "image": "image/story_3.png",
+    "image": "file:///android_asset/image/story_3.png",
     "contents": [
       {
         "id": "story_3_content_2",
@@ -40,20 +40,20 @@
         "id": "story_3_content_1",
         "title": "Summer time!",
         "text": "The new models are comfortable and very stylish.",
-        "media": "image/story_3_content_2.jpg",
+        "media": "file:///android_asset/image/story_3_content_2.jpg",
         "type": "image"
       }
     ]
   },
   {
     "id": "story_4",
-    "image": "image/story_4.jpg",
+    "image": "file:///android_asset/image/story_4.jpg",
     "contents": [
       {
         "id": "story_4_content_1",
         "title": "Merry Christmas!",
         "text": "The best Christmas present is you.",
-        "media": "image/story_4_content_1.jpg",
+        "media": "file:///android_asset/image/story_4_content_1.jpg",
         "type": "image"
       }
     ]

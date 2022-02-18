@@ -10,7 +10,6 @@ import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.api.PassionWomanApi
 import ru.babaetskv.passionwoman.data.model.AuthTokenModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
-import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.utils.transform
 
