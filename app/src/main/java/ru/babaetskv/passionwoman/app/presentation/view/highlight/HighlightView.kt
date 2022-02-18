@@ -16,6 +16,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.utils.color
+import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.min
 
@@ -53,8 +54,8 @@ internal class HighlightView @JvmOverloads constructor(
         }
     private val outlineMaxRadius: Int
         get() = frameBordersWithMargin?.let { frame ->
-            val mostRemoteX = if (frame.centerX() > measuredWidth - frame.centerX()) 0 else measuredWidth
-            val mostRemoteY = if (frame.centerY() > measuredHeight - frame.centerY()) 0 else measuredHeight
+            val mostRemoteX = listOf(0, measuredWidth).maxByOrNull { abs(it - frame.centerX()) }!!
+            val mostRemoteY = listOf(0, measuredHeight).maxByOrNull { abs(it - frame.centerY()) }!!
             hypot(mostRemoteX.toFloat() - frame.centerX(), mostRemoteY.toFloat() - frame.centerY()).toInt()
         } ?: hypot(measuredWidth.toFloat() / 2, measuredWidth.toFloat() / 2).toInt()
 
@@ -79,10 +80,10 @@ internal class HighlightView @JvmOverloads constructor(
 
     private fun calculateOutlineBorders(sizeMultiplier: Float): Rect {
         val basedOn = frameBordersWithMargin ?: Rect(0, 0, measuredWidth, measuredHeight)
-        val basedWidth = basedOn.right - basedOn.left
-        val basedHeight = basedOn.bottom - basedOn.top
-        val width: Int = (if (basedWidth > basedHeight) basedWidth / basedHeight else 1).times(sizeMultiplier).toInt()
-        val height: Int = (if (basedHeight > basedWidth) basedHeight / basedWidth else 1).times(sizeMultiplier).toInt()
+        val basedWidth = basedOn.width()
+        val basedHeight = basedOn.height()
+        val width: Int = basedWidth.div(basedHeight).coerceAtLeast(1).times(sizeMultiplier).toInt()
+        val height: Int = basedHeight.div(basedWidth).coerceAtLeast(1).times(sizeMultiplier).toInt()
         val posX: Int = basedOn.left + (basedWidth - width) / 2
         val posY: Int = basedOn.top + (basedHeight - height) / 2
         return Rect(posX, posY, posX + width, posY + height)
