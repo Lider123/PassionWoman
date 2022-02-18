@@ -1,8 +1,10 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
+import androidx.core.graphics.ColorUtils
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -37,7 +39,10 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         Highlight.Builder(requireContext())
             .setShape(CircleShape())
             .setFrameMargin(requireContext().dip(-8))
-            .setOutlineColor(requireContext().color(R.color.secondary))
+            .setOutlineColor(ColorUtils.setAlphaComponent(
+                requireContext().color(R.color.secondary),
+                128
+            ))
             .build()
             .run {
                 prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity().window)

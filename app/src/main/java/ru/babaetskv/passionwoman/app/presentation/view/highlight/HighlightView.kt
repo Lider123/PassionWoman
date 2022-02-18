@@ -12,8 +12,10 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
+import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
+import ru.babaetskv.passionwoman.app.utils.color
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -30,7 +32,7 @@ internal class HighlightView @JvmOverloads constructor(
     }
     private val basicPaint = Paint()
     private val outlinePaint = Paint().apply {
-        color = Color.GRAY
+        color = color(R.color.hint)
     }
     private var outlineBordersMultiplier: Float = 1f
     private var frameShape: Shape = CircleShape()
@@ -58,7 +60,6 @@ internal class HighlightView @JvmOverloads constructor(
         val overlay = createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
         Canvas(overlay).run {
             frameShape.draw(this, calculateOutlineBorders(outlineBordersMultiplier), outlinePaint)
-            alpha = 0.8f
             frameBordersWithMargin?.let {
                 frameShape.draw(this, it, eraserPaint)
             }
