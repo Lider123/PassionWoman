@@ -29,8 +29,13 @@ internal class HighlightView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private val basicPaint = Paint()
-    private val outlinePaint = Paint()
+    private val outlinePaint = Paint().apply {
+        color = Color.GRAY
+    }
     private var outlineBordersMultiplier: Float = 1f
+    private var frameShape: Shape = CircleShape()
+    private var frameBorders: Rect? = null
+    private var frameMargin: Int = 0
     private val maxOutlineBordersMultiplier: Float
         get() {
             val viewDiagonal = sqrt(measuredWidth.toFloat().pow(2) + measuredHeight.toFloat().pow(2))
@@ -46,9 +51,6 @@ internal class HighlightView @JvmOverloads constructor(
                 it.bottom + frameMargin
             )
         }
-    private var frameShape: Shape = CircleShape()
-    private var frameBorders: Rect? = null
-    private var frameMargin: Int = 0
 
     override fun dispatchDraw(canvas: Canvas) {
         if (measuredWidth <= 0 && measuredHeight <= 0) return
@@ -66,33 +68,8 @@ internal class HighlightView @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        hide()
-        return true
-    }
-
-    private fun detachFromWindow(animate: Boolean = true) {
-        if (!animate) {
-            (parent as? ViewGroup)?.removeView(this@HighlightView)
-            return
-        }
-
-        post {
-            ValueAnimator.ofFloat(maxOutlineBordersMultiplier, 1f).apply {
-                duration = 1000L
-                interpolator = DecelerateInterpolator()
-                addUpdateListener {
-                    outlineBordersMultiplier = it.animatedValue as Float
-                    invalidate()
-                    if (outlineBordersMultiplier == 1f) {
-                        (parent as? ViewGroup)?.removeView(this@HighlightView)
-                    }
-                }
-            }.start()
-        }
-    }
-
-    private fun hide() {
         detachFromWindow()
+        return true
     }
 
     private fun calculateOutlineBorders(sizeMultiplier: Float): Rect {
@@ -103,25 +80,27 @@ internal class HighlightView @JvmOverloads constructor(
         val height: Int = (if (basedHeight > basedWidth) basedHeight / basedWidth else 1).times(sizeMultiplier).toInt()
         val posX: Int = basedOn.left + (basedWidth - width) / 2
         val posY: Int = basedOn.top + (basedHeight - height) / 2
-        val right = posX + width
-        val bottom = posY + height
-        return Rect(posX, posY, right, bottom)
+        return Rect(posX, posY, posX + width, posY + height)
     }
 
     fun setFrameShape(shape: Shape) {
         frameShape = shape
+        invalidate()
     }
 
     fun setFrameBorders(borders: Rect?) {
         frameBorders = borders
+        invalidate()
     }
 
     fun setFrameMargin(margin: Int) {
         frameMargin = margin
+        invalidate()
     }
 
     fun setOutlineColor(@ColorInt color: Int) {
         outlinePaint.color = color
+        invalidate()
     }
 
     fun attachToWindow(window: Window, animate: Boolean = true) {
@@ -139,6 +118,30 @@ internal class HighlightView @JvmOverloads constructor(
                     }
                 }.start()
             }
+        } else {
+            outlineBordersMultiplier = maxOutlineBordersMultiplier
+        }
+    }
+
+    fun detachFromWindow(animate: Boolean = true) {
+        if (!animate) {
+            (parent as? ViewGroup)?.removeView(this@HighlightView)
+            outlineBordersMultiplier = 1f
+            return
+        }
+
+        post {
+            ValueAnimator.ofFloat(maxOutlineBordersMultiplier, 1f).apply {
+                duration = 1000L
+                interpolator = DecelerateInterpolator()
+                addUpdateListener {
+                    outlineBordersMultiplier = it.animatedValue as Float
+                    invalidate()
+                    if (outlineBordersMultiplier == 1f) {
+                        (parent as? ViewGroup)?.removeView(this@HighlightView)
+                    }
+                }
+            }.start()
         }
     }
 }
