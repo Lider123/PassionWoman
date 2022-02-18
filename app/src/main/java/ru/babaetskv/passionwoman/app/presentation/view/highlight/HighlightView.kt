@@ -16,9 +16,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.utils.color
-import kotlin.math.max
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.hypot
+import kotlin.math.min
 
 internal class HighlightView @JvmOverloads constructor(
     context: Context,
@@ -40,9 +39,8 @@ internal class HighlightView @JvmOverloads constructor(
     private var frameMargin: Int = 0
     private val maxOutlineBordersMultiplier: Float
         get() {
-            val viewDiagonal = sqrt(measuredWidth.toFloat().pow(2) + measuredHeight.toFloat().pow(2))
             val baseOutlineBorders = calculateOutlineBorders(1f)
-            return 2 * viewDiagonal / max(baseOutlineBorders.width(), baseOutlineBorders.height())
+            return 2f * outlineMaxRadius / min(baseOutlineBorders.width(), baseOutlineBorders.height())
         }
     private val frameBordersWithMargin: Rect?
         get() = frameBorders?.let {
@@ -53,6 +51,12 @@ internal class HighlightView @JvmOverloads constructor(
                 it.bottom + frameMargin
             )
         }
+    private val outlineMaxRadius: Int
+        get() = frameBordersWithMargin?.let { frame ->
+            val mostRemoteX = if (frame.centerX() > measuredWidth - frame.centerX()) 0 else measuredWidth
+            val mostRemoteY = if (frame.centerY() > measuredHeight - frame.centerY()) 0 else measuredHeight
+            hypot(mostRemoteX.toFloat() - frame.centerX(), mostRemoteY.toFloat() - frame.centerY()).toInt()
+        } ?: hypot(measuredWidth.toFloat() / 2, measuredWidth.toFloat() / 2).toInt()
 
     override fun dispatchDraw(canvas: Canvas) {
         if (measuredWidth <= 0 && measuredHeight <= 0) return
@@ -74,7 +78,7 @@ internal class HighlightView @JvmOverloads constructor(
     }
 
     private fun calculateOutlineBorders(sizeMultiplier: Float): Rect {
-        val basedOn = frameBorders ?: Rect(0, 0, measuredWidth, measuredHeight)
+        val basedOn = frameBordersWithMargin ?: Rect(0, 0, measuredWidth, measuredHeight)
         val basedWidth = basedOn.right - basedOn.left
         val basedHeight = basedOn.bottom - basedOn.top
         val width: Int = (if (basedWidth > basedHeight) basedWidth / basedHeight else 1).times(sizeMultiplier).toInt()
