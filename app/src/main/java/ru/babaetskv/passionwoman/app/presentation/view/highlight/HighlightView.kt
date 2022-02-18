@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Bitmap.createBitmap
 import android.util.AttributeSet
-import android.util.Size
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.view.Window
@@ -31,38 +30,35 @@ internal class HighlightView @JvmOverloads constructor(
     }
     private val basicPaint = Paint()
     private val outlinePaint = Paint()
-    private var outlineMultiplier: Float = 1f
-    private val maxMultiplier: Float
+    private var outlineBordersMultiplier: Float = 1f
+    private val maxOutlineBordersMultiplier: Float
         get() {
             val viewDiagonal = sqrt(measuredWidth.toFloat().pow(2) + measuredHeight.toFloat().pow(2))
-            val baseOutlineBordersSize = calculateOutlineBorders(1f).let {
-                Size(
-                    it.right - it.left,
-                    it.bottom - it.top
-                )
-            }
-            return 2 * viewDiagonal / max(baseOutlineBordersSize.width, baseOutlineBordersSize.height)
+            val baseOutlineBorders = calculateOutlineBorders(1f)
+            return 2 * viewDiagonal / max(baseOutlineBorders.width(), baseOutlineBorders.height())
         }
-
-    var frameBorders: Rect? = null
-    var frameMargin: Int = 0
-    var shape: Shape = CircleShape()
+    private val frameBordersWithMargin: Rect?
+        get() = frameBorders?.let {
+            Rect(
+                it.left - frameMargin,
+                it.top - frameMargin,
+                it.right + frameMargin,
+                it.bottom + frameMargin
+            )
+        }
+    private var frameShape: Shape = CircleShape()
+    private var frameBorders: Rect? = null
+    private var frameMargin: Int = 0
 
     override fun dispatchDraw(canvas: Canvas) {
         if (measuredWidth <= 0 && measuredHeight <= 0) return
 
         val overlay = createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
         Canvas(overlay).run {
-            shape.draw(this, calculateOutlineBorders(outlineMultiplier), outlinePaint)
+            frameShape.draw(this, calculateOutlineBorders(outlineBordersMultiplier), outlinePaint)
             alpha = 0.8f
-            frameBorders?.let {
-                val frameBordersWithMargin = Rect(
-                    it.left - frameMargin,
-                    it.top - frameMargin,
-                    it.right + frameMargin,
-                    it.bottom + frameMargin
-                )
-                shape.draw(this, frameBordersWithMargin, eraserPaint)
+            frameBordersWithMargin?.let {
+                frameShape.draw(this, it, eraserPaint)
             }
         }
         canvas.drawBitmap(overlay, 0f, 0f, basicPaint)
@@ -81,13 +77,13 @@ internal class HighlightView @JvmOverloads constructor(
         }
 
         post {
-            ValueAnimator.ofFloat(maxMultiplier, 1f).apply {
+            ValueAnimator.ofFloat(maxOutlineBordersMultiplier, 1f).apply {
                 duration = 1000L
                 interpolator = DecelerateInterpolator()
                 addUpdateListener {
-                    outlineMultiplier = it.animatedValue as Float
+                    outlineBordersMultiplier = it.animatedValue as Float
                     invalidate()
-                    if (outlineMultiplier == 1f) {
+                    if (outlineBordersMultiplier == 1f) {
                         (parent as? ViewGroup)?.removeView(this@HighlightView)
                     }
                 }
@@ -112,6 +108,18 @@ internal class HighlightView @JvmOverloads constructor(
         return Rect(posX, posY, right, bottom)
     }
 
+    fun setFrameShape(shape: Shape) {
+        frameShape = shape
+    }
+
+    fun setFrameBorders(borders: Rect?) {
+        frameBorders = borders
+    }
+
+    fun setFrameMargin(margin: Int) {
+        frameMargin = margin
+    }
+
     fun setOutlineColor(@ColorInt color: Int) {
         outlinePaint.color = color
     }
@@ -122,19 +130,11 @@ internal class HighlightView @JvmOverloads constructor(
         }
         if (animate) {
             post {
-                val viewDiagonal = sqrt(measuredWidth.toFloat().pow(2) + measuredHeight.toFloat().pow(2))
-                val baseOutlineBordersSize = calculateOutlineBorders(1f).let {
-                    Size(
-                        it.right - it.left,
-                        it.bottom - it.top
-                    )
-                }
-                val maxMultiplier = 2 * viewDiagonal / max(baseOutlineBordersSize.width, baseOutlineBordersSize.height)
-                ValueAnimator.ofFloat(1f, maxMultiplier).apply {
+                ValueAnimator.ofFloat(1f, maxOutlineBordersMultiplier).apply {
                     duration = 1000L
                     interpolator = AccelerateInterpolator()
                     addUpdateListener {
-                        outlineMultiplier = it.animatedValue as Float
+                        outlineBordersMultiplier = it.animatedValue as Float
                         invalidate()
                     }
                 }.start()

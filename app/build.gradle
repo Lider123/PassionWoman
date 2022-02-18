@@ -7,7 +7,6 @@ plugins {
     id 'kotlin-parcelize'
 }
 
-apply from: 'signingCredentials.gradle'
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
@@ -22,15 +21,6 @@ android {
         versionName "0.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        demo {
-            storeFile file(signingCredentials.filepath)
-            keyAlias signingCredentials.alias
-            keyPassword signingCredentials.keyPass
-            storePassword signingCredentials.storePass
-        }
     }
 
     flavorDimensions "1"
@@ -55,7 +45,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            productFlavors.demo.signingConfig signingConfigs.demo
             // TODO: add config for the full flavor
         }
     }
