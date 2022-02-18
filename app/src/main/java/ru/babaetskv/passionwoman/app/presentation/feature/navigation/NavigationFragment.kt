@@ -1,7 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import android.app.Dialog
-import android.graphics.Color
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.graphics.ColorUtils
