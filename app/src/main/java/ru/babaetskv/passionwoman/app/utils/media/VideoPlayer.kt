@@ -2,17 +2,17 @@ package ru.babaetskv.passionwoman.app.utils.media
 
 import android.content.Context
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import ru.babaetskv.passionwoman.domain.model.Video
 
-abstract class VideoPlayer(
+class VideoPlayer(
     private val context: Context
 ) : MediaPlayer<Video, PlayerView>, Player.Listener {
     private var mProgressListener: MediaPlayer.ProgressListener? = null
     private var timer: MediaTimer? = null
-
-    protected lateinit var exoPlayer: ExoPlayer
+    private lateinit var exoPlayer: ExoPlayer
 
     override val isPlaying: Boolean
         get() = exoPlayer.isPlaying
@@ -25,6 +25,16 @@ abstract class VideoPlayer(
         exoPlayer = ExoPlayer.Builder(context)
             .build()
         exoPlayer.addListener(this)
+    }
+
+    override fun prepare(content: Video, view: PlayerView) {
+        view.player = exoPlayer
+        val mediaItem = MediaItem.Builder()
+            .setUri(content.url)
+            .build()
+        exoPlayer.addMediaItem(mediaItem)
+        exoPlayer.prepare()
+        exoPlayer.seekTo(0)
     }
 
     override fun setProgressListener(listener: MediaPlayer.ProgressListener) {

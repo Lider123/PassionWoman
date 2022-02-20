@@ -4,12 +4,12 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Cute panties",
     "description": "Best choice for yourself or your girlfriend!",
     "model": "brazilian",
-    "preview": "image/product_panties_1_preview.jpg",
+    "preview": "file:///android_asset/image/product_panties_1_preview.jpg",
     "price": 60.0,
     "priceWithDiscount": 60.0,
     "rating": 4.5,
@@ -21,8 +21,8 @@
           "hex": "#800080"
         },
         "images": [
-          "image/product_panties_1_item_1_1.jpg",
-          "image/product_panties_1_item_1_2.jpg"
+          "file:///android_asset/image/product_panties_1_item_1_1.jpg",
+          "file:///android_asset/image/product_panties_1_item_1_2.jpg"
         ]
       }
     ]
@@ -32,18 +32,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties string Lui et Elle Resille",
     "description": "We present to you luxurious women's lace thong panties. Delicate lace with a beautiful floral design is spicy and attractive in French. The verified classic designs of the panties emphasize the grace of the figure and create comfort. In this model you will feel unique and sexy. The product is not afraid of multiple washings. Over time, the linen does not change color and does not stretch. The collection is presented in several delightful colors, each of which is able to lift the mood and tune in the desired way. The gusset is backed up with 100% cotton. Buy and feel the softness and comfort in our lingerie every day!",
     "model": "thong",
-    "preview": "image/product_panties_2_preview.jpg",
+    "preview": "file:///android_asset/image/product_panties_2_preview.jpg",
     "price": 35.70,
     "priceWithDiscount": 2.69,
     "rating": 5.0,
     "brand": {
       "id": "brand_7",
-      "logo": "image/brand_7.png",
+      "logo": "file:///android_asset/image/brand_7.png",
       "name": "Lui et Elle"
     },
     "colors": [
@@ -54,10 +54,10 @@
           "hex": "#000000"
         },
         "images": [
-          "image/product_panties_2_black_1.jpg",
-          "image/product_panties_2_black_2.webp",
-          "image/product_panties_2_black_3.webp",
-          "image/product_panties_2_black_4.webp"
+          "file:///android_asset/image/product_panties_2_black_1.jpg",
+          "file:///android_asset/image/product_panties_2_black_2.webp",
+          "file:///android_asset/image/product_panties_2_black_3.webp",
+          "file:///android_asset/image/product_panties_2_black_4.webp"
         ]
       },
       {
@@ -69,10 +69,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
-          "image/product_panties_2_blue_1.webp",
-          "image/product_panties_2_blue_2.webp",
-          "image/product_panties_2_blue_3.webp",
-          "image/product_panties_2_blue_4.webp"
+          "file:///android_asset/image/product_panties_2_blue_1.webp",
+          "file:///android_asset/image/product_panties_2_blue_2.webp",
+          "file:///android_asset/image/product_panties_2_blue_3.webp",
+          "file:///android_asset/image/product_panties_2_blue_4.webp"
         ]
       },
       {
@@ -84,10 +84,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["S", "M", "L"],
         "images": [
-          "image/product_panties_2_red_1.webp",
-          "image/product_panties_2_red_2.webp",
-          "image/product_panties_2_red_3.webp",
-          "image/product_panties_2_red_4.webp"
+          "file:///android_asset/image/product_panties_2_red_1.webp",
+          "file:///android_asset/image/product_panties_2_red_2.webp",
+          "file:///android_asset/image/product_panties_2_red_3.webp",
+          "file:///android_asset/image/product_panties_2_red_4.webp"
         ]
       },
       {
@@ -99,10 +99,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["S", "M", "L", "XL"],
         "images": [
-          "image/product_panties_2_white_1.webp",
-          "image/product_panties_2_white_2.webp",
-          "image/product_panties_2_white_3.webp",
-          "image/product_panties_2_white_4.webp"
+          "file:///android_asset/image/product_panties_2_white_1.webp",
+          "file:///android_asset/image/product_panties_2_white_2.webp",
+          "file:///android_asset/image/product_panties_2_white_3.webp",
+          "file:///android_asset/image/product_panties_2_white_4.webp"
         ]
       }
     ]
@@ -112,18 +112,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties brazilian Lui et Elle Resille",
     "description": "Luxurious, romantic women's lace Brazilian panties from TM LUI et ELLE. The front is made of delicate, exquisite lace with a beautiful floral design. The back is a fine mesh (tulle). Our ladies 'briefs have a perfect fit, while the classic panties' designs accentuate the grace of the figure and create comfort. Irreplaceable linen for spring and summer. In our transparent and light Brazilian girls, you will feel unique and sexy. The product is not afraid of multiple washes, does not change color and does not stretch. Buy and feel the softness and comfort in our underwear every day from the LUI et ELLE brand!",
     "model": "brazilian",
-    "preview": "image/product_panties_3_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_3_preview.webp",
     "price": 35.70,
     "priceWithDiscount": 2.69,
     "rating": 5.0,
     "brand": {
       "id": "brand_7",
-      "logo": "image/brand_7.png",
+      "logo": "file:///android_asset/image/brand_7.png",
       "name": "Lui et Elle"
     },
     "colors": [
@@ -134,10 +134,10 @@
           "hex": "#000000"
         },
         "images": [
-          "image/product_panties_3_black_1.webp",
-          "image/product_panties_3_black_2.webp",
-          "image/product_panties_3_black_3.webp",
-          "image/product_panties_3_black_4.webp"
+          "file:///android_asset/image/product_panties_3_black_1.webp",
+          "file:///android_asset/image/product_panties_3_black_2.webp",
+          "file:///android_asset/image/product_panties_3_black_3.webp",
+          "file:///android_asset/image/product_panties_3_black_4.webp"
         ]
       },
       {
@@ -149,10 +149,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
-          "image/product_panties_3_blue_1.webp",
-          "image/product_panties_3_blue_2.webp",
-          "image/product_panties_3_blue_3.webp",
-          "image/product_panties_3_blue_4.webp"
+          "file:///android_asset/image/product_panties_3_blue_1.webp",
+          "file:///android_asset/image/product_panties_3_blue_2.webp",
+          "file:///android_asset/image/product_panties_3_blue_3.webp",
+          "file:///android_asset/image/product_panties_3_blue_4.webp"
         ]
       },
       {
@@ -164,10 +164,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
-          "image/product_panties_3_red_1.webp",
-          "image/product_panties_3_red_2.webp",
-          "image/product_panties_3_red_3.webp",
-          "image/product_panties_3_red_4.webp"
+          "file:///android_asset/image/product_panties_3_red_1.webp",
+          "file:///android_asset/image/product_panties_3_red_2.webp",
+          "file:///android_asset/image/product_panties_3_red_3.webp",
+          "file:///android_asset/image/product_panties_3_red_4.webp"
         ]
       },
       {
@@ -179,10 +179,10 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "S", "M", "XL"],
         "images": [
-          "image/product_panties_3_white_1.webp",
-          "image/product_panties_3_white_2.webp",
-          "image/product_panties_3_white_3.webp",
-          "image/product_panties_3_white_4.webp"
+          "file:///android_asset/image/product_panties_3_white_1.webp",
+          "file:///android_asset/image/product_panties_3_white_2.webp",
+          "file:///android_asset/image/product_panties_3_white_3.webp",
+          "file:///android_asset/image/product_panties_3_white_4.webp"
         ]
       }
     ]
@@ -192,18 +192,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties string Lui et Elle Helena",
     "description": "Women's briefs, thongs with a low rise. Exquisite panties made of eco-friendly cotton with delicate lace inserts from one of the popular Lui et Elle collections. The material of the panties is made using a special technology, which makes the fabric incredibly soft and hypoallergenic. The panties allow your body to breathe and feel comfortable to wear, they are not visible under the clothes. The front part along the upper cut is trimmed with a 5 cm lace ribbon and decorated with a bow, the back part is smooth. Side detail - thin elastic lace band, elastic at the legs and waist with soft lace scallop. Body material: 95% cotton, 5% elastane. Gusset material: 100% cotton.",
     "model": "thong",
-    "preview": "image/product_panties_4_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_4_preview.webp",
     "price": 10.66,
     "priceWithDiscount": 3.77,
     "rating": 5.0,
     "brand": {
       "id": "brand_7",
-      "logo": "image/brand_7.png",
+      "logo": "file:///android_asset/image/brand_7.png",
       "name": "Lui et Elle"
     },
     "colors": [
@@ -216,8 +216,8 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["M", "L", "XL"],
         "images": [
-          "image/product_panties_4_black_1.webp",
-          "image/product_panties_4_black_2.webp"
+          "file:///android_asset/image/product_panties_4_black_1.webp",
+          "file:///android_asset/image/product_panties_4_black_2.webp"
         ]
       },
       {
@@ -229,8 +229,8 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "M"],
         "images": [
-          "image/product_panties_4_white_1.webp",
-          "image/product_panties_4_white_2.webp"
+          "file:///android_asset/image/product_panties_4_white_1.webp",
+          "file:///android_asset/image/product_panties_4_white_2.webp"
         ]
       }
     ]
@@ -240,18 +240,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties Mark Formelle",
     "description": "Spectacular briefs with a slightly dropped waistline and cotton gusset. The model is decorated with embroidery on a non-elastic mesh and will make a sophisticated set with bras from the same collection.",
     "model": "brazilian",
-    "preview": "image/product_panties_5_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_5_preview.webp",
     "price": 9.57,
     "priceWithDiscount": 4.31,
     "rating": 5.0,
     "brand": {
       "id": "brand_14",
-      "logo": "image/brand_14.jpg",
+      "logo": "file:///android_asset/image/brand_14.jpg",
       "name": "Mark Formelle"
     },
     "colors": [
@@ -264,8 +264,8 @@
         "sizes": ["90", "94", "98", "102", "106", "110"],
         "availableSizes": ["90", "94", "98", "102", "110"],
         "images": [
-          "image/product_panties_5_white_1.webp",
-          "image/product_panties_5_white_2.webp"
+          "file:///android_asset/image/product_panties_5_white_1.webp",
+          "file:///android_asset/image/product_panties_5_white_2.webp"
         ]
       }
     ]
@@ -275,18 +275,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties thong Milavitsa",
     "description": "Briefs tanga with an average waistline, The model is made of translucent elastic mesh fabric. Cotton gusset.",
     "model": "thong",
-    "preview": "image/product_panties_6_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_6_preview.webp",
     "price": 13.38,
     "priceWithDiscount": 13.38,
     "rating": 5.0,
     "brand": {
       "id": "brand_3",
-      "logo": "image/brand_3.jpg",
+      "logo": "file:///android_asset/image/brand_3.jpg",
       "name": "MilaVitsa"
     },
     "colors": [
@@ -299,8 +299,8 @@
         "sizes": ["86", "90", "94", "98", "102", "106"],
         "availableSizes": ["90", "106"],
         "images": [
-          "image/product_panties_6_white_1.webp",
-          "image/product_panties_6_white_2.webp"
+          "file:///android_asset/image/product_panties_6_white_1.webp",
+          "file:///android_asset/image/product_panties_6_white_2.webp"
         ]
       },
       {
@@ -312,8 +312,8 @@
         "sizes": ["86", "90", "94", "98", "102", "106"],
         "availableSizes": ["90", "94"],
         "images": [
-          "image/product_panties_6_black_1.webp",
-          "image/product_panties_6_black_2.webp"
+          "file:///android_asset/image/product_panties_6_black_1.webp",
+          "file:///android_asset/image/product_panties_6_black_2.webp"
         ]
       }
     ]
@@ -323,18 +323,18 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties string Vis-A-Vis",
     "description": "The mini thong panties, made of high quality cotton with elastane, have a low rise at the waist. The model is decorated with a central lace insert at the front.",
     "model": "thong",
-    "preview": "image/product_panties_7_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_7_preview.webp",
     "price": 6.02,
     "priceWithDiscount": 3.49,
     "rating": 5.0,
     "brand": {
       "id": "brand_11",
-      "logo": "image/brand_11.png",
+      "logo": "file:///android_asset/image/brand_11.png",
       "name": "Vis-A-Vis"
     },
     "colors": [
@@ -347,9 +347,9 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS"],
         "images": [
-          "image/product_panties_7_black_1.webp",
-          "image/product_panties_7_black_2.webp",
-          "image/product_panties_7_black_3.webp"
+          "file:///android_asset/image/product_panties_7_black_1.webp",
+          "file:///android_asset/image/product_panties_7_black_2.webp",
+          "file:///android_asset/image/product_panties_7_black_3.webp"
         ]
       },
       {
@@ -361,8 +361,8 @@
         "sizes": ["XS", "S", "M", "L", "XL"],
         "availableSizes": ["XS", "S", "M", "L", "XL"],
         "images": [
-          "image/product_panties_7_white_1.webp",
-          "image/product_panties_7_white_2.webp"
+          "file:///android_asset/image/product_panties_7_white_1.webp",
+          "file:///android_asset/image/product_panties_7_white_2.webp"
         ]
       }
     ]
@@ -372,17 +372,17 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties Infinity Lingerie",
     "model": "slip",
-    "preview": "image/product_panties_8_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_8_preview.webp",
     "price": 10.01,
     "priceWithDiscount": 4.95,
     "rating": 4.9,
     "brand": {
       "id": "brand_15",
-      "logo": "image/brand_15.png",
+      "logo": "file:///android_asset/image/brand_15.png",
       "name": "Infinity lingerie"
     },
     "colors": [
@@ -393,9 +393,9 @@
           "hex": "#000000"
         },
         "images": [
-          "image/product_panties_8_black_1.webp",
-          "image/product_panties_8_black_2.webp",
-          "image/product_panties_8_black_3.webp"
+          "file:///android_asset/image/product_panties_8_black_1.webp",
+          "file:///android_asset/image/product_panties_8_black_2.webp",
+          "file:///android_asset/image/product_panties_8_black_3.webp"
         ]
       },
       {
@@ -405,9 +405,9 @@
           "hex": "#f5f5dc"
         },
         "images": [
-          "image/product_panties_8_beige_1.webp",
-          "image/product_panties_8_beige_2.webp",
-          "image/product_panties_8_beige_3.webp"
+          "file:///android_asset/image/product_panties_8_beige_1.webp",
+          "file:///android_asset/image/product_panties_8_beige_2.webp",
+          "file:///android_asset/image/product_panties_8_beige_3.webp"
         ]
       }
     ]
@@ -417,17 +417,17 @@
     "category": {
       "id": "category_panties",
       "name": "Panties",
-      "image": "image/category_panties.jpg"
+      "image": "file:///android_asset/image/category_panties.jpg"
     },
     "name": "Panties Infinity Lingerie",
     "model": "slip",
-    "preview": "image/product_panties_9_preview.webp",
+    "preview": "file:///android_asset/image/product_panties_9_preview.webp",
     "price": 8.02,
     "priceWithDiscount": 3.41,
     "rating": 4.8,
     "brand": {
       "id": "brand_15",
-      "logo": "image/brand_15.png",
+      "logo": "file:///android_asset/image/brand_15.png",
       "name": "Infinity lingerie"
     },
     "colors": [
@@ -438,8 +438,8 @@
           "hex": "#ff69b4"
         },
         "images": [
-          "image/product_panties_8_hot_pink_1.webp",
-          "image/product_panties_8_hot_pink_2.webp"
+          "file:///android_asset/image/product_panties_8_hot_pink_1.webp",
+          "file:///android_asset/image/product_panties_8_hot_pink_2.webp"
         ]
       }
     ]

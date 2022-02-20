@@ -4,11 +4,11 @@
     "category": {
       "id": "category_erotic",
       "name": "Erotic",
-      "image": "image/category_erotic.jpg"
+      "image": "file:///android_asset/image/category_erotic.jpg"
     },
     "name": "Sexy lingerie",
     "description": "A sexy, open-back bodysuit.",
-    "preview": "image/product_erotic_1_preview.jpg",
+    "preview": "file:///android_asset/image/product_erotic_1_preview.jpg",
     "price": 75.0,
     "priceWithDiscount": 75.0,
     "rating": 3.8,
@@ -21,8 +21,8 @@
         },
         "sizes": ["XXL", "XXXL"],
         "images": [
-          "image/product_erotic_1_item_1_1.jpg",
-          "image/product_erotic_1_item_1_2.jpg"
+          "file:///android_asset/image/product_erotic_1_item_1_1.jpg",
+          "file:///android_asset/image/product_erotic_1_item_1_2.jpg"
         ]
       }
     ]

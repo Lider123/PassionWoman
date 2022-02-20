@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.domain.model.Video
 
 class StoryContentPlayer(context: Context) : MediaPlayer<Story.Content, StoryContentView> {
     private val imagePlayer: MediaPlayer<Image, ImageView> = ImageTimerPlayer(IMAGE_PLAYER_DURATION)
-    private val videoPlayer: MediaPlayer<Video, PlayerView> = VideoPlayerImpl(context)
+    private val videoPlayer: MediaPlayer<Video, PlayerView> = VideoPlayer(context)
     private var currContent: Story.Content? = null
     private val currPlayer: MediaPlayer<*, *>?
         get() = when (currContent) {
