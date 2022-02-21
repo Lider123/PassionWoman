@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.view.highlight
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
@@ -20,10 +19,6 @@ import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.utils.color
 import kotlin.math.*
 
-/** TODO
- * optimize outline drawing not to draw beyond window
- * handle animation cancellation
- */
 internal class HighlightView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -38,7 +33,7 @@ internal class HighlightView @JvmOverloads constructor(
     private val outlinePaint = Paint().apply {
         color = color(R.color.hint)
     }
-    private var animator: Animator? = null
+    private var animator: ValueAnimator? = null
     private var outlineBordersMultiplier: Float = 1f
     private var frameShape: Shape = CircleShape()
     private var frameBorders: Rect? = null
@@ -99,6 +94,30 @@ internal class HighlightView @JvmOverloads constructor(
         return frameShape.modifyBordersToFit(borders, this)
     }
 
+    private fun createShowAnimator(valueFrom: Float, duration: Long): ValueAnimator =
+        ValueAnimator.ofFloat(valueFrom, maxOutlineBordersMultiplier).apply {
+            this.duration = duration
+            interpolator = AccelerateInterpolator()
+            addUpdateListener {
+                outlineBordersMultiplier = it.animatedValue as Float
+                invalidate()
+            }
+        }
+
+    private fun createHideAnimator(
+        valueFrom: Float,
+        duration: Long,
+        doOnEnd: (() -> Unit)? = null
+    ): ValueAnimator = ValueAnimator.ofFloat(valueFrom, 1f).apply {
+        this.duration = duration
+        interpolator = DecelerateInterpolator()
+        addUpdateListener {
+            outlineBordersMultiplier = it.animatedValue as Float
+            invalidate()
+            if (outlineBordersMultiplier == 1f) doOnEnd?.invoke()
+        }
+    }
+
     fun setFrameShape(shape: Shape) {
         frameShape = shape
         invalidate()
@@ -120,46 +139,60 @@ internal class HighlightView @JvmOverloads constructor(
     }
 
     fun attachToWindow(window: Window, animate: Boolean = true) {
-        animator?.cancel()
         with (window.decorView as ViewGroup) {
             addView(this@HighlightView)
         }
-        if (animate) {
+        if (!animate) {
+            animator?.cancel()
+            outlineBordersMultiplier = maxOutlineBordersMultiplier
+            return
+        }
+
+        if (animator?.isRunning == true && animator?.interpolator is DecelerateInterpolator) {
+            val reverseDuration = animator!!.currentPlayTime
             post {
-                animator = ValueAnimator.ofFloat(1f, maxOutlineBordersMultiplier).apply {
-                    duration = ANIMATION_DURATION_MILLIS
-                    interpolator = AccelerateInterpolator()
-                    addUpdateListener {
-                        outlineBordersMultiplier = it.animatedValue as Float
-                        invalidate()
-                    }
-                }
+                animator?.cancel()
+                animator = createShowAnimator(outlineBordersMultiplier, reverseDuration)
                 animator?.start()
             }
-        } else {
-            outlineBordersMultiplier = maxOutlineBordersMultiplier
+            return
+        }
+
+        if (animator?.isRunning == true && animator?.interpolator is AccelerateInterpolator) return
+
+        post {
+            animator?.cancel()
+            animator = createShowAnimator(1f, ANIMATION_DURATION_MILLIS)
+            animator?.start()
         }
     }
 
     fun detachFromWindow(animate: Boolean = true) {
-        animator?.cancel()
         if (!animate) {
+            animator?.cancel()
             (parent as? ViewGroup)?.removeView(this@HighlightView)
             outlineBordersMultiplier = 1f
             return
         }
 
-        post {
-            animator = ValueAnimator.ofFloat(maxOutlineBordersMultiplier, 1f).apply {
-                duration = ANIMATION_DURATION_MILLIS
-                interpolator = DecelerateInterpolator()
-                addUpdateListener {
-                    outlineBordersMultiplier = it.animatedValue as Float
-                    invalidate()
-                    if (outlineBordersMultiplier == 1f) {
-                        (parent as? ViewGroup)?.removeView(this@HighlightView)
-                    }
+        if (animator?.isRunning == true && animator?.interpolator is AccelerateInterpolator) {
+            val reverseDuration = animator!!.currentPlayTime
+            post {
+                animator?.cancel()
+                animator = createHideAnimator(outlineBordersMultiplier, reverseDuration) {
+                    (parent as? ViewGroup)?.removeView(this@HighlightView)
                 }
+                animator?.start()
+            }
+            return
+        }
+
+        if (animator?.isRunning == true && animator?.interpolator is DecelerateInterpolator) return
+
+        post {
+            animator?.cancel()
+            animator = createHideAnimator(maxOutlineBordersMultiplier, ANIMATION_DURATION_MILLIS) {
+                (parent as? ViewGroup)?.removeView(this@HighlightView)
             }
             animator?.start()
         }
