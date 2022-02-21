@@ -18,9 +18,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.utils.color
-import kotlin.math.abs
-import kotlin.math.hypot
-import kotlin.math.min
+import kotlin.math.*
 
 /** TODO
  * optimize outline drawing not to draw beyond window
@@ -95,9 +93,10 @@ internal class HighlightView @JvmOverloads constructor(
         val basedHeight = basedOn.height()
         val width: Int = basedWidth.div(basedHeight).coerceAtLeast(1).times(sizeMultiplier).toInt()
         val height: Int = basedHeight.div(basedWidth).coerceAtLeast(1).times(sizeMultiplier).toInt()
-        val posX: Int = basedOn.left + (basedWidth - width) / 2
-        val posY: Int = basedOn.top + (basedHeight - height) / 2
-        return Rect(posX, posY, posX + width, posY + height)
+        val left: Int = basedOn.left + (basedWidth - width) / 2
+        val top: Int = basedOn.top + (basedHeight - height) / 2
+        val borders = Rect(left, top, left + width, top + height)
+        return frameShape.modifyBordersToFit(borders, this)
     }
 
     fun setFrameShape(shape: Shape) {
