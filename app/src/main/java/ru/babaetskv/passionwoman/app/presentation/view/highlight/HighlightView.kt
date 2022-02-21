@@ -12,6 +12,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.RelativeLayout
 import androidx.annotation.ColorInt
+import androidx.core.graphics.applyCanvas
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.CircleShape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
@@ -20,6 +21,11 @@ import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.min
 
+/** TODO
+ * optimize outline drawing not to draw beyond window
+ * handle animation cancellation
+ * add BlurView
+ */
 internal class HighlightView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -62,8 +68,7 @@ internal class HighlightView @JvmOverloads constructor(
     override fun dispatchDraw(canvas: Canvas) {
         if (measuredWidth <= 0 && measuredHeight <= 0) return
 
-        val overlay = createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
-        Canvas(overlay).run {
+        val overlay = createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888).applyCanvas {
             frameShape.draw(this, calculateOutlineBorders(outlineBordersMultiplier), outlinePaint)
             frameBordersWithMargin?.let {
                 frameShape.draw(this, it, eraserPaint)
@@ -116,7 +121,7 @@ internal class HighlightView @JvmOverloads constructor(
         if (animate) {
             post {
                 ValueAnimator.ofFloat(1f, maxOutlineBordersMultiplier).apply {
-                    duration = 1000L
+                    duration = ANIMATION_DURATION_MILLIS
                     interpolator = AccelerateInterpolator()
                     addUpdateListener {
                         outlineBordersMultiplier = it.animatedValue as Float
@@ -138,7 +143,7 @@ internal class HighlightView @JvmOverloads constructor(
 
         post {
             ValueAnimator.ofFloat(maxOutlineBordersMultiplier, 1f).apply {
-                duration = 1000L
+                duration = ANIMATION_DURATION_MILLIS
                 interpolator = DecelerateInterpolator()
                 addUpdateListener {
                     outlineBordersMultiplier = it.animatedValue as Float
@@ -149,5 +154,9 @@ internal class HighlightView @JvmOverloads constructor(
                 }
             }.start()
         }
+    }
+
+    companion object {
+        private const val ANIMATION_DURATION_MILLIS = 1000L
     }
 }
