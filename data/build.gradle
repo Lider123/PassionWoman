@@ -60,7 +60,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Paging
-    api "androidx.paging:paging-runtime-ktx:3.0.1"
+    api "androidx.paging:paging-runtime-ktx:3.1.0"
 
     // Tests
     testImplementation 'junit:junit:4.13.2'
