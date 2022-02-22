@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentStoriesBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.utils.CubePageTransformer
+import ru.babaetskv.passionwoman.app.utils.view.CubePageTransformer
 import ru.babaetskv.passionwoman.domain.model.Story
 import kotlin.math.abs
 
@@ -36,7 +36,11 @@ class StoriesFragment :
     override fun initViews() {
         super.initViews()
         binding.viewPager.run {
-            setPageTransformer(CubePageTransformer(15f))
+            setPageTransformer(
+                CubePageTransformer(
+                    15f
+                )
+            )
             adapter = this@StoriesFragment.adapter
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 

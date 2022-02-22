@@ -1,0 +1,55 @@
+[
+  {
+    "id": "product_corset_1",
+    "category": {
+      "id": "category_corsets",
+      "name": "Corsets",
+      "image": "file:///android_asset/image/category_corsets.jpg"
+    },
+    "name": "Nice corset",
+    "preview": "file:///android_asset/image/product_corset_1_preview.jpg",
+    "price": 75.0,
+    "priceWithDiscount": 75.0,
+    "rating": 3.8,
+    "colors": [
+      {
+        "color": {
+          "code": "light_blue",
+          "uiName": "light blue",
+          "hex": "#72bcd4"
+        },
+        "images": [
+          "file:///android_asset/image/product_corset_1_item_1_1.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "product_corset_2",
+    "category": {
+      "id": "category_corsets",
+      "name": "Corsets",
+      "image": "file:///android_asset/image/category_corsets.jpg"
+    },
+    "name": "Sexy corset",
+    "preview": "file:///android_asset/image/product_corset_2_preview.jpg",
+    "price": 80.0,
+    "priceWithDiscount": 80.0,
+    "rating": 4.2,
+    "colors": [
+      {
+        "color": {
+          "code": "red",
+          "uiName": "red",
+          "hex": "#ff0000"
+        },
+        "images": [
+          "file:///android_asset/image/product_corset_2_item_1_1.jpg",
+          "file:///android_asset/image/product_corset_2_item_1_2.jpg",
+          "file:///android_asset/image/product_corset_2_item_1_3.jpg",
+          "file:///android_asset/image/product_corset_2_item_1_4.jpg"
+        ]
+      }
+    ]
+  }
+]
