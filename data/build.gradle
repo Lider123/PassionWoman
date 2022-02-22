@@ -7,12 +7,12 @@ plugins {
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
 
         buildConfigField 'String', 'API_URL', '"http://192.168.1.167:8080"' // TODO: check
     }
@@ -63,7 +63,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Paging
-    api "androidx.paging:paging-runtime-ktx:3.0.1"
+    api "androidx.paging:paging-runtime-ktx:3.1.0"
 
     // Tests
     testImplementation 'junit:junit:4.13.2'

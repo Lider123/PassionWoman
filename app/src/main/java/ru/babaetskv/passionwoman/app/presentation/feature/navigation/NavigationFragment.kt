@@ -61,6 +61,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
 
         when (dialog) {
             is NavigationViewModel.Dialog.MergeFavorites -> showMergeFavoritesDialog(dialog)
+            else -> Unit
         }
     }
 
