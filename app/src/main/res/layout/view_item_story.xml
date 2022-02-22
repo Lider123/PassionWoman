@@ -11,10 +11,12 @@
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivBanner"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintDimensionRatio="3:4"
             tools:src="@tools:sample/backgrounds/scenic"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

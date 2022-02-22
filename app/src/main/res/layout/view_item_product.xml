@@ -13,10 +13,12 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPreview"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintDimensionRatio="2:3"
             tools:src="@tools:sample/backgrounds/scenic"/>
 
@@ -69,13 +71,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_extra_small"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:lines="2"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/tvPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="@tools:sample/lorem" />
 
         <androidx.appcompat.widget.AppCompatRatingBar

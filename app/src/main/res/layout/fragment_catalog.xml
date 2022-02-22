@@ -10,44 +10,52 @@
 
     <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
         android:textAlignment="viewStart"
         app:tv_title="@string/categories_title"
         app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
         app:tv_actionEndVisible="true"
         app:tv_actionEndSrc="@drawable/ic_search"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="@dimen/margin_default"
         android:clipToPadding="false"
         android:layoutAnimation="@anim/layout_fade_in"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_item_category"/>
 
     <ru.babaetskv.passionwoman.app.presentation.view.StubView
         android:id="@id/errorView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:sv_action="@string/retry"
         app:sv_isBackVisible="false" />
 
     <include
         android:id="@id/mockView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         layout="@layout/layout_categories_mock"
         tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

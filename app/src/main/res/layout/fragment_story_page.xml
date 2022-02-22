@@ -8,8 +8,12 @@
 
     <ru.babaetskv.passionwoman.app.presentation.view.StoryContentView
         android:id="@+id/contentView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <LinearLayout
         android:id="@+id/progressContainer"
@@ -45,26 +49,30 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginHorizontal="@dimen/margin_default"
         android:textColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/tvText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         style="@style/Typography.PassionWoman.TextAppearance.Subtitle"
         tools:text="@tools:sample/lorem"
         tools:visibility="visible"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_default"
         android:layout_marginHorizontal="@dimen/margin_default"
         android:textColor="@android:color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@tools:sample/lorem/random"
         tools:lines="3"
         tools:visibility="visible"/>
@@ -72,15 +80,19 @@
     <View
         android:id="@+id/viewPrev"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent=".25"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent=".25" />
 
     <View
         android:id="@+id/viewNext"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintWidth_percent=".25"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
