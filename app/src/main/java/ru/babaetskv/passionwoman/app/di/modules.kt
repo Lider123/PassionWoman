@@ -43,13 +43,13 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.So
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModelImpl
-import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
+import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkHandler
-import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.app.utils.notifier.NotifierImpl
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
 import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
@@ -57,6 +57,8 @@ import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.interactor.*
+import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
+import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -65,11 +67,11 @@ import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
     single<Resources> { androidContext().resources }
-    single { Notifier(get()) }
+    single<Notifier> { NotifierImpl(get()) }
     single<StringProvider> { StringProviderImpl(get()) }
     single<AuthHandler> { AuthHandlerImpl(get()) }
     single { EventHub() }
-    single { ExternalIntentHandler(androidContext()) }
+    single<ExternalActionHandler> { ExternalIntentHandler(androidContext()) }
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
     single { NetworkStateChecker(androidContext()) }

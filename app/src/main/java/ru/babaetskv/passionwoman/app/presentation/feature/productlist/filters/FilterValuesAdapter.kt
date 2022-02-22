@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.recyclerview.widget.DiffUtil
@@ -8,6 +7,7 @@ import ru.babaetskv.passionwoman.app.databinding.ViewItemFilterValueBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import ru.babaetskv.passionwoman.domain.model.filters.FilterValue
 
@@ -19,13 +19,7 @@ class FilterValuesAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<SelectableItem<FilterValue>> =
-        ViewItemFilterValueBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        ).let {
-            ViewHolder(it)
-        }
+        ViewHolder(parent.viewBinding(ViewItemFilterValueBinding::inflate))
 
     inner class ViewHolder(
         private val binding: ViewItemFilterValueBinding

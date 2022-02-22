@@ -1,0 +1,77 @@
+[
+  {
+    "id": "brand_1",
+    "logo": "file:///android_asset/image/brand_1.webp",
+    "name": "Victoria's Secret"
+  },
+  {
+    "id": "brand_2",
+    "logo": "file:///android_asset/image/brand_2.png",
+    "name": "Intimissimi"
+  },
+  {
+    "id": "brand_3",
+    "logo": "file:///android_asset/image/brand_3.jpg",
+    "name": "MilaVitsa"
+  },
+  {
+    "id": "brand_4",
+    "logo": "file:///android_asset/image/brand_4.gif",
+    "name": "La Perla"
+  },
+  {
+    "id": "brand_5",
+    "logo": "file:///android_asset/image/brand_5.jpg",
+    "name": "Fleur du Mal"
+  },
+  {
+    "id": "brand_6",
+    "logo": "file:///android_asset/image/brand_6.png",
+    "name": "Maison Lejaby"
+  },
+  {
+    "id": "brand_7",
+    "logo": "file:///android_asset/image/brand_7.png",
+    "name": "Lui et Elle"
+  },
+  {
+    "id": "brand_8",
+    "logo": "file:///android_asset/image/brand_8.jpg",
+    "name": "Lowry"
+  },
+  {
+    "id": "brand_9",
+    "logo": "file:///android_asset/image/brand_9.jpg",
+    "name": "MiNiMi"
+  },
+  {
+    "id": "brand_10",
+    "logo": "file:///android_asset/image/brand_10.png",
+    "name": "SiSi"
+  },
+  {
+    "id": "brand_11",
+    "logo": "file:///android_asset/image/brand_11.png",
+    "name": "Vis-A-Vis"
+  },
+  {
+    "id": "brand_12",
+    "logo": "file:///android_asset/image/brand_12.jpg",
+    "name": "Fiore"
+  },
+  {
+    "id": "brand_13",
+    "logo": "file:///android_asset/image/brand_13.jpg",
+    "name": "Incanto"
+  },
+  {
+    "id": "brand_14",
+    "logo": "file:///android_asset/image/brand_14.jpg",
+    "name": "Mark Formelle"
+  },
+  {
+    "id": "brand_15",
+    "logo": "file:///android_asset/image/brand_15.png",
+    "name": "Infinity lingerie"
+  }
+]

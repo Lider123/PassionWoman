@@ -19,10 +19,8 @@ class SelectProductEvent(
         }
 
     override fun getAdditionalParams(keys: ParamsKeys): Bundle =
-        with (product) {
-            bundleOf(
-                keys.CATEGORY_NAME to product.category.name,
-                keys.BRAND_NAME to (product.brand?.name ?: ParamsConstants.UNKNOWN)
-            )
-        }
+        bundleOf(
+            keys.CATEGORY_NAME to product.category.name,
+            keys.BRAND_NAME to (product.brand?.name ?: ParamsConstants.UNKNOWN)
+        )
 }

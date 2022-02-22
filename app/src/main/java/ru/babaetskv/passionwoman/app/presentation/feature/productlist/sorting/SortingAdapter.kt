@@ -1,14 +1,12 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
@@ -22,14 +20,11 @@ class SortingAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<SelectableItem<Sorting>> =
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_sorting, parent, false)
-            .let {
-                ViewHolder(it)
-            }
+        ViewHolder(parent.viewBinding(ViewItemSortingBinding::inflate))
 
-    private inner class ViewHolder(v: View) : BaseViewHolder<SelectableItem<Sorting>>(v) {
-        private val binding = ViewItemSortingBinding.bind(v)
+    private inner class ViewHolder(
+        private val binding: ViewItemSortingBinding
+    ) : BaseViewHolder<SelectableItem<Sorting>>(binding.root) {
 
         override fun bind(item: SelectableItem<Sorting>) {
             binding.radioSorting.run {

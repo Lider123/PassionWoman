@@ -12,7 +12,6 @@ import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import java.io.File
-import java.net.URI
 
 class AuthGatewayImpl(
     private val api: PassionWomanApi,
@@ -37,7 +36,7 @@ class AuthGatewayImpl(
     }
 
     private fun getImagePart(path: String): MultipartBody.Part {
-        val file = File(URI.create(path))
+        val file = File(path)
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData("image", file.name, requestBody)
     }

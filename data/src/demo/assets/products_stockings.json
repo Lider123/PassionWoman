@@ -1,0 +1,39 @@
+[
+  {
+    "id": "product_stockings_1",
+    "category": {
+      "id": "category_stockings",
+      "name": "Stockings",
+      "image": "file:///android_asset/image/category_stockings.jpg"
+    },
+    "name": "Sexy stockings",
+    "preview": "file:///android_asset/image/product_stockings_1_preview.jpg",
+    "price": 37.0,
+    "priceWithDiscount": 33.3,
+    "rating": 4.3,
+    "colors": [
+      {
+        "color": {
+          "code": "black",
+          "uiName": "black",
+          "hex": "#000000"
+        },
+        "images": [
+          "file:///android_asset/image/product_stockings_1_item_1_1.jpg",
+          "file:///android_asset/image/product_stockings_1_item_1_2.jpg"
+        ]
+      },
+      {
+        "color": {
+          "code": "white",
+          "uiName": "white",
+          "hex": "#ffffff"
+        },
+        "images": [
+          "file:///android_asset/image/product_stockings_1_item_2_1.jpg",
+          "file:///android_asset/image/product_stockings_1_item_2_2.jpg"
+        ]
+      }
+    ]
+  }
+]

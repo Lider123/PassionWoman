@@ -6,8 +6,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
@@ -25,7 +25,7 @@ class ProductCardViewModelImpl(
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
     private val deeplinkGenerator: DeeplinkGenerator,
-    private val externalIntentHandler: ExternalIntentHandler,
+    private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductCardViewModel.Router>(dependencies), ProductCardViewModel {
     override val productLiveData = MutableLiveData<Product>()
@@ -93,7 +93,7 @@ class ProductCardViewModelImpl(
         launch {
             val deeplink = deeplinkGenerator.createProductDeeplink(product) ?: return@launch
 
-            externalIntentHandler.handleText(deeplink)
+            externalActionHandler.handleText(deeplink)
         }
     }
 

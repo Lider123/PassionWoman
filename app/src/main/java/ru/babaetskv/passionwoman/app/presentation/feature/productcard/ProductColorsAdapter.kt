@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
@@ -9,6 +8,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductColorBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
@@ -21,11 +21,7 @@ class ProductColorsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<SelectableItem<ProductColor>> =
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_product_color, parent, false)
-            .let {
-                ViewHolder(it)
-            }
+        ViewHolder(parent.inflateLayout(R.layout.view_item_product_color))
 
     inner class ViewHolder(v: View) : BaseViewHolder<SelectableItem<ProductColor>>(v) {
         private val binding = ViewItemProductColorBinding.bind(v)

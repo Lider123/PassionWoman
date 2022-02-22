@@ -1,12 +1,12 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductSizeBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
@@ -18,9 +18,7 @@ class ProductSizesAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<SelectableItem<ProductSize>> =
-        LayoutInflater.from(parent.context)
-            .let { ViewItemProductSizeBinding.inflate(it, parent, false) }
-            .let { ViewHolder(it) }
+        ViewHolder(parent.viewBinding(ViewItemProductSizeBinding::inflate))
 
     inner class ViewHolder(
         private val binding: ViewItemProductSizeBinding

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "category_bra",
+    "name": "Bra",
+    "image": "file:///android_asset/image/category_bra.jpg"
+  },
+  {
+    "id": "category_panties",
+    "name": "Panties",
+    "image": "file:///android_asset/image/category_panties.jpg"
+  },
+  {
+    "id": "category_lingerie",
+    "name": "Lingerie",
+    "image": "file:///android_asset/image/category_lingerie.jpg"
+  },
+  {
+    "id": "category_erotic",
+    "name": "Erotic",
+    "image": "file:///android_asset/image/category_erotic.jpg"
+  },
+  {
+    "id": "category_swim",
+    "name": "Swim",
+    "image": "file:///android_asset/image/category_swim.jpg"
+  },
+  {
+    "id": "category_corsets",
+    "name": "Corsets",
+    "image": "file:///android_asset/image/category_corsets.jpg"
+  },
+  {
+    "id": "category_garter_belts",
+    "name": "Garter belts",
+    "image": "file:///android_asset/image/category_garter_belts.jpg"
+  },
+  {
+    "id": "category_babydolls",
+    "name": "Babydolls",
+    "image": "file:///android_asset/image/category_babydolls.jpg"
+  },
+  {
+    "id": "category_stockings",
+    "name": "Stockings",
+    "image": "file:///android_asset/image/category_stockings.jpg"
+  },
+  {
+    "id": "category_pantyhose",
+    "name": "Pantyhose",
+    "image": "file:///android_asset/image/category_pantyhose.jpg"
+  }
+]
