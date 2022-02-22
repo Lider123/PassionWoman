@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -10,6 +9,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BasePagingAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
@@ -22,8 +22,7 @@ class PagedProductsAdapter(
 ) : BasePagingAdapter<Product>(ProductDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_product, parent, false)
+        val view = parent.inflateLayout(R.layout.view_item_product)
         if (itemWidthRatio < 0 && itemWidthRatio > 1) throw IllegalStateException("Item width ratio should be from 0 to 1")
 
         view.updateLayoutParams {

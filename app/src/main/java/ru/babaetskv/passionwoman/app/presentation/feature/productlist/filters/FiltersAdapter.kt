@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import kotlinx.coroutines.flow.*
@@ -15,6 +14,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.presentation.view.InputRangeView
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.Price
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
@@ -30,32 +30,21 @@ class FiltersAdapter(
 
     override fun getItemViewType(position: Int): Int = getItem(position).type.ordinal
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Filter> {
-        val filterType = Filter.Type.values()[viewType]
-        val inflater = LayoutInflater.from(parent.context)
-        return when (filterType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Filter> =
+        when (Filter.Type.values()[viewType]) {
             Filter.Type.BOOLEAN -> {
-                ViewItemBooleanFilterBinding.inflate(inflater, parent, false).let {
-                    BooleanFilterViewHolder(it)
-                }
+                BooleanFilterViewHolder(parent.viewBinding(ViewItemBooleanFilterBinding::inflate))
             }
             Filter.Type.COLOR -> {
-                ViewItemColorFilterBinding.inflate(inflater, parent, false).let {
-                    ColorFilterViewHolder(it)
-                }
+                ColorFilterViewHolder(parent.viewBinding(ViewItemColorFilterBinding::inflate))
             }
             Filter.Type.RANGE -> {
-                ViewItemRangeFilterBinding.inflate(inflater, parent, false).let {
-                    RangeFilterViewHolder(it)
-                }
+                RangeFilterViewHolder(parent.viewBinding(ViewItemRangeFilterBinding::inflate))
             }
             Filter.Type.MULTI -> {
-                ViewItemMultiFilterBinding.inflate(inflater, parent, false).let {
-                    MultiFilterViewHolder(it)
-                }
+                MultiFilterViewHolder(parent.viewBinding(ViewItemMultiFilterBinding::inflate))
             }
         }
-    }
 
     inner class BooleanFilterViewHolder(
         private val binding: ViewItemBooleanFilterBinding

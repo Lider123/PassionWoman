@@ -3,7 +3,6 @@ package ru.babaetskv.passionwoman.app.presentation.view
 import android.content.Context
 import android.graphics.PorterDuff
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -13,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewToolbarBinding
+import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
 class ToolbarView @JvmOverloads constructor(
@@ -41,7 +41,7 @@ class ToolbarView @JvmOverloads constructor(
         }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_toolbar, this)
+        inflateLayout(R.layout.view_toolbar, true)
         binding = ViewToolbarBinding.bind(this)
         context.theme.obtainStyledAttributes(attrs, R.styleable.ToolbarView, 0, 0).apply {
             try {

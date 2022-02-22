@@ -1,7 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
@@ -10,6 +8,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.Promotion
 
 class PromotionsAdapter(
@@ -17,14 +16,11 @@ class PromotionsAdapter(
 ): BaseAdapter<Promotion>(PromotionDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Promotion> =
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_promotion, parent, false)
-            .let {
-                ViewHolder(it)
-            }
+        ViewHolder(parent.viewBinding(ViewItemPromotionBinding::inflate))
 
-    inner class ViewHolder(v: View) : BaseViewHolder<Promotion>(v) {
-        private val binding = ViewItemPromotionBinding.bind(v)
+    inner class ViewHolder(
+        private val binding: ViewItemPromotionBinding
+    ) : BaseViewHolder<Promotion>(binding.root) {
 
         override fun bind(item: Promotion) {
             binding.run {

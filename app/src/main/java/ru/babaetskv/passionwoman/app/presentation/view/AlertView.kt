@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +10,7 @@ import com.google.android.material.snackbar.ContentViewCallback
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewAlertBinding
 import ru.babaetskv.passionwoman.app.utils.color
+import ru.babaetskv.passionwoman.app.utils.inflateLayout
 
 class AlertView @JvmOverloads constructor(
     context: Context,
@@ -29,7 +29,7 @@ class AlertView @JvmOverloads constructor(
         }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.view_alert, this)
+        inflateLayout(R.layout.view_alert, true)
         binding = ViewAlertBinding.bind(this)
         clipToPadding = false
     }

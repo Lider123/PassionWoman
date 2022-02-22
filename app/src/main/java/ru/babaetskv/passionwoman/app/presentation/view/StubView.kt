@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -10,13 +9,14 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewStubBinding
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 
 class StubView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-    private val binding = ViewStubBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding = viewBinding(ViewStubBinding::inflate, true)
     private var backButtonListener: ((View) -> Unit)? = null
     private var actionButtonListener: ((View) -> Unit)? = null
 

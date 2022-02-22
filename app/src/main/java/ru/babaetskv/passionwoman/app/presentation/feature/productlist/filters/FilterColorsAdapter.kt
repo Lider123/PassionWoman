@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +8,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.view.ColorView
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
@@ -20,9 +20,7 @@ class FilterColorsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<SelectableItem<Color>> =
-        ViewItemFilterColorBinding.inflate(LayoutInflater.from(parent.context), parent, false).let {
-            ViewHolder(it)
-        }
+        ViewHolder(parent.viewBinding(ViewItemFilterColorBinding::inflate))
 
     inner class ViewHolder(
         private val binding: ViewItemFilterColorBinding

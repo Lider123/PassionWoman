@@ -2,17 +2,20 @@ package ru.babaetskv.passionwoman.app.utils
 
 import android.graphics.Rect
 import android.net.Uri
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.AnimRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.LayoutRes
 import androidx.core.text.HtmlCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.babaetskv.passionwoman.app.R
@@ -100,3 +103,11 @@ fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
         insets
     }
 }
+
+inline fun <T : ViewBinding> ViewGroup.viewBinding(
+    crossinline bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T,
+    attachToRoot: Boolean = false
+) = bindingInflater.invoke(LayoutInflater.from(this.context), this, attachToRoot)
+
+fun ViewGroup.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false) =
+    LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
