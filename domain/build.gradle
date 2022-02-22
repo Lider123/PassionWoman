@@ -8,12 +8,12 @@ plugins {
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
     }
 
     buildTypes {
