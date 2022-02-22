@@ -20,9 +20,11 @@
 
             <FrameLayout
                 android:id="@+id/layoutPhotos"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintDimensionRatio="3:4">
 
                 <androidx.viewpager2.widget.ViewPager2
@@ -81,7 +83,7 @@
 
             <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
                 android:id="@+id/toolbar"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="?android:attr/actionBarSize"
                 app:tv_title=""
                 app:tv_actionStartVisible="true"
@@ -89,7 +91,9 @@
                 app:tv_actionEndVisible="true"
                 app:tv_actionEndSrc="@drawable/ic_favorites"
                 app:tv_actionEndTint="@color/favorite"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnShare"
@@ -193,7 +197,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvColors"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
                 android:paddingHorizontal="@dimen/margin_small"
@@ -201,18 +205,21 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvColors"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 tools:listitem="@layout/view_item_product_color"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvDesription"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginHorizontal="@dimen/margin_default"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/rvColors"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="@tools:sample/lorem/random"
                 tools:lines="3"
                 tools:visibility="visible"/>
@@ -229,13 +236,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSizes"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
                 android:paddingHorizontal="@dimen/margin_small"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/tvSizes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                 tools:itemCount="10"
                 tools:listitem="@layout/view_item_product_size"/>
@@ -248,13 +257,15 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddToCart"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_default"
                 android:layout_marginHorizontal="@dimen/margin_default"
                 android:enabled="false"
                 app:layout_constraintTop_toBottomOf="@id/rvSizes"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintVertical_bias="0"
                 style="@style/Widget.PassionWoman.Button.Colored"
                 tools:enabled="true"

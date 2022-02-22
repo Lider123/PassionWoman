@@ -9,11 +9,13 @@
 
         <LinearLayout
             android:id="@+id/mockRow1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_small"
             android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <include
                 android:layout_width="0dp"
@@ -34,11 +36,13 @@
 
         <LinearLayout
             android:id="@+id/mockRow2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/margin_small"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/mockRow1">
+            app:layout_constraintTop_toBottomOf="@id/mockRow1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <include
                 android:layout_width="0dp"
