@@ -11,13 +11,12 @@ class NetworkStateChecker(context: Context) : ConnectivityManager.NetworkCallbac
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkAvailabilityFlow = MutableStateFlow(isConnected)
     private val isConnected: Boolean
-        get() = connectivityManager.allNetworks.mapNotNull {
-            connectivityManager.getNetworkCapabilities(it)
-        }.filter {
-            it.hasCapability(REQUIRED_NETWORK_CAPABILITY)
-        }.any { capabilities ->
-            REQUIRED_NETWORK_TYPES.any { capabilities.hasTransport(it) }
-        }
+        get() = connectivityManager.allNetworks
+            .mapNotNull(connectivityManager::getNetworkCapabilities)
+            .filter { it.hasCapability(REQUIRED_NETWORK_CAPABILITY) }
+            .any { capabilities ->
+                REQUIRED_NETWORK_TYPES.any { capabilities.hasTransport(it) }
+            }
 
     val networkAvailabilityFlowDebounced: Flow<Boolean>
         get() = networkAvailabilityFlow.debounce(NETWORK_UPDATE_DELAY_MS)
@@ -26,9 +25,7 @@ class NetworkStateChecker(context: Context) : ConnectivityManager.NetworkCallbac
         val request = NetworkRequest.Builder()
             .addCapability(REQUIRED_NETWORK_CAPABILITY)
             .apply {
-                REQUIRED_NETWORK_TYPES.forEach {
-                    addTransportType(it)
-                }
+                REQUIRED_NETWORK_TYPES.forEach(::addTransportType)
             }
             .build()
         connectivityManager.requestNetwork(request, this)

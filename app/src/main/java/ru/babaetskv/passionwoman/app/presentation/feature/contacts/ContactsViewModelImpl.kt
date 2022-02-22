@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.utils.ExternalIntentHandler
+import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 
 class ContactsViewModelImpl(
-    private val externalIntentHandler: ExternalIntentHandler,
+    private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ContactsViewModel.Router>(dependencies), ContactsViewModel {
     override val optionsLiveData =
@@ -16,16 +16,16 @@ class ContactsViewModelImpl(
     override fun onOptionPressed(option: ContactsOption) {
         when (option) {
             ContactsOption.PHONE -> {
-                externalIntentHandler.handleCall(R.string.phone)
+                externalActionHandler.handleCall(R.string.phone)
             }
             ContactsOption.EMAIL -> {
-                externalIntentHandler.handleEmail(R.string.email)
+                externalActionHandler.handleEmail(R.string.email)
             }
             ContactsOption.INSTAGRAM -> {
-                externalIntentHandler.handleOuterLink(R.string.instagram)
+                externalActionHandler.handleOuterLink(R.string.instagram)
             }
             ContactsOption.TELEGRAM -> {
-                externalIntentHandler.handleOuterLink(R.string.telegram)
+                externalActionHandler.handleOuterLink(R.string.telegram)
             }
         }
     }

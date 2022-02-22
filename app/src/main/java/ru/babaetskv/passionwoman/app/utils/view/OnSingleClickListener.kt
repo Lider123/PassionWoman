@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.app.utils
+package ru.babaetskv.passionwoman.app.utils.view
 
 import android.os.SystemClock
 import android.view.View
