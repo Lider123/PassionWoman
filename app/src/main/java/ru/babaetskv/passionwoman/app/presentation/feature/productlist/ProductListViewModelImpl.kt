@@ -42,6 +42,7 @@ class ProductListViewModelImpl(
         when (event) {
             is InnerEvent.UpdateSorting -> updateSorting(event.data)
             is InnerEvent.UpdateFilters -> updateFilters(event.data)
+            else -> super.onEvent(event)
         }
     }
 
