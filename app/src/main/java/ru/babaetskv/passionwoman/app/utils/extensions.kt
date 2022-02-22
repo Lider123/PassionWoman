@@ -6,17 +6,16 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.text.Editable
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.AnimRes
-import androidx.annotation.ColorRes
-import androidx.annotation.DimenRes
-import androidx.annotation.DrawableRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.text.HtmlCompat
@@ -24,6 +23,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import me.philio.pinentry.PinEntryView
 import java.util.*
@@ -160,3 +160,11 @@ fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
 operator fun Bundle.plus(other: Bundle): Bundle = this.apply { putAll(other) }
 
 fun Editable?.toFloat() = this.toString().toFloat()
+
+inline fun <T : ViewBinding> ViewGroup.viewBinding(
+    crossinline bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> T,
+    attachToRoot: Boolean = false
+) = bindingInflater.invoke(LayoutInflater.from(this.context), this, attachToRoot)
+
+fun ViewGroup.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false) =
+    LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)

@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +9,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.Story
 
 class StoriesAdapter(
@@ -18,7 +18,7 @@ class StoriesAdapter(
 ) : BaseAdapter<Story>(StoriesDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Story> =
-        ViewItemStoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        parent.viewBinding(ViewItemStoryBinding::inflate)
             .let {
                 if (itemWidthRatio < 0 && itemWidthRatio > 1) {
                     throw IllegalStateException("Item width ratio should be from 0 to 1")
