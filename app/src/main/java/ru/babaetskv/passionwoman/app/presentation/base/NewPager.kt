@@ -1,13 +1,16 @@
-package ru.babaetskv.passionwoman.app.presentation.feature.productlist
+package ru.babaetskv.passionwoman.app.presentation.base
 
 import androidx.paging.*
 import ru.babaetskv.passionwoman.data.datasource.base.InvalidatingPagingSourceFactory
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.base.PagedResponse
 
 class NewPager<T : Any, R : PagedResponse<T>>(
     pageSize: Int,
     private val loadNext: suspend (limit: Int, offset: Int) -> R,
     private val doOnNextPageLoaded: (R) -> Unit,
+    private val exceptionProvider: PagingExceptionProvider
 ) {
     private val pagingSource: PagingSource<Int, T>
         get() = object : PagingSource<Int, T>() {
@@ -18,9 +21,7 @@ class NewPager<T : Any, R : PagedResponse<T>>(
                     val limit = params.loadSize
                     val offset = limit * (currentPage - 1)
                     val response = loadNext.invoke(limit, offset)
-                    if (response.isEmpty() && currentPage == START_PAGE) {
-                        // TODO: throw EmptyListException()
-                    }
+                    if (response.isEmpty() && currentPage == START_PAGE) throw exceptionProvider.emptyError
 
                     doOnNextPageLoaded.invoke(response)
                     LoadResult.Page(
@@ -29,8 +30,9 @@ class NewPager<T : Any, R : PagedResponse<T>>(
                         nextKey = if (response.isNotEmpty()) currentPage + 1 else null
                     )
                 } catch (e: Exception) {
-                    LoadResult.Error(e)
-                    // TODO: replace e with if (currentPage == START_PAGE) GetListException(e) else GetPageException(e)
+                    LoadResult.Error(if (currentPage == START_PAGE) {
+                        exceptionProvider.getListError(e)
+                    } else exceptionProvider.getPageError(e))
                 }
             }
 
@@ -54,6 +56,13 @@ class NewPager<T : Any, R : PagedResponse<T>>(
     val flow = pager.flow
 
     fun invalidate() = pagingSourceFactory.invalidate()
+
+    interface PagingExceptionProvider {
+        val emptyError: EmptyDataException
+
+        fun getPageError(cause: Exception): NetworkDataException
+        fun getListError(cause: Exception): NetworkDataException
+    }
 
     companion object {
         private const val START_PAGE = 1

@@ -9,9 +9,12 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.NewPager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -24,10 +27,21 @@ class ProductListViewModelImpl(
     private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductListViewModel.Router>(dependencies), ProductListViewModel {
+    private val pagingExceptionProvider = object : NewPager.PagingExceptionProvider {
+        override val emptyError: EmptyDataException
+            get() = GetProductsUseCase.EmptyProductsException(stringProvider)
+
+        override fun getListError(cause: Exception): NetworkDataException =
+            GetProductsUseCase.GetProductsException(cause, stringProvider)
+
+        override fun getPageError(cause: Exception): NetworkDataException =
+            GetProductsUseCase.GetProductsPageException(cause, stringProvider)
+    }
     private val productsPager = NewPager(
         PAGE_SIZE,
         ::loadNext,
-        ::onNextPageLoaded
+        ::onNextPageLoaded,
+        pagingExceptionProvider
     )
     private var pagerFilters: List<Filter> = args.filters
     private var filters: List<Filter>? = null
