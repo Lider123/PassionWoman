@@ -6,7 +6,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
@@ -93,11 +92,7 @@ val viewModelModule = module {
     }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
-        ProductListViewModelImpl(args,
-            stringProvider = get(),
-            productsPagingSourceFactory = get { parametersOf(args.categoryId, args.filters, args.sorting) },
-            dependencies = get()
-        )
+        ProductListViewModelImpl(args, get(), get(), get())
     }
     viewModel { (args: NavigationFragment.Args) ->
         NavigationViewModelImpl(args, get(), get(), get())

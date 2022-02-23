@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import ru.babaetskv.passionwoman.data.datasource.base.InvalidatingPagingSourceFactory
 
+@Deprecated("Use NewPager instead")
 abstract class SimplePager<Key : Any, Value : Any>(
     pageSize: Int,
     protected val pagingSourceFactory: InvalidatingPagingSourceFactory<Key, Value>
