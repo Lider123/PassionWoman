@@ -48,6 +48,9 @@ class CatalogFragment :
             is CatalogViewModel.Router.CategoryScreen -> {
                 router.navigateTo(Screens.category(event.category))
             }
+            is CatalogViewModel.Router.SearchScreen -> {
+                router.navigateTo(Screens.search())
+            }
         }
     }
 

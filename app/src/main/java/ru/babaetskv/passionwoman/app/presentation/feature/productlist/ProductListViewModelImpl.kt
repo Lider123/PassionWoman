@@ -47,6 +47,7 @@ class ProductListViewModelImpl(
     private var filters: List<Filter>? = null
     private var totalProductsCount = 0
 
+    override val modeLiveData = MutableLiveData(args.mode)
     override val sortingLiveData = MutableLiveData(args.sorting)
     override val appliedFiltersCountLiveData = MutableLiveData(0)
     override val productsFlow = productsPager.flow.cachedIn(viewModelScope)
@@ -108,9 +109,13 @@ class ProductListViewModelImpl(
         }
     }
 
+    override fun onSearchQueryChanged(query: String) {
+        // TODO
+    }
+
     private suspend fun loadNext(limit: Int, offset: Int): ProductsPagedResponse {
         val params = GetProductsUseCase.Params(
-            categoryId = args.categoryId,
+            categoryId = (args.mode as? ProductListMode.CategoryMode)?.category?.id,
             filters = pagerFilters,
             sorting = sortingLiveData.value!!,
             limit = limit,

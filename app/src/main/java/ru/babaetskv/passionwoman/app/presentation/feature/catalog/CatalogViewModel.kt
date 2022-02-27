@@ -16,5 +16,7 @@ interface CatalogViewModel : IViewModel {
         data class CategoryScreen(
             val category: Category
         ) : Router()
+
+        object SearchScreen : Router()
     }
 }

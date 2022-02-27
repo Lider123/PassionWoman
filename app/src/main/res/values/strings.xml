@@ -121,6 +121,7 @@
 
     <string name="product_list_favorites">Favorites</string>
     <string name="product_list_no_filters">No filters available</string>
+    <string name="product_list_search">search</string>
 
     <string name="contacts_version_placeholder">v%s</string>
     <string name="contacts_phone">Call us</string>

@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.collect
@@ -38,7 +39,6 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         super.initViews()
         binding.run {
             toolbar.run {
-                title = args.title
                 setOnStartClickListener {
                     viewModel.onBackPressed()
                 }
@@ -54,6 +54,9 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
                 adapter = productsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
+            etSearch.doAfterTextChanged {
+                viewModel.onSearchQueryChanged(it.toString())
+            }
         }
     }
 
@@ -62,6 +65,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         lifecycleScope.launchWhenResumed {
             viewModel.productsFlow.collect(::populateProducts)
         }
+        viewModel.modeLiveData.observe(viewLifecycleOwner, ::populateMode)
         viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
         viewModel.appliedFiltersCountLiveData.observe(viewLifecycleOwner, ::populateFiltersBadge)
     }
@@ -77,10 +81,29 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
             }
             is ProductListViewModel.Router.FiltersScreen -> {
                 router.openBottomSheet(Screens.filters(
-                    args.categoryId,
+                    (args.mode as? ProductListMode.CategoryMode)?.category?.id,
                     event.filters,
                     event.productsCount
                 ))
+            }
+        }
+    }
+
+    private fun populateMode(mode: ProductListMode) {
+        binding.run {
+            when (mode) {
+                is ProductListMode.CategoryMode -> {
+                    toolbar.title = mode.category.name
+                    layoutSearch.isVisible = false
+                }
+                is ProductListMode.SpecificMode -> {
+                    toolbar.title = mode.title
+                    layoutSearch.isVisible = false
+                }
+                is ProductListMode.SearchMode -> {
+                    toolbar.title = ""
+                    layoutSearch.isVisible = true
+                }
             }
         }
     }
@@ -104,8 +127,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
 
     @Parcelize
     data class Args(
-        val categoryId: String?,
-        val title: String,
+        val mode: ProductListMode,
         val filters: List<Filter>,
         val sorting: Sorting,
         val actionsAvailable: Boolean
@@ -114,14 +136,12 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
     companion object {
 
         fun create(
-            categoryId: String?,
-            title: String,
+            mode: ProductListMode,
             filters: List<Filter>,
             sorting: Sorting,
             actionsAvailable: Boolean
         ) = ProductListFragment().withArgs(Args(
-            categoryId = categoryId,
-            title = title,
+            mode = mode,
             filters = filters,
             sorting = sorting,
             actionsAvailable = actionsAvailable
