@@ -29,21 +29,21 @@ class GetHomeDataInteractor(
                 sorting = Sorting.DEFAULT,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).transform(stringProvider).products,
+            ).transform(stringProvider),
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(),
                 sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).transform(stringProvider).products,
+            ).transform(stringProvider),
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
                 filters = listOf(),
                 sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,
                 offset = 0
-            ).transform(stringProvider).products,
+            ).transform(stringProvider),
             brands = catalogGateway.getPopularBrands().transformList()
         )
 

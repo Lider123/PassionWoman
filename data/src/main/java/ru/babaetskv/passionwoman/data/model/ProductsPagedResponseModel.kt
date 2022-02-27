@@ -16,7 +16,7 @@ data class ProductsPagedResponseModel(
 
     override fun transform(params: StringProvider): ProductsPagedResponse =
         ProductsPagedResponse(
-            products = products.transformList(),
+            items = products.transformList(),
             total = total,
             availableFilters = availableFilters.mapNotNull { Filter.fromJson(it) }
                 + listOf(Filter.DiscountOnly(params))

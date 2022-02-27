@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
+@Deprecated("Use NewPager instead")
 class ProductsPager(
     pageSize: Int,
     pagingSourceFactory: ProductsPagingSourceFactory

@@ -21,5 +21,5 @@ class GetProductsInteractor(
         ).transform(stringProvider)
 
     override fun getUseCaseException(cause: Exception): Exception =
-        GetProductsUseCase.GetProductsException(cause, stringProvider)
+        GetProductsUseCase.GetProductsPageException(cause, stringProvider)
 }

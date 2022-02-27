@@ -9,23 +9,41 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
+import ru.babaetskv.passionwoman.app.presentation.base.NewPager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
-import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
+import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
+import ru.babaetskv.passionwoman.domain.usecase.GetProductsUseCase
 
 class ProductListViewModelImpl(
-    args: ProductListFragment.Args,
+    private val args: ProductListFragment.Args,
     override val stringProvider: StringProvider,
-    productsPagingSourceFactory: ProductsPagingSourceFactory,
+    private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductListViewModel.Router>(dependencies), ProductListViewModel {
-    private val productsPager = ProductsPager(PAGE_SIZE, productsPagingSourceFactory.also {
-        it.setOnProductsDataUpdated(::onProductsDataUpdated)
-    })
+    private val pagingExceptionProvider = object : NewPager.PagingExceptionProvider {
+        override val emptyError: EmptyDataException
+            get() = GetProductsUseCase.EmptyProductsException(stringProvider)
+
+        override fun getListError(cause: Exception): NetworkDataException =
+            GetProductsUseCase.GetProductsException(cause, stringProvider)
+
+        override fun getPageError(cause: Exception): NetworkDataException =
+            GetProductsUseCase.GetProductsPageException(cause, stringProvider)
+    }
+    private val productsPager = NewPager(
+        PAGE_SIZE,
+        ::loadNext,
+        ::onNextPageLoaded,
+        pagingExceptionProvider
+    )
+    private var pagerFilters: List<Filter> = args.filters
     private var filters: List<Filter>? = null
     private var totalProductsCount = 0
 
@@ -90,22 +108,34 @@ class ProductListViewModelImpl(
         }
     }
 
+    private suspend fun loadNext(limit: Int, offset: Int): ProductsPagedResponse {
+        val params = GetProductsUseCase.Params(
+            categoryId = args.categoryId,
+            filters = pagerFilters,
+            sorting = sortingLiveData.value!!,
+            limit = limit,
+            offset = offset
+        )
+        return getProductsUseCase.execute(params)
+    }
+
+    private fun onNextPageLoaded(data: ProductsPagedResponse) {
+        if (filters == null) {
+            filters = data.availableFilters
+        }
+        totalProductsCount = data.total
+    }
+
     private fun updateSorting(sorting: Sorting) {
         sortingLiveData.postValue(sorting)
-        productsPager.updateSorting(sorting)
+        productsPager.invalidate()
     }
 
     private fun updateFilters(filters: List<Filter>) {
         this.filters = filters
-        productsPager.updateFilters(filters)
+        pagerFilters = filters
+        productsPager.invalidate()
         appliedFiltersCountLiveData.postValue(filters.count { it.isSelected })
-    }
-
-    private fun onProductsDataUpdated(availableFilters: List<Filter>, totalCount: Int) {
-        if (filters == null) {
-            filters = availableFilters
-        }
-        totalProductsCount = totalCount
     }
 
     companion object {

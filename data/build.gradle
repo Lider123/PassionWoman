@@ -62,7 +62,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
-    // Paging
+    // Paging TODO: move to the app layer
     api "androidx.paging:paging-runtime-ktx:3.1.0"
 
     // Tests

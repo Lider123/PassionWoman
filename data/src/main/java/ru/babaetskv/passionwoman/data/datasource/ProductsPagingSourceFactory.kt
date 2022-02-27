@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
+@Deprecated("Use dynamic data source factory within NewPager")
 class ProductsPagingSourceFactory(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider,

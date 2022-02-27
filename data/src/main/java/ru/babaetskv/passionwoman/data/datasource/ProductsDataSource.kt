@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
+@Deprecated("Use dynamic data source within NewPager")
 class ProductsDataSource(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider,
@@ -31,14 +32,13 @@ class ProductsDataSource(
                 filters = filters,
                 sorting = sorting,
             ).transform(stringProvider)
-            val products = response.products
-            if (products.isEmpty() && currentPage == START_PAGE) throw EmptyProductsException()
+            if (response.isEmpty() && currentPage == START_PAGE) throw EmptyProductsException()
 
             filtersCallback?.invoke(response.availableFilters, response.total)
             LoadResult.Page(
-                data = products,
+                data = response,
                 prevKey = if (currentPage == START_PAGE) null else currentPage - 1,
-                nextKey = if (products.isNotEmpty()) currentPage + 1 else null
+                nextKey = if (response.isNotEmpty()) currentPage + 1 else null
             )
         } catch (e: Exception) {
             LoadResult.Error(if (currentPage == START_PAGE) GetProductsException(e) else GetProductsPageException(e))
