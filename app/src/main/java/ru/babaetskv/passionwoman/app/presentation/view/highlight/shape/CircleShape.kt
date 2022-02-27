@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.view.highlight.shape
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.view.View
 
 class CircleShape: Shape {
 
@@ -14,4 +15,6 @@ class CircleShape: Shape {
         val radius: Float = if (width > height) 0.5f * width else 0.5f * height
         canvas.drawCircle(cx.toFloat(), cy.toFloat(), radius, paint)
     }
+
+    override fun modifyBordersToFit(borders: Rect, container: View): Rect = borders
 }
