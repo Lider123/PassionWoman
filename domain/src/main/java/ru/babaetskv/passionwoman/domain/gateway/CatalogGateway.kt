@@ -11,6 +11,7 @@ interface CatalogGateway {
 
     suspend fun getProducts(
         categoryId: String?,
+        query: String,
         limit: Int,
         offset: Int,
         filters: List<Filter>,

@@ -17,12 +17,14 @@ class CatalogGatewayImpl(
 
     override suspend fun getProducts(
         categoryId: String?,
+        query: String,
         limit: Int,
         offset: Int,
         filters: List<Filter>,
         sorting: Sorting
     ): Transformable<StringProvider, ProductsPagedResponse> = api.getProducts(
         categoryId,
+        query,
         filters.mapNotNull { it.toJsonObject() }.toJsonArray().toString(),
         sorting.apiName,
         limit,

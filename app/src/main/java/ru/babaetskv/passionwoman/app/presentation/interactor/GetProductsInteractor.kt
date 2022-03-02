@@ -14,6 +14,7 @@ class GetProductsInteractor(
     override suspend fun run(params: GetProductsUseCase.Params): ProductsPagedResponse =
         catalogGateway.getProducts(
             categoryId = params.categoryId,
+            query = params.query,
             limit = params.limit,
             offset = params.offset,
             filters = params.filters,

@@ -23,6 +23,7 @@ class GetHomeDataInteractor(
             stories = catalogGateway.getStories().transformList(),
             saleProducts = catalogGateway.getProducts(
                 categoryId = null,
+                query = "",
                 filters = listOf(
                     Filter.DiscountOnly(stringProvider, true)
                 ),
@@ -32,6 +33,7 @@ class GetHomeDataInteractor(
             ).transform(stringProvider),
             popularProducts = catalogGateway.getProducts(
                 categoryId = null,
+                query = "",
                 filters = listOf(),
                 sorting = Sorting.POPULARITY,
                 limit = PRODUCTS_LIMIT,
@@ -39,6 +41,7 @@ class GetHomeDataInteractor(
             ).transform(stringProvider),
             newProducts = catalogGateway.getProducts(
                 categoryId = null,
+                query = "",
                 filters = listOf(),
                 sorting = Sorting.NEW,
                 limit = PRODUCTS_LIMIT,

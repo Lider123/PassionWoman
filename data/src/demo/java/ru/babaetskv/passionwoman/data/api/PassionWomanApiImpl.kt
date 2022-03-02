@@ -21,6 +21,7 @@ import ru.babaetskv.passionwoman.domain.HttpCodes.BAD_REQUEST
 import ru.babaetskv.passionwoman.domain.HttpCodes.INTERNAL_SERVER_ERROR
 import ru.babaetskv.passionwoman.domain.HttpCodes.NOT_FOUND
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import java.util.*
 
 class PassionWomanApiImpl(
     private val moshi: Moshi,
@@ -49,6 +50,7 @@ class PassionWomanApiImpl(
 
     override suspend fun getProducts(
         categoryId: String?,
+        query: String,
         filters: String,
         sorting: String,
         limit: Int,
@@ -67,6 +69,17 @@ class PassionWomanApiImpl(
                 else -> getPopularProducts()
             }
             products = filtersObject.applyToProducts(products)
+            if (query.isNotBlank()) {
+                val queryParts = query.lowercase(Locale.getDefault()).split(" ")
+                products = products.filter { product ->
+                    val nameParts = product.name.lowercase(Locale.getDefault()).split(" ")
+                    nameParts.any { namePart ->
+                        queryParts.any { queryPart ->
+                            namePart.startsWith(queryPart)
+                        }
+                    }
+                }
+            }
             val availableFilters = mutableListOf<JSONObject>().apply {
                 addAll(loadArrayOfJsonFromAsset("filters_common.json"))
                 addAll(CategoryProducts.values().mapNotNull { it.filtersFileName }.flatMap { loadArrayOfJsonFromAsset(it) })
