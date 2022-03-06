@@ -15,6 +15,7 @@ interface PassionWomanApi {
     @GET("api/catalog/products")
     suspend fun getProducts(
         @Query("category") categoryId: String?,
+        @Query("query") query: String,
         @Query("filters") filters: String,
         @Query("sorting") sorting: String,
         @Query("limit") limit: Int,

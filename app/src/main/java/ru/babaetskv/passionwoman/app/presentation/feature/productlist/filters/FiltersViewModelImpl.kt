@@ -73,6 +73,7 @@ class FiltersViewModelImpl(
             val result = getProductsUseCase.execute(
                 GetProductsUseCase.Params(
                     categoryId = args.categoryId,
+                    query = "",
                     limit = 1,
                     offset = 0,
                     filters = filters,

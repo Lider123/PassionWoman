@@ -1,8 +1,7 @@
-package ru.babaetskv.passionwoman.data.datasource.base
+package ru.babaetskv.passionwoman.app.presentation.base
 
 import androidx.paging.PagingSource
 
-// TODO: move to the base presentation folder
 abstract class InvalidatingPagingSourceFactory<Key: Any, Value: Any> : () -> PagingSource<Key, Value> {
     private var activeDataSources: MutableList<PagingSource<Key, Value>> = mutableListOf()
 

@@ -36,7 +36,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductLis
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersViewModelImpl
-import ru.babaetskv.passionwoman.data.datasource.ProductsPagingSourceFactory
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
@@ -60,8 +59,6 @@ import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.*
-import ru.babaetskv.passionwoman.domain.model.Sorting
-import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
@@ -117,16 +114,6 @@ val viewModelModule = module {
     }
     viewModel { (args: StoriesFragment.Args) ->
         StoriesViewModelImpl(args, get())
-    }
-}
-
-val dataSourceModule = module {
-    factory { (categoryId: String, filters: List<Filter>, sorting: Sorting) ->
-        ProductsPagingSourceFactory(get(), get(),
-            categoryId = categoryId,
-            filters = filters,
-            sorting = sorting
-        )
     }
 }
 

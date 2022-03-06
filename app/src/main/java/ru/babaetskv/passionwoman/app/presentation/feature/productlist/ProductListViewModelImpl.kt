@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
@@ -43,13 +45,27 @@ class ProductListViewModelImpl(
         ::onNextPageLoaded,
         pagingExceptionProvider
     )
+    private val searchChannel = Channel<String>(Channel.RENDEZVOUS)
+    private val searchFlow = searchChannel.receiveAsFlow()
+        .debounce(500L)
+        .map { it.trim() }
+        .onEach {
+            searchQuery = it
+            productsPager.invalidate()
+        }
     private var pagerFilters: List<Filter> = args.filters
     private var filters: List<Filter>? = null
+    private var searchQuery: String = ""
     private var totalProductsCount = 0
 
+    override val modeLiveData = MutableLiveData(args.mode)
     override val sortingLiveData = MutableLiveData(args.sorting)
     override val appliedFiltersCountLiveData = MutableLiveData(0)
     override val productsFlow = productsPager.flow.cachedIn(viewModelScope)
+
+    init {
+        searchFlow.launchIn(this)
+    }
 
     override fun onErrorActionPressed() {
         super.onErrorActionPressed()
@@ -108,9 +124,20 @@ class ProductListViewModelImpl(
         }
     }
 
+    override fun onSearchQueryChanged(query: String) {
+        launch {
+            searchChannel.send(query)
+        }
+    }
+
     private suspend fun loadNext(limit: Int, offset: Int): ProductsPagedResponse {
+        if (args.mode is ProductListMode.SearchMode && searchQuery.isBlank()) {
+            throw GetProductsUseCase.EmptyProductsException(stringProvider)
+        }
+
         val params = GetProductsUseCase.Params(
-            categoryId = args.categoryId,
+            categoryId = (args.mode as? ProductListMode.CategoryMode)?.category?.id,
+            query = searchQuery,
             filters = pagerFilters,
             sorting = sortingLiveData.value!!,
             limit = limit,

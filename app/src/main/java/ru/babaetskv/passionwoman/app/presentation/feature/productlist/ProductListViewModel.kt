@@ -12,6 +12,7 @@ import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 interface ProductListViewModel : IViewModel {
+    val modeLiveData: LiveData<ProductListMode>
     val sortingLiveData: LiveData<Sorting>
     val appliedFiltersCountLiveData: LiveData<Int>
     val productsFlow: Flow<PagingData<Product>>
@@ -21,6 +22,7 @@ interface ProductListViewModel : IViewModel {
     fun onBuyPressed(product: Product)
     fun onFiltersPressed()
     fun onSortingPressed()
+    fun onSearchQueryChanged(query: String)
     fun onLoadStateChanged(states: CombinedLoadStates)
 
     sealed class Router : RouterEvent {

@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationF
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListMode
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
@@ -33,8 +34,7 @@ object Screens {
 
     fun category(category: Category) = FragmentScreen {
         ProductListFragment.create(
-            categoryId = category.id,
-            title = category.name,
+            mode = ProductListMode.CategoryMode(category),
             filters = listOf(),
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
@@ -43,8 +43,7 @@ object Screens {
 
     fun productList(title: String, filters: List<Filter>, sorting: Sorting) = FragmentScreen {
         ProductListFragment.create(
-            categoryId = null,
-            title = title,
+            mode = ProductListMode.SpecificMode(title),
             filters = filters,
             sorting = sorting,
             actionsAvailable = false
@@ -90,5 +89,14 @@ object Screens {
 
     fun stories(stories: List<Story>, initialStoryIndex: Int) = FragmentScreen {
         StoriesFragment.create(stories, initialStoryIndex)
+    }
+
+    fun search() = FragmentScreen {
+        ProductListFragment.create(
+            mode = ProductListMode.SearchMode,
+            filters = emptyList(),
+            sorting = Sorting.DEFAULT,
+            actionsAvailable = true
+        )
     }
 }

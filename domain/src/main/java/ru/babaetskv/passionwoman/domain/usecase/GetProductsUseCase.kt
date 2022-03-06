@@ -12,6 +12,7 @@ interface GetProductsUseCase : UseCase<GetProductsUseCase.Params, ProductsPagedR
 
     data class Params(
         val categoryId: String?,
+        val query: String,
         val limit: Int,
         val offset: Int,
         val filters: List<Filter>,
