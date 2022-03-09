@@ -8,7 +8,6 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
-import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
@@ -30,7 +29,7 @@ class ProductCardViewModelImpl(
 ) : BaseViewModel<ProductCardViewModel.Router>(dependencies), ProductCardViewModel {
     override val productLiveData = MutableLiveData<Product>()
     override val productColorsLiveData = MutableLiveData<List<SelectableItem<ProductColor>>>()
-    override val productPhotosLiveData = MutableLiveData<List<Image>>()
+    override val productPhotosLiveData = MutableLiveData<List<ProductImageItem>>()
     override val productSizesLiveData = MutableLiveData<List<SelectableItem<ProductSize>>>()
     override val isFavoriteLiveData = MutableLiveData<Boolean>()
 
@@ -46,18 +45,19 @@ class ProductCardViewModelImpl(
         val size = item.value
         if (!size.isAvailable) return
 
-        val newItems = productSizesLiveData.value?.map {
-            it.copy(isSelected = size == it.value)
-        }
-        productSizesLiveData.postValue(newItems)
+        productSizesLiveData.value
+            ?.map { it.copy(isSelected = size == it.value) }
+            ?.let { productSizesLiveData.postValue(it) }
     }
 
     override fun onColorItemPressed(item: SelectableItem<ProductColor>) {
-        val newItems = productColorsLiveData.value?.map {
-            it.copy(isSelected = item.value == it.value)
-        }
-        productColorsLiveData.postValue(newItems)
-        productPhotosLiveData.postValue(item.value.images)
+        productColorsLiveData.value
+            ?.map { it.copy(isSelected = item.value == it.value) }
+            ?.let { productColorsLiveData.postValue(it) }
+        item.value.images
+            .map(ProductImageItem::fromImage)
+            .ifEmpty { listOf(ProductImageItem.EmptyPlaceholder) }
+            .let { productPhotosLiveData.postValue(it) }
         val firstAvailableSize = item.value.sizes.firstOrNull { it.isAvailable }
         productSizesLiveData.postValue(item.value.sizes.map {
             SelectableItem(it, it == firstAvailableSize)
@@ -105,7 +105,10 @@ class ProductCardViewModelImpl(
                 SelectableItem(value, index == 0)
             })
             val firstColor = product.colors.first()
-            productPhotosLiveData.postValue(firstColor.images)
+            firstColor.images
+                .map(ProductImageItem::fromImage)
+                .ifEmpty { listOf(ProductImageItem.EmptyPlaceholder) }
+                .let { productPhotosLiveData.postValue(it) }
             val firstAvailableSize = firstColor.sizes.firstOrNull { it.isAvailable }
             productSizesLiveData.postValue(firstColor.sizes.map {
                 SelectableItem(it, it == firstAvailableSize)

@@ -9,18 +9,37 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
 import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.domain.model.Image
 
-class ProductPhotosAdapter: BaseAdapter<Image>(EqualDiffUtilCallback()) {
+class ProductPhotosAdapter: BaseAdapter<ProductImageItem>(EqualDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Image> =
-        ViewHolder(parent.inflateLayout(R.layout.view_item_product_photo))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ProductImageItem> =
+        when (viewType) {
+            PRODUCT_IMAGE_TYPE -> ProductImageViewHolder(parent.inflateLayout(R.layout.view_item_product_photo))
+            else -> EmptyPlaceholderViewHolder(parent.inflateLayout(R.layout.layout_product_card_no_images))
+        }
 
-    class ViewHolder(v: View) : BaseViewHolder<Image>(v) {
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is ProductImageItem.ProductImage -> PRODUCT_IMAGE_TYPE
+            is ProductImageItem.EmptyPlaceholder -> EMPTY_PLACEHOLDER_TYPE
+        }
+
+    class ProductImageViewHolder(v: View) : BaseViewHolder<ProductImageItem>(v) {
         private val binding = ViewItemProductPhotoBinding.bind(v)
 
-        override fun bind(item: Image) {
-            binding.ivPhoto.load(item, R.drawable.photo_placeholder)
+        override fun bind(item: ProductImageItem) {
+            item as ProductImageItem.ProductImage
+            binding.ivPhoto.load(item.data, R.drawable.photo_placeholder)
         }
+    }
+
+    class EmptyPlaceholderViewHolder(v: View) : BaseViewHolder<ProductImageItem>(v) {
+
+        override fun bind(item: ProductImageItem) = Unit
+    }
+
+    companion object {
+        private const val PRODUCT_IMAGE_TYPE = 0
+        private const val EMPTY_PLACEHOLDER_TYPE = 1
     }
 }

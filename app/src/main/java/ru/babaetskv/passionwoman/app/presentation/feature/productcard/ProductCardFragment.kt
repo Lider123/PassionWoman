@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import androidx.viewpager2.widget.MarginPageTransformer
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -11,10 +12,7 @@ import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.setHtmlText
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.domain.model.Image
+import ru.babaetskv.passionwoman.app.utils.*
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
@@ -52,12 +50,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             btnShare.setOnSingleClickListener {
                 viewModel.onSharePressed()
             }
-            vpPhotos.run {
-                adapter = productPhotosAdapter.apply {
-                    registerAdapterDataObserver(pageIndicator.adapterDataObserver)
-                }
-                pageIndicator.setViewPager(this)
-            }
+            vpPhotos.adapter = productPhotosAdapter
             rvColors.run {
                 adapter = productColorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
@@ -87,10 +80,8 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         binding.toolbar.setActionEnd(iconRes)
     }
 
-    private fun populateProductPhotos(photos: List<Image>) {
-        productPhotosAdapter.submitList(photos) {
-            binding.layoutEmpty.isVisible = photos.isEmpty()
-        }
+    private fun populateProductPhotos(photos: List<ProductImageItem>) {
+        productPhotosAdapter.submitList(photos)
     }
 
     private fun populateProduct(product: Product) {
