@@ -14,7 +14,7 @@
         android:screenOrientation="portrait"
         android:windowSoftInputMode="adjustResize"
         android:hardwareAccelerated="true"
-        android:theme="@style/Theme.PassionWoman"
+        android:theme="@style/Theme.App.Starting"
         android:usesCleartextTraffic="true"
         android:name="ru.babaetskv.passionwoman.app.MainApp">
 
@@ -28,7 +28,8 @@
 
         <activity
             android:name="ru.babaetskv.passionwoman.app.presentation.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

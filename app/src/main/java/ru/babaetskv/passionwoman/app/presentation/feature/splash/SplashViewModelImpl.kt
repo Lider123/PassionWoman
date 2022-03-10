@@ -8,6 +8,7 @@ import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 
+@Deprecated("Use Android 12 SplashScreen API")
 class SplashViewModelImpl(
     private val args: SplashFragment.Args,
     private val appPreferences: AppPreferences,

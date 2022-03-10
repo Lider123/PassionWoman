@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 
+@Deprecated("Use Android 12 SplashScreen API")
 class SplashFragment :
     BaseFragment<SplashViewModel, SplashViewModel.Router, SplashFragment.Args>() {
     override val viewModel: SplashViewModel by viewModel<SplashViewModelImpl> {

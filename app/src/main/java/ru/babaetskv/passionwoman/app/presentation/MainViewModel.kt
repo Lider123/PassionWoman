@@ -13,15 +13,25 @@ import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
+import ru.babaetskv.passionwoman.domain.model.Profile
+import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
+import timber.log.Timber
 
 class MainViewModel(
     private val deeplinkHandler: DeeplinkHandler,
+    private val authPreferences: AuthPreferences,
+    private val appPreferences: AppPreferences,
+    private val getProfileUseCase: GetProfileUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<MainViewModel.Router>(dependencies) {
     private var alertChannel: ReceiveChannel<AlertMessage>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
     val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
+    var dataIsReady: Boolean = false
+        private set
 
     override val logScreenOpening: Boolean = false
 
@@ -55,23 +65,39 @@ class MainViewModel(
         }
     }
 
+    private suspend fun navigateOnStart(payload: DeeplinkPayload?) {
+        when {
+            !appPreferences.onboardingShowed -> {
+                navigateTo(Router.OnboardingScreen)
+            }
+            authPreferences.authType == AuthPreferences.AuthType.NONE -> {
+                navigateTo(Router.AuthScreen)
+            }
+            authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED
+                    && !authPreferences.profileIsFilled -> launchWithLoading {
+                val profile = getProfileUseCase.execute()
+                navigateTo(Router.SignUpScreen(profile))
+            }
+            else -> navigateTo(Router.NavigationScreen(payload))
+        }
+    }
 
+    private fun resolveRouter(payload: DeeplinkPayload): Router = when (payload) {
+        is DeeplinkPayload.Product -> Router.ProductScreen(payload.productId)
+    }
 
     fun handleIntent(intent: Intent, startApp: Boolean) {
         launch {
             val deeplinkPayload = deeplinkHandler.handle(intent.data)
-            if (deeplinkPayload == null) {
-                if (startApp) navigateTo(Router.SplashScreen(null))
+            Timber.e("startApp=$startApp, deeplinkPayload=$deeplinkPayload") // TODO: remove
+            if (startApp) {
+                navigateOnStart(deeplinkPayload)
             } else {
-                if (startApp) {
-                    navigateTo(Router.SplashScreen(deeplinkPayload))
-                } else {
-                    val screen: Router = when (deeplinkPayload) {
-                        is DeeplinkPayload.Product -> Router.ProductScreen(deeplinkPayload.productId)
-                    }
-                    navigateTo(screen)
+                deeplinkPayload?.let {
+                    navigateTo(resolveRouter(deeplinkPayload))
                 }
             }
+            dataIsReady = true
         }
     }
 
@@ -84,7 +110,15 @@ class MainViewModel(
 
     sealed class Router : RouterEvent {
 
-        data class SplashScreen(
+        object OnboardingScreen : Router()
+
+        object AuthScreen : Router()
+
+        data class SignUpScreen(
+            val profile: Profile
+        ) : Router()
+
+        data class NavigationScreen(
             val payload: DeeplinkPayload?
         ) : Router()
 
