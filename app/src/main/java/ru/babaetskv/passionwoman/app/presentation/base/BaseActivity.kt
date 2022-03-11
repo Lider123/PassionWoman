@@ -1,9 +1,14 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -59,4 +64,17 @@ abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
         viewModel.onStop()
         super.onStop()
     }
+
+    protected fun installAppSplashScreen(condition: SplashScreen.KeepOnScreenCondition? = null): SplashScreen =
+        installSplashScreen().apply {
+            condition?.run(::setKeepOnScreenCondition)
+            setOnExitAnimationListener { splashScreenView ->
+                val fadeOut = ObjectAnimator.ofFloat(splashScreenView.iconView, View.ALPHA, 1f, 0f).apply {
+                    interpolator = LinearInterpolator()
+                    duration = 500L
+                    doOnEnd { splashScreenView.remove() }
+                }
+                fadeOut.start()
+            }
+        }
 }

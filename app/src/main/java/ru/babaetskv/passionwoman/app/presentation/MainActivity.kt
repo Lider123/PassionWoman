@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.NavigatorHolder
 import kotlinx.coroutines.flow.collect
@@ -44,8 +43,7 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override val screenName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition {
+        installAppSplashScreen {
             viewModel.dataIsReady
         }
 

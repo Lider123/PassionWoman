@@ -17,7 +17,6 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
-import timber.log.Timber
 
 class MainViewModel(
     private val deeplinkHandler: DeeplinkHandler,
@@ -82,20 +81,18 @@ class MainViewModel(
         }
     }
 
-    private fun resolveRouter(payload: DeeplinkPayload): Router = when (payload) {
+    private fun resolveRouter(payload: DeeplinkPayload?): Router? = when (payload) {
         is DeeplinkPayload.Product -> Router.ProductScreen(payload.productId)
+        else -> null
     }
 
     fun handleIntent(intent: Intent, startApp: Boolean) {
         launch {
             val deeplinkPayload = deeplinkHandler.handle(intent.data)
-            Timber.e("startApp=$startApp, deeplinkPayload=$deeplinkPayload") // TODO: remove
             if (startApp) {
                 navigateOnStart(deeplinkPayload)
             } else {
-                deeplinkPayload?.let {
-                    navigateTo(resolveRouter(deeplinkPayload))
-                }
+                resolveRouter(deeplinkPayload)?.let { navigateTo(it) }
             }
             dataIsReady = true
         }
