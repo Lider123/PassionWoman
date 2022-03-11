@@ -1,9 +1,10 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import android.os.Parcelable
+import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
-import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -11,12 +12,14 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
+import ru.babaetskv.passionwoman.app.presentation.HorizontalMarginItemDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.*
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
+import kotlin.math.abs
 
 class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
@@ -50,7 +53,20 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             btnShare.setOnSingleClickListener {
                 viewModel.onSharePressed()
             }
-            vpPhotos.adapter = productPhotosAdapter
+            vpPhotos.run {
+                adapter = productPhotosAdapter
+                offscreenPageLimit = 1
+                val nextItemVisiblePx = dimen(R.dimen.margin_default)
+                val currentItemHorizontalMarginPx = dimen(R.dimen.margin_large)
+                val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+                val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+                    page.translationX = -pageTranslationX * position
+                    page.scaleY = 1 - (0.25f * abs(position))
+                    // page.alpha = 0.25f + (1 - abs(position))
+                }
+                setPageTransformer(pageTransformer)
+                addItemDecoration(HorizontalMarginItemDecoration(context, R.dimen.margin_large))
+            }
             rvColors.run {
                 adapter = productColorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))

@@ -18,16 +18,6 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpPhotos"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintDimensionRatio="3:4"
-                tools:background="@color/primaryVariant"/>
-
             <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
@@ -42,14 +32,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpPhotos"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
+                tools:background="@color/primaryVariant"/>
+
+            <!-- TODO refactor toolbar to set this button inside it -->
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
                 android:padding="@dimen/margin_default"
                 android:src="@drawable/ic_share"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/toolbar"
+                app:layout_constraintEnd_toEndOf="@id/toolbar"/>
 
             <include
                 android:id="@+id/layoutBrand"
