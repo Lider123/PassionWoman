@@ -1,3 +1,7 @@
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 private static boolean isAndroidModule(Project project) {
     boolean isAndroidLibrary = project.plugins.hasPlugin('com.android.library')
     boolean isAndroidApp = project.plugins.hasPlugin('com.android.application')
