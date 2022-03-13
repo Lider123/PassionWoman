@@ -3,7 +3,6 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
@@ -17,19 +16,11 @@ import ru.babaetskv.passionwoman.domain.model.Product
 
 class PagedProductsAdapter(
     private val onItemClick: (Product) -> Unit,
-    private val onBuyClick: (Product) -> Unit,
-    private val itemWidthRatio: Float = 1f
+    private val onBuyClick: (Product) -> Unit
 ) : BasePagingAdapter<Product>(ProductDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
-        val view = parent.inflateLayout(R.layout.view_item_product)
-        if (itemWidthRatio < 0 && itemWidthRatio > 1) throw IllegalStateException("Item width ratio should be from 0 to 1")
-
-        view.updateLayoutParams {
-            width = if (itemWidthRatio != 1f) (itemWidthRatio * parent.measuredWidth).toInt() else width
-        }
-        return ViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> =
+        ViewHolder(parent.inflateLayout(R.layout.view_item_product))
 
     inner class ViewHolder(v: View) : BaseViewHolder<Product>(v) {
         private val binding = ViewItemProductBinding.bind(v)
