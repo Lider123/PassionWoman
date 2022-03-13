@@ -30,10 +30,7 @@ class CatalogFragment :
             toolbar.setOnEndClickListener {
                 viewModel.onSearchPressed()
             }
-            rvCategories.run {
-                adapter = categoriesAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
-            }
+            rvCategories.adapter = categoriesAdapter
         }
     }
 
