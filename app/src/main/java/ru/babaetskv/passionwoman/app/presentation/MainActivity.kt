@@ -43,6 +43,10 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override val screenName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installAppSplashScreen {
+            viewModel.dataIsReady
+        }
+
         super.onCreate(savedInstanceState)
         viewModel.handleIntent(intent, true)
     }
@@ -76,8 +80,13 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     override fun handleRouterEvent(event: MainViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            is MainViewModel.Router.SplashScreen -> {
-                router.newRootScreen(Screens.splash(event.payload))
+            MainViewModel.Router.OnboardingScreen -> router.newRootScreen(Screens.onboarding())
+            MainViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is MainViewModel.Router.SignUpScreen -> {
+                router.newRootScreen(Screens.signUp(event.profile))
+            }
+            is MainViewModel.Router.NavigationScreen -> {
+                router.newRootScreen(Screens.navigation(event.payload))
             }
             is MainViewModel.Router.ProductScreen -> {
                 router.navigateTo(Screens.productCard(event.productId))

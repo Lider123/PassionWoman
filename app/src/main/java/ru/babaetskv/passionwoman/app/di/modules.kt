@@ -39,8 +39,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.Fi
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModelImpl
-import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashViewModelImpl
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
@@ -83,10 +81,7 @@ val navigationModule = module {
 
 val viewModelModule = module {
     single { ViewModelDependencies(get(), get(), get(), get(), get()) }
-    viewModel { MainViewModel(get(), get()) }
-    viewModel { (args: SplashFragment.Args) ->
-        SplashViewModelImpl(args, get(), get(), get(), get())
-    }
+    viewModel { MainViewModel(get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModelImpl(args, get(), get(), get())

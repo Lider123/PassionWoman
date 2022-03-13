@@ -1,7 +1,9 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.demopresets
 
 import android.content.Intent
+import android.os.Bundle
 import android.viewbinding.library.activity.viewBinding
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
@@ -24,6 +26,12 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
     override val viewModel: DemoPresetsViewModel by viewModel<DemoPresetsViewModelImpl>()
     override val applyInsets: Boolean = true
     override val screenName: String = ScreenKeys.DEMO_PRESETS
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        installAppSplashScreen()
+
+        super.onCreate(savedInstanceState)
+    }
 
     override fun initViews() {
         super.initViews()

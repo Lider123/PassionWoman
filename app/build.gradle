@@ -135,6 +135,9 @@ dependencies {
     // ExoPlayer
     implementation 'com.google.android.exoplayer:exoplayer:2.16.1'
 
+    // SplashScreen
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
+
     // Tests
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'

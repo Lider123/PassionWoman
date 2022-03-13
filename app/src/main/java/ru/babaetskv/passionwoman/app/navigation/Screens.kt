@@ -13,16 +13,11 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesF
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListMode
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.filters.FiltersFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.splash.SplashFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 object Screens {
-
-    fun splash(payload: DeeplinkPayload?) = FragmentScreen {
-        SplashFragment.create(payload)
-    }
 
     fun onboarding() = FragmentScreen {
         OnboardingFragment.create()
