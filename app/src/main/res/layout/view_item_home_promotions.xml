@@ -5,15 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/margin_default">
+    android:paddingHorizontal="@dimen/margin_small">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutPromotionsWrapper"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_small"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="7:5">
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpPromotions"
