@@ -22,17 +22,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 layout="@layout/layout_profile_header" />
 
-            <ru.babaetskv.passionwoman.app.presentation.view.GridRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMenuItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/margin_small"
                 android:clipToPadding="false"
-                android:layoutAnimation="@anim/layout_grid_fade_in_delayed"
+                android:layoutAnimation="@anim/layout_fade_in"
                 android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                tools:itemCount="2"
-                app:spanCount="2"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
                 tools:listitem="@layout/view_item_profile_menu"/>
 
             <Space
