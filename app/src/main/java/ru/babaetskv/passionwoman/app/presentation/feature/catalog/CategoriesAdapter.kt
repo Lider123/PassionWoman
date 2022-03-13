@@ -24,7 +24,7 @@ class CategoriesAdapter(
 
         override fun bind(item: Category) {
             binding.run {
-                root.setOnSingleClickListener {
+                cardCategory.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 tvName.text = item.name

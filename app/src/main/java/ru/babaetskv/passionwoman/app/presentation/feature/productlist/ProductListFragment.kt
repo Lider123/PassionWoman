@@ -15,7 +15,6 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -50,10 +49,7 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
             btnSorting.setOnSingleClickListener {
                 viewModel.onSortingPressed()
             }
-            rvProducts.run {
-                adapter = productsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
-            }
+            rvProducts.adapter = productsAdapter
             etSearch.doAfterTextChanged {
                 viewModel.onSearchQueryChanged(it.toString())
             }

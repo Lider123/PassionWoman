@@ -25,7 +25,7 @@ class ProfileMenuItemAdapter(
 
         override fun bind(item: ProfileMenuItem) {
             binding.run {
-                root.setOnSingleClickListener {
+                cardProfileMenuItem.setOnSingleClickListener {
                     onMenuItemClick.invoke(item)
                 }
                 ivIcon.setImageResource(item.iconRes)

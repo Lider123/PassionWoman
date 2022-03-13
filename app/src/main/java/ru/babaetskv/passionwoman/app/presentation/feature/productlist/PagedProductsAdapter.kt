@@ -36,7 +36,7 @@ class PagedProductsAdapter(
 
         override fun bind(item: Product) {
             binding.run {
-                root.setOnSingleClickListener {
+                cardPreview.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 if (item.discountRate > 0) {
