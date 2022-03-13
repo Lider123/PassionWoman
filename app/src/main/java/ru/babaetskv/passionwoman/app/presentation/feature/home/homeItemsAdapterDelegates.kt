@@ -84,12 +84,9 @@ fun LifecycleOwner.productsHomeItemDelegate(
             ViewItemHomeProductsBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.run {
-            adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed,
-                itemWidthRatio = HOME_PRODUCT_ITEM_WIDTH_RATIO
-            )
-            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_default))
-        }
+        binding.root.adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed,
+            itemWidthRatio = HOME_PRODUCT_ITEM_WIDTH_RATIO
+        )
         bind {
             with (binding.root.adapter as PagedProductsAdapter) {
                 submitList(lifecycle, item.data)
