@@ -62,12 +62,9 @@ fun storiesHomeItemDelegate(onStoryClickListener: (item: Story) -> Unit) =
             ViewItemHomeStoriesBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.run {
-            adapter = StoriesAdapter(onStoryClickListener,
-                itemWidthRatio = HOME_STORY_ITEM_WIDTH_RATIO
-            )
-            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_default))
-        }
+        binding.root.adapter = StoriesAdapter(onStoryClickListener,
+            itemWidthRatio = HOME_STORY_ITEM_WIDTH_RATIO
+        )
         bind {
             with (binding.root.adapter as StoriesAdapter) {
                 submitList(item.data)
