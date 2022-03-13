@@ -28,8 +28,10 @@ class ProfileMenuItemAdapter(
                 cardProfileMenuItem.setOnSingleClickListener {
                     onMenuItemClick.invoke(item)
                 }
-                ivIcon.setImageResource(item.iconRes)
-                tvTitle.setText(item.titleRes)
+                tvMenuItem.run {
+                    setCompoundDrawablesWithIntrinsicBounds(item.iconRes, 0, R.drawable.ic_forward, 0)
+                    setText(item.titleRes)
+                }
             }
         }
     }

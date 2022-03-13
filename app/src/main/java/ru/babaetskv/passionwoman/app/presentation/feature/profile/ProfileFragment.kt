@@ -63,8 +63,8 @@ class ProfileFragment :
                 btnEdit.setOnSingleClickListener {
                     viewModel.onEditPressed()
                 }
-                ivAvatar.setOnSingleClickListener {
-                    viewModel.onAvatarPressed()
+                btnEditAvatar.setOnSingleClickListener {
+                    viewModel.onEditAvatarPressed()
                 }
             }
         }
@@ -175,6 +175,7 @@ class ProfileFragment :
                 tvName.text = getString(R.string.profile_full_name_template, profile.name, profile.surname)
                 tvPhone.text = profile.phone.toFormattedPhone()
                 btnLogin.isVisible = profile == guestProfile
+                btnEditAvatar.isVisible = profile != guestProfile
                 btnEdit.isVisible = profile != guestProfile
             }
             btnLogOut.isVisible = profile != guestProfile
