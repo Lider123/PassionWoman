@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/layoutPreview"
+        android:id="@+id/cardPreview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
@@ -71,7 +71,7 @@
         android:ellipsize="end"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintTop_toBottomOf="@id/layoutPreview"
+        app:layout_constraintTop_toBottomOf="@id/cardPreview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tvPriceDeleted"
         tools:text="$60.00" />
@@ -85,7 +85,7 @@
         android:lines="1"
         android:ellipsize="end"
         android:textColor="@color/hint"
-        app:layout_constraintTop_toBottomOf="@id/layoutPreview"
+        app:layout_constraintTop_toBottomOf="@id/cardPreview"
         app:layout_constraintStart_toEndOf="@id/tvPrice"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="$60.00" />

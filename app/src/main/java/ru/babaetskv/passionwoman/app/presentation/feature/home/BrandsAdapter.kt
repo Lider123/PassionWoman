@@ -24,7 +24,7 @@ class BrandsAdapter(
 
         override fun bind(item: Brand) {
             binding.run {
-                root.setOnSingleClickListener {
+                cardBrand.setOnSingleClickListener {
                     onItemClick.invoke(item)
                 }
                 ivLogo.load(item.logo, R.drawable.photo_placeholder, resizeAsItem = true)

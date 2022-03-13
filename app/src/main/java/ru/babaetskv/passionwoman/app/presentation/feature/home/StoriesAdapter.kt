@@ -38,7 +38,7 @@ class StoriesAdapter(
         private var item: Story? = null
 
         init {
-            binding.root.setOnSingleClickListener {
+            binding.cardStory.setOnSingleClickListener {
                 item?.let(onItemClick)
             }
         }
