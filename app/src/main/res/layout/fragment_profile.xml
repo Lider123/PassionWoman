@@ -26,6 +26,7 @@
                 android:id="@+id/rvMenuItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_small"
                 android:clipToPadding="false"
                 android:layoutAnimation="@anim/layout_fade_in"
                 android:overScrollMode="never"
