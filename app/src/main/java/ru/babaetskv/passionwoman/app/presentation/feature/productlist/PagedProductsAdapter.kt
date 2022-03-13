@@ -36,9 +36,6 @@ class PagedProductsAdapter(
 
         override fun bind(item: Product) {
             binding.run {
-                root.setOnSingleClickListener {
-                    onItemClick.invoke(item)
-                }
                 if (item.discountRate > 0) {
                     tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
@@ -51,9 +48,14 @@ class PagedProductsAdapter(
                 }
                 ratingBar.rating = item.rating
                 tvName.text = item.name
-                ivPreview.load(item.preview, R.drawable.photo_placeholder,
-                    resizeAsItem = true
-                )
+                ivPreview.run {
+                    load(item.preview, R.drawable.photo_placeholder,
+                        resizeAsItem = true
+                    )
+                    setOnSingleClickListener {
+                        onItemClick.invoke(item)
+                    }
+                }
                 btnBuy.setOnSingleClickListener {
                     onBuyClick.invoke(item)
                 }
