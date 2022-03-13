@@ -33,10 +33,7 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
                 }
             }
             layoutActions.isVisible = false
-            rvProducts.run {
-                adapter = productsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
-            }
+            rvProducts.adapter = productsAdapter
         }
     }
 
