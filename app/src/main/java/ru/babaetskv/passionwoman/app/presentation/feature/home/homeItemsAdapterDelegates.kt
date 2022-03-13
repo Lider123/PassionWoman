@@ -1,18 +1,17 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.*
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.PagedProductsAdapter
+import ru.babaetskv.passionwoman.app.utils.dimen
+import ru.babaetskv.passionwoman.app.utils.view.LinearLayoutPagerManager
 import ru.babaetskv.passionwoman.domain.model.Brand
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Promotion
 import ru.babaetskv.passionwoman.domain.model.Story
-
-private const val HOME_PRODUCT_ITEM_WIDTH_RATIO = 0.41f
-private const val HOME_STORY_ITEM_WIDTH_RATIO = 0.26f
 
 fun headerHomeItemAdapterDelegate(onClickListener: (item: HomeItem.Header) -> Unit) =
     adapterDelegateViewBinding<HomeItem.Header, HomeItem, ViewItemHomeHeaderBinding>(
@@ -62,9 +61,16 @@ fun storiesHomeItemDelegate(onStoryClickListener: (item: Story) -> Unit) =
             ViewItemHomeStoriesBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.adapter = StoriesAdapter(onStoryClickListener,
-            itemWidthRatio = HOME_STORY_ITEM_WIDTH_RATIO
-        )
+        binding.root.run {
+            layoutManager = LinearLayoutPagerManager(
+                context,
+                RecyclerView.HORIZONTAL,
+                false,
+                3,
+                dimen(R.dimen.margin_default)
+            )
+            adapter = StoriesAdapter(onStoryClickListener)
+        }
         bind {
             with (binding.root.adapter as StoriesAdapter) {
                 submitList(item.data)
@@ -81,9 +87,16 @@ fun LifecycleOwner.productsHomeItemDelegate(
             ViewItemHomeProductsBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed,
-            itemWidthRatio = HOME_PRODUCT_ITEM_WIDTH_RATIO
-        )
+        binding.root.run {
+            layoutManager = LinearLayoutPagerManager(
+                context,
+                RecyclerView.HORIZONTAL,
+                false,
+                2,
+                dimen(R.dimen.margin_default)
+            )
+            adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed)
+        }
         bind {
             with (binding.root.adapter as PagedProductsAdapter) {
                 submitList(lifecycle, item.data)

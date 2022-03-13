@@ -1,7 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import android.view.ViewGroup
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemStoryBinding
@@ -13,24 +12,11 @@ import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.Story
 
 class StoriesAdapter(
-    private val onItemClick: (Story) -> Unit,
-    private val itemWidthRatio: Float = 1f
+    private val onItemClick: (Story) -> Unit
 ) : BaseAdapter<Story>(StoriesDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Story> =
-        parent.viewBinding(ViewItemStoryBinding::inflate)
-            .let {
-                if (itemWidthRatio < 0 && itemWidthRatio > 1) {
-                    throw IllegalStateException("Item width ratio should be from 0 to 1")
-                }
-
-                it.root.updateLayoutParams {
-                    width = if (itemWidthRatio != 1f) {
-                        (itemWidthRatio * parent.measuredWidth).toInt()
-                    } else width
-                }
-                ViewHolder(it)
-            }
+        ViewHolder(parent.viewBinding(ViewItemStoryBinding::inflate))
 
     inner class ViewHolder(
         private val binding: ViewItemStoryBinding
