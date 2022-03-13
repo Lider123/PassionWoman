@@ -11,7 +11,6 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
@@ -53,10 +52,7 @@ class ProfileFragment :
     override fun initViews() {
         super.initViews()
         binding.run {
-            rvMenuItems.run {
-                adapter = profileMenuItemsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
-            }
+            rvMenuItems.adapter = profileMenuItemsAdapter
             btnLogOut.setOnSingleClickListener {
                 viewModel.onLogOutPressed()
             }
