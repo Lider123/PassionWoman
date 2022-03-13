@@ -18,7 +18,7 @@ interface ProfileViewModel : IViewModel {
     fun onLogInPressed()
     fun onLogOutPressed()
     fun onEditPressed()
-    fun onAvatarPressed()
+    fun onEditAvatarPressed()
     fun onCameraPressed()
     fun onGalleryPressed()
     fun onLogOutDeclined()

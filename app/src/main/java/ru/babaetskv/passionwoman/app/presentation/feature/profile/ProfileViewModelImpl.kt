@@ -76,7 +76,7 @@ class ProfileViewModelImpl(
         }
     }
 
-    override fun onAvatarPressed() {
+    override fun onEditAvatarPressed() {
         profileLiveData.value ?: return
 
         dialogLiveData.postValue(ProfileViewModel.Dialog.PICK_AVATAR)
