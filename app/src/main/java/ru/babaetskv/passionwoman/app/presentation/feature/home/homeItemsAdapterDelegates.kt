@@ -97,10 +97,7 @@ fun brandsHomeItemDelegate(onBrandClickListener: (item: Brand) -> Unit) =
             ViewItemHomeBrandsBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.run {
-            adapter = BrandsAdapter(onBrandClickListener)
-            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_small))
-        }
+        binding.root.adapter = BrandsAdapter(onBrandClickListener)
         bind {
             with (binding.root.adapter as BrandsAdapter) {
                 submitList(item.data)
