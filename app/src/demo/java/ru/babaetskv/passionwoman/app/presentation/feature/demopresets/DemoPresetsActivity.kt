@@ -3,7 +3,6 @@ package ru.babaetskv.passionwoman.app.presentation.feature.demopresets
 import android.content.Intent
 import android.os.Bundle
 import android.viewbinding.library.activity.viewBinding
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
