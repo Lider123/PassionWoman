@@ -18,69 +18,6 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <FrameLayout
-                android:id="@+id/layoutPhotos"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintDimensionRatio="3:4">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vpPhotos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:background="@color/primaryVariant"/>
-
-                <me.relex.circleindicator.CircleIndicator3
-                    android:id="@+id/pageIndicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:paddingBottom="@dimen/margin_default"
-                    app:ci_animator="@animator/circle_indicator_animator"
-                    app:ci_gravity="center"
-                    app:ci_drawable="@drawable/circle_indicator_dot"
-                    app:ci_drawable_unselected="@drawable/circle_indicator_dot_unselected"
-                    app:ci_height="8dp"
-                    app:ci_width="8dp"
-                    app:ci_margin="@dimen/margin_extra_small" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/primaryVariant"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivEmptyIcon"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:tint="@color/secondary"
-                        app:srcCompat="@drawable/ic_no_photos"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/tvEmptyPhotos"
-                        app:layout_constraintVertical_chainStyle="packed"/>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvEmptyPhotos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_default"
-                        android:text="@string/product_card_empty_photos"
-                        android:textAlignment="center"
-                        app:layout_constraintTop_toBottomOf="@id/ivEmptyIcon"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </FrameLayout>
-
             <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
@@ -95,14 +32,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpPhotos"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
+                tools:background="@color/primaryVariant"/>
+
+            <!-- TODO refactor toolbar to set this button inside it -->
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
                 android:padding="@dimen/margin_default"
                 android:src="@drawable/ic_share"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/toolbar"
+                app:layout_constraintEnd_toEndOf="@id/toolbar"/>
 
             <include
                 android:id="@+id/layoutBrand"
@@ -111,7 +62,7 @@
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginEnd="@dimen/margin_default"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
+                app:layout_constraintTop_toBottomOf="@id/vpPhotos"
                 app:layout_constraintEnd_toEndOf="parent"
                 layout="@layout/view_item_brand"
                 tools:visibility="visible"/>
@@ -123,7 +74,7 @@
                 android:layout_marginTop="@dimen/margin_default"
                 android:layout_marginStart="@dimen/margin_default"
                 android:max="5"
-                app:layout_constraintTop_toBottomOf="@id/layoutPhotos"
+                app:layout_constraintTop_toBottomOf="@id/vpPhotos"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:progress="4"/>
 
