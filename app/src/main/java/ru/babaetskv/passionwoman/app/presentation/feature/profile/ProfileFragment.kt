@@ -86,6 +86,7 @@ class ProfileFragment :
             }
             ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
             ProfileViewModel.Router.ContactsScreen -> router.openBottomSheet(Screens.contacts())
+            ProfileViewModel.Router.OrdersScreen -> router.navigateTo(Screens.orders())
         }
     }
 

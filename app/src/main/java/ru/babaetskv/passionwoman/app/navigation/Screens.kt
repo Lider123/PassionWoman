@@ -8,6 +8,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfil
 import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.orders.OrdersFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListMode
@@ -93,5 +94,9 @@ object Screens {
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
         )
+    }
+
+    fun orders() = FragmentScreen {
+        OrdersFragment.create()
     }
 }

@@ -39,5 +39,7 @@ interface ProfileViewModel : IViewModel {
         object FavoritesScreen : Router()
 
         object ContactsScreen: Router()
+
+        object OrdersScreen : Router()
     }
 }
