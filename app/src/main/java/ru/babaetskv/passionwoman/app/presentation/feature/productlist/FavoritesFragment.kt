@@ -8,8 +8,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
@@ -28,9 +28,12 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
         binding.run {
             toolbar.run {
                 title = resources.getString(R.string.product_list_favorites)
-                setOnStartClickListener {
-                    viewModel.onBackPressed()
-                }
+                setStartActions(
+                    ToolbarView.Action(
+                        iconRes = R.drawable.ic_back,
+                        onClick = viewModel::onBackPressed
+                    )
+                )
             }
             layoutActions.isVisible = false
             rvProducts.adapter = productsAdapter

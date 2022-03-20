@@ -14,6 +14,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.HorizontalMarginItemDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.app.utils.*
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
@@ -43,15 +44,13 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         super.initViews()
         binding.run {
             toolbar.run {
-                setOnStartClickListener {
-                    viewModel.onBackPressed()
-                }
-                setOnEndClickListener {
-                    viewModel.onFavoritePressed()
-                }
-            }
-            btnShare.setOnSingleClickListener {
-                viewModel.onSharePressed()
+                setStartActions(
+                    ToolbarView.Action(
+                        iconRes = R.drawable.ic_back,
+                        onClick = viewModel::onBackPressed
+                    )
+                )
+                this@ProductCardFragment.setEndActions()
             }
             vpPhotos.run {
                 adapter = productPhotosAdapter
@@ -92,8 +91,21 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     }
 
     private fun populateFavorite(isFavorite: Boolean) {
-        val iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked
-        binding.toolbar.setActionEnd(iconRes)
+        setEndActions(isFavorite)
+    }
+
+    private fun setEndActions(isFavorite: Boolean = false) {
+        binding.toolbar.setEndActions(
+            ToolbarView.Action(
+                iconRes = R.drawable.ic_share,
+                onClick = viewModel::onSharePressed
+            ),
+            ToolbarView.Action(
+                iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked,
+                tintRes = R.color.favorite,
+                onClick = viewModel::onFavoritePressed
+            )
+        )
     }
 
     private fun populateProductPhotos(photos: List<ProductImageItem>) {

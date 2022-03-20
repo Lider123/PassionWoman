@@ -7,9 +7,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.domain.model.Category
 
 class CatalogFragment :
@@ -27,9 +27,12 @@ class CatalogFragment :
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.setOnEndClickListener {
-                viewModel.onSearchPressed()
-            }
+            toolbar.setEndActions(
+                ToolbarView.Action(
+                    iconRes = R.drawable.ic_search,
+                    onClick = viewModel::onSearchPressed
+                )
+            )
             rvCategories.adapter = categoriesAdapter
         }
     }

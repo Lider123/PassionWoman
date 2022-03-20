@@ -12,14 +12,11 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textAlignment="viewStart"
-        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
-        app:tv_actionStartVisible="true"
-        app:tv_actionEndVisible="true"
-        app:tv_actionStartSrc="@drawable/ic_back" />
+        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutSearch"
