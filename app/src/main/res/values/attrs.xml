@@ -2,14 +2,8 @@
 <resources>
     <declare-styleable name="ToolbarView">
         <attr name="tv_title" format="string"/>
-        <attr name="tv_actionStartSrc" format="reference"/>
-        <attr name="tv_actionEndSrc" format="reference"/>
         <attr name="tv_titleTextAppearance" format="reference"/>
         <attr name="android:textAlignment"/>
-        <attr name="tv_actionStartVisible" format="boolean"/>
-        <attr name="tv_actionEndVisible" format="boolean"/>
-        <attr name="tv_actionStartTint" format="color"/>
-        <attr name="tv_actionEndTint" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="LinearMockView">

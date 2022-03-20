@@ -27,8 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tv_title="@string/edit_profile_sign_up"
-            app:tv_actionStartVisible="true"
-            app:tv_actionStartSrc="@drawable/ic_back"
             app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"/>
 
         <com.google.android.material.textfield.TextInputLayout

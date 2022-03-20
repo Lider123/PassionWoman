@@ -12,6 +12,7 @@ import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
@@ -31,9 +32,17 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.title = if (args.signingUp) {
-                getString(R.string.edit_profile_sign_up)
-            } else getString(R.string.edit_profile_edit)
+            toolbar.run {
+                title = if (args.signingUp) {
+                    getString(R.string.edit_profile_sign_up)
+                } else getString(R.string.edit_profile_edit)
+                setStartActions(
+                    ToolbarView.Action(
+                        iconRes = R.drawable.ic_back,
+                        onClick = viewModel::onBackPressed
+                    )
+                )
+            }
             if (args.signingUp) ivBackground.load(R.drawable.bg_login)
             inputName.run {
                 setText(args.profile.name)
@@ -59,9 +68,6 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
             btnDone.setOnSingleClickListener {
                 hideKeyboard()
                 viewModel.onDonePressed()
-            }
-            toolbar.setOnSingleClickListener {
-                viewModel.onBackPressed()
             }
         }
     }

@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -37,11 +38,12 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.run {
-                setOnStartClickListener {
-                    viewModel.onBackPressed()
-                }
-            }
+            toolbar.setStartActions(
+                ToolbarView.Action(
+                    iconRes = R.drawable.ic_back,
+                    onClick = viewModel::onBackPressed
+                )
+            )
             layoutActions.isVisible = args.actionsAvailable
             btnFilters.setOnSingleClickListener {
                 viewModel.onFiltersPressed()
