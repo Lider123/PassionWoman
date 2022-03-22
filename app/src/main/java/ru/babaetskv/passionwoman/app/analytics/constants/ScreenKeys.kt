@@ -18,4 +18,5 @@ object ScreenKeys {
     const val SPLASH = "splash"
     const val FILTERS = "filters"
     const val STORIES = "stories"
+    const val CART = "cart"
 }

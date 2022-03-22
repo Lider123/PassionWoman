@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/contentInsetsView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?android:attr/actionBarSize"
+        android:textAlignment="viewStart"
+        app:tv_title="@string/cart_title"
+        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCartItems"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layoutAnimation="@anim/layout_fade_in"
+        android:padding="@dimen/margin_small"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_item_cart_item"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="@dimen/margin_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_default"
+            android:text="@string/cart_total"
+            android:lines="1"
+            android:ellipsize="end"
+            style="@style/Typography.PassionWoman.TextAppearance.Large" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:lines="1"
+            android:ellipsize="end"
+            style="@style/Typography.PassionWoman.TextAppearance.Large"
+            tools:text="$60.00" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPriceDeleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="@color/hint"
+            style="@style/Typography.PassionWoman.TextAppearance.Large"
+            tools:text="$60.00" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:text="@string/cart_checkout"
+            style="@style/Widget.PassionWoman.Button.Colored"/>
+    </LinearLayout>
+
+    <ru.babaetskv.passionwoman.app.presentation.view.StubView
+        android:id="@id/errorView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:sv_action="@string/retry"
+        app:sv_isBackVisible="false" />
+
+    <include
+        android:id="@id/mockView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/layout_cart_mock"
+        tools:visibility="visible"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -123,6 +123,10 @@
     <string name="product_list_no_filters">No filters available</string>
     <string name="product_list_search">search</string>
 
+    <string name="cart_title">Cart</string>
+    <string name="cart_checkout">Checkout</string>
+    <string name="cart_total">Total:</string>
+
     <string name="contacts_version_placeholder">v%s</string>
     <string name="contacts_phone">Call us</string>
     <string name="contacts_email">Send us an email</string>

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.feature.InDevelopmentFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.cart.CartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
@@ -19,7 +19,7 @@ interface NavigationViewModel : IViewModel {
     enum class Tab(val tag: String, val menuItemId: Int, val fragmentFactory: () -> Fragment) {
         HOME("home", R.id.menu_home, HomeFragment::create),
         CATALOG("catalog", R.id.menu_catalog, CatalogFragment::create),
-        CART("cart", R.id.menu_cart, InDevelopmentFragment::create), // TODO : set up cart fragment
+        CART("cart", R.id.menu_cart, CartFragment::create),
         PROFILE("profile", R.id.menu_profile, ProfileFragment::create);
 
         companion object {
