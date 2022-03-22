@@ -48,7 +48,7 @@ class CartItemsAdapter(
                     if (color.isMulticolor) {
                         setMulticolor()
                     } else setColor(color.hex.toColorInt())
-                    borderVisible = false
+                    borderVisible = true
                 }
                 viewSize.btnSize.run {
                     text = item.selectedSize.value
@@ -72,6 +72,9 @@ class CartItemsAdapter(
 
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
             oldItem.product.id == newItem.product.id
+                    && oldItem.selectedColor == newItem.selectedColor
+                    && oldItem.selectedSize == newItem.selectedSize
+                    && oldItem.count == newItem.count
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
             oldItem == newItem

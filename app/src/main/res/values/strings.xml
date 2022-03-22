@@ -41,10 +41,13 @@
     <string name="error_add_to_favorites">Failed to add the product to favorites</string>
     <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
     <string name="error_sync_favorites">Failed to synchronize favorites</string>
+    <string name="error_add_to_cart">Failed to add product to the cart</string>
+    <string name="error_get_cart_items">Failed to fetch cart items</string>
     <string name="error_get_products_page">Failed to retrieve additional products</string>
     <string name="error_no_categories">The list of categories is empty</string>
     <string name="error_no_favorites">The list of favorites is empty</string>
     <string name="error_no_products">The list of products is empty</string>
+    <string name="error_no_cart_items">The cart is empty</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -134,4 +137,6 @@
     <string name="contacts_telegram">Write to us on Telegram</string>
 
     <string name="view_input_range_hint">0</string>
+
+    <string name="add_to_cart_success">Successfully added to cart</string>
 </resources>

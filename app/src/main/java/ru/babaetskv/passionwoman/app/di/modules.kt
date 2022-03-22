@@ -57,7 +57,10 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.*
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.cache.CartItemsInMemoryCache
+import ru.babaetskv.passionwoman.domain.cache.base.ListCache
 import ru.babaetskv.passionwoman.domain.gateway.*
+import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
@@ -97,7 +100,7 @@ val viewModelModule = module {
     }
     viewModel { ProfileViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
-        ProductCardViewModelImpl(args, get(), get(), get(), get(), get(), get(), get())
+        ProductCardViewModelImpl(args, get(), get(), get(), get(), get(), get(), get(), get())
     }
     viewModel { HomeViewModelImpl(get(), get(), get()) }
     viewModel { (args: SortingFragment.Args) ->
@@ -112,7 +115,7 @@ val viewModelModule = module {
         StoriesViewModelImpl(args, get())
     }
     viewModel {
-        CartViewModelImpl(get())
+        CartViewModelImpl(get(), get())
     }
 }
 
@@ -131,11 +134,17 @@ val interactorModule = module {
     factory<RemoveFromFavoritesUseCase> { RemoveFromFavoritesInteractor(get(), get()) }
     factory<SyncFavoritesUseCase> { SyncFavoritesInteractor(get(), get(), get()) }
     factory<GetProductsUseCase> { GetProductsInteractor(get(), get()) }
+    factory<AddToCartUseCase> { AddTocartInteractor(get(), get()) }
+    factory<GetCartItemsUseCase> { GetCartItemsInteractor(get(), get()) }
 }
 
 val gatewayModule = module {
     single<CatalogGateway> { CatalogGatewayImpl(get()) }
     single<AuthGateway> { AuthGatewayImpl(get(), get()) }
+}
+
+val cacheModule = module {
+    single<ListCache<CartItem>> { CartItemsInMemoryCache() }
 }
 
 val networkModule = module {

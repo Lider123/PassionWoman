@@ -21,6 +21,7 @@ class KoinInitializerImpl : KoinInitializer {
                 viewModelModule,
                 preferencesModule,
                 gatewayModule,
+                cacheModule,
                 demoModule
             )
         }

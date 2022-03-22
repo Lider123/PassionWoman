@@ -6,13 +6,16 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
+import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
+import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.AddToFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromFavoritesUseCase
@@ -23,6 +26,7 @@ class ProductCardViewModelImpl(
     private val favoritesPreferences: FavoritesPreferences,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    private val addToCartUseCase: AddToCartUseCase,
     private val deeplinkGenerator: DeeplinkGenerator,
     private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
@@ -82,9 +86,31 @@ class ProductCardViewModelImpl(
     }
 
     override fun onAddToCartPressed() {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        val selectedColor = productColorsLiveData.value
+            ?.find { it.isSelected }
+            ?.value
+            ?.color
+            ?: return
+
+        val selectedSize = productSizesLiveData.value
+            ?.find { it.isSelected }
+            ?.value
+            ?: return
+
+        val product = productLiveData.value ?: return
+
+        val cartItem = CartItem(
+            product = product,
+            selectedSize = selectedSize,
+            selectedColor = selectedColor,
+            count = 1
+        )
+        launchWithLoading {
+            addToCartUseCase.execute(cartItem)
+            notifier.newRequest(this, R.string.add_to_cart_success)
+                .sendAlert()
+            eventHub.post(InnerEvent.AddToCart(cartItem))
+        }
     }
 
     override fun onSharePressed() {
