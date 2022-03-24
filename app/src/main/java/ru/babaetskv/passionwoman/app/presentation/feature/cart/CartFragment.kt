@@ -11,7 +11,6 @@ import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.CartItem
-import timber.log.Timber
 
 class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCartBinding by viewBinding()
@@ -43,10 +42,8 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
     }
 
     private fun populateCartItems(items: List<CartItem>) {
-        Timber.e("populateCartItems(items=$items)") // TODO: remove
-        adapter.submitList(items) {
-            binding.rvCartItems.isVisible = items.isNotEmpty()
-        }
+        adapter.submitData(items)
+        binding.rvCartItems.isVisible = items.isNotEmpty()
     }
 
     private fun populateTotal(items: List<CartItem>) {

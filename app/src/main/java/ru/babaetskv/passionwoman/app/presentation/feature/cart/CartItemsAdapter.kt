@@ -3,25 +3,28 @@ package ru.babaetskv.passionwoman.app.presentation.feature.cart
 import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemCartItemBinding
-import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.presentation.base.DiffUtilAdapter
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.CartItem
-import timber.log.Timber
 
 class CartItemsAdapter(
     private val onAddClick: (CartItem) -> Unit,
     private val onRemoveClick: (CartItem) -> Unit,
-) : BaseAdapter<CartItem>(CartItemDiffUtilCallback()) {
+) : DiffUtilAdapter<CartItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CartItem> =
         ViewHolder(parent.viewBinding(ViewItemCartItemBinding::inflate))
+
+    override fun createDiffUtilCallback(
+        oldList: List<CartItem>,
+        newList: List<CartItem>
+    ): Callback<CartItem> = CartItemDiffUtilCallback(oldList, newList)
 
     inner class ViewHolder(
         private val binding: ViewItemCartItemBinding
@@ -76,24 +79,20 @@ class CartItemsAdapter(
         }
     }
 
-    class CartItemDiffUtilCallback : DiffUtil.ItemCallback<CartItem>() {
-        // TODO: after data updates. Counter stays the same
+    class CartItemDiffUtilCallback(
+        oldList: List<CartItem>,
+        newList: List<CartItem>
+    ) : DiffUtilAdapter.Callback<CartItem>(oldList, newList) {
 
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
-            (oldItem.productId == newItem.productId
+            oldItem.productId == newItem.productId
                     && oldItem.selectedColor.code == newItem.selectedColor.code
                     && oldItem.selectedSize.value == newItem.selectedSize.value
-                    && oldItem.count == newItem.count).also {
-                        Timber.e("areItemsTheSame = $it") // TODO: remove
-            }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
-            (oldItem == newItem).also {
-                Timber.e("areContentsTheSame = $it") // TODO: remove
-            }
+            oldItem == newItem
 
         override fun getChangePayload(oldItem: CartItem, newItem: CartItem): Any? {
-            Timber.e("getChangedPayload(${oldItem.count != newItem.count})") // TODO: remove
             if (oldItem.count != newItem.count) return PAYLOAD_COUNT
 
             return null
