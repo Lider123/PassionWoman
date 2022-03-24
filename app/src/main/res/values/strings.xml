@@ -42,6 +42,7 @@
     <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
     <string name="error_sync_favorites">Failed to synchronize favorites</string>
     <string name="error_add_to_cart">Failed to add product to the cart</string>
+    <string name="error_remove_from_cart">Failed to remove product from the cart</string>
     <string name="error_get_cart_items">Failed to fetch cart items</string>
     <string name="error_get_products_page">Failed to retrieve additional products</string>
     <string name="error_no_categories">The list of categories is empty</string>

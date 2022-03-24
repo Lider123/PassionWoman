@@ -13,6 +13,7 @@ import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.app.utils.viewBinding
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import timber.log.Timber
 
 class CartItemsAdapter(
     private val onAddClick: (CartItem) -> Unit,
@@ -27,20 +28,19 @@ class CartItemsAdapter(
     ) : BaseViewHolder<CartItem>(binding.root) {
 
         override fun bind(item: CartItem) {
-            val product = item.product
             binding.run {
-                imgPreview.load(product.preview, R.drawable.photo_placeholder,
+                imgPreview.load(item.preview, R.drawable.photo_placeholder,
                     resizeAsItem = true
                 )
-                tvTitle.text = product.name
-                if (product.discountRate > 0) {
-                    tvPrice.text = product.priceWithDiscount.toFormattedString()
+                tvTitle.text = item.name
+                if (item.price != item.priceWithDiscount) {
+                    tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
                         isVisible = true
-                        setHtmlText(context.getString(R.string.deleted_text_template, product.price.toFormattedString()))
+                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toFormattedString()))
                     }
                 } else {
-                    tvPrice.text = product.price.toFormattedString()
+                    tvPrice.text = item.price.toFormattedString()
                     tvPriceDeleted.isVisible = false
                 }
                 viewColor.run {
@@ -62,21 +62,45 @@ class CartItemsAdapter(
                     btnRemove.setOnSingleClickListener {
                         onRemoveClick.invoke(item)
                     }
-                    tvCounter.text = item.count.toString()
+                    setItemCount(item.count)
                 }
             }
+        }
+
+        override fun bind(item: CartItem, payload: Any) {
+            if (payload == PAYLOAD_COUNT) setItemCount(item.count)
+        }
+
+        private fun setItemCount(count: Int) {
+            binding.layoutCounter.tvCounter.text = count.toString()
         }
     }
 
     class CartItemDiffUtilCallback : DiffUtil.ItemCallback<CartItem>() {
+        // TODO: after data updates. Counter stays the same
 
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
-            oldItem.product.id == newItem.product.id
-                    && oldItem.selectedColor == newItem.selectedColor
-                    && oldItem.selectedSize == newItem.selectedSize
-                    && oldItem.count == newItem.count
+            (oldItem.productId == newItem.productId
+                    && oldItem.selectedColor.code == newItem.selectedColor.code
+                    && oldItem.selectedSize.value == newItem.selectedSize.value
+                    && oldItem.count == newItem.count).also {
+                        Timber.e("areItemsTheSame = $it") // TODO: remove
+            }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
-            oldItem == newItem
+            (oldItem == newItem).also {
+                Timber.e("areContentsTheSame = $it") // TODO: remove
+            }
+
+        override fun getChangePayload(oldItem: CartItem, newItem: CartItem): Any? {
+            Timber.e("getChangedPayload(${oldItem.count != newItem.count})") // TODO: remove
+            if (oldItem.count != newItem.count) return PAYLOAD_COUNT
+
+            return null
+        }
+    }
+
+    companion object {
+        private const val PAYLOAD_COUNT = 1
     }
 }

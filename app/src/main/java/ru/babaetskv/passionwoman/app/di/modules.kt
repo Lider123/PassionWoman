@@ -115,7 +115,7 @@ val viewModelModule = module {
         StoriesViewModelImpl(args, get())
     }
     viewModel {
-        CartViewModelImpl(get(), get())
+        CartViewModelImpl(get(), get(), get(), get())
     }
 }
 
@@ -135,6 +135,7 @@ val interactorModule = module {
     factory<SyncFavoritesUseCase> { SyncFavoritesInteractor(get(), get(), get()) }
     factory<GetProductsUseCase> { GetProductsInteractor(get(), get()) }
     factory<AddToCartUseCase> { AddTocartInteractor(get(), get()) }
+    factory<RemoveFromCartUseCase> { RemoveFromCartInteractor(get(), get()) }
     factory<GetCartItemsUseCase> { GetCartItemsInteractor(get(), get()) }
 }
 

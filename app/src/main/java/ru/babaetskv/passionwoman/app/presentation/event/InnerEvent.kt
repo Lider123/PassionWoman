@@ -23,4 +23,8 @@ sealed class InnerEvent : Event {
     data class AddToCart(
         val item: CartItem
     ) : InnerEvent()
+
+    data class RemoveFromCart(
+        val item: CartItem
+    ) : InnerEvent()
 }

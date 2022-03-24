@@ -102,8 +102,7 @@ class ProductCardViewModelImpl(
         val cartItem = CartItem(
             product = product,
             selectedSize = selectedSize,
-            selectedColor = selectedColor,
-            count = 1
+            selectedColor = selectedColor
         )
         launchWithLoading {
             addToCartUseCase.execute(cartItem)

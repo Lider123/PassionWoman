@@ -14,7 +14,7 @@ class CartItemsInMemoryCache: ListCache<CartItem> {
 
     override fun add(item: CartItem) {
         val existingItem = items.find {
-            it.product.id == item.product.id
+            it.productId == item.productId
                     && it.selectedSize == item.selectedSize
                     && it.selectedColor == item.selectedColor
         }
@@ -29,7 +29,7 @@ class CartItemsInMemoryCache: ListCache<CartItem> {
 
     override fun remove(item: CartItem) {
         val existingItem = items.find {
-            it.product.id == item.product.id
+            it.productId == item.productId
                     && it.selectedSize == item.selectedSize
                     && it.selectedColor == item.selectedColor
         }

@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import timber.log.Timber
 
 class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCartBinding by viewBinding()
@@ -42,6 +43,7 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
     }
 
     private fun populateCartItems(items: List<CartItem>) {
+        Timber.e("populateCartItems(items=$items)") // TODO: remove
         adapter.submitList(items) {
             binding.rvCartItems.isVisible = items.isNotEmpty()
         }
@@ -49,9 +51,9 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
 
     private fun populateTotal(items: List<CartItem>) {
         binding.run {
-            val total = items.map { it.product.price * it.count }
+            val total = items.map { it.price * it.count }
                 .reduce { acc, price -> acc + price }
-            val totalWithDiscount = items.map { it.product.priceWithDiscount * it.count }
+            val totalWithDiscount = items.map { it.priceWithDiscount * it.count }
                 .reduce { acc, price -> acc + price }
             if (total != totalWithDiscount) {
                 tvPrice.text = totalWithDiscount.toFormattedString()
