@@ -6,4 +6,5 @@ interface EventKeys {
     val SIGN_UP: String
     val LOGIN: String
     val ADD_TO_WISHLIST: String
+    val ADD_TO_CART: String
 }

@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.AddToCartEvent
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
@@ -106,6 +107,7 @@ class ProductCardViewModelImpl(
         )
         launchWithLoading {
             addToCartUseCase.execute(cartItem)
+            analyticsHandler.log(AddToCartEvent(product))
             notifier.newRequest(this, R.string.add_to_cart_success)
                 .sendAlert()
             eventHub.post(InnerEvent.AddToCart(cartItem))

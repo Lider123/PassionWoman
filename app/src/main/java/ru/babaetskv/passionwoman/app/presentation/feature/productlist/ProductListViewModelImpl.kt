@@ -88,9 +88,9 @@ class ProductListViewModelImpl(
     }
 
     override fun onBuyPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendError()
+        launch {
+            navigateTo(ProductListViewModel.Router.NewCartItem(product))
+        }
     }
 
     override fun onFiltersPressed() {

@@ -32,6 +32,7 @@ class FirebaseAnalyticsHandler(
         override val LOGIN: String = FirebaseAnalytics.Event.LOGIN
         override val SIGN_UP: String = FirebaseAnalytics.Event.SIGN_UP
         override val ADD_TO_WISHLIST: String = FirebaseAnalytics.Event.ADD_TO_WISHLIST
+        override val ADD_TO_CART: String = FirebaseAnalytics.Event.ADD_TO_CART
     }
 
     private object FirebaseParamsKeys : ParamsKeys {

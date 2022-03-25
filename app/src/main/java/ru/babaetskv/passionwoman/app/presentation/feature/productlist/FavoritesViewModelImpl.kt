@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
@@ -58,9 +57,9 @@ class FavoritesViewModelImpl(
     }
 
     override fun onBuyPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendError()
+        launch {
+            navigateTo(FavoritesViewModel.Router.NewCartItem(product))
+        }
     }
 
     private suspend fun onFavoritesUpdated(action: FavoritesPreferences.Action) {

@@ -39,5 +39,9 @@ interface ProductListViewModel : IViewModel {
             val filters: List<Filter>,
             val productsCount: Int
         ) : Router()
+
+        data class NewCartItem(
+            val product: Product
+        ) : Router()
     }
 }

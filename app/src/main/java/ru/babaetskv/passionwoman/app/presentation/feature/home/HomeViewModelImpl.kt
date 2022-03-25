@@ -80,9 +80,9 @@ class HomeViewModelImpl(
     }
 
     override fun onBuyProductPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        launch {
+            navigateTo(HomeViewModel.Router.NewCartItemScreen(product))
+        }
     }
 
     override fun onProductPressed(product: Product) {

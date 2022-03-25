@@ -84,6 +84,9 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
                     event.productsCount
                 ))
             }
+            is ProductListViewModel.Router.NewCartItem -> {
+                router.openBottomSheet(Screens.newCartItem(event.product))
+            }
         }
     }
 

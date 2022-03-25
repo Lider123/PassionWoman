@@ -53,6 +53,9 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
             is FavoritesViewModel.Router.ProductCardScreen -> {
                 router.navigateTo(Screens.productCard(event.product.id))
             }
+            is FavoritesViewModel.Router.NewCartItem -> {
+                router.openBottomSheet(Screens.newCartItem(event.product))
+            }
         }
     }
 
