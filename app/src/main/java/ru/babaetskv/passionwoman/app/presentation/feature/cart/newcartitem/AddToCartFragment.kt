@@ -18,7 +18,8 @@ class AddToCartFragment : BaseBottomSheetDialogFragment<AddToCartViewModel, AddT
         ListDelegationAdapter(
             productDescriptionItemDelegate(),
             colorsItemDelegate(viewModel::onColorPressed),
-            sizesItemDelegate(viewModel::onSizePressed)
+            sizesItemDelegate(viewModel::onSizePressed),
+            confirmationItemDelegate(viewModel::onConfirmPressed)
         )
     }
 

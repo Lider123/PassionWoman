@@ -19,5 +19,7 @@ sealed class AddToCartItem {
         val colors: List<SelectableItem<Color>>
     ) : AddToCartItem()
 
-    // TODO: add confirm button
+    data class Confirmation(
+        val isEnabled: Boolean
+    ) : AddToCartItem()
 }

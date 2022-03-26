@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemAddToCartItemColorsBinding
+import ru.babaetskv.passionwoman.app.databinding.ViewItemAddToCartItemConfirmationBinding
 import ru.babaetskv.passionwoman.app.databinding.ViewItemAddToCartItemSizesBinding
 import ru.babaetskv.passionwoman.app.databinding.ViewItemCartItemBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
@@ -13,6 +14,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ColorsAdap
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductSizesAdapter
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
+import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
@@ -91,6 +93,23 @@ fun sizesItemDelegate(onSizeClick: (SelectableItem<ProductSize>) -> Unit) =
             val sizes = item.sizes
             with (binding.root.adapter as? ProductSizesAdapter) {
                 this?.submitList(sizes)
+            }
+        }
+    }
+
+fun confirmationItemDelegate(onConfirmClick: () -> Unit) =
+    adapterDelegateViewBinding<AddToCartItem.Confirmation, AddToCartItem, ViewItemAddToCartItemConfirmationBinding>(
+        { layoutInflater, parent ->
+            ViewItemAddToCartItemConfirmationBinding.inflate(layoutInflater, parent, false)
+        }
+    ) {
+        binding.btnConfirm.setOnSingleClickListener {
+            onConfirmClick.invoke()
+        }
+        bind {
+            binding.btnConfirm.run {
+                isEnabled = item.isEnabled
+                setText(if (item.isEnabled) R.string.product_card_add_to_cart else R.string.product_card_not_available)
             }
         }
     }

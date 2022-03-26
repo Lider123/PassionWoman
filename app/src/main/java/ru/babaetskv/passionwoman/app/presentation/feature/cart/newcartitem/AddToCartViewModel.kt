@@ -12,6 +12,7 @@ interface AddToCartViewModel : IViewModel {
 
     fun onColorPressed(color: SelectableItem<Color>)
     fun onSizePressed(size: SelectableItem<ProductSize>)
+    fun onConfirmPressed()
 
     interface Router : RouterEvent
 }

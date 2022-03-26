@@ -120,7 +120,7 @@ val viewModelModule = module {
         CartViewModelImpl(get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
-        AddToCartViewModelImpl(args, get())
+        AddToCartViewModelImpl(args, get(), get())
     }
 }
 
