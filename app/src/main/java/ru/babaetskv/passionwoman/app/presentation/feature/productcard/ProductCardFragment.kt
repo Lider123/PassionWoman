@@ -16,8 +16,8 @@ import ru.babaetskv.passionwoman.app.presentation.HorizontalMarginItemDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.app.utils.*
+import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.model.ProductColor
 import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import kotlin.math.abs
@@ -30,8 +30,8 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     private val productSizesAdapter: ProductSizesAdapter by lazy {
         ProductSizesAdapter(viewModel::onSizeItemPressed)
     }
-    private val productColorsAdapter: ProductColorsAdapter by lazy {
-        ProductColorsAdapter(viewModel::onColorItemPressed)
+    private val colorsAdapter: ColorsAdapter by lazy {
+        ColorsAdapter(viewModel::onColorItemPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_product_card
@@ -67,7 +67,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
                 addItemDecoration(HorizontalMarginItemDecoration(context, R.dimen.margin_large))
             }
             rvColors.run {
-                adapter = productColorsAdapter
+                adapter = colorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
             }
             rvSizes.run {
@@ -84,7 +84,7 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     override fun initObservers() {
         super.initObservers()
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
-        viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
+        viewModel.colorsLiveData.observe(viewLifecycleOwner, ::populateColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
         viewModel.productSizesLiveData.observe(viewLifecycleOwner, ::populateProductSizeItems)
         viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
@@ -144,10 +144,10 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         }
     }
 
-    private fun populateProductColorItems(items: List<SelectableItem<ProductColor>>) {
-        val selectedColorName = items.find { it.isSelected }?.value?.color?.uiName ?: ""
+    private fun populateColorItems(items: List<SelectableItem<Color>>) {
+        val selectedColorName = items.find { it.isSelected }?.value?.uiName ?: ""
         binding.tvColors.setHtmlText(getString(R.string.product_card_color_placeholder, selectedColorName))
-        productColorsAdapter.submitList(items)
+        colorsAdapter.submitList(items)
     }
 
     private fun populateProductSizeItems(items: List<SelectableItem<ProductSize>>) {

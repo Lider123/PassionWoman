@@ -17,8 +17,8 @@ class AddToCartFragment : BaseBottomSheetDialogFragment<AddToCartViewModel, AddT
     private val adapter: ListDelegationAdapter<List<AddToCartItem>> by lazy {
         ListDelegationAdapter(
             productDescriptionItemDelegate(),
-            // sizesItemDelegate(), TODO
-            // colorsItemDelegate() TODO
+            colorsItemDelegate(viewModel::onColorPressed),
+            sizesItemDelegate(viewModel::onSizePressed)
         )
     }
 

@@ -5,10 +5,17 @@ import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.databinding.ViewItemAddToCartItemColorsBinding
+import ru.babaetskv.passionwoman.app.databinding.ViewItemAddToCartItemSizesBinding
 import ru.babaetskv.passionwoman.app.databinding.ViewItemCartItemBinding
+import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ColorsAdapter
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductSizesAdapter
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
+import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.ProductSize
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
 fun productDescriptionItemDelegate() =
     adapterDelegateViewBinding<AddToCartItem.ProductDescription, AddToCartItem, ViewItemCartItemBinding>(
@@ -47,6 +54,43 @@ fun productDescriptionItemDelegate() =
                     isVisible = item.selectedSize != ProductSize.EMPTY
                 }
                 layoutCounter.root.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+fun colorsItemDelegate(onColorClick: (SelectableItem<Color>) -> Unit) =
+    adapterDelegateViewBinding<AddToCartItem.Colors, AddToCartItem, ViewItemAddToCartItemColorsBinding>(
+        { layoutInflater, parent ->
+            ViewItemAddToCartItemColorsBinding.inflate(layoutInflater, parent, false)
+        }
+    ) {
+        binding.root.run {
+            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_small))
+            adapter = ColorsAdapter(onColorClick)
+        }
+        bind {
+            val colors = item.colors
+            with (binding.root.adapter as? ColorsAdapter) {
+                this?.submitList(colors)
+            }
+        }
+    }
+
+fun sizesItemDelegate(onSizeClick: (SelectableItem<ProductSize>) -> Unit) =
+    adapterDelegateViewBinding<AddToCartItem.Sizes, AddToCartItem, ViewItemAddToCartItemSizesBinding>(
+        { layoutInflater, parent ->
+            ViewItemAddToCartItemSizesBinding.inflate(layoutInflater, parent, false)
+        }
+    ) {
+        binding.root.run {
+            itemAnimator = null
+            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_extra_small))
+            adapter = ProductSizesAdapter(onSizeClick)
+        }
+        bind {
+            val sizes = item.sizes
+            with (binding.root.adapter as? ProductSizesAdapter) {
+                this?.submitList(sizes)
             }
         }
     }
