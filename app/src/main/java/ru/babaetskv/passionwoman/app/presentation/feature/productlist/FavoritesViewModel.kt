@@ -20,5 +20,9 @@ interface FavoritesViewModel : IViewModel {
         data class ProductCardScreen(
             val product: Product
         ) : Router()
+
+        data class NewCartItem(
+            val product: Product
+        ) : Router()
     }
 }

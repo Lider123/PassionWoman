@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
@@ -93,5 +94,9 @@ object Screens {
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
         )
+    }
+
+    fun newCartItem(product: Product) = BottomSheetDialogFragmentScreen {
+        AddToCartFragment.create(product)
     }
 }

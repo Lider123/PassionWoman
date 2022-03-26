@@ -145,7 +145,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
-                tools:listitem="@layout/view_item_product_color"/>
+                tools:listitem="@layout/view_item_color"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvDesription"

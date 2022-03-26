@@ -16,6 +16,10 @@ interface StringProvider {
     val REMOVE_FROM_FAVORITES_ERROR: String
     val SYNC_FAVORITES_ERROR: String
     val GET_PRODUCTS_PAGE_ERROR: String
+    val ADD_TO_CART_ERROR: String
+    val REMOVE_FROM_CART_ERROR: String
+    val GET_CART_ITEMS_ERROR: String
+    val EMPTY_CART_ITEMS_ERROR: String
 
     val EMPTY_CATEGORIES_ERROR: String
     val EMPTY_FAVORITES_ERROR: String

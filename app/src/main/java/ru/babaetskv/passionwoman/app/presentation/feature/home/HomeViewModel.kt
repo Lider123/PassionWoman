@@ -33,5 +33,9 @@ interface HomeViewModel : IViewModel {
             val stories: List<Story>,
             val initialStoryIndex: Int
         ) : Router()
+
+        data class NewCartItemScreen(
+            val product: Product
+        ) : Router()
     }
 }

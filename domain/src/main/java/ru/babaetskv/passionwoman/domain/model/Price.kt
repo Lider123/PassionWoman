@@ -26,6 +26,10 @@ data class Price(
 
     operator fun div(other: Price): Price = Price(value / other.value)
 
+    operator fun plus(other: Price): Price = Price(value + other.value)
+
+    operator fun times(multiplier: Int): Price = Price(value * multiplier)
+
     fun toFormattedString(withCurrency: Boolean = true): String {
         var format = "%.2f"
         if (withCurrency) {

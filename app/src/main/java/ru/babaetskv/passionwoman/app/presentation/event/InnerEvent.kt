@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.event
 
+import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
@@ -18,4 +19,12 @@ sealed class InnerEvent : Event {
     object PickCameraImage : InnerEvent()
 
     object PickGalleryImage : InnerEvent()
+
+    data class AddToCart(
+        val item: CartItem
+    ) : InnerEvent()
+
+    data class RemoveFromCart(
+        val item: CartItem
+    ) : InnerEvent()
 }

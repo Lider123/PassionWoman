@@ -7,4 +7,10 @@ import kotlinx.parcelize.Parcelize
 data class ProductSize(
     val value: String,
     val isAvailable: Boolean
-) : Parcelable
+) : Parcelable {
+
+    companion object {
+
+        val EMPTY = ProductSize("", false)
+    }
+}

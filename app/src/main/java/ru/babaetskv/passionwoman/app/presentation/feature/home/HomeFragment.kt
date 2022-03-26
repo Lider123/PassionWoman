@@ -59,6 +59,9 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
             is HomeViewModel.Router.StoriesScreen -> {
                 router.navigateTo(Screens.stories(event.stories, event.initialStoryIndex))
             }
+            is HomeViewModel.Router.NewCartItemScreen -> {
+                router.openBottomSheet(Screens.newCartItem(event.product))
+            }
         }
     }
 

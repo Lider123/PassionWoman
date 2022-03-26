@@ -3,16 +3,17 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.analytics.event.AddToCartEvent
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
-import ru.babaetskv.passionwoman.domain.model.Product
-import ru.babaetskv.passionwoman.domain.model.ProductColor
-import ru.babaetskv.passionwoman.domain.model.ProductSize
+import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
+import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.AddToFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromFavoritesUseCase
@@ -23,12 +24,13 @@ class ProductCardViewModelImpl(
     private val favoritesPreferences: FavoritesPreferences,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
+    private val addToCartUseCase: AddToCartUseCase,
     private val deeplinkGenerator: DeeplinkGenerator,
     private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductCardViewModel.Router>(dependencies), ProductCardViewModel {
     override val productLiveData = MutableLiveData<Product>()
-    override val productColorsLiveData = MutableLiveData<List<SelectableItem<ProductColor>>>()
+    override val colorsLiveData = MutableLiveData<List<SelectableItem<Color>>>()
     override val productPhotosLiveData = MutableLiveData<List<ProductImageItem>>()
     override val productSizesLiveData = MutableLiveData<List<SelectableItem<ProductSize>>>()
     override val isFavoriteLiveData = MutableLiveData<Boolean>()
@@ -50,16 +52,22 @@ class ProductCardViewModelImpl(
             ?.let { productSizesLiveData.postValue(it) }
     }
 
-    override fun onColorItemPressed(item: SelectableItem<ProductColor>) {
-        productColorsLiveData.value
+    override fun onColorItemPressed(item: SelectableItem<Color>) {
+        val selectedProductColor = productLiveData.value
+            ?.colors
+            ?.find { it.color.code == item.value.code }
+            ?: return
+
+        colorsLiveData.value
             ?.map { it.copy(isSelected = item.value == it.value) }
-            ?.let { productColorsLiveData.postValue(it) }
-        item.value.images
+            ?.let(colorsLiveData::postValue)
+
+        selectedProductColor.images
             .map(ProductImageItem::fromImage)
             .ifEmpty { listOf(ProductImageItem.EmptyPlaceholder) }
-            .let { productPhotosLiveData.postValue(it) }
-        val firstAvailableSize = item.value.sizes.firstOrNull { it.isAvailable }
-        productSizesLiveData.postValue(item.value.sizes.map {
+            .let(productPhotosLiveData::postValue)
+        val firstAvailableSize = selectedProductColor.sizes.firstOrNull { it.isAvailable }
+        productSizesLiveData.postValue(selectedProductColor.sizes.map {
             SelectableItem(it, it == firstAvailableSize)
         })
     }
@@ -82,9 +90,30 @@ class ProductCardViewModelImpl(
     }
 
     override fun onAddToCartPressed() {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendAlert()
+        val selectedColor = colorsLiveData.value
+            ?.find { it.isSelected }
+            ?.value
+            ?: return
+
+        val selectedSize = productSizesLiveData.value
+            ?.find { it.isSelected }
+            ?.value
+            ?: return
+
+        val product = productLiveData.value ?: return
+
+        val cartItem = CartItem(
+            product = product,
+            selectedSize = selectedSize,
+            selectedColor = selectedColor
+        )
+        launchWithLoading {
+            addToCartUseCase.execute(cartItem)
+            analyticsHandler.log(AddToCartEvent(product))
+            notifier.newRequest(this, R.string.add_to_cart_success)
+                .sendAlert()
+            eventHub.post(InnerEvent.AddToCart(cartItem))
+        }
     }
 
     override fun onSharePressed() {
@@ -101,8 +130,8 @@ class ProductCardViewModelImpl(
         launchWithLoading {
             val product = getProductUseCase.execute(args.productId)
             productLiveData.postValue(product)
-            productColorsLiveData.postValue(product.colors.mapIndexed { index, value ->
-                SelectableItem(value, index == 0)
+            colorsLiveData.postValue(product.colors.mapIndexed { index, value ->
+                SelectableItem(value.color, index == 0)
             })
             val firstColor = product.colors.first()
             firstColor.images

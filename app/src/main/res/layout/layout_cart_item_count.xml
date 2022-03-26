@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_extra_small"
+    android:background="@drawable/bg_card"
+    android:backgroundTint="@color/secondary"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_extra_small"
+        android:tint="@color/onSecondary"
+        android:src="@drawable/ic_minus"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:background="@color/category_shade"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/onSecondary"
+        style="@style/Typography.PassionWoman.TextAppearance.Large"
+        tools:text="42"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:background="@color/category_shade"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_extra_small"
+        android:tint="@color/onSecondary"
+        android:src="@drawable/ic_plus"/>
+</LinearLayout>
