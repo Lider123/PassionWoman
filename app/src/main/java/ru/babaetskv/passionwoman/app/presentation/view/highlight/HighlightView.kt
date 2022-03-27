@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.presentation.view.highlight
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
@@ -96,27 +97,34 @@ internal class HighlightView @JvmOverloads constructor(
         return frameShape.modifyBordersToFit(borders, this)
     }
 
-    private fun createShowAnimator(valueFrom: Float, duration: Long): ValueAnimator =
+    private inline fun createShowAnimator(
+        valueFrom: Float,
+        duration: Long,
+        crossinline doOnEnd: () -> Unit = {}
+    ): ValueAnimator =
         ValueAnimator.ofFloat(valueFrom, maxOutlineBordersMultiplier).apply {
             this.duration = duration
             interpolator = AccelerateInterpolator()
             addUpdateListener {
                 outlineBordersMultiplier = it.animatedValue as Float
                 invalidate()
+                if (outlineBordersMultiplier >= maxOutlineBordersMultiplier) {
+                    doOnEnd.invoke()
+                }
             }
         }
 
-    private fun createHideAnimator(
+    private inline fun createHideAnimator(
         valueFrom: Float,
         duration: Long,
-        doOnEnd: (() -> Unit)? = null
+        crossinline doOnEnd: () -> Unit = {}
     ): ValueAnimator = ValueAnimator.ofFloat(valueFrom, 1f).apply {
         this.duration = duration
         interpolator = DecelerateInterpolator()
         addUpdateListener {
             outlineBordersMultiplier = it.animatedValue as Float
             invalidate()
-            if (outlineBordersMultiplier == 1f) doOnEnd?.invoke()
+            if (outlineBordersMultiplier == 1f) doOnEnd.invoke()
         }
     }
 
@@ -140,13 +148,18 @@ internal class HighlightView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun attachToWindow(window: Window, animate: Boolean = true) {
+    inline fun attachToWindow(
+        window: Window,
+        animate: Boolean = true,
+        crossinline doOnShow: () -> Unit = {}
+    ) {
         with (window.decorView as ViewGroup) {
             addView(this@HighlightView)
         }
         if (!animate) {
             animator?.cancel()
             outlineBordersMultiplier = maxOutlineBordersMultiplier
+            doOnShow.invoke()
             return
         }
 
@@ -154,7 +167,7 @@ internal class HighlightView @JvmOverloads constructor(
             val reverseDuration = animator!!.currentPlayTime
             post {
                 animator?.cancel()
-                animator = createShowAnimator(outlineBordersMultiplier, reverseDuration)
+                animator = createShowAnimator(outlineBordersMultiplier, reverseDuration, doOnShow)
                 animator?.start()
             }
             return
@@ -164,7 +177,7 @@ internal class HighlightView @JvmOverloads constructor(
 
         post {
             animator?.cancel()
-            animator = createShowAnimator(1f, ANIMATION_DURATION_MILLIS)
+            animator = createShowAnimator(1f, ANIMATION_DURATION_MILLIS, doOnShow)
             animator?.start()
         }
     }
@@ -195,6 +208,7 @@ internal class HighlightView @JvmOverloads constructor(
             animator?.cancel()
             animator = createHideAnimator(maxOutlineBordersMultiplier, ANIMATION_DURATION_MILLIS) {
                 (parent as? ViewGroup)?.removeView(this@HighlightView)
+
             }
             animator?.start()
         }

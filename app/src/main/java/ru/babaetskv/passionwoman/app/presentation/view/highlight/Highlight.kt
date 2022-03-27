@@ -5,6 +5,9 @@ import android.view.Window
 import androidx.annotation.ColorInt
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.shape.Shape
 import ru.babaetskv.passionwoman.app.presentation.view.highlight.target.Target
+import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
+import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
+import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 
 class Highlight private constructor(context: Context) {
     private val view = HighlightView(context)
@@ -26,24 +29,54 @@ class Highlight private constructor(context: Context) {
         view.setOutlineColor(color)
     }
 
-    fun prepare(target: Target, window: Window) {
+    fun prepare(
+        target: Target,
+        animateShow: Boolean,
+        window: Window,
+        doOnShow: () -> Unit = {}
+    ) {
         this.window = window
         target.calculateBorders {
             view.setFrameBorders(it)
-            if (showOnReady) show()
+            if (showOnReady) {
+                if (animateShow) show(doOnShow) else showImmediately(doOnShow)
+            }
         }
     }
 
-    fun show() {
-        if (!isPrepared) throw IllegalStateException("Highlight is not prepared!")
-
-        view.attachToWindow(window!!)
+    fun prepare(stage: Stage, window: Window) {
+        prepare(stage.target, stage.animateShow, window) {
+            view.context.showAlertDialog(
+                message = stage.text,
+                actionsOrientation = DIALOG_ACTIONS_ORIENTATION_VERTICAL,
+                actions = listOf(
+                    DialogAction(
+                        text = stage.actionText,
+                        isAccent = true,
+                        callback = {
+                            it.dismiss()
+                            view.detachFromWindow(stage.animateHide)
+                        }
+                    )
+                )
+            ).also {
+                it.setOnCancelListener {
+                    if (stage.animateHide) hide() else hideImmediately()
+                }
+            }
+        }
     }
 
-    fun showImmediately() {
+    fun show(doOnShow: () -> Unit) {
         if (!isPrepared) throw IllegalStateException("Highlight is not prepared!")
 
-        view.attachToWindow(window!!, animate = false)
+        view.attachToWindow(window!!, true, doOnShow)
+    }
+
+    fun showImmediately(doOnShow: () -> Unit) {
+        if (!isPrepared) throw IllegalStateException("Highlight is not prepared!")
+
+        view.attachToWindow(window!!, false, doOnShow)
     }
 
     fun hide() {
@@ -71,4 +104,12 @@ class Highlight private constructor(context: Context) {
 
         fun build(): Highlight = highlight
     }
+
+    data class Stage(
+        val target: Target,
+        val text: String,
+        val actionText: String,
+        val animateShow: Boolean = true,
+        val animateHide: Boolean = true
+    )
 }

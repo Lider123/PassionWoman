@@ -44,7 +44,13 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
             ))
             .build()
             .run {
-                prepare(ViewTarget(binding.navView.getMenuItemView(0)), requireActivity().window)
+                prepare(Highlight.Stage(
+                    target = ViewTarget(binding.navView.getMenuItemView(0)),
+                    text = "Text",
+                    actionText = "OK",
+                    animateShow = true,
+                    animateHide = false
+                ), requireActivity().window)
                 showOnReady = true
             }
     }
