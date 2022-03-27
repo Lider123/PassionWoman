@@ -18,6 +18,7 @@ import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.utils.view.OnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Image
@@ -109,5 +110,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     attachToRoot: Boolean = false
 ) = bindingInflater.invoke(LayoutInflater.from(this.context), this, attachToRoot)
 
-fun ViewGroup.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false) =
+fun ViewGroup.inflateLayout(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View =
     LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+
+fun BottomNavigationView.getMenuItemView(index: Int): View =
+    findViewById(menu.getItem(index).itemId)

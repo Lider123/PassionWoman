@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.utils.dialog
 
+import android.content.Context
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.StringRes
@@ -18,15 +19,21 @@ fun Fragment.showAlertDialog(
     @StringRes messageRes: Int,
     actionsOrientation: Int = DIALOG_ACTIONS_ORIENTATION_HORIZONTAL,
     actions: List<DialogAction> = emptyList()
+) : AlertDialog = requireContext().showAlertDialog(messageRes, actionsOrientation, actions)
+
+fun Context.showAlertDialog(
+    @StringRes messageRes: Int,
+    actionsOrientation: Int = DIALOG_ACTIONS_ORIENTATION_HORIZONTAL,
+    actions: List<DialogAction> = emptyList()
 ): AlertDialog = showAlertDialog(getString(messageRes), actionsOrientation, actions)
 
-fun Fragment.showAlertDialog(
+fun Context.showAlertDialog(
     message: String,
     actionsOrientation: Int = DIALOG_ACTIONS_ORIENTATION_HORIZONTAL,
     actions: List<DialogAction> = emptyList()
 ): AlertDialog {
     lateinit var dialog: AlertDialog
-    val dialogView = View.inflate(requireContext(), R.layout.layout_dialog, null)
+    val dialogView = View.inflate(this, R.layout.layout_dialog, null)
     val dialogViewBinding = LayoutDialogBinding.bind(dialogView)
     val buttonLayoutParams = when (actionsOrientation) {
         DIALOG_ACTIONS_ORIENTATION_HORIZONTAL -> LinearLayout.LayoutParams(
@@ -51,7 +58,7 @@ fun Fragment.showAlertDialog(
             val buttonStyleAttr = if (action.isAccent) {
                 R.attr.coloredButtonStyle
             } else R.attr.outlineButtonStyle
-            val button = MaterialButton(requireContext(), null, buttonStyleAttr).apply {
+            val button = MaterialButton(this@showAlertDialog, null, buttonStyleAttr).apply {
                 layoutParams = buttonLayoutParams
                 text = action.text
                 setOnSingleClickListener {
@@ -61,7 +68,7 @@ fun Fragment.showAlertDialog(
             layoutActions.addView(button)
         }
     }
-    dialog = AlertDialog.Builder(requireContext())
+    dialog = AlertDialog.Builder(this)
         .setView(dialogView)
         .create()
         .apply {
