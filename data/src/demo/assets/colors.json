@@ -45,6 +45,16 @@
     "hex": "#ff69b4"
   },
   {
+    "code": "pink",
+    "uiName": "pink",
+    "hex": "#FFC0CB"
+  },
+  {
+    "code": "brown",
+    "uiName": "brown",
+    "hex": "#966919"
+  },
+  {
     "code": "multicolor",
     "uiName": "multicolor",
     "hex": "multicolor"

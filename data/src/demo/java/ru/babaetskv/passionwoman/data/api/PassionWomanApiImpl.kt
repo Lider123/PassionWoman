@@ -82,7 +82,6 @@ class PassionWomanApiImpl(
             }
             val availableFilters = mutableListOf<JSONObject>().apply {
                 addAll(loadArrayOfJsonFromAsset("filters_common.json"))
-                addAll(CategoryProducts.values().mapNotNull { it.filtersFileName }.flatMap { loadArrayOfJsonFromAsset(it) })
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
             return@withContext products.let { result ->
@@ -243,19 +242,18 @@ class PassionWomanApiImpl(
 
     private enum class CategoryProducts(
         val categoryId: String,
-        val productsFileName: String,
-        val filtersFileName: String?
+        val productsFileName: String
     ) {
-        BRA("category_bra", "products_bra.json", null),
-        PANTIES("category_panties", "products_panties.json", "filters_panties.json"),
-        LINGERIE("category_lingerie", "products_lingerie.json", null),
-        EROTIC("category_erotic", "products_erotic.json", null),
-        SWIM("category_swim", "products_swim.json", null),
-        CORSET("category_corsets", "products_corset.json", null),
-        GARTERBELT("category_garter_belts", "products_garter_belts.json", null),
-        BABYDOLL("category_babydolls", "products_babydoll.json", null),
-        STOCKINGS("category_stockings", "products_stockings.json", null),
-        PANTYHOSE("category_pantyhose", "products_pantyhose.json", null);
+        BRA("category_bra", "products_bra.json"),
+        PANTIES("category_panties", "products_panties.json"),
+        LINGERIE("category_lingerie", "products_lingerie.json"),
+        EROTIC("category_erotic", "products_erotic.json"),
+        SWIM("category_swim", "products_swim.json"),
+        CORSET("category_corsets", "products_corset.json"),
+        GARTERBELT("category_garter_belts", "products_garter_belts.json"),
+        BABYDOLL("category_babydolls", "products_babydoll.json"),
+        STOCKINGS("category_stockings", "products_stockings.json"),
+        PANTYHOSE("category_pantyhose", "products_pantyhose.json");
 
         companion object {
 

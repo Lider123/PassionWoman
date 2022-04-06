@@ -15,6 +15,7 @@ data class Product(
     val priceWithDiscount: Price,
     val rating: Float,
     val brand: Brand?,
+    val additionalInfo: Map<String, List<String>>, // TODO: set UI names
     val colors: List<ProductColor>
 ) : Parcelable {
     val discountRate: Float

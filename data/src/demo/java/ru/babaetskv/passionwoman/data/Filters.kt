@@ -69,6 +69,38 @@ internal class Filters(
 
         abstract fun selectAvailable(products: List<ProductModel>): JSONObject?
 
+        abstract class AdditionalInfoFilter(filterObject: JSONObject) : Filter(filterObject) {
+            abstract val resolver: FilterResolver
+
+            override fun matches(product: ProductModel): Boolean {
+                val values = JSONArray(filterObject.getString(PARAM_VALUES)).asListOfValues()
+                return values.isEmpty() || matchesAdditionalInfo(product)
+            }
+
+            override fun selectAvailable(products: List<ProductModel>): JSONObject? {
+                val availableCodes: List<String> = products.flatMap {
+                    it.additionalInfo?.get(resolver.code).orEmpty()
+                }.distinct()
+                val values = filterObject.getJSONArray(PARAM_VALUES)
+                val newValues = JSONArray()
+                for (i in 0 until values.length()) {
+                    val value = values.getJSONObject(i)
+                    if (value.getString(PARAM_CODE) in availableCodes) newValues.put(value)
+                }
+                return if (newValues.length() == 0) null else {
+                    filterObject.put(PARAM_VALUES, newValues)
+                }
+            }
+
+            private fun matchesAdditionalInfo(product: ProductModel): Boolean {
+                val values = JSONArray(filterObject.getString(PARAM_VALUES)).asListOfValues()
+                return product.additionalInfo?.get(resolver.code)
+                    ?.intersect(values.toSet())
+                    .isNullOrEmpty()
+                    .not()
+            }
+        }
+
         class Categories(filterObject: JSONObject) : Filter(filterObject) {
 
             override fun matches(product: ProductModel): Boolean {
@@ -177,29 +209,32 @@ internal class Filters(
             }
         }
 
-        class Model(filterObject: JSONObject) : Filter(filterObject) {
+        class Model(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.MODEL
+        }
 
-            override fun matches(product: ProductModel): Boolean {
-                val values = JSONArray(filterObject.getString(PARAM_VALUES)).asListOfValues()
-                return values.isEmpty() || product.model in values
-            }
+        class Season(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.SEASON
+        }
 
-            override fun selectAvailable(products: List<ProductModel>): JSONObject? {
-                val availableCodes: List<String> = products.mapNotNull { it.model }.distinct()
-                val values = filterObject.getJSONArray(PARAM_VALUES)
-                val newValues = JSONArray()
-                for (i in 0 until values.length()) {
-                    val value = values.getJSONObject(i)
-                    if (value.getString(PARAM_CODE) in availableCodes) newValues.put(value)
-                }
-                return if (newValues.length() == 0) null else {
-                    filterObject.put(PARAM_VALUES, newValues)
-                }
-            }
+        class Material(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.MATERIAL
+        }
+
+        class Style(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.STYLE
+        }
+
+        class Country(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.COUNTRY
+        }
+
+        class Type(filterObject: JSONObject) : AdditionalInfoFilter(filterObject) {
+            override val resolver: FilterResolver = FilterResolver.TYPE
         }
 
         private enum class FilterResolver(
-            private val code: String,
+            val code: String,
             val resolve: (JSONObject) -> Filter?
         ) {
             CATEGORY("category", ::Categories),
@@ -207,6 +242,11 @@ internal class Filters(
             SIZES("sizes", ::Sizes),
             PRICE("price", ::Price),
             COLOR("color", ::Color),
+            SEASON("season", ::Season),
+            MATERIAL("material", ::Material),
+            STYLE("style", ::Style),
+            COUNTRY("country", ::Country),
+            TYPE("type", ::Type),
             MODEL("model", ::Model);
 
             companion object {
