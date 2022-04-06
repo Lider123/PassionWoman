@@ -15,6 +15,7 @@ sealed class Filter(
     abstract val code: String
     abstract val uiName: String
     abstract val isSelected: Boolean
+    abstract val priority: Int
 
     abstract fun toJsonObject(): JSONObject?
     abstract fun clear(): Filter
@@ -27,6 +28,7 @@ sealed class Filter(
     open class Multi(
         override val code: String,
         override val uiName: String,
+        override val priority: Int,
         val values: List<SelectableItem<FilterValue>>,
     ) : Filter(Type.MULTI) {
         override val isSelected: Boolean
@@ -45,6 +47,7 @@ sealed class Filter(
             Multi(
                 code = code,
                 uiName = uiName,
+                priority = priority,
                 values = values.map {
                     it.copy(
                         isSelected = false
@@ -58,6 +61,7 @@ sealed class Filter(
                 Multi(
                     code = json.getString(PARAM_CODE),
                     uiName = json.getString(PARAM_UI_NAME),
+                    priority = json.optInt(PARAM_PRIORITY, DEFAULT_PRIORITY),
                     values = json.getJSONArray(PARAM_VALUES).let {
                         val values = mutableListOf<FilterValue>()
                         for (i in 0 until it.length()) {
@@ -78,6 +82,7 @@ sealed class Filter(
     open class Range(
         override val code: String,
         override val uiName: String,
+        override val priority: Int,
         val min: Price,
         val max: Price,
         val selectedMin: Price,
@@ -98,6 +103,7 @@ sealed class Filter(
             Range(
                 code = code,
                 uiName = uiName,
+                priority = priority,
                 min = min,
                 max = max,
                 selectedMin = min,
@@ -112,6 +118,7 @@ sealed class Filter(
                 Range(
                     code = json.getString(PARAM_CODE),
                     uiName = json.getString(PARAM_UI_NAME),
+                    priority = json.optInt(PARAM_PRIORITY, DEFAULT_PRIORITY),
                     min = Price(minValue),
                     max = Price(maxValue),
                     selectedMin = Price(minValue),
@@ -127,6 +134,7 @@ sealed class Filter(
     open class Bool(
         override val code: String,
         override val uiName: String,
+        override val priority: Int,
         var value: Boolean
     ) : Filter(Type.BOOLEAN) {
         override val isSelected: Boolean
@@ -140,6 +148,7 @@ sealed class Filter(
             Bool(
                 code = code,
                 uiName = uiName,
+                priority = priority,
                 value = false
             )
 
@@ -149,6 +158,7 @@ sealed class Filter(
                 Bool(
                     code = json.getString(PARAM_CODE),
                     uiName = json.getString(PARAM_UI_NAME),
+                    priority = json.optInt(PARAM_PRIORITY, DEFAULT_PRIORITY),
                     value = false
                 )
             } catch (e: JSONException) {
@@ -161,6 +171,7 @@ sealed class Filter(
     open class ColorMulti(
         override val code: String,
         override val uiName: String,
+        override val priority: Int,
         val values: List<SelectableItem<Color>>,
     ) : Filter(Type.COLOR) {
         override val isSelected: Boolean
@@ -179,6 +190,7 @@ sealed class Filter(
             ColorMulti(
                 code = code,
                 uiName = uiName,
+                priority = priority,
                 values = values.map {
                     it.copy(
                         isSelected = false
@@ -191,6 +203,7 @@ sealed class Filter(
                 ColorMulti(
                     code = json.getString(PARAM_CODE),
                     uiName = json.getString(PARAM_UI_NAME),
+                    priority = json.optInt(PARAM_PRIORITY, DEFAULT_PRIORITY),
                     values = json.getJSONArray(PARAM_VALUES).let {
                         val values = mutableListOf<Color>()
                         for (i in 0 until it.length()) {
@@ -210,7 +223,7 @@ sealed class Filter(
     class DiscountOnly(
         stringProvider: StringProvider,
         value: Boolean = false
-    ) : Bool(CODE_DISCOUNT_ONLY, stringProvider.FILTER_DISCOUNT, value)
+    ) : Bool(CODE_DISCOUNT_ONLY, stringProvider.FILTER_DISCOUNT, 0, value)
 
     enum class Type(
         private val apiName: String,
@@ -229,6 +242,7 @@ sealed class Filter(
 
     companion object {
         const val PARAM_CODE = "code"
+        const val PARAM_PRIORITY = "priority"
         const val PARAM_VALUES = "values"
         const val PARAM_VALUE = "value"
         const val PARAM_UI_NAME = "uiName"
@@ -237,6 +251,7 @@ sealed class Filter(
         const val PARAM_TYPE = "type"
         const val PARAM_HEX = "hex"
         const val CODE_DISCOUNT_ONLY = "discount_only"
+        const val DEFAULT_PRIORITY = 1
 
         fun fromJson(json: JSONObject): Filter? = try {
             Type.getValueByApiName(json.getString(PARAM_TYPE))?.resolver?.invoke(json)

@@ -3,6 +3,7 @@
     "type": "multi",
     "code": "categories",
     "uiName": "Categories",
+    "priority": 5,
     "values": [
       {
         "code": "category_bra",
@@ -50,6 +51,7 @@
     "type": "multi",
     "code": "season",
     "uiName": "Season",
+    "priority": 4,
     "values": [
       {
         "code": "all_season",
@@ -61,6 +63,7 @@
     "type": "multi",
     "code": "style",
     "uiName": "Style",
+    "priority": 4,
     "values": [
       {
         "code": "casual",
@@ -84,6 +87,7 @@
     "type": "multi",
     "code": "country",
     "uiName": "Country",
+    "priority": 4,
     "values": [
       {
         "code": "china",
@@ -103,6 +107,7 @@
     "type": "multi",
     "code": "material",
     "uiName": "Material",
+    "priority": 4,
     "values": [
       {
         "code": "microfiber",
@@ -122,6 +127,7 @@
     "type": "multi",
     "code": "brands",
     "uiName": "Brands",
+    "priority": 4,
     "values": [
       {
         "code": "brand_12",
@@ -197,6 +203,7 @@
     "type": "multi",
     "code": "sizes",
     "uiName": "Sizes",
+    "priority": 4,
     "values": [
       {
         "code": "XS",
@@ -392,6 +399,7 @@
     "type": "range",
     "code": "price",
     "uiName": "Price",
+    "priority": 2,
     "minValue": 0.0,
     "maxValue": 200.0
   },
@@ -399,6 +407,7 @@
     "type": "color",
     "code": "color",
     "uiName": "Color",
+    "priority": 3,
     "values": [
       {
         "code": "white",
@@ -466,6 +475,7 @@
     "type": "multi",
     "code": "model",
     "uiName": "Model",
+    "priority": 4,
     "values": [
       {
         "code": "balconette",
@@ -493,6 +503,7 @@
     "type": "multi",
     "code": "type",
     "uiName": "Type",
+    "priority": 4,
     "values": [
       {
         "code": "bra",
