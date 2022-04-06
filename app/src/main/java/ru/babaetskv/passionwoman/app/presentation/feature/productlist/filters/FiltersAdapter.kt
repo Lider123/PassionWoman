@@ -98,6 +98,7 @@ class FiltersAdapter(
                 Filter.ColorMulti(
                     code = filter.code,
                     uiName = filter.uiName,
+                    priority = filter.priority,
                     values = newValues
                 ).let(onFilterChanged)
             }
@@ -116,6 +117,7 @@ class FiltersAdapter(
                         Filter.Range(
                             code = it.code,
                             uiName = it.uiName,
+                            priority = it.priority,
                             min = it.min,
                             max = it.max,
                             selectedMin = Price(selectedMin),
@@ -172,6 +174,7 @@ class FiltersAdapter(
                 Filter.Multi(
                     code = filter.code,
                     uiName = filter.uiName,
+                    priority = filter.priority,
                     values = newValues
                 ).let(onFilterChanged)
             }

@@ -51,7 +51,7 @@ class FiltersFragment :
     }
 
     private fun populateFilters(filters: List<Filter>) {
-        adapter.submitList(filters)
+        adapter.submitList(filters.sortedByDescending(Filter::priority))
     }
 
     private fun populateProductsCount(count: Int) {

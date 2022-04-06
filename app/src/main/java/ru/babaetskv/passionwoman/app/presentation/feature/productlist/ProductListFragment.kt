@@ -123,7 +123,6 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
     private suspend fun populateProducts(products: PagingData<Product>) {
         // TODO: fix animations on data submit
         productsAdapter.submitData(products)
-        binding.rvProducts.isVisible = productsAdapter.itemCount > 0
     }
 
     @Parcelize
