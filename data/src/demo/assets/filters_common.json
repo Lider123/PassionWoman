@@ -48,6 +48,78 @@
   },
   {
     "type": "multi",
+    "code": "season",
+    "uiName": "Season",
+    "values": [
+      {
+        "code": "all_season",
+        "uiName": "all season"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "style",
+    "uiName": "Style",
+    "values": [
+      {
+        "code": "casual",
+        "uiName": "casual"
+      },
+      {
+        "code": "party",
+        "uiName": "party"
+      },
+      {
+        "code": "cocktail",
+        "uiName": "cocktail"
+      },
+      {
+        "code": "classic",
+        "uiName": "classic"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "country",
+    "uiName": "Country",
+    "values": [
+      {
+        "code": "china",
+        "uiName": "China"
+      },
+      {
+        "code": "italy",
+        "uiName": "Italy"
+      },
+      {
+        "code": "belarus",
+        "uiName": "Belarus"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "material",
+    "uiName": "Material",
+    "values": [
+      {
+        "code": "microfiber",
+        "uiName": "microfiber"
+      },
+      {
+        "code": "net",
+        "uiName": "net"
+      },
+      {
+        "code": "lace",
+        "uiName": "lace"
+      }
+    ]
+  },
+  {
+    "type": "multi",
     "code": "brands",
     "uiName": "Brands",
     "values": [
@@ -108,6 +180,14 @@
         "uiName": "Victoria's Secret"
       },
       {
+        "code": "brand_16",
+        "uiName": "Luce Del Sole"
+      },
+      {
+        "code": "brand_17",
+        "uiName": "Aveline"
+      },
+      {
         "code": "brand_11",
         "uiName": "Vis-A-Vis"
       }
@@ -147,8 +227,56 @@
         "uiName": "XXXL"
       },
       {
+        "code": "65B",
+        "uiName": "65B"
+      },
+      {
+        "code": "70A",
+        "uiName": "70A"
+      },
+      {
+        "code": "70B",
+        "uiName": "70B"
+      },
+      {
+        "code": "70C",
+        "uiName": "70C"
+      },
+      {
+        "code": "70D",
+        "uiName": "70D"
+      },
+      {
+        "code": "75A",
+        "uiName": "75A"
+      },
+      {
+        "code": "75B",
+        "uiName": "75B"
+      },
+      {
+        "code": "75C",
+        "uiName": "75C"
+      },
+      {
+        "code": "75D",
+        "uiName": "75D"
+      },
+      {
         "code": "80",
         "uiName": "80"
+      },
+      {
+        "code": "80A",
+        "uiName": "80A"
+      },
+      {
+        "code": "80B",
+        "uiName": "80B"
+      },
+      {
+        "code": "80C",
+        "uiName": "80C"
       },
       {
         "code": "82",
@@ -157,6 +285,22 @@
       {
         "code": "84",
         "uiName": "84"
+      },
+      {
+        "code": "85A",
+        "uiName": "85A"
+      },
+      {
+        "code": "85B",
+        "uiName": "85B"
+      },
+      {
+        "code": "85C",
+        "uiName": "85C"
+      },
+      {
+        "code": "85D",
+        "uiName": "85D"
       },
       {
         "code": "86",
@@ -171,12 +315,28 @@
         "uiName": "90"
       },
       {
+        "code": "90B",
+        "uiName": "90B"
+      },
+      {
+        "code": "90C",
+        "uiName": "90C"
+      },
+      {
         "code": "92",
         "uiName": "92"
       },
       {
         "code": "94",
         "uiName": "94"
+      },
+      {
+        "code": "95B",
+        "uiName": "95B"
+      },
+      {
+        "code": "95C",
+        "uiName": "95C"
       },
       {
         "code": "96",
@@ -191,12 +351,28 @@
         "uiName": "100"
       },
       {
+        "code": "100B",
+        "uiName": "100B"
+      },
+      {
+        "code": "100C",
+        "uiName": "100C"
+      },
+      {
         "code": "102",
         "uiName": "102"
       },
       {
         "code": "104",
         "uiName": "104"
+      },
+      {
+        "code": "105B",
+        "uiName": "105B"
+      },
+      {
+        "code": "105C",
+        "uiName": "105C"
       },
       {
         "code": "106",
@@ -209,46 +385,6 @@
       {
         "code": "110",
         "uiName": "110"
-      },
-      {
-        "code": "85B",
-        "uiName": "85B"
-      },
-      {
-        "code": "85C",
-        "uiName": "85C"
-      },
-      {
-        "code": "90B",
-        "uiName": "90B"
-      },
-      {
-        "code": "90C",
-        "uiName": "90C"
-      },
-      {
-        "code": "95B",
-        "uiName": "95B"
-      },
-      {
-        "code": "95C",
-        "uiName": "95C"
-      },
-      {
-        "code": "100B",
-        "uiName": "100B"
-      },
-      {
-        "code": "100C",
-        "uiName": "100C"
-      },
-      {
-        "code": "105B",
-        "uiName": "105B"
-      },
-      {
-        "code": "105C",
-        "uiName": "105C"
       }
     ]
   },
@@ -310,9 +446,61 @@
         "hex": "#ff69b4"
       },
       {
+        "code": "pink",
+        "uiName": "pink",
+        "hex": "#FFC0CB"
+      },
+      {
+        "code": "brown",
+        "uiName": "brown",
+        "hex": "#966919"
+      },
+      {
         "code": "multicolor",
         "uiName": "multicolor",
         "hex": "multicolor"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "model",
+    "uiName": "Model",
+    "values": [
+      {
+        "code": "balconette",
+        "uiName": "balconette"
+      },
+      {
+        "code": "push-up",
+        "uiName": "push-up"
+      },
+      {
+        "code": "thong",
+        "uiName": "thong"
+      },
+      {
+        "code": "brazilian",
+        "uiName": "brazilian"
+      },
+      {
+        "code": "slip",
+        "uiName": "slip"
+      }
+    ]
+  },
+  {
+    "type": "multi",
+    "code": "type",
+    "uiName": "Type",
+    "values": [
+      {
+        "code": "bra",
+        "uiName": "bra"
+      },
+      {
+        "code": "bustier",
+        "uiName": "bustier"
       }
     ]
   }

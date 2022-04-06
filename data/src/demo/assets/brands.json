@@ -73,5 +73,15 @@
     "id": "brand_15",
     "logo": "file:///android_asset/image/brand_15.png",
     "name": "Infinity lingerie"
+  },
+  {
+    "id": "brand_16",
+    "logo": "file:///android_asset/image/brand_16.jpg",
+    "name": "Luce Del Sole"
+  },
+  {
+    "id": "brand_17",
+    "logo": "file:///android_asset/image/brand_17.webp",
+    "name": "Aveline"
   }
 ]

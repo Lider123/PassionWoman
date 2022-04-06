@@ -18,7 +18,7 @@ data class ProductModel(
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
     @Json(name = "rating") val rating: Float,
     @Json(name = "brand") val brand: BrandModel?,
-    @Json(name = "model") val model: String?,
+    @Json(name = "additional_info") val additionalInfo: Map<String, List<String>>?,
     @Json(name = "colors") val colors: List<ProductColorModel>
 ) : Transformable<Unit, Product> {
 
@@ -33,6 +33,7 @@ data class ProductModel(
             priceWithDiscount = Price(priceWithDiscount),
             rating = rating,
             brand = brand?.transform(),
+            additionalInfo = additionalInfo.orEmpty(),
             colors = colors.transformList()
         )
 }
