@@ -80,6 +80,22 @@
       {
         "code": "classic",
         "uiName": "classic"
+      },
+      {
+        "code": "evening",
+        "uiName": "evening"
+      },
+      {
+        "code": "vintage",
+        "uiName": "vintage"
+      },
+      {
+        "code": "gift",
+        "uiName": "gift"
+      },
+      {
+        "code": "wedding",
+        "uiName": "wedding"
       }
     ]
   },
@@ -96,6 +112,10 @@
       {
         "code": "italy",
         "uiName": "Italy"
+      },
+      {
+        "code": "hungary",
+        "uiName": "Hungary"
       },
       {
         "code": "belarus",
@@ -116,6 +136,18 @@
       {
         "code": "net",
         "uiName": "net"
+      },
+      {
+        "code": "polyester",
+        "uiName": "polyester"
+      },
+      {
+        "code": "spandex",
+        "uiName": "spandex"
+      },
+      {
+        "code": "nylon",
+        "uiName": "nylon"
       },
       {
         "code": "lace",
@@ -192,6 +224,18 @@
       {
         "code": "brand_17",
         "uiName": "Aveline"
+      },
+      {
+        "code": "brand_18",
+        "uiName": "ORIGINAL SIN"
+      },
+      {
+        "code": "brand_19",
+        "uiName": "VITORICCI"
+      },
+      {
+        "code": "brand_20",
+        "uiName": "Moor Moor"
       },
       {
         "code": "brand_11",
@@ -508,6 +552,10 @@
       {
         "code": "bra",
         "uiName": "bra"
+      },
+      {
+        "code": "underwear_set",
+        "uiName": "underwear set"
       },
       {
         "code": "bustier",
