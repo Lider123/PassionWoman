@@ -50,7 +50,11 @@ abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<View>(R.id.contentInsetsView)?.setInsetsListener(applyTopInset, applyBottomInset)
+        view.findViewById<View>(R.id.contentInsetsView)
+            ?.setInsetsListener(
+                top = applyTopInset,
+                bottom = applyBottomInset
+            )
         initViews()
         initObservers()
     }
