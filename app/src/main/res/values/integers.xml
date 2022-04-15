@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="categories_list_span_count">1</integer>
+    <integer name="categories_list_orientation">1</integer>
+</resources>
