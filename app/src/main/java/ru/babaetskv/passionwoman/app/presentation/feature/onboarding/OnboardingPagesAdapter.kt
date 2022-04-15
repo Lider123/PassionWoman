@@ -14,12 +14,15 @@ import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
-class OnboardingPagesAdapter(
-    private val insets: WindowInsets?
-) : BaseAdapter<OnboardingPage>(EqualDiffUtilCallback()) {
+class OnboardingPagesAdapter : BaseAdapter<OnboardingPage>(EqualDiffUtilCallback()) {
+    private var insets: WindowInsets? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<OnboardingPage> =
         ViewHolder(parent.inflateLayout(R.layout.view_item_onboarding_page))
+
+    fun setWindowInsets(insets: WindowInsets?) {
+        this.insets = insets
+    }
 
     inner class ViewHolder(v: View) : BaseViewHolder<OnboardingPage>(v) {
         private val binding = ViewItemOnboardingPageBinding.bind(v)
@@ -27,7 +30,7 @@ class OnboardingPagesAdapter(
         init {
             binding.contentInsetsView.run {
                 setInsetsListener()
-                onApplyWindowInsets(insets)
+                insets?.let(::onApplyWindowInsets)
             }
         }
 

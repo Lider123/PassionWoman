@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent=".5">
+        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/countryCodePicker"
