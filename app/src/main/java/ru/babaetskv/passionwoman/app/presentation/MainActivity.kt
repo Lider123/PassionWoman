@@ -4,8 +4,11 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +27,9 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private val router: AppRouter by inject()
     private val currentFragment: ViewComponent<*, *>?
         get() = supportFragmentManager.findFragmentById(R.id.container) as? ViewComponent<*, *>
-    private val navigator = MainAppNavigator(this, R.id.container)
+    private val navigator: AppNavigator by lazy {
+        MainAppNavigator(this, R.id.container)
+    }
     private val snackbarFactory: AlertSnackbarFactory by lazy {
         AlertSnackbarFactory(this, componentView, ::onSnackbarVisibilityChanged)
     }
@@ -36,6 +41,7 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
             return rectangle.top
         }
     private val alertMessageQueue: Queue<AlertMessage> = LinkedList()
+    private var savedFragments = mutableListOf<Fragment>()
 
     override val contentViewRes: Int = R.layout.activity_main
     override val viewModel: MainViewModel by viewModel()
@@ -48,7 +54,27 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
         }
 
         super.onCreate(savedInstanceState)
-        viewModel.handleIntent(intent, true)
+        savedInstanceState ?: run {
+            viewModel.handleIntent(intent, true)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        savedFragments.clear()
+        savedFragments.addAll(supportFragmentManager.fragments)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        supportFragmentManager.beginTransaction()
+            .apply {
+                savedFragments.forEach {
+                    add(it, null)
+                }
+            }
+            .commit()
+        savedFragments.clear()
     }
 
     override fun onResumeFragments() {
