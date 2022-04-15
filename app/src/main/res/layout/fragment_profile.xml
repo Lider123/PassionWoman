@@ -31,7 +31,8 @@
                 android:layoutAnimation="@anim/layout_fade_in"
                 android:overScrollMode="never"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="@integer/profile_menu_item_list_span_count"
                 tools:itemCount="3"
                 tools:listitem="@layout/view_item_profile_menu"/>
 
