@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/margin_default"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:theme="@style/Theme.PassionWoman">
 
     <View
         android:id="@+id/vBottomSheetContainerDivider"
@@ -41,14 +42,23 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/view_item_sorting"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnApplySorting"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_marginHorizontal="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:text="@string/sorting_apply"
-            style="?attr/coloredButtonStyle"/>
+            android:layout_height="wrap_content">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApplySorting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:layout_marginHorizontal="@dimen/margin_default"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:text="@string/sorting_apply"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
+                style="?attr/coloredButtonStyle"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>
