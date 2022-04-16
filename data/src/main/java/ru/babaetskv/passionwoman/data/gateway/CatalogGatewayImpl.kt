@@ -34,8 +34,8 @@ class CatalogGatewayImpl(
     override suspend fun getPromotions(): List<Transformable<Unit, Promotion>> =
         api.getPromotions()
 
-    override suspend fun getPopularBrands(): List<Transformable<Unit, Brand>> =
-        api.getPopularBrands()
+    override suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>> =
+        api.getPopularBrands(count)
 
     override suspend fun getFavorites(
         favoriteIds: Collection<String>

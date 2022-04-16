@@ -132,7 +132,7 @@ val interactorModule = module {
     factory<UpdateProfileUseCase> { UpdateProfileInteractor(get(), get(), get()) }
     factory<LogOutUseCase> { LogOutInteractor(get(), get(), get()) }
     factory<UpdateAvatarUseCase> { UpdateAvatarInteractor(get(), get()) }
-    factory<GetHomeDataUseCase> { GetHomeDataInteractor(get(), get()) }
+    factory<GetHomeDataUseCase> { GetHomeDataInteractor(get(), get(), get()) }
     factory<GetFavoritesUseCase> { GetFavoritesInteractor(get(), get(), get()) }
     factory<GetProductUseCase> { GetProductInteractor(get(), get()) }
     factory<AddToFavoritesUseCase> { AddToFavoritesInteractor(get(), get()) }

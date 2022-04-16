@@ -20,7 +20,7 @@ interface CatalogGateway {
 
     suspend fun getPromotions(): List<Transformable<Unit, Promotion>>
 
-    suspend fun getPopularBrands(): List<Transformable<Unit, Brand>>
+    suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>>
 
     suspend fun getFavorites(favoriteIds: Collection<String>): List<Transformable<Unit, Product>>
 

@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.*
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.PagedProductsAdapter
 import ru.babaetskv.passionwoman.app.utils.dimen
+import ru.babaetskv.passionwoman.app.utils.integer
 import ru.babaetskv.passionwoman.app.utils.view.LinearLayoutPagerManager
 import ru.babaetskv.passionwoman.domain.model.Brand
 import ru.babaetskv.passionwoman.domain.model.Product
@@ -66,7 +67,7 @@ fun storiesHomeItemDelegate(onStoryClickListener: (item: Story) -> Unit) =
                 context,
                 RecyclerView.HORIZONTAL,
                 false,
-                3,
+                integer(R.integer.stories_items_per_page),
                 dimen(R.dimen.margin_default)
             )
             adapter = StoriesAdapter(onStoryClickListener)
@@ -92,7 +93,7 @@ fun LifecycleOwner.productsHomeItemDelegate(
                 context,
                 RecyclerView.HORIZONTAL,
                 false,
-                2,
+                integer(R.integer.products_items_per_page),
                 dimen(R.dimen.margin_default)
             )
             adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed)

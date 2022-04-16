@@ -4,25 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/margin_small">
+    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/layoutPromotionsWrapper"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpPromotions"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_small"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="7:5">
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vpPromotions"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:background="@tools:sample/backgrounds/scenic" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintDimensionRatio="7:5"
+        tools:background="@tools:sample/backgrounds/scenic" />
 
     <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/pageIndicatorPromotions"
@@ -38,7 +31,7 @@
         app:ci_height="8dp"
         app:ci_width="8dp"
         app:ci_margin="@dimen/margin_extra_small"
-        app:layout_constraintBottom_toBottomOf="@id/layoutPromotionsWrapper"
+        app:layout_constraintBottom_toBottomOf="@id/vpPromotions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
