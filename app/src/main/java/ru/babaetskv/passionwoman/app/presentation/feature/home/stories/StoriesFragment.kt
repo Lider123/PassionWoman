@@ -1,5 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home.stories
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
+import android.os.Bundle
 import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
 import androidx.viewpager2.widget.ViewPager2
@@ -24,6 +27,7 @@ class StoriesFragment :
             onNextStoryClickListener = viewModel::onNextStoryPressed
         )
     }
+    private var parentOrientationFlag: Int? = null
 
     override val layoutRes: Int
         get() = R.layout.fragment_stories
@@ -31,6 +35,18 @@ class StoriesFragment :
         get() = ScreenKeys.STORIES
     override val viewModel: StoriesViewModel by viewModel<StoriesViewModelImpl> {
         parametersOf(args)
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        parentOrientationFlag = requireActivity().requestedOrientation
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    override fun onStop() {
+        parentOrientationFlag?.let(requireActivity()::setRequestedOrientation)
+        super.onStop()
     }
 
     override fun initViews() {
