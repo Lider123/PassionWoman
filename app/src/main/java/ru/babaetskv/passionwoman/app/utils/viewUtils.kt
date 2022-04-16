@@ -93,6 +93,7 @@ fun ImageView.load(image: Image, @DrawableRes placeholder: Int, resizeAsItem: Bo
         .into(this)
 }
 
+// TODO: fix insets for landscape mode
 fun View.setInsetsListener(
     top: Boolean = true,
     left: Boolean = true,
