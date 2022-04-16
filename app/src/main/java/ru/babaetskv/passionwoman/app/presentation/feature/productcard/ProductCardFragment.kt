@@ -39,17 +39,23 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
         parametersOf(args)
     }
     override val screenName: String = ScreenKeys.PRODUCT_CARD
+    override val applyTopInset: Boolean
+        get() = args.isSeparate
+    override val applyBottomInset: Boolean
+        get() = args.isSeparate
 
     override fun initViews() {
         super.initViews()
         binding.run {
             toolbar.run {
-                setStartActions(
-                    ToolbarView.Action(
-                        iconRes = R.drawable.ic_back,
-                        onClick = viewModel::onBackPressed
+                if (args.isSeparate) {
+                    setStartActions(
+                        ToolbarView.Action(
+                            iconRes = R.drawable.ic_back,
+                            onClick = viewModel::onBackPressed
+                        )
                     )
-                )
+                }
                 this@ProductCardFragment.setEndActions()
             }
             vpPhotos.run {
@@ -163,11 +169,15 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
 
     @Parcelize
     data class Args(
-        val productId: String
+        val productId: String,
+        val isSeparate: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(productId: String) = ProductCardFragment().withArgs(Args(productId))
+        fun create(
+            productId: String,
+            isSeparate: Boolean = true
+        ) = ProductCardFragment().withArgs(Args(productId, isSeparate))
     }
 }

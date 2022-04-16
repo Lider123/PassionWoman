@@ -19,6 +19,10 @@ fun Context.integer(@IntegerRes intRes: Int) = resources.getInteger(intRes)
 
 fun View.integer(@IntegerRes intRes: Int) = context.integer(intRes)
 
+fun Context.bool(@BoolRes boolRes: Int) = resources.getBoolean(boolRes)
+
+fun View.bool(@BoolRes boolRes: Int) = context.integer(boolRes)
+
 fun Context.dimen(@DimenRes dimenRes: Int) = resources.getDimensionPixelSize(dimenRes)
 
 fun View.dimen(@DimenRes dimenRes: Int) = context.dimen(dimenRes)

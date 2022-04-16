@@ -33,12 +33,17 @@ class FavoritesAdapter(
 
     inner class ViewHolder(v: View) : BaseViewHolder<Product>(v) {
         private val binding = ViewItemProductBinding.bind(v)
+        private var item: Product? = null
+
+        init {
+            binding.cardPreview.setOnSingleClickListener {
+                item?.let(onItemClick)
+            }
+        }
 
         override fun bind(item: Product) {
+            this.item = item
             binding.run {
-                root.setOnSingleClickListener {
-                    onItemClick.invoke(item)
-                }
                 if (item.discountRate > 0) {
                     tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
