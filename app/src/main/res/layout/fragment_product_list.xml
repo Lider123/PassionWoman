@@ -135,7 +135,7 @@
             android:clipToPadding="false"
             android:layoutAnimation="@anim/layout_grid_fade_in_delayed"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
+            app:spanCount="@integer/products_list_span_count"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             tools:listitem="@layout/view_item_product"/>
 
