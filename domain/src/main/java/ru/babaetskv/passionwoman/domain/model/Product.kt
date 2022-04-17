@@ -20,4 +20,6 @@ data class Product(
 ) : Parcelable {
     val discountRate: Float
         get() = (100 * (1 - priceWithDiscount / price)).toFloat()
+    val isAvailable: Boolean
+        get() = colors.any(ProductColor::isAvailable)
 }

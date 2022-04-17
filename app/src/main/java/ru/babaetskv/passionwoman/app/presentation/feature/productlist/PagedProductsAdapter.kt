@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -8,10 +7,7 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BasePagingAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
-import ru.babaetskv.passionwoman.app.utils.inflateLayout
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.setHtmlText
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
+import ru.babaetskv.passionwoman.app.utils.*
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class PagedProductsAdapter(
@@ -20,16 +16,30 @@ class PagedProductsAdapter(
 ) : BasePagingAdapter<Product>(ProductDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> =
-        ViewHolder(parent.inflateLayout(R.layout.view_item_product))
+        ViewHolder(parent.viewBinding(ViewItemProductBinding::inflate), onItemClick, onBuyClick)
 
-    inner class ViewHolder(v: View) : BaseViewHolder<Product>(v) {
-        private val binding = ViewItemProductBinding.bind(v)
+    class ViewHolder(
+        private val binding: ViewItemProductBinding,
+        onItemClick: (Product) -> Unit,
+        onBuyClick: (Product) -> Unit
+    ) : BaseViewHolder<Product>(binding.root) {
+        private var item: Product? = null
 
-        override fun bind(item: Product) {
+        init {
             binding.run {
                 cardPreview.setOnSingleClickListener {
-                    onItemClick.invoke(item)
+                    item?.let(onItemClick)
                 }
+                btnBuy.setOnSingleClickListener {
+                    item?.let(onBuyClick)
+                }
+            }
+        }
+
+        override fun bind(item: Product) {
+            this.item = item
+            binding.run {
+                root.disabled = !item.isAvailable
                 if (item.discountRate > 0) {
                     tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
@@ -45,8 +55,9 @@ class PagedProductsAdapter(
                 ivPreview.load(item.preview, R.drawable.photo_placeholder,
                     resizeAsItem = true
                 )
-                btnBuy.setOnSingleClickListener {
-                    onBuyClick.invoke(item)
+                btnBuy.run {
+                    isEnabled = item.isAvailable
+                    setText(if (item.isAvailable) R.string.item_product_button_buy else R.string.product_card_not_available)
                 }
                 tvDiscountPercent.run {
                     isVisible = item.discountRate > 0

@@ -32,6 +32,14 @@
         <attr name="irv_toPrefix" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="OverlaidConstraintLayout">
+        <attr name="ocl_overlay" format="enum">
+            <enum name="no" value="0"/>
+            <enum name="grey" value="1"/>
+            <enum name="alpha" value="2"/>
+        </attr>
+    </declare-styleable>
+
     <attr name="coloredButtonStyle" format="reference"/>
     <attr name="textButtonStyle" format="reference"/>
     <attr name="outlineButtonStyle" format="reference"/>

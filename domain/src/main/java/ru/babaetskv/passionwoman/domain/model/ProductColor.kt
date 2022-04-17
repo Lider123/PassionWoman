@@ -8,4 +8,7 @@ data class ProductColor(
     val color: Color,
     val sizes: List<ProductSize>,
     val images: List<Image>
-) : Parcelable
+) : Parcelable {
+    val isAvailable: Boolean
+        get() = sizes.any(ProductSize::isAvailable)
+}
