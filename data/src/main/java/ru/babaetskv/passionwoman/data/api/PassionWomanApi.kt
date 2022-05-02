@@ -23,7 +23,7 @@ interface PassionWomanApi {
     ): ProductsPagedResponseModel
 
     @GET("api/catalog/brands/popular")
-    suspend fun getPopularBrands(): List<BrandModel>
+    suspend fun getPopularBrands(count: Int): List<BrandModel>
 
     @GET("api/catalog/favorites")
     suspend fun getFavorites(

@@ -4,10 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.annotation.AnimRes
-import androidx.annotation.ColorRes
-import androidx.annotation.DimenRes
-import androidx.annotation.DrawableRes
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 
 fun Context.dip(value: Int): Int = (value * resources.displayMetrics.density).toInt()
@@ -17,6 +14,14 @@ fun View.dip(value: Int): Int = context.dip(value)
 fun Context.color(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorRes)
 
 fun View.color(@ColorRes colorRes: Int) = context.color(colorRes)
+
+fun Context.integer(@IntegerRes intRes: Int) = resources.getInteger(intRes)
+
+fun View.integer(@IntegerRes intRes: Int) = context.integer(intRes)
+
+fun Context.bool(@BoolRes boolRes: Int) = resources.getBoolean(boolRes)
+
+fun View.bool(@BoolRes boolRes: Int) = context.integer(boolRes)
 
 fun Context.dimen(@DimenRes dimenRes: Int) = resources.getDimensionPixelSize(dimenRes)
 

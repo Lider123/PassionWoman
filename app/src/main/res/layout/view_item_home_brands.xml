@@ -9,5 +9,5 @@
     android:clipToPadding="false"
     android:layoutAnimation="@anim/layout_grid_fade_in_delayed"
     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    app:spanCount="4"
+    app:spanCount="@integer/brands_list_span_count"
     tools:listitem="@layout/view_item_brand" />

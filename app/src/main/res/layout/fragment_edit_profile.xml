@@ -37,7 +37,8 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputName"
                 android:layout_width="match_parent"
@@ -59,7 +60,8 @@
             android:layout_marginHorizontal="@dimen/margin_default"
             app:layout_constraintTop_toBottomOf="@id/inputNameWrapper"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputSurname"
                 android:layout_width="match_parent"
@@ -83,6 +85,7 @@
             app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
             style="@style/Widget.PassionWoman.Button.Colored"/>
 
         <androidx.appcompat.widget.AppCompatTextView

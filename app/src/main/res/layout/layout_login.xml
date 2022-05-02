@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:theme="@style/Theme.PassionWoman">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAppName"
@@ -42,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent=".8">
+        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/countryCodePicker"
@@ -86,7 +87,7 @@
         app:layout_constraintBottom_toTopOf="@id/tvOr"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
         style="@style/Widget.PassionWoman.Button.Colored"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -109,6 +110,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
         style="@style/Widget.PassionWoman.Button.Text"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

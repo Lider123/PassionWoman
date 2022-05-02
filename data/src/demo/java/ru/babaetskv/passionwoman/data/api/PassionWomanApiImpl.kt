@@ -106,9 +106,9 @@ class PassionWomanApiImpl(
         }
     }
 
-    override suspend fun getPopularBrands(): List<BrandModel> = withContext(Dispatchers.IO) {
+    override suspend fun getPopularBrands(count: Int): List<BrandModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        return@withContext loadListFromAsset<BrandModel>("brands.json").take(8)
+        return@withContext loadListFromAsset<BrandModel>("brands.json").take(count)
     }
 
     override suspend fun getFavorites(ids: String): List<ProductModel> {

@@ -15,12 +15,15 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
+// TODO: fix actions view
 class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewModel.Router, ProductListFragment.Args>() {
     private val binding: FragmentProductListBinding by viewBinding()
     private val productsAdapter: PagedProductsAdapter by lazy {
@@ -72,7 +75,16 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         super.handleRouterEvent(event)
         when (event) {
             is ProductListViewModel.Router.ProductCardScreen -> {
-                router.navigateTo(Screens.productCard(event.product.id))
+                if (requireContext().bool(R.bool.portrait_mode_only)) {
+                    router.navigateTo(Screens.productCard(event.product.id))
+                } else {
+                    val detailsFragment = ProductCardFragment.create(event.product.id,
+                        isSeparate = false
+                    )
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentDetailsContainer, detailsFragment)
+                        .commit()
+                }
             }
             is ProductListViewModel.Router.SortingScreen -> {
                 router.openBottomSheet(Screens.sorting(event.selectedSorting))

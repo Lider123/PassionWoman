@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/margin_default"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:theme="@style/Theme.PassionWoman">
 
     <View
         android:id="@+id/vBottomSheetContainerDivider"
@@ -48,24 +49,38 @@
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnApplyFilters"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_default"
-                    android:layout_marginHorizontal="@dimen/margin_default"
-                    style="?attr/coloredButtonStyle"
-                    tools:text="@string/filters_apply_placeholder"/>
+                    android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnClearFilters"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:layout_marginHorizontal="@dimen/margin_default"
-                    android:layout_marginBottom="@dimen/margin_default"
-                    android:text="@string/filters_clear"
-                    style="?attr/outlineButtonStyle"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnApplyFilters"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:layout_marginHorizontal="@dimen/margin_default"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
+                        style="?attr/coloredButtonStyle"
+                        tools:text="@string/filters_apply_placeholder"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnClearFilters"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginHorizontal="@dimen/margin_default"
+                        android:layout_marginBottom="@dimen/margin_default"
+                        android:text="@string/filters_clear"
+                        app:layout_constraintTop_toBottomOf="@id/btnApplyFilters"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
+                        style="?attr/outlineButtonStyle"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

@@ -93,11 +93,19 @@ fun ImageView.load(image: Image, @DrawableRes placeholder: Int, resizeAsItem: Bo
         .into(this)
 }
 
-fun View.setInsetsListener(top: Boolean = true, bottom: Boolean = true) {
+// TODO: fix insets for landscape mode
+fun View.setInsetsListener(
+    top: Boolean = true,
+    left: Boolean = true,
+    right: Boolean = true,
+    bottom: Boolean = true
+) {
     val initialPadding = Rect(paddingLeft, paddingTop, paddingRight, paddingBottom)
     ViewCompat.setOnApplyWindowInsetsListener(this) { view, insets ->
         view.updatePadding(
             top = initialPadding.top.plus(if (top) insets.systemWindowInsetTop else 0),
+            left = initialPadding.left.plus(if (left) insets.systemWindowInsetLeft else 0),
+            right = initialPadding.right.plus(if (right) insets.systemWindowInsetRight else 0),
             bottom = initialPadding.bottom.plus(if (bottom) insets.systemWindowInsetBottom else 0)
         )
         insets

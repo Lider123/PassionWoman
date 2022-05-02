@@ -3,36 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contentInsetsView"
+    android:id="@id/contentInsetsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentDetailsContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent=".55"/>
 
     <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
-        android:textAlignment="viewStart"
-        app:tv_title="@string/categories_title"
-        app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/fragmentDetailsContainer"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCategories"
+        android:id="@+id/rvHomeItems"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingHorizontal="@dimen/margin_small"
+        android:orientation="vertical"
         android:clipToPadding="false"
         android:layoutAnimation="@anim/layout_fade_in"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="@integer/categories_list_span_count"
-        tools:listitem="@layout/view_item_category"/>
+        app:layout_constraintEnd_toStartOf="@id/fragmentDetailsContainer"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ru.babaetskv.passionwoman.app.presentation.view.StubView
         android:id="@id/errorView"
@@ -42,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fragmentDetailsContainer"
         app:sv_action="@string/retry"
         app:sv_isBackVisible="false" />
 
@@ -54,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        layout="@layout/layout_categories_mock"
+        app:layout_constraintEnd_toStartOf="@id/fragmentDetailsContainer"
+        layout="@layout/layout_home_mock"
         tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

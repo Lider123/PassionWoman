@@ -11,6 +11,8 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentHomeBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
+import ru.babaetskv.passionwoman.app.utils.bool
 
 class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentHomeBinding by viewBinding()
@@ -46,7 +48,16 @@ class HomeFragment : BaseFragment<HomeViewModel, HomeViewModel.Router, FragmentC
         super.handleRouterEvent(event)
         when (event) {
             is HomeViewModel.Router.ProductCardScreen -> {
-                router.navigateTo(Screens.productCard(event.product.id))
+                if (requireContext().bool(R.bool.portrait_mode_only)) {
+                    router.navigateTo(Screens.productCard(event.product.id))
+                } else {
+                    val detailsFragment = ProductCardFragment.create(event.product.id,
+                        isSeparate = false
+                    )
+                    childFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentDetailsContainer, detailsFragment)
+                        .commit()
+                }
             }
             is HomeViewModel.Router.ProductListScreen -> {
                 router.navigateTo(

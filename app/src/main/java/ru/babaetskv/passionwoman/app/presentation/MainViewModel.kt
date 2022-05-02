@@ -6,6 +6,7 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
@@ -28,7 +29,7 @@ class MainViewModel(
     private var alertChannel: ReceiveChannel<AlertMessage>? = null
     private val eventChannel = Channel<Event>(Channel.RENDEZVOUS)
 
-    val eventBus: Flow<Event> = eventChannel.consumeAsFlow()
+    val eventBus: Flow<Event> = eventChannel.receiveAsFlow()
     var dataIsReady: Boolean = false
         private set
 
