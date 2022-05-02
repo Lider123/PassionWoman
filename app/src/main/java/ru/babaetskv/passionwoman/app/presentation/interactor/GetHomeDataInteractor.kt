@@ -23,7 +23,7 @@ class GetHomeDataInteractor(
     override fun getUseCaseException(cause: Exception): Exception =
         GetHomeDataUseCase.GetHomeDataException(cause, stringProvider)
 
-    override suspend fun run(params: Unit): HomeData {
+    override suspend fun run(params: Unit): HomeData = coroutineScope {
         val brandsCount = 2 * resources.getInteger(R.integer.brands_list_span_count)
         val promotionsAsync = async(Dispatchers.IO) {
             catalogGateway.getPromotions().transformList()
