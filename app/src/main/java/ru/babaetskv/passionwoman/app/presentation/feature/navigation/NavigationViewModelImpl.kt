@@ -2,6 +2,8 @@ package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -21,15 +23,18 @@ class NavigationViewModelImpl(
     dependencies: ViewModelDependencies
 ) : BaseViewModel<NavigationViewModel.Router>(dependencies), NavigationViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
+    private val cartItemsFlow: Flow<List<CartItem>>
+        get() = cartItemsCache.flow
 
     override val selectedTabLiveData = MutableLiveData(NavigationViewModel.Tab.HOME)
     override val dialogLiveData = MutableLiveData<NavigationViewModel.Dialog?>()
     override val cartItemsLiveData: LiveData<List<CartItem>>
-        get() = cartItemsCache.liveData
+        get() = cartItemsFlow.asLiveData(coroutineContext)
     override val logScreenOpening: Boolean = false
 
     init {
         authTypeFlow.launchIn(this)
+        cartItemsFlow.launchIn(this)
         args.payload?.let {
             when (it) {
                 is DeeplinkPayload.Product -> launch {

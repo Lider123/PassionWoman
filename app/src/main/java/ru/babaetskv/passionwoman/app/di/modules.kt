@@ -117,7 +117,7 @@ val viewModelModule = module {
         StoriesViewModelImpl(args, get())
     }
     viewModel {
-        CartViewModelImpl(get(), get(), get(), get())
+        CartViewModelImpl(get(), get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
         AddToCartViewModelImpl(args, get(), get())

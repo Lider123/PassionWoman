@@ -1,12 +1,12 @@
 package ru.babaetskv.passionwoman.domain.cache.base
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 interface Cache<T> {
 
-    val liveData: LiveData<T>
+    val flow: Flow<T>
 
-    fun get(): T?
-    fun set(value: T)
-    fun clear()
+    suspend fun get(): T?
+    suspend fun set(value: T)
+    suspend fun clear()
 }
