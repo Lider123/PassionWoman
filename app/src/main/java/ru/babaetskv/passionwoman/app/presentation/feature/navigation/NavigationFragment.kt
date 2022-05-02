@@ -24,6 +24,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         parametersOf(args)
     }
     override val applyTopInset: Boolean = false
+    override val applyBottomInset: Boolean = false
     override val screenName: String = ""
 
     override fun initViews() {
