@@ -5,7 +5,6 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.AddToCartEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
@@ -53,7 +52,6 @@ class AddToCartViewModelImpl(
             analyticsHandler.log(AddToCartEvent(product))
             notifier.newRequest(this, R.string.add_to_cart_success)
                 .sendAlert()
-            eventHub.post(InnerEvent.AddToCart(cartItem))
             onBackPressed()
         }
     }

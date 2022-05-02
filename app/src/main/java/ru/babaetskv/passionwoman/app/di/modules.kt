@@ -93,7 +93,7 @@ val viewModelModule = module {
         ProductListViewModelImpl(args, get(), get(), get())
     }
     viewModel { (args: NavigationFragment.Args) ->
-        NavigationViewModelImpl(args, get(), get(), get())
+        NavigationViewModelImpl(args, get(), get(), get(), get())
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
     viewModel { AuthViewModelImpl(get(), get(), get(), get()) }

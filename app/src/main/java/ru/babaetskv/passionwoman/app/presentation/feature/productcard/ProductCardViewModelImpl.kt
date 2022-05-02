@@ -7,7 +7,6 @@ import ru.babaetskv.passionwoman.app.analytics.event.AddToCartEvent
 import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.domain.model.*
@@ -112,7 +111,6 @@ class ProductCardViewModelImpl(
             analyticsHandler.log(AddToCartEvent(product))
             notifier.newRequest(this, R.string.add_to_cart_success)
                 .sendAlert()
-            eventHub.post(InnerEvent.AddToCart(cartItem))
         }
     }
 
