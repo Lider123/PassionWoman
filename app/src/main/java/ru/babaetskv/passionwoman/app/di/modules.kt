@@ -93,7 +93,7 @@ val viewModelModule = module {
         ProductListViewModelImpl(args, get(), get(), get())
     }
     viewModel { (args: NavigationFragment.Args) ->
-        NavigationViewModelImpl(args, get(), get(), get())
+        NavigationViewModelImpl(args, get(), get(), get(), get())
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
     viewModel { AuthViewModelImpl(get(), get(), get(), get()) }
@@ -117,7 +117,7 @@ val viewModelModule = module {
         StoriesViewModelImpl(args, get())
     }
     viewModel {
-        CartViewModelImpl(get(), get(), get(), get())
+        CartViewModelImpl(get(), get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
         AddToCartViewModelImpl(args, get(), get())

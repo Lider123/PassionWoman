@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.Price
 
 class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCartBinding by viewBinding()
@@ -48,10 +49,10 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
 
     private fun populateTotal(items: List<CartItem>) {
         binding.run {
-            val total = items.map { it.price * it.count }
-                .reduce { acc, price -> acc + price }
-            val totalWithDiscount = items.map { it.priceWithDiscount * it.count }
-                .reduce { acc, price -> acc + price }
+            val total: Price = items.map { it.price * it.count }
+                .reduceOrNull { acc, price -> acc + price } ?: Price()
+            val totalWithDiscount: Price = items.map { it.priceWithDiscount * it.count }
+                .reduceOrNull { acc, price -> acc + price } ?: Price()
             if (total != totalWithDiscount) {
                 tvPrice.text = totalWithDiscount.toFormattedString()
                 tvPriceDeleted.run {

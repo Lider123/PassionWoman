@@ -14,6 +14,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
+import ru.babaetskv.passionwoman.domain.model.CartItem
 
 class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
@@ -24,6 +25,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         parametersOf(args)
     }
     override val applyTopInset: Boolean = false
+    override val applyBottomInset: Boolean = false
     override val screenName: String = ""
 
     override fun initViews() {
@@ -41,6 +43,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         super.initObservers()
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
+        viewModel.cartItemsLiveData.observe(viewLifecycleOwner, ::populateCartItems)
     }
 
     override fun handleRouterEvent(event: NavigationViewModel.Router) {
@@ -51,6 +54,20 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
                 router.navigateTo(Screens.productCard(event.productId))
             }
         }
+    }
+
+    private fun populateCartItems(items: List<CartItem>) {
+        val count = items.size
+        (binding.navView as NavigationBarView)
+            .getOrCreateBadge(NavigationViewModel.Tab.CART.menuItemId)
+            .run {
+                if (count < 1) {
+                    isVisible = false
+                } else {
+                    isVisible = true
+                    number = count
+                }
+            }
     }
 
     private fun populateDialog(dialog: NavigationViewModel.Dialog?) {

@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Price(
-    private val value: Float
+    private val value: Float = 0f
 ) : Parcelable, Comparable<Price> {
 
     override fun equals(other: Any?): Boolean {

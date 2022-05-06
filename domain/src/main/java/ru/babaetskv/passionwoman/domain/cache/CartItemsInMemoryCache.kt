@@ -1,18 +1,20 @@
 package ru.babaetskv.passionwoman.domain.cache
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.babaetskv.passionwoman.domain.cache.base.ListCache
 import ru.babaetskv.passionwoman.domain.model.CartItem
 
 class CartItemsInMemoryCache: ListCache<CartItem> {
-    val items = mutableListOf<CartItem>()
+    override val flow = MutableStateFlow<List<CartItem>>(emptyList())
 
-    override fun clear() {
-        items.clear()
+    override suspend fun clear() {
+        flow.emit(emptyList())
     }
 
-    override fun get(): List<CartItem> = items
+    override suspend fun get(): List<CartItem> = flow.value
 
-    override fun add(item: CartItem) {
+    override suspend fun add(item: CartItem) {
+        val items: MutableList<CartItem> = flow.value.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
                     && it.selectedSize == item.selectedSize
@@ -25,9 +27,11 @@ class CartItemsInMemoryCache: ListCache<CartItem> {
                 count = it.count + item.count
             ))
         } ?: items.add(item)
+        flow.emit(items)
     }
 
-    override fun remove(item: CartItem) {
+    override suspend fun remove(item: CartItem) {
+        val items: MutableList<CartItem> = flow.value.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
                     && it.selectedSize == item.selectedSize
@@ -42,11 +46,11 @@ class CartItemsInMemoryCache: ListCache<CartItem> {
                     count = remainingCount
                 ))
             }
+            flow.emit(items)
         }
     }
 
-    override fun set(value: List<CartItem>) {
-        items.clear()
-        items.addAll(value)
+    override suspend fun set(value: List<CartItem>) {
+        flow.emit(value)
     }
 }
