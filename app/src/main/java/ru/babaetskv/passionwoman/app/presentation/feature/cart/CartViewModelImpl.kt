@@ -55,6 +55,8 @@ class CartViewModelImpl(
     private fun onCartItemsChanged(items: List<CartItem>) {
         if (items.isEmpty()) {
             onError(coroutineContext, GetCartItemsUseCase.EmptyCartItemsException(stringProvider))
+        } else {
+            errorLiveData.postValue(null)
         }
     }
 }
