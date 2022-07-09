@@ -12,5 +12,8 @@ interface CartViewModel : IViewModel {
     fun onRemoveCartItemPressed(item: CartItem)
     fun onCheckoutPressed()
 
-    interface Router : RouterEvent
+    sealed class Router : RouterEvent {
+
+        object Orders : Router()
+    }
 }

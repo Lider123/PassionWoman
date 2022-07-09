@@ -57,9 +57,7 @@ class ProfileViewModelImpl(
                     navigateTo(ProfileViewModel.Router.FavoritesScreen)
                 }
                 ProfileMenuItem.ORDERS -> {
-                    // TODO
-                    notifier.newRequest(this, R.string.in_development)
-                        .sendAlert()
+                    navigateTo(ProfileViewModel.Router.OrdersScreen)
                 }
                 ProfileMenuItem.CONTACTS -> {
                     navigateTo(ProfileViewModel.Router.ContactsScreen)

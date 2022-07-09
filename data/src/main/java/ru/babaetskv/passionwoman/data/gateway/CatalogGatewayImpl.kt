@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.data.gateway
 
-import ru.babaetskv.passionwoman.data.api.PassionWomanApi
+import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class CatalogGatewayImpl(
-    private val api: PassionWomanApi
+    private val api: CommonApi
 ) : CatalogGateway {
 
     override suspend fun getCategories(): List<Transformable<Unit, Category>> =
@@ -39,16 +39,11 @@ class CatalogGatewayImpl(
 
     override suspend fun getFavorites(
         favoriteIds: Collection<String>
-    ): List<Transformable<Unit, Product>> = api.getFavorites(favoriteIds.joinToString(","))
+    ): List<Transformable<Unit, Product>> =
+        api.getProductsByIds(favoriteIds.joinToString(","))
 
     override suspend fun getProduct(productId: String): Transformable<Unit, Product> =
         api.getProduct(productId)
-
-    override suspend fun getFavoriteIds(): List<String> = api.getFavoriteIds()
-
-    override suspend fun setFavoriteIds(ids: List<String>) {
-        api.setFavoriteIds(ids)
-    }
 
     override suspend fun getStories(): List<Transformable<Unit, Story>> =
         api.getStories()

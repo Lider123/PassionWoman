@@ -10,6 +10,13 @@ data class ColorModel(
     @Json(name = "hex") val hex: String
 ) : Transformable<Unit, Color> {
 
+    constructor(color: Color) :
+        this(
+            code = color.code,
+            uiName = color.uiName,
+            hex = color.hex
+        )
+
     override fun transform(params: Unit): Color =
         Color(
             code = code,

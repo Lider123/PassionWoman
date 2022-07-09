@@ -10,7 +10,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.data.api.CommonApi
-import ru.babaetskv.passionwoman.data.api.PassionWomanApi
+import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.model.AuthTokenModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.utils.transform
@@ -18,7 +18,7 @@ import ru.babaetskv.passionwoman.domain.utils.transform
 @RunWith(MockitoJUnitRunner::class)
 class AuthGatewayImplTest {
     @Mock
-    private lateinit var apiMock: PassionWomanApi
+    private lateinit var apiMock: AuthApi
     @Mock
     private lateinit var commonApiMock: CommonApi
     @InjectMocks
