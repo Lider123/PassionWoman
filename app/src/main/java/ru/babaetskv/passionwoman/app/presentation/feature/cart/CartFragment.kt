@@ -6,6 +6,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentCartBinding
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
@@ -25,6 +26,7 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
     override val applyBottomInset: Boolean = false
 
     override fun initViews() {
+        // TODO: fix loading view here and everywhere else
         super.initViews()
         binding.run {
             rvCartItems.adapter = adapter
@@ -40,6 +42,13 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
             populateCartItems(it)
             populateTotal(it)
         })
+    }
+
+    override fun handleRouterEvent(event: CartViewModel.Router) {
+        super.handleRouterEvent(event)
+        when (event) {
+            is CartViewModel.Router.Orders -> router.navigateTo(Screens.orders())
+        }
     }
 
     private fun populateCartItems(items: List<CartItem>) {

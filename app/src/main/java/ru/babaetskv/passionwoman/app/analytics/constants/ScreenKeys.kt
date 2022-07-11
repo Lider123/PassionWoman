@@ -20,4 +20,5 @@ object ScreenKeys {
     const val STORIES = "stories"
     const val CART = "cart"
     const val NEW_CART_ITEM = "new_cart_item"
+    const val ORDER_LIST = "order_list"
 }

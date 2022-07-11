@@ -19,11 +19,14 @@ interface StringProvider {
     val ADD_TO_CART_ERROR: String
     val REMOVE_FROM_CART_ERROR: String
     val GET_CART_ITEMS_ERROR: String
-    val EMPTY_CART_ITEMS_ERROR: String
+    val GET_ORDERS_ERROR: String
+    val CHECKOUT_ERROR: String
 
     val EMPTY_CATEGORIES_ERROR: String
     val EMPTY_FAVORITES_ERROR: String
     val EMPTY_PRODUCTS_ERROR: String
+    val EMPTY_CART_ITEMS_ERROR: String
+    val EMPTY_ORDERS_ERROR: String
 
     val SORT_NEW: String
     val SORT_POPULARITY: String

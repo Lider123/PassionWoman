@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesFr
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingFragment
+import ru.babaetskv.passionwoman.app.presentation.feature.orderlist.OrderListFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListMode
@@ -98,5 +99,9 @@ object Screens {
 
     fun newCartItem(product: Product) = BottomSheetDialogFragmentScreen {
         AddToCartFragment.create(product)
+    }
+
+    fun orders() = FragmentScreen {
+        OrderListFragment.create()
     }
 }

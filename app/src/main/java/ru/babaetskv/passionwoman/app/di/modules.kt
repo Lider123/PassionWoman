@@ -32,6 +32,7 @@ import ru.babaetskv.passionwoman.app.presentation.feature.home.stories.StoriesVi
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.navigation.NavigationViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.onboarding.OnboardingViewModelImpl
+import ru.babaetskv.passionwoman.app.presentation.feature.orderlist.OrderListViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.FavoritesViewModelImpl
@@ -56,8 +57,11 @@ import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.interactor.*
+import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.data.gateway.CartGatewayImpl
+import ru.babaetskv.passionwoman.data.gateway.ProfileGatewayImpl
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.cache.CartItemsInMemoryCache
 import ru.babaetskv.passionwoman.domain.cache.base.ListCache
@@ -117,17 +121,20 @@ val viewModelModule = module {
         StoriesViewModelImpl(args, get())
     }
     viewModel {
-        CartViewModelImpl(get(), get(), get(), get(), get())
+        CartViewModelImpl(get(), get(), get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
         AddToCartViewModelImpl(args, get(), get())
+    }
+    viewModel {
+        OrderListViewModelImpl(get(), get())
     }
 }
 
 val interactorModule = module {
     factory<GetCategoriesUseCase> { GetCategoriesInteractor(get(), get()) }
     factory<AuthorizeAsGuestUseCase> { AuthorizeAsGuestInteractor(get(), get()) }
-    factory<AuthorizeUseCase> { AuthorizeInteractor(get(), get(), get()) }
+    factory<AuthorizeUseCase> { AuthorizeInteractor(get(), get(), get(), get()) }
     factory<GetProfileUseCase> { GetProfileInteractor(get(), get()) }
     factory<UpdateProfileUseCase> { UpdateProfileInteractor(get(), get(), get()) }
     factory<LogOutUseCase> { LogOutInteractor(get(), get(), get()) }
@@ -139,14 +146,18 @@ val interactorModule = module {
     factory<RemoveFromFavoritesUseCase> { RemoveFromFavoritesInteractor(get(), get()) }
     factory<SyncFavoritesUseCase> { SyncFavoritesInteractor(get(), get(), get()) }
     factory<GetProductsUseCase> { GetProductsInteractor(get(), get()) }
-    factory<AddToCartUseCase> { AddTocartInteractor(get(), get()) }
+    factory<AddToCartUseCase> { AddToCartInteractor(get(), get()) }
     factory<RemoveFromCartUseCase> { RemoveFromCartInteractor(get(), get()) }
     factory<GetCartItemsUseCase> { GetCartItemsInteractor(get(), get()) }
+    factory<GetOrdersUseCase> { GetOrdersInteractor(get(), get()) }
+    factory<CheckoutUseCase> { CheckoutInteractor(get(), get(), get()) }
 }
 
 val gatewayModule = module {
     single<CatalogGateway> { CatalogGatewayImpl(get()) }
-    single<AuthGateway> { AuthGatewayImpl(get(), get()) }
+    single<AuthGateway> { AuthGatewayImpl(get()) }
+    single<ProfileGateway> { ProfileGatewayImpl(get()) }
+    single<CartGateway> { CartGatewayImpl(get()) }
 }
 
 val cacheModule = module {
@@ -159,7 +170,7 @@ val networkModule = module {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
-    single<ApiProvider> { ApiProviderImpl(get(), get(), get()) }
+    single<ApiProvider> { ApiProviderImpl(get(), get(), DefaultDateTimeConverter) }
     single { get<ApiProvider>().provideAuthApi() }
     single { get<ApiProvider>().provideCommonApi() }
 }

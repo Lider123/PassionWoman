@@ -26,9 +26,5 @@ interface CatalogGateway {
 
     suspend fun getProduct(productId: String): Transformable<Unit, Product>
 
-    suspend fun getFavoriteIds(): List<String>
-
-    suspend fun setFavoriteIds(ids: List<String>)
-
     suspend fun getStories(): List<Transformable<Unit, Story>>
 }

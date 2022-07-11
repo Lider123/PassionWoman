@@ -13,6 +13,15 @@ data class ProfileModel(
     @Json(name = "avatar") val avatar: String?
 ) : Transformable<Unit, Profile> {
 
+    constructor(profile: Profile) :
+        this(
+            id = profile.id,
+            name = profile.name,
+            surname = profile.surname,
+            phone = profile.phone,
+            avatar = profile.avatar?.toString()
+        )
+
     override fun transform(params: Unit): Profile =
         Profile(
             id = id,
@@ -21,16 +30,4 @@ data class ProfileModel(
             phone = phone,
             avatar = avatar?.let(::Image)
         )
-
-    companion object {
-
-        fun fromProfile(profile: Profile) =
-            ProfileModel(
-                id = profile.id,
-                name = profile.name,
-                surname = profile.surname,
-                phone = profile.phone,
-                avatar = profile.avatar?.toString()
-            )
-    }
 }
