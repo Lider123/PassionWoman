@@ -4,20 +4,20 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
-import ru.babaetskv.passionwoman.domain.usecase.CheckoutUseCase
+import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
 import ru.babaetskv.passionwoman.domain.utils.transform
 
-class CheckoutInteractor(
+class SyncCartInteractor(
     private val cartGateway: CartGateway,
     private val cartFlow: CartFlow,
     private val stringProvider: StringProvider
-) : BaseInteractor<Unit, Unit>(), CheckoutUseCase {
+) : BaseInteractor<Unit, Unit>(), SyncCartUseCase {
 
     override fun getUseCaseException(cause: Exception): Exception =
-        CheckoutUseCase.CheckoutException(cause, stringProvider)
+        SyncCartUseCase.SyncCartException(cause, stringProvider)
 
     override suspend fun run(params: Unit) {
-        val cart = cartGateway.checkout().transform()
+        val cart = cartGateway.getCart().transform()
         cartFlow.send(cart)
     }
 }

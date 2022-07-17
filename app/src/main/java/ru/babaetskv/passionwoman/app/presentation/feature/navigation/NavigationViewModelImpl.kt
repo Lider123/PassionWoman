@@ -10,31 +10,33 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
-import ru.babaetskv.passionwoman.domain.cache.base.ListCache
-import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
+import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.SyncFavoritesUseCase
 
 class NavigationViewModelImpl(
     args: NavigationFragment.Args,
     authPreferences: AuthPreferences,
     private val syncFavoritesUseCase: SyncFavoritesUseCase,
-    private val cartItemsCache: ListCache<CartItem>,
+    private val syncCartUseCase: SyncCartUseCase,
+    private val cartFlow: CartFlow,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<NavigationViewModel.Router>(dependencies), NavigationViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
-    private val cartItemsFlow: Flow<List<CartItem>>
-        get() = cartItemsCache.flow
+    private val mCartFlow: Flow<Cart>
+        get() = cartFlow.flow
 
     override val selectedTabLiveData = MutableLiveData(NavigationViewModel.Tab.HOME)
     override val dialogLiveData = MutableLiveData<NavigationViewModel.Dialog?>()
-    override val cartItemsLiveData: LiveData<List<CartItem>>
-        get() = cartItemsFlow.asLiveData(coroutineContext)
+    override val cartLiveData: LiveData<Cart>
+        get() = mCartFlow.asLiveData(coroutineContext)
     override val logScreenOpening: Boolean = false
 
     init {
         authTypeFlow.launchIn(this)
-        cartItemsFlow.launchIn(this)
+        mCartFlow.launchIn(this)
         args.payload?.let {
             when (it) {
                 is DeeplinkPayload.Product -> launch {
@@ -49,6 +51,8 @@ class NavigationViewModelImpl(
     }
 
     private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
+        // TODO: make cart and favorites syncing parallel
+        syncCart()
         when (authType) {
             AuthPreferences.AuthType.NONE -> navigateTo(NavigationViewModel.Router.AuthScreen)
             AuthPreferences.AuthType.AUTHORIZED -> syncFavorites()
@@ -66,5 +70,9 @@ class NavigationViewModelImpl(
                 }
             })
         })
+    }
+
+    private suspend fun syncCart() {
+        syncCartUseCase.execute(Unit)
     }
 }

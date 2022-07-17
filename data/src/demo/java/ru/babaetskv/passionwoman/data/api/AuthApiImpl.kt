@@ -23,6 +23,11 @@ class AuthApiImpl(
     private var profileMock: ProfileModel? = null
     private var favoriteIdsMock: List<String>? = null
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
+    private var cartMock: CartModel = CartModel(
+        items = emptyList(),
+        price = 0f,
+        total = 0f
+    )
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
@@ -66,8 +71,10 @@ class AuthApiImpl(
         return ordersMock
     }
 
-    override suspend fun checkout(items: List<CartItemModel>) {
+    override suspend fun checkout(): CartModel {
         delay(DELAY_LOADING)
+        if (cartMock.items.isEmpty()) throw getBadRequestException("The cart is empty")
+
         val newOrder = OrderModel(
             id = UUID.randomUUID()
                 .toString()
@@ -76,11 +83,75 @@ class AuthApiImpl(
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },
-            cartItems = items,
+            cartItems = cartMock.items,
             status = Order.Status.PENDING.apiName
         )
         ordersMock.add(newOrder)
+        clearCart()
+        return cartMock
     }
+
+    override suspend fun getCart(): CartModel {
+        delay(DELAY_LOADING)
+        return cartMock
+    }
+
+    override suspend fun addToCart(item: CartItemModel): CartModel {
+        delay(DELAY_LOADING)
+        val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
+        val existingItem = items.find {
+            it.productId == item.productId
+                && it.selectedSize == item.selectedSize
+                && it.selectedColor == item.selectedColor
+        }
+        existingItem?.let {
+            val position = items.indexOf(it)
+            items.remove(it)
+            items.add(position, it.copy(
+                count = it.count + item.count
+            ))
+        } ?: items.add(item)
+        cartMock = CartModel(
+            items = items,
+            price = calculatePrice(items),
+            total = calculateTotal(items)
+        )
+        return cartMock
+    }
+
+    override suspend fun removeFromCart(item: CartItemModel): CartModel {
+        delay(DELAY_LOADING)
+        val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
+        val existingItem = items.find {
+            it.productId == item.productId
+                    && it.selectedSize == item.selectedSize
+                    && it.selectedColor == item.selectedColor
+        }
+        existingItem?.let {
+            val position = items.indexOf(it)
+            items.remove(it)
+            val remainingCount = it.count - item.count
+            if (remainingCount > 0) {
+                items.add(position, it.copy(
+                    count = remainingCount
+                ))
+            }
+            cartMock = CartModel(
+                items = items,
+                price = calculatePrice(items),
+                total = calculateTotal(items)
+            )
+        }
+        return cartMock
+    }
+
+    private fun calculatePrice(items: List<CartItemModel>): Float =
+        items.map { it.price * it.count }
+            .reduceOrNull { acc, price -> acc + price } ?: 0f
+
+    private fun calculateTotal(items: List<CartItemModel>): Float =
+        items.map { it.priceWithDiscount * it.count }
+            .reduceOrNull { acc, price -> acc + price } ?: 0f
 
     private fun getNextOrderStatus(status: String): String =
         when (Order.Status.fromApiName(status)) {
@@ -95,6 +166,14 @@ class AuthApiImpl(
             Order.Status.CANCELED -> Order.Status.CANCELED
             null -> null
         }?.apiName ?: status
+
+    private fun clearCart() {
+        cartMock = CartModel(
+            items = emptyList(),
+            price = 0f,
+            total = 0f
+        )
+    }
 
     companion object {
         private const val PROBABILITY_ORDER_CANCELLATION = 0.2f

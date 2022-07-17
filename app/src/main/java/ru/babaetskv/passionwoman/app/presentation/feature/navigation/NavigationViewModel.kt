@@ -9,12 +9,13 @@ import ru.babaetskv.passionwoman.app.presentation.feature.cart.CartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
+import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.model.CartItem
 
 interface NavigationViewModel : IViewModel {
     val selectedTabLiveData: LiveData<Tab>
     val dialogLiveData: LiveData<Dialog?>
-    val cartItemsLiveData: LiveData<List<CartItem>>
+    val cartLiveData: LiveData<Cart>
 
     fun onTabPressed(tab: Tab)
 

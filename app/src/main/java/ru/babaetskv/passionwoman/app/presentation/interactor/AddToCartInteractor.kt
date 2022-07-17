@@ -2,12 +2,15 @@ package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.cache.base.ListCache
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
+import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 class AddToCartInteractor(
-    private val cartItemsCache: ListCache<CartItem>,
+    private val cartGateway: CartGateway,
+    private val cartFlow: CartFlow,
     private val stringProvider: StringProvider
 ) : BaseInteractor<CartItem, Unit>(), AddToCartUseCase {
 
@@ -15,6 +18,7 @@ class AddToCartInteractor(
         AddToCartUseCase.AddToCartException(cause, stringProvider)
 
     override suspend fun run(params: CartItem) {
-        cartItemsCache.add(params)
+        val cart = cartGateway.addToCart(params).transform()
+        cartFlow.send(cart)
     }
 }

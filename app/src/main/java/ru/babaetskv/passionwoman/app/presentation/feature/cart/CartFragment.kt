@@ -11,8 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.domain.model.CartItem
-import ru.babaetskv.passionwoman.domain.model.Price
+import ru.babaetskv.passionwoman.domain.model.Cart
 
 class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentComponent.NoArgs>() {
     private val binding: FragmentCartBinding by viewBinding()
@@ -38,10 +37,7 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
 
     override fun initObservers() {
         super.initObservers()
-        viewModel.cartItemsLiveData.observe(viewLifecycleOwner, {
-            populateCartItems(it)
-            populateTotal(it)
-        })
+        viewModel.cartLiveData.observe(viewLifecycleOwner, ::populateCart)
     }
 
     override fun handleRouterEvent(event: CartViewModel.Router) {
@@ -51,25 +47,19 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
         }
     }
 
-    private fun populateCartItems(items: List<CartItem>) {
-        adapter.submitData(items)
-        binding.rvCartItems.isVisible = items.isNotEmpty()
-    }
-
-    private fun populateTotal(items: List<CartItem>) {
+    private fun populateCart(cart: Cart) {
+        adapter.submitData(cart.items)
         binding.run {
-            val total: Price = items.map { it.price * it.count }
-                .reduceOrNull { acc, price -> acc + price } ?: Price()
-            val totalWithDiscount: Price = items.map { it.priceWithDiscount * it.count }
-                .reduceOrNull { acc, price -> acc + price } ?: Price()
-            if (total != totalWithDiscount) {
-                tvPrice.text = totalWithDiscount.toFormattedString()
+            rvCartItems.isVisible = !cart.isEmpty
+            if (cart.price != cart.total) {
+                tvPrice.text = cart.total.toFormattedString()
                 tvPriceDeleted.run {
                     isVisible = true
-                    setHtmlText(context.getString(R.string.deleted_text_template, total.toFormattedString()))
+                    // TODO: think about using spannable text here and whenever else in the app
+                    setHtmlText(context.getString(R.string.deleted_text_template, cart.price.toFormattedString()))
                 }
             } else {
-                tvPrice.text = total.toFormattedString()
+                tvPrice.text = cart.price.toFormattedString()
                 tvPriceDeleted.isVisible = false
             }
         }

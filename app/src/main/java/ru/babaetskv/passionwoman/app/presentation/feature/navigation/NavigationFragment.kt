@@ -14,7 +14,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
-import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.Cart
 
 class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
@@ -43,7 +43,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         super.initObservers()
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
-        viewModel.cartItemsLiveData.observe(viewLifecycleOwner, ::populateCartItems)
+        viewModel.cartLiveData.observe(viewLifecycleOwner, ::populateCart)
     }
 
     override fun handleRouterEvent(event: NavigationViewModel.Router) {
@@ -56,8 +56,8 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         }
     }
 
-    private fun populateCartItems(items: List<CartItem>) {
-        val count = items.size
+    private fun populateCart(cart: Cart) {
+        val count = cart.items.size
         (binding.navView as NavigationBarView)
             .getOrCreateBadge(NavigationViewModel.Tab.CART.menuItemId)
             .run {

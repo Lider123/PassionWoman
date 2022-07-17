@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.domain.exceptions.NetworkActionException
 import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.base.ActionUseCase
 
-interface CheckoutUseCase : ActionUseCase<List<CartItem>> {
+interface CheckoutUseCase : ActionUseCase<Unit> {
 
     class CheckoutException(
         cause: Exception?,
