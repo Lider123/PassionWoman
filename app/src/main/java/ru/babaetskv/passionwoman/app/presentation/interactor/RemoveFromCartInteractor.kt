@@ -2,12 +2,15 @@ package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.cache.base.ListCache
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
+import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromCartUseCase
+import ru.babaetskv.passionwoman.domain.utils.transform
 
 class RemoveFromCartInteractor(
-    private val cartItemsCache: ListCache<CartItem>,
+    private val cartGateway: CartGateway,
+    private val cartFlow: CartFlow,
     private val stringProvider: StringProvider
 ) : BaseInteractor<CartItem, Unit>(), RemoveFromCartUseCase {
 
@@ -15,6 +18,7 @@ class RemoveFromCartInteractor(
         RemoveFromCartUseCase.RemoveFromCartException(cause, stringProvider)
 
     override suspend fun run(params: CartItem) {
-        cartItemsCache.remove(params)
+        val cart = cartGateway.removeFromCart(params).transform()
+        cartFlow.send(cart)
     }
 }

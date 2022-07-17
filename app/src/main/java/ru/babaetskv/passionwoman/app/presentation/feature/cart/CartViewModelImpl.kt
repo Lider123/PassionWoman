@@ -9,29 +9,30 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.cache.base.ListCache
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
+import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.CheckoutUseCase
-import ru.babaetskv.passionwoman.domain.usecase.GetCartItemsUseCase
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromCartUseCase
+import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
 
 class CartViewModelImpl(
     private val addToCartUseCase: AddToCartUseCase,
     private val removeFromCartUseCase: RemoveFromCartUseCase,
-    private val cartItemsCache: ListCache<CartItem>, // TODO: replace with use case subscription
+    private val cartFlow: CartFlow, // TODO: replace with use case subscription
     private val checkoutUseCase: CheckoutUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<CartViewModel.Router>(dependencies), CartViewModel {
-    private val cartItemsFlow: Flow<List<CartItem>>
-        get() = cartItemsCache.flow.onEach(::onCartItemsChanged)
+    private val mCartFlow: Flow<Cart>
+        get() = cartFlow.flow.onEach(::onCartUpdated)
 
-    override val cartItemsLiveData: LiveData<List<CartItem>>
-        get() = cartItemsFlow.asLiveData(coroutineContext)
+    override val cartLiveData: LiveData<Cart>
+        get() = mCartFlow.asLiveData(coroutineContext)
 
     init {
-        cartItemsFlow.launchIn(this)
+        mCartFlow.launchIn(this)
     }
 
     override fun onAddCartItemPressed(item: CartItem) {
@@ -51,18 +52,16 @@ class CartViewModelImpl(
     override fun onCheckoutPressed() {
         // TODO: handle payment
         launchWithLoading {
-            val cartItems = cartItemsCache.get() ?: return@launchWithLoading
-
-            checkoutUseCase.execute(cartItems)
+            checkoutUseCase.execute(Unit)
             notifier.newRequest(this, R.string.cart_order_created)
                 .sendAlert()
             navigateTo(CartViewModel.Router.Orders)
         }
     }
 
-    private fun onCartItemsChanged(items: List<CartItem>) {
-        if (items.isEmpty()) {
-            onError(coroutineContext, GetCartItemsUseCase.EmptyCartItemsException(stringProvider))
+    private fun onCartUpdated(cart: Cart) {
+        if (cart.isEmpty) {
+            onError(coroutineContext, SyncCartUseCase.EmptyCartException(stringProvider))
         } else {
             errorLiveData.postValue(null)
         }

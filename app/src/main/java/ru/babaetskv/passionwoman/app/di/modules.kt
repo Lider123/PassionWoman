@@ -60,13 +60,12 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.*
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
+import ru.babaetskv.passionwoman.data.dataflow.CartFlowImpl
 import ru.babaetskv.passionwoman.data.gateway.CartGatewayImpl
 import ru.babaetskv.passionwoman.data.gateway.ProfileGatewayImpl
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.cache.CartItemsInMemoryCache
-import ru.babaetskv.passionwoman.domain.cache.base.ListCache
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.gateway.*
-import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
@@ -97,7 +96,7 @@ val viewModelModule = module {
         ProductListViewModelImpl(args, get(), get(), get())
     }
     viewModel { (args: NavigationFragment.Args) ->
-        NavigationViewModelImpl(args, get(), get(), get(), get())
+        NavigationViewModelImpl(args, get(), get(), get(), get(), get())
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
     viewModel { AuthViewModelImpl(get(), get(), get(), get()) }
@@ -146,9 +145,9 @@ val interactorModule = module {
     factory<RemoveFromFavoritesUseCase> { RemoveFromFavoritesInteractor(get(), get()) }
     factory<SyncFavoritesUseCase> { SyncFavoritesInteractor(get(), get(), get()) }
     factory<GetProductsUseCase> { GetProductsInteractor(get(), get()) }
-    factory<AddToCartUseCase> { AddToCartInteractor(get(), get()) }
-    factory<RemoveFromCartUseCase> { RemoveFromCartInteractor(get(), get()) }
-    factory<GetCartItemsUseCase> { GetCartItemsInteractor(get(), get()) }
+    factory<AddToCartUseCase> { AddToCartInteractor(get(), get(), get()) }
+    factory<RemoveFromCartUseCase> { RemoveFromCartInteractor(get(), get(), get()) }
+    factory<SyncCartUseCase> { SyncCartInteractor(get(), get(), get()) }
     factory<GetOrdersUseCase> { GetOrdersInteractor(get(), get()) }
     factory<CheckoutUseCase> { CheckoutInteractor(get(), get(), get()) }
 }
@@ -160,8 +159,8 @@ val gatewayModule = module {
     single<CartGateway> { CartGatewayImpl(get()) }
 }
 
-val cacheModule = module {
-    single<ListCache<CartItem>> { CartItemsInMemoryCache() }
+val dataFlowModule = module {
+    single<CartFlow> { CartFlowImpl() }
 }
 
 val networkModule = module {
