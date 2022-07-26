@@ -18,6 +18,7 @@ import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
+import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
@@ -99,7 +100,9 @@ val viewModelModule = module {
         NavigationViewModelImpl(args, get(), get(), get(), get(), get())
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
-    viewModel { AuthViewModelImpl(get(), get(), get(), get()) }
+    viewModel { (args: AuthFragment.Args) ->
+        AuthViewModelImpl(args, get(), get(), get(), get())
+    }
     viewModel { (args: EditProfileFragment.Args) ->
         EditProfileViewModelImpl(args, get(), get())
     }
@@ -126,7 +129,7 @@ val viewModelModule = module {
         AddToCartViewModelImpl(args, get(), get())
     }
     viewModel {
-        OrderListViewModelImpl(get(), get())
+        OrderListViewModelImpl(get(), get(), get())
     }
 }
 
@@ -136,7 +139,7 @@ val interactorModule = module {
     factory<AuthorizeUseCase> { AuthorizeInteractor(get(), get(), get(), get()) }
     factory<GetProfileUseCase> { GetProfileInteractor(get(), get()) }
     factory<UpdateProfileUseCase> { UpdateProfileInteractor(get(), get(), get()) }
-    factory<LogOutUseCase> { LogOutInteractor(get(), get(), get()) }
+    factory<LogOutUseCase> { LogOutInteractor(get(), get(), get(), get()) }
     factory<UpdateAvatarUseCase> { UpdateAvatarInteractor(get(), get()) }
     factory<GetHomeDataUseCase> { GetHomeDataInteractor(get(), get(), get()) }
     factory<GetFavoritesUseCase> { GetFavoritesInteractor(get(), get(), get()) }
@@ -153,14 +156,14 @@ val interactorModule = module {
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get()) }
-    single<AuthGateway> { AuthGatewayImpl(get()) }
-    single<ProfileGateway> { ProfileGatewayImpl(get()) }
-    single<CartGateway> { CartGatewayImpl(get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
+    single<AuthGateway> { AuthGatewayImpl(get(), get()) }
+    single<ProfileGateway> { ProfileGatewayImpl(get(), get()) }
+    single<CartGateway> { CartGatewayImpl(get(), get()) }
 }
 
 val dataFlowModule = module {
-    single<CartFlow> { CartFlowImpl() }
+    single<CartFlow> { CartFlowImpl(get()) }
 }
 
 val networkModule = module {

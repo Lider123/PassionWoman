@@ -10,8 +10,8 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 
 interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     val viewModel: VM
@@ -22,6 +22,7 @@ interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     val componentContext: Context
 
     fun onBackPressed()
+    fun handleLogInRouterEvent(event: RouterEvent.LogIn)
 
     fun initViews() = Unit
 
@@ -32,7 +33,8 @@ interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
         componentLifecycleScope.launchWhenResumed {
             viewModel.routerEventBus.collect {
                 when (it) {
-                    RouterEvent.GoBack -> onBackPressed()
+                    is RouterEvent.GoBack -> onBackPressed()
+                    is RouterEvent.LogIn -> handleLogInRouterEvent(it)
                     else -> handleRouterEvent(it as TRouterEvent)
                 }
             }
@@ -54,24 +56,35 @@ interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
             return
         }
 
+        errorView.isVisible = true
         when (exception) {
-            is NetworkDataException -> {
-                errorView.isVisible = true
-                errorView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
+            is UseCaseException.Data -> {
+                errorView.message = exception.message
                 errorView.setBackButtonListener {
                     onBackPressed()
                 }
+                errorView.isActionButtonVisible = true
                 errorView.setActionButtonListener {
-                    viewModel.onErrorActionPressed()
+                    viewModel.onErrorActionPressed(exception)
                 }
             }
-            is EmptyDataException -> {
-                errorView.isVisible = true
-                errorView.message = exception.message ?: componentContext.getString(R.string.error_no_data)
+            is UseCaseException.EmptyData -> {
+                errorView.message = exception.message
                 errorView.setBackButtonListener {
                     onBackPressed()
                 }
                 errorView.isActionButtonVisible = false
+            }
+            is GatewayException.Unauthorized -> {
+                errorView.message = exception.message
+                errorView.setBackButtonListener {
+                    onBackPressed()
+                }
+                errorView.isActionButtonVisible = true
+                errorView.setActionButtonListener {
+                    viewModel.onErrorActionPressed(exception)
+                }
+                errorView.action = componentContext.getString(R.string.log_in)
             }
         }
     }

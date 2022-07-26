@@ -9,10 +9,10 @@ import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import timber.log.Timber
 import java.util.*
 import kotlin.random.Random
 
-// TODO: add token check
 class AuthApiImpl(
     private val moshi: Moshi,
     private val assetManager: AssetManager,
@@ -30,7 +30,9 @@ class AuthApiImpl(
 
     override fun doBeforeRequest() {
         super.doBeforeRequest()
-        if (authPreferences.authToken != TOKEN) {
+        val userToken = authPreferences.authToken
+        if (userToken != TOKEN) {
+            Timber.e("Incorrect token: $userToken")
             throw getUnauthorizedException("User is not authorized")
         }
     }
@@ -173,7 +175,5 @@ class AuthApiImpl(
 
     companion object {
         private const val PROBABILITY_ORDER_CANCELLATION = 0.2f
-
-        const val TOKEN = "token"
     }
 }

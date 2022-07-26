@@ -41,7 +41,9 @@ class EditProfileViewModelImpl(
             sendEvent(InnerEvent.UpdateProfile)
             if (args.signingUp) {
                 analyticsHandler.log(SignUpEvent())
-                navigateTo(EditProfileViewModel.Router.NavigationScreen)
+                if (args.onAppStart) {
+                    navigateTo(EditProfileViewModel.Router.NavigationScreen)
+                } else onBackPressed()
             } else onBackPressed()
         }
     }

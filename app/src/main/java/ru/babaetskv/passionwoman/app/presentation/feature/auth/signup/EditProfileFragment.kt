@@ -93,12 +93,13 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     @Parcelize
     data class Args(
         val profile: Profile,
-        val signingUp: Boolean
+        val signingUp: Boolean,
+        val onAppStart: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(profile: Profile, signingUp: Boolean) =
-            EditProfileFragment().withArgs(Args(profile, signingUp))
+        fun create(profile: Profile, signingUp: Boolean, onAppStart: Boolean) =
+            EditProfileFragment().withArgs(Args(profile, signingUp, onAppStart))
     }
 }

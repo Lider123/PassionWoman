@@ -107,9 +107,9 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
         super.handleRouterEvent(event)
         when (event) {
             MainViewModel.Router.OnboardingScreen -> router.newRootScreen(Screens.onboarding())
-            MainViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            MainViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth(true))
             is MainViewModel.Router.SignUpScreen -> {
-                router.newRootScreen(Screens.signUp(event.profile))
+                router.newRootScreen(Screens.signUp(event.profile, true))
             }
             is MainViewModel.Router.NavigationScreen -> {
                 router.newRootScreen(Screens.navigation(event.payload))

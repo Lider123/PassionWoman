@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
 class FavoritesViewModelImpl(
@@ -44,9 +45,11 @@ class FavoritesViewModelImpl(
         }
     }
 
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        loadFavorites()
+    override fun onErrorActionPressed(exception: Exception) {
+        when(exception) {
+            is GetFavoritesUseCase.GetFavoritesException -> loadFavorites()
+            else -> super.onErrorActionPressed(exception)
+        }
     }
 
     override fun onProductPressed(product: Product) {

@@ -8,7 +8,6 @@ import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
 import ru.babaetskv.passionwoman.app.utils.toDemoPresets
-import ru.babaetskv.passionwoman.data.api.AuthApiImpl
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
@@ -33,8 +32,9 @@ class DemoPresetsViewModelImpl(
     override fun onApplyPressed() {
         launchWithLoading {
             val presets = presetsLiveData.value!!
-            if (authPrefs.profileIsFilled) {
-                authPrefs.authToken = AuthApiImpl.TOKEN
+            appPrefs.applyDemoPresets(presets)
+            authPrefs.applyDemoPresets(presets)
+            if (authPrefs.authType == AuthPreferences.AuthType.AUTHORIZED && authPrefs.profileIsFilled) {
                 val profile = getProfileUseCase.execute()
                 profile.copy(
                     name = resources.getString(R.string.demo_name),
@@ -43,8 +43,6 @@ class DemoPresetsViewModelImpl(
                     updateProfileUseCase.execute(it)
                 }
             }
-            appPrefs.applyDemoPresets(presets)
-            authPrefs.applyDemoPresets(presets)
             navigateTo(Router.MainFlow)
         }
     }

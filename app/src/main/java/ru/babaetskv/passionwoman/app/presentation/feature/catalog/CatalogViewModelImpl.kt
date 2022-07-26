@@ -18,9 +18,11 @@ class CatalogViewModelImpl(
         loadData()
     }
 
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        loadData()
+    override fun onErrorActionPressed(exception: Exception) {
+        when (exception) {
+            is GetCategoriesUseCase.GetCategoriesException -> loadData()
+            else -> super.onErrorActionPressed(exception)
+        }
     }
 
     override fun onCategoryPressed(category: Category) {

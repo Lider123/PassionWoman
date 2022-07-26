@@ -71,7 +71,9 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
     override fun handleRouterEvent(event: OnboardingViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            OnboardingViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            OnboardingViewModel.Router.AuthScreen -> {
+                router.newRootScreen(Screens.auth(true))
+            }
         }
     }
 

@@ -1,8 +1,7 @@
 package ru.babaetskv.passionwoman.domain.usecase
 
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
@@ -20,16 +19,16 @@ interface GetProductsUseCase : UseCase<GetProductsUseCase.Params, ProductsPagedR
     )
 
     class GetProductsException(
-        cause: Exception?,
+        cause: Exception,
         stringProvider: StringProvider
-    ) : NetworkDataException(stringProvider.GET_PRODUCTS_ERROR, cause)
+    ) : UseCaseException.Data(cause, stringProvider.GET_PRODUCTS_ERROR)
 
     class GetProductsPageException(
-        cause: Exception?,
+        cause: Exception,
         stringProvider: StringProvider
-    ) : NetworkDataException(stringProvider.GET_PRODUCTS_PAGE_ERROR, cause, dataIsOptional = true)
+    ) : UseCaseException.Data(cause, stringProvider.GET_PRODUCTS_PAGE_ERROR)
 
     class EmptyProductsException(
         stringProvider: StringProvider
-    ) : EmptyDataException(stringProvider.EMPTY_PRODUCTS_ERROR)
+    ) : UseCaseException.EmptyData(stringProvider.EMPTY_PRODUCTS_ERROR)
 }

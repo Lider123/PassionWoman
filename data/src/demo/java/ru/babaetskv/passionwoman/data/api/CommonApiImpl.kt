@@ -19,7 +19,7 @@ class CommonApiImpl(
     private val saleProductsCache = mutableListOf<ProductModel>()
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
-        return@processRequest AuthTokenModel(AuthApiImpl.TOKEN)
+        return@processRequest AuthTokenModel(TOKEN)
     }
 
     override suspend fun getCategories(): List<CategoryModel> = processRequest {

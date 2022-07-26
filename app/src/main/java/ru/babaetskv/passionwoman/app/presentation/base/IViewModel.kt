@@ -11,7 +11,7 @@ interface IViewModel {
     val routerEventBus: Flow<RouterEvent>
     val eventHub: EventHub
 
-    fun onErrorActionPressed()
+    fun onErrorActionPressed(exception: Exception)
     fun onStart(screenName: String)
     fun onResume()
     fun onPause()

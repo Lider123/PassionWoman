@@ -1,14 +1,14 @@
 package ru.babaetskv.passionwoman.domain.usecase
 
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase
 
 interface GetProductUseCase : UseCase<String, Product> {
 
     class GetProductException(
-        cause: Exception?,
+        cause: Exception,
         stringProvider: StringProvider
-    ) : NetworkDataException(stringProvider.GET_PRODUCT_ERROR, cause)
+    ) : UseCaseException.Data(cause, stringProvider.GET_PRODUCT_ERROR)
 }

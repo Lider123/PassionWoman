@@ -15,8 +15,8 @@ import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.CheckoutUseCase
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromCartUseCase
-import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
 
+// TODO: if profile is not filled when checkout pressed then ask to fill it
 class CartViewModelImpl(
     private val addToCartUseCase: AddToCartUseCase,
     private val removeFromCartUseCase: RemoveFromCartUseCase,
@@ -26,7 +26,13 @@ class CartViewModelImpl(
     dependencies: ViewModelDependencies
 ) : BaseViewModel<CartViewModel.Router>(dependencies), CartViewModel {
     private val mCartFlow: Flow<Cart>
-        get() = cartFlow.flow.onEach(::onCartUpdated)
+        get() = cartFlow.subscribe().onEach {
+            val error = if (it.isEmpty) {
+                // TODO: think up how to throw this error outside ViewModel
+                CartFlow.EmptyCartException(stringProvider)
+            } else null
+            errorLiveData.postValue(error)
+        }
 
     override val cartLiveData: LiveData<Cart>
         get() = mCartFlow.asLiveData(coroutineContext)
@@ -56,14 +62,6 @@ class CartViewModelImpl(
             notifier.newRequest(this, R.string.cart_order_created)
                 .sendAlert()
             navigateTo(CartViewModel.Router.Orders)
-        }
-    }
-
-    private fun onCartUpdated(cart: Cart) {
-        if (cart.isEmpty) {
-            onError(coroutineContext, SyncCartUseCase.EmptyCartException(stringProvider))
-        } else {
-            errorLiveData.postValue(null)
         }
     }
 }

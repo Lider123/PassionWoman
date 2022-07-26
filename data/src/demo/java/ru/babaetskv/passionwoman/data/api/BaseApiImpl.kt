@@ -115,5 +115,7 @@ abstract class BaseApiImpl {
         protected val BAD_REQUEST = 400
         @JvmStatic
         protected val INTERNAL_SERVER_ERROR = 500
+        @JvmStatic
+        val TOKEN = "token"
     }
 }

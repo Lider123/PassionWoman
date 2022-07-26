@@ -25,9 +25,9 @@ class SplashFragment :
         super.handleRouterEvent(event)
         when (event) {
             SplashViewModel.Router.OnboardingScreen -> router.newRootScreen(Screens.onboarding())
-            SplashViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            SplashViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth(true))
             is SplashViewModel.Router.SignUpScreen -> {
-                router.newRootScreen(Screens.signUp(event.profile))
+                router.newRootScreen(Screens.signUp(event.profile, true))
             }
             is SplashViewModel.Router.NavigationScreen -> {
                 router.newRootScreen(Screens.navigation(event.payload))

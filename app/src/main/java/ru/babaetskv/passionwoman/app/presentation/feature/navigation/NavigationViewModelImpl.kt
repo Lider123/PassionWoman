@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
 import ru.babaetskv.passionwoman.domain.usecase.SyncFavoritesUseCase
+import kotlin.coroutines.CoroutineContext
 
 class NavigationViewModelImpl(
     args: NavigationFragment.Args,
@@ -26,7 +27,7 @@ class NavigationViewModelImpl(
 ) : BaseViewModel<NavigationViewModel.Router>(dependencies), NavigationViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
     private val mCartFlow: Flow<Cart>
-        get() = cartFlow.flow
+        get() = cartFlow.subscribe()
 
     override val selectedTabLiveData = MutableLiveData(NavigationViewModel.Tab.HOME)
     override val dialogLiveData = MutableLiveData<NavigationViewModel.Dialog?>()
@@ -46,16 +47,27 @@ class NavigationViewModelImpl(
         }
     }
 
+    override fun onError(context: CoroutineContext, error: Throwable) {
+        when (error) {
+            is CartFlow.EmptyCartException -> return
+            else -> super.onError(context, error)
+        }
+    }
+
     override fun onTabPressed(tab: NavigationViewModel.Tab) {
         selectedTabLiveData.postValue(tab)
     }
 
-    private suspend fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
-        // TODO: make cart and favorites syncing parallel
-        syncCart()
+    private fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
-            AuthPreferences.AuthType.NONE -> navigateTo(NavigationViewModel.Router.AuthScreen)
-            AuthPreferences.AuthType.AUTHORIZED -> syncFavorites()
+            AuthPreferences.AuthType.NONE -> launch {
+                navigateTo(NavigationViewModel.Router.AuthScreen(true))
+            }
+            AuthPreferences.AuthType.AUTHORIZED -> launch {
+                // TODO: make cart and favorites syncing parallel
+                syncCart()
+                syncFavorites()
+            }
             else -> Unit
         }
     }
