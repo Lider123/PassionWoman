@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
+import android.content.Context
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -9,14 +9,17 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import ru.babaetskv.passionwoman.data.Filters
+import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.utils.transformList
 import java.util.*
 
 class CommonApiImpl(
-    private val moshi: Moshi,
-    private val assetManager: AssetManager
-) : BaseApiImpl(), CommonApi {
+    context: Context,
+    private val database: PassionWomanDatabase,
+    moshi: Moshi,
+) : BaseApiImpl(context, moshi), CommonApi {
     private val popularProductsCache = mutableListOf<ProductModel>()
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()
@@ -29,17 +32,18 @@ class CommonApiImpl(
 
     override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.CATEGORIES, moshi)
+        return@withContext database.categoryDao.getAll()
+            .transformList()
     }
 
     override suspend fun getPromotions(): List<PromotionModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.PROMOTIONS, moshi)
+        return@withContext loadListFromAsset(AssetFile.PROMOTIONS)
     }
 
     override suspend fun getStories(): List<StoryModel> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.STORIES, moshi)
+        return@withContext loadListFromAsset(AssetFile.STORIES)
     }
 
     override suspend fun getProducts(
@@ -75,7 +79,7 @@ class CommonApiImpl(
                 }
             }
             val availableFilters = mutableListOf<JSONObject>().apply {
-                addAll(loadArrayOfJsonFromAsset(assetManager, AssetFile.FILTERS_COMMON))
+                addAll(loadArrayOfJsonFromAsset(AssetFile.FILTERS_COMMON))
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
             return@withContext products.let { result ->
@@ -105,7 +109,7 @@ class CommonApiImpl(
         val favoriteIds = ids.split(",").toSet()
         return CategoryProducts.values()
             .flatMap<CategoryProducts, ProductModel> {
-                loadListFromAsset(assetManager, it.assetFile, moshi)
+                loadListFromAsset(it.assetFile)
             }
             .filter { favoriteIds.contains(it.id) }
     }
@@ -113,21 +117,22 @@ class CommonApiImpl(
     override suspend fun getPopularBrands(count: Int): List<BrandModel> =
         withContext(Dispatchers.IO) {
             delay(DELAY_LOADING)
-            return@withContext loadListFromAsset<BrandModel>(assetManager, AssetFile.BRANDS, moshi)
-                .take(count)
+            // TODO: sort brands by number of occurrences desc
+            return@withContext database.brandDao.getPopularBrands(count)
+                .transformList()
         }
 
     override suspend fun getProduct(productId: String): ProductModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         return@withContext CategoryProducts.values()
             .flatMap<CategoryProducts, ProductModel> {
-                loadListFromAsset(assetManager, it.assetFile, moshi)
+                loadListFromAsset(it.assetFile)
             }
             .find { it.id == productId } ?: throw getNotFoundException("Product not found")
     }
 
     private fun getCategoryProducts(category: CategoryProducts): List<ProductModel> =
-        loadListFromAsset(assetManager, category.assetFile, moshi)
+        loadListFromAsset(category.assetFile)
 
     private fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
         getAllProducts(null).let {
@@ -158,7 +163,7 @@ class CommonApiImpl(
             cache
         } else {
             CategoryProducts.values().asList()
-                .flatMap { loadListFromAsset<ProductModel>(assetManager, it.assetFile, moshi) }
+                .flatMap { loadListFromAsset<ProductModel>(it.assetFile) }
                 .shuffled()
                 .also {
                     cache?.addAll(it)

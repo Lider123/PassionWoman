@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
+import android.content.Context
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -8,18 +8,21 @@ import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
+import ru.babaetskv.passionwoman.domain.utils.transform
 import java.util.*
 import kotlin.random.Random
 
 // TODO: add token check
 class AuthApiImpl(
-    private val moshi: Moshi,
-    private val assetManager: AssetManager,
+    context: Context,
+    private val database: PassionWomanDatabase,
+    moshi: Moshi,
     private val dateTimeConverter: DateTimeConverter
-) : BaseApiImpl(), AuthApi {
+) : BaseApiImpl(context, moshi), AuthApi {
     private var profileMock: ProfileModel? = null
     private var favoriteIdsMock: List<String>? = null
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
@@ -32,7 +35,8 @@ class AuthApiImpl(
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         return@withContext if (profileMock == null) {
-            loadObjectFromAsset<ProfileModel>(assetManager, AssetFile.PROFILE, moshi)
+            database.userDao.getProfile()
+                .transform()
                 .also { profileMock = it }
         } else profileMock!!
     }
@@ -50,7 +54,7 @@ class AuthApiImpl(
     override suspend fun getFavoriteIds(): List<String> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         return@withContext if (favoriteIdsMock == null) {
-            loadListFromAsset<String>(assetManager, AssetFile.FAVORITE_IDS, moshi)
+            loadListFromAsset<String>(AssetFile.FAVORITE_IDS)
                 .also { favoriteIdsMock = it }
         } else favoriteIdsMock!!
     }

@@ -1,18 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        adapter_delegates_version = "4.3.0"
-        cicerone_version = "7.0"
-        coroutines_version = "1.5.2"
-        glide_version = "4.12.0"
         jacoco_version = '0.8.6'
-        koin_version = "3.1.5"
         kotlin_version = "1.6.10"
-        kotpref_version = "2.13.1"
-        lifecycle_version = "2.4.1"
-        moshi_version = "1.12.0"
-        okhttp_version = "4.9.1"
-        retrofit_version = "2.9.0"
     }
     repositories {
         google()

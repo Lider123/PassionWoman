@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
+import android.content.Context
 import android.content.res.AssetManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -11,33 +12,20 @@ import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 
-abstract class BaseApiImpl {
+abstract class BaseApiImpl(
+    context: Context,
+    protected val moshi: Moshi
+) {
+    protected val assetManager: AssetManager = context.assets
 
-    protected inline fun <reified T> loadListFromAsset(
-        assetManager: AssetManager,
-        assetFile: AssetFile,
-        moshi: Moshi
-    ): List<T> {
+    protected inline fun <reified T> loadListFromAsset(assetFile: AssetFile): List<T> {
         val json = assetManager.open(assetFile.fileName).bufferedReader().use { it.readText() }
         val listType = Types.newParameterizedType(List::class.java, T::class.java)
         val adapter: JsonAdapter<List<T>> = moshi.adapter(listType)
         return adapter.fromJson(json) ?: emptyList()
     }
 
-    protected inline fun <reified T> loadObjectFromAsset(
-        assetManager: AssetManager,
-        assetFile: AssetFile,
-        moshi: Moshi
-    ): T {
-        val json = assetManager.open(assetFile.fileName).bufferedReader().use { it.readText() }
-        val adapter: JsonAdapter<T> = moshi.adapter(T::class.java)
-        return adapter.fromJson(json)!!
-    }
-
-    protected fun loadArrayOfJsonFromAsset(
-        assetManager: AssetManager,
-        assetFile: AssetFile
-    ): List<JSONObject> {
+    protected fun loadArrayOfJsonFromAsset(assetFile: AssetFile): List<JSONObject> {
         val json = assetManager.open(assetFile.fileName).bufferedReader().use { it.readText() }
         return JSONArray(json).let {
             val values = mutableListOf<JSONObject>()
@@ -66,10 +54,7 @@ abstract class BaseApiImpl {
     protected enum class AssetFile(
         val fileName: String
     ) {
-        CATEGORIES("categories.json"),
-        BRANDS("brands.json"),
         PROMOTIONS("promotions.json"),
-        PROFILE("profile.json"),
         STORIES("stories.json"),
         FILTERS_COMMON("filters_common.json"),
         PRODUCTS_BRA("products_bra.json"),
