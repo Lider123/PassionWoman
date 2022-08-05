@@ -12,7 +12,7 @@ data class CartModel(
     @Json(name = "total") val total: Float
 ) : Transformable<Unit, Cart> {
 
-    override fun transform(params: Unit): Cart =
+    override suspend fun transform(params: Unit): Cart =
         Cart(
             items = items.transformList(),
             price = Price(price),

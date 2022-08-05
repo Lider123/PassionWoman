@@ -43,7 +43,7 @@ interface NavigationViewModel : IViewModel {
         object AuthScreen : Router()
 
         data class ProductScreen(
-            val productId: String
+            val productId: Int
         ) : Router()
     }
 }

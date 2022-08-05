@@ -8,12 +8,12 @@ import ru.babaetskv.passionwoman.domain.usecase.AddToFavoritesUseCase
 class AddToFavoritesInteractor(
     private val favoritesPreferences: FavoritesPreferences,
     private val stringProvider: StringProvider
-) : BaseInteractor<String, Unit>(), AddToFavoritesUseCase {
+) : BaseInteractor<Int, Unit>(), AddToFavoritesUseCase {
 
     override fun getUseCaseException(cause: Exception): Exception =
         AddToFavoritesUseCase.AddToFavoritesException(cause, stringProvider)
 
-    override suspend fun run(params: String) {
+    override suspend fun run(params: Int) {
         favoritesPreferences.putFavoriteId(params)
     }
 }

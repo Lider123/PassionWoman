@@ -8,5 +8,8 @@ import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
 interface CategoryDao {
 
     @Query("SELECT * FROM categories")
-    fun getAll(): List<CategoryEntity>
+    suspend fun getAll(): List<CategoryEntity>
+
+    @Query("SELECT * FROM categories WHERE id = :categoryId")
+    suspend fun getById(categoryId: Int): CategoryEntity?
 }

@@ -10,7 +10,7 @@ data class PromotionModel(
     @Json(name = "image") val banner: String
 ) : Transformable<Unit, Promotion> {
 
-    override fun transform(params: Unit): Promotion =
+    override suspend fun transform(params: Unit): Promotion =
         Promotion(
             id = id,
             banner = Image(banner)

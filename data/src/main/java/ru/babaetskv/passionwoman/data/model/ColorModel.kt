@@ -5,21 +5,21 @@ import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class ColorModel(
-    @Json(name = "code") val code: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "uiName") val uiName: String,
     @Json(name = "hex") val hex: String
 ) : Transformable<Unit, Color> {
 
     constructor(color: Color) :
         this(
-            code = color.code,
+            id = color.id,
             uiName = color.uiName,
             hex = color.hex
         )
 
-    override fun transform(params: Unit): Color =
+    override suspend fun transform(params: Unit): Color =
         Color(
-            code = code,
+            id = id,
             uiName = uiName,
             hex = hex
         )

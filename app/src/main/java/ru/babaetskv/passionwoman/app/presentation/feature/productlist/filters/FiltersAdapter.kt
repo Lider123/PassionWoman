@@ -93,7 +93,7 @@ class FiltersAdapter(
         private fun onColorClick(item: SelectableItem<Color>) {
             this.item?.let { filter ->
                 val newValues = filter.values.map {
-                    if (it.value.code == item.value.code) item else it
+                    if (it.value.id == item.value.id) item else it
                 }
                 Filter.ColorMulti(
                     code = filter.code,

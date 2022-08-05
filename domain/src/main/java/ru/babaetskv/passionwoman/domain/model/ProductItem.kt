@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ProductColor(
+data class ProductItem(
     val color: Color,
     val sizes: List<ProductSize>,
     val images: List<Image>

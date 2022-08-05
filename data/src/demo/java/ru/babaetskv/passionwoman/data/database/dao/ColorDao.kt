@@ -9,4 +9,7 @@ interface ColorDao {
 
     @Query("SELECT * FROM colors")
     suspend fun getAll(): List<ColorEntity>
+
+    @Query("SELECT * FROM colors WHERE id = :colorId")
+    suspend fun getById(colorId: Int): ColorEntity
 }

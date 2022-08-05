@@ -16,7 +16,7 @@ class CatalogGatewayImpl(
         api.getCategories()
 
     override suspend fun getProducts(
-        categoryId: String?,
+        categoryId: Int?,
         query: String,
         limit: Int,
         offset: Int,
@@ -38,11 +38,11 @@ class CatalogGatewayImpl(
         api.getPopularBrands(count)
 
     override suspend fun getFavorites(
-        favoriteIds: Collection<String>
+        favoriteIds: Collection<Int>
     ): List<Transformable<Unit, Product>> =
         api.getProductsByIds(favoriteIds.joinToString(","))
 
-    override suspend fun getProduct(productId: String): Transformable<Unit, Product> =
+    override suspend fun getProduct(productId: Int): Transformable<Unit, Product> =
         api.getProduct(productId)
 
     override suspend fun getStories(): List<Transformable<Unit, Story>> =

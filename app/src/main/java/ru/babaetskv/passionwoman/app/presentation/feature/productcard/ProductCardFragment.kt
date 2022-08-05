@@ -169,14 +169,14 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
 
     @Parcelize
     data class Args(
-        val productId: String,
+        val productId: Int,
         val isSeparate: Boolean
     ) : Parcelable
 
     companion object {
 
         fun create(
-            productId: String,
+            productId: Int,
             isSeparate: Boolean = true
         ) = ProductCardFragment().withArgs(Args(productId, isSeparate))
     }

@@ -13,9 +13,9 @@ data class CategoryEntity(
     @ColumnInfo(name = "image_path") val imagePath: String
 ) : Transformable<Unit, CategoryModel> {
 
-    override fun transform(params: Unit): CategoryModel =
+    override suspend fun transform(params: Unit): CategoryModel =
         CategoryModel(
-            id = id.toString(),
+            id = id,
             name = name,
             image = imagePath
         )

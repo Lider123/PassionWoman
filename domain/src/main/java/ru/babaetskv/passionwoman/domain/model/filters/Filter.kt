@@ -178,7 +178,7 @@ sealed class Filter(
             get() = values.any { it.isSelected }
 
         override fun toJsonObject(): JSONObject? =
-            values.filter { it.isSelected }.map { it.value.code }.let {
+            values.filter { it.isSelected }.map { it.value.id }.let {
                 if (it.isEmpty()) return@let null
 
                 return@let createBaseJsonObject().apply {
@@ -241,6 +241,7 @@ sealed class Filter(
     }
 
     companion object {
+        const val PARAM_ID = "id"
         const val PARAM_CODE = "code"
         const val PARAM_PRIORITY = "priority"
         const val PARAM_VALUES = "values"

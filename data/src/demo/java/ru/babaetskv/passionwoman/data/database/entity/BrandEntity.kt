@@ -13,9 +13,9 @@ data class BrandEntity(
     @ColumnInfo(name = "name") val name: String
 ) : Transformable<Unit, BrandModel> {
 
-    override fun transform(params: Unit): BrandModel =
+    override suspend fun transform(params: Unit): BrandModel =
         BrandModel(
-            id = id.toString(),
+            id = id,
             logoPath = logoPath,
             name = name
         )

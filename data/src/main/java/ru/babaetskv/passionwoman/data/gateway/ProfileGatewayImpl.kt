@@ -31,9 +31,9 @@ class ProfileGatewayImpl(
         }
     }
 
-    override suspend fun getFavoriteIds(): List<String> = api.getFavoriteIds()
+    override suspend fun getFavoriteIds(): List<Int> = api.getFavoriteIds()
 
-    override suspend fun setFavoriteIds(ids: List<String>) {
+    override suspend fun setFavoriteIds(ids: List<Int>) {
         api.setFavoriteIds(ids)
     }
 

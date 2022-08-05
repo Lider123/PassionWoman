@@ -8,23 +8,23 @@ import java.util.*
 
 class FavoritesPreferencesImpl : FavoritesPreferences {
     private val actionsChannel = Channel<FavoritesPreferences.Action?>(Channel.RENDEZVOUS)
-    private val favoriteIds = LinkedList<String>()
+    private val favoriteIds = LinkedList<Int>()
 
     override val favoritesUpdatesFlow: Flow<FavoritesPreferences.Action?>
         get() = actionsChannel.receiveAsFlow()
 
-    override fun isFavorite(id: String): Boolean = favoriteIds.contains(id)
+    override fun isFavorite(id: Int): Boolean = favoriteIds.contains(id)
 
-    override fun putFavoriteId(id: String) {
+    override fun putFavoriteId(id: Int) {
         if (favoriteIds.contains(id)) return
 
         favoriteIds.add(0, id)
         actionsChannel.offer(FavoritesPreferences.Action.Put(id))
     }
 
-    override fun getFavoriteIds(): Collection<String> = favoriteIds
+    override fun getFavoriteIds(): Collection<Int> = favoriteIds
 
-    override fun setFavoriteIds(ids: Collection<String>) {
+    override fun setFavoriteIds(ids: Collection<Int>) {
         favoriteIds.run {
             clear()
             addAll(ids)
@@ -32,15 +32,15 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
         actionsChannel.offer(FavoritesPreferences.Action.Set)
     }
 
-    override fun setFavoriteIds(vararg ids: String) {
+    override fun setFavoriteIds(vararg ids: Int) {
         favoriteIds.run {
             clear()
-            addAll(ids)
+            addAll(ids.toList())
         }
         actionsChannel.offer(FavoritesPreferences.Action.Set)
     }
 
-    override fun deleteFavoriteId(id: String) {
+    override fun deleteFavoriteId(id: Int) {
         if (!favoriteIds.contains(id)) return
 
         favoriteIds.run {

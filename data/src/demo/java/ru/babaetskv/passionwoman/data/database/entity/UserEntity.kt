@@ -15,7 +15,7 @@ data class UserEntity(
     @ColumnInfo(name = "avatar") val avatar: String?
 ) : Transformable<Unit, ProfileModel> {
 
-    override fun transform(params: Unit): ProfileModel =
+    override suspend fun transform(params: Unit): ProfileModel =
         ProfileModel(
             id = id.toString(),
             name = name.orEmpty(),

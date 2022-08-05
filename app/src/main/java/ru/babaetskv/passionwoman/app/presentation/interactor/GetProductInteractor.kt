@@ -10,11 +10,11 @@ import ru.babaetskv.passionwoman.domain.utils.transform
 class GetProductInteractor(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider
-) : BaseInteractor<String, Product>(), GetProductUseCase {
+) : BaseInteractor<Int, Product>(), GetProductUseCase {
 
     override fun getUseCaseException(cause: Exception): Exception =
         GetProductUseCase.GetProductException(cause, stringProvider)
 
-    override suspend fun run(params: String): Product =
+    override suspend fun run(params: Int): Product =
         catalogGateway.getProduct(params).transform()
 }

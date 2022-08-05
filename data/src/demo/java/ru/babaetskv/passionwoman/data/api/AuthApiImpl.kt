@@ -24,7 +24,7 @@ class AuthApiImpl(
     private val dateTimeConverter: DateTimeConverter
 ) : BaseApiImpl(context, moshi), AuthApi {
     private var profileMock: ProfileModel? = null
-    private var favoriteIdsMock: List<String>? = null
+    private var favoriteIdsMock: List<Int> = emptyList()
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
     private var cartMock: CartModel = CartModel(
         items = emptyList(),
@@ -51,15 +51,12 @@ class AuthApiImpl(
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<String> = withContext(Dispatchers.IO) {
+    override suspend fun getFavoriteIds(): List<Int> = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
-        return@withContext if (favoriteIdsMock == null) {
-            loadListFromAsset<String>(AssetFile.FAVORITE_IDS)
-                .also { favoriteIdsMock = it }
-        } else favoriteIdsMock!!
+        return@withContext favoriteIdsMock
     }
 
-    override suspend fun setFavoriteIds(ids: List<String>) = withContext(Dispatchers.IO) {
+    override suspend fun setFavoriteIds(ids: List<Int>) = withContext(Dispatchers.IO) {
         delay(DELAY_LOADING)
         favoriteIdsMock = ids
     }

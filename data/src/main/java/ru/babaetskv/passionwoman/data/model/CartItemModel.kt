@@ -6,7 +6,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.utils.transform
 
 data class CartItemModel(
-    @Json(name = "productId") val productId: String,
+    @Json(name = "productId") val productId: Int,
     @Json(name = "preview") val preview: String,
     @Json(name = "selectedColor") val selectedColor: ColorModel,
     @Json(name = "selectedSize") val selectedSize: String,
@@ -28,7 +28,7 @@ data class CartItemModel(
             count = item.count
         )
 
-    override fun transform(params: Unit): CartItem =
+    override suspend fun transform(params: Unit): CartItem =
         CartItem(
             productId = productId,
             preview = Image(preview),

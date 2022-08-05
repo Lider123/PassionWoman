@@ -14,12 +14,12 @@ class AddToCartViewModelImpl(
     private val addToCartUseCase: AddToCartUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<AddToCartViewModel.Router>(dependencies), AddToCartViewModel {
-    private var selectedProductColor: ProductColor = args.product.colors[0]
+    private var selectedProductItem: ProductItem = args.product.items[0]
     private var selectedProductSize: ProductSize? = availableProductSizes.getOrNull(0)
     private val product: Product
         get() = args.product
     private val availableProductSizes: List<ProductSize>
-        get() = selectedProductColor.sizes.filter(ProductSize::isAvailable)
+        get() = selectedProductItem.sizes.filter(ProductSize::isAvailable)
 
     override val addToCartItemsLiveData = MutableLiveData<List<AddToCartItem>>(emptyList())
 
@@ -28,7 +28,7 @@ class AddToCartViewModelImpl(
     }
 
     override fun onColorPressed(color: SelectableItem<Color>) {
-        selectedProductColor = product.colors.find { it.color.code == color.value.code } ?: return
+        selectedProductItem = product.items.find { it.color.id == color.value.id } ?: return
 
         selectedProductSize = availableProductSizes.getOrNull(0) ?: ProductSize.EMPTY
         updateItems()
@@ -45,7 +45,7 @@ class AddToCartViewModelImpl(
         val cartItem = CartItem(
             product = product,
             selectedSize = selectedSize,
-            selectedColor = selectedProductColor.color
+            selectedColor = selectedProductItem.color
         )
         launchWithLoading {
             addToCartUseCase.execute(cartItem)
@@ -59,19 +59,19 @@ class AddToCartViewModelImpl(
     private fun updateItems() {
         val newCartItem = CartItem(
             product = product,
-            selectedColor = selectedProductColor.color,
+            selectedColor = selectedProductItem.color,
             selectedSize = selectedProductSize ?: ProductSize.EMPTY
         )
-        val colors = product.colors.map {
+        val colors = product.items.map {
             SelectableItem(it.color,
-                isSelected = it.color.code == selectedProductColor.color.code
+                isSelected = it.color.id == selectedProductItem.color.id
             )
         }
         val items = mutableListOf(
             AddToCartItem.ProductDescription(newCartItem),
             AddToCartItem.Colors(colors)
         )
-        if (selectedProductColor.sizes.any(ProductSize::isAvailable)) {
+        if (selectedProductItem.sizes.any(ProductSize::isAvailable)) {
             val sizes = availableProductSizes.map {
                 SelectableItem(it,
                     isSelected = it.value == selectedProductSize?.value
@@ -79,7 +79,7 @@ class AddToCartViewModelImpl(
             }
             items.add(AddToCartItem.Sizes(sizes))
         }
-        val productIsAvailable = selectedProductColor.sizes.any { it.isAvailable }
+        val productIsAvailable = selectedProductItem.sizes.any { it.isAvailable }
         items.add(AddToCartItem.Confirmation(productIsAvailable))
         addToCartItemsLiveData.postValue(items)
     }

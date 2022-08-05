@@ -53,8 +53,8 @@ class ProductCardViewModelImpl(
 
     override fun onColorItemPressed(item: SelectableItem<Color>) {
         val selectedProductColor = productLiveData.value
-            ?.colors
-            ?.find { it.color.code == item.value.code }
+            ?.items
+            ?.find { it.color.id == item.value.id }
             ?: return
 
         colorsLiveData.value
@@ -128,10 +128,10 @@ class ProductCardViewModelImpl(
         launchWithLoading {
             val product = getProductUseCase.execute(args.productId)
             productLiveData.postValue(product)
-            colorsLiveData.postValue(product.colors.mapIndexed { index, value ->
+            colorsLiveData.postValue(product.items.mapIndexed { index, value ->
                 SelectableItem(value.color, index == 0)
             })
-            val firstColor = product.colors.first()
+            val firstColor = product.items.first()
             firstColor.images
                 .map(ProductImageItem::fromImage)
                 .ifEmpty { listOf(ProductImageItem.EmptyPlaceholder) }

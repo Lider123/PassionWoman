@@ -53,7 +53,7 @@ class FilterColorsAdapter(
         override fun areItemsTheSame(
             oldItem: SelectableItem<Color>,
             newItem: SelectableItem<Color>
-        ): Boolean = oldItem.value.code == newItem.value.code
+        ): Boolean = oldItem.value.id == newItem.value.id
 
         override fun areContentsTheSame(
             oldItem: SelectableItem<Color>,

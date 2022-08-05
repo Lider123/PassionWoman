@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.domain.utils.transform
 import ru.babaetskv.passionwoman.domain.utils.transformList
 
 data class ProductModel(
-    @Json(name = "id") val id: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "category") val category: CategoryModel,
     @Json(name = "name") val name: String,
     @Json(name = "description") val description: String?,
@@ -19,10 +19,10 @@ data class ProductModel(
     @Json(name = "rating") val rating: Float,
     @Json(name = "brand") val brand: BrandModel?,
     @Json(name = "additional_info") val additionalInfo: Map<String, List<String>>?,
-    @Json(name = "colors") val colors: List<ProductColorModel>
+    @Json(name = "items") val items: List<ProductItemModel>
 ) : Transformable<Unit, Product> {
 
-    override fun transform(params: Unit): Product =
+    override suspend fun transform(params: Unit): Product =
         Product(
             id = id,
             category = category.transform(),
@@ -33,7 +33,6 @@ data class ProductModel(
             priceWithDiscount = Price(priceWithDiscount),
             rating = rating,
             brand = brand?.transform(),
-            additionalInfo = additionalInfo.orEmpty(),
-            colors = colors.transformList()
+            items = items.transformList()
         )
 }

@@ -10,7 +10,7 @@ interface ProfileGateway {
     suspend fun getProfile(): Transformable<Unit, Profile>
     suspend fun updateProfile(profile: Profile)
     suspend fun updateAvatar(imageUri: Uri)
-    suspend fun getFavoriteIds(): List<String>
-    suspend fun setFavoriteIds(ids: List<String>)
+    suspend fun getFavoriteIds(): List<Int>
+    suspend fun setFavoriteIds(ids: List<Int>)
     suspend fun getOrders(): List<Transformable<DateTimeConverter, Order>> // TODO: add pagination
 }

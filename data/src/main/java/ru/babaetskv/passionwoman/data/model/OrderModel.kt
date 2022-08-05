@@ -13,7 +13,7 @@ data class OrderModel(
     @Json(name = "status") val status: String
 ) : Transformable<DateTimeConverter, Order> {
 
-    override fun transform(params: DateTimeConverter): Order =
+    override suspend fun transform(params: DateTimeConverter): Order =
         Order(
             id = id,
             createdAt = params.parse(createdAt, DateTimeConverter.Format.API),

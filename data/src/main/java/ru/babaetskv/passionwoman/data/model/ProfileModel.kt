@@ -22,7 +22,7 @@ data class ProfileModel(
             avatar = profile.avatar?.toString()
         )
 
-    override fun transform(params: Unit): Profile =
+    override suspend fun transform(params: Unit): Profile =
         Profile(
             id = id,
             name = name,

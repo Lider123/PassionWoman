@@ -14,7 +14,7 @@ data class ProductsPagedResponseModel(
     @Json(name = "availableFilters") val availableFilters: List<JSONObject>
 ) : Transformable<StringProvider, ProductsPagedResponse> {
 
-    override fun transform(params: StringProvider): ProductsPagedResponse =
+    override suspend fun transform(params: StringProvider): ProductsPagedResponse =
         ProductsPagedResponse(
             items = products.transformList(),
             total = total,
