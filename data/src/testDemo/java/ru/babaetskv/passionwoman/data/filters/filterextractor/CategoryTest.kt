@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.data.filters.filtermodel
+package ru.babaetskv.passionwoman.data.filters.filterextractor
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -16,17 +16,24 @@ import org.mockito.kotlin.whenever
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.CategoryDao
 import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
-import ru.babaetskv.passionwoman.data.filters.FilterModel
+import ru.babaetskv.passionwoman.data.filters.FilterExtractor
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CategoryTest {
     @Mock
-    lateinit var databaseMock: PassionWomanDatabase
+    private lateinit var databaseMock: PassionWomanDatabase
     @Mock
-    lateinit var categoryDaoMock: CategoryDao
+    private lateinit var categoryDaoMock: CategoryDao
 
-    private val filterModel = FilterModel.Category
+    private val filterModel = FilterExtractor.Category()
+
+    private fun createCategory(id: Int) =
+        CategoryEntity(
+            id = id,
+            name = "Category $id",
+            imagePath = "category_${id}_image_path"
+        )
 
     @Before
     fun before() = runTest {
@@ -35,8 +42,8 @@ class CategoryTest {
     }
 
     @Test
-    fun toJson_returnsBaseValues() = runTest {
-        val result = filterModel.toJson(databaseMock)
+    fun extractAsJson_returnsBaseValues() = runTest {
+        val result = filterModel.extractAsJson(databaseMock)
 
         assertEquals("multi", result.getString("type"))
         assertEquals("category", result.getString("code"))
@@ -45,37 +52,33 @@ class CategoryTest {
     }
 
     @Test
-    fun toJson_callsCategoryDao() = runTest {
-        filterModel.toJson(databaseMock)
+    fun extractAsJson_callsCategoryDao() = runTest {
+        filterModel.extractAsJson(databaseMock)
 
         verify(categoryDaoMock, times(1)).getAll()
     }
 
     @Test
-    fun toJson_returnsEmptyValues_whenDaoIsEmpty() = runTest {
-        val result = filterModel.toJson(databaseMock)
+    fun extractAsJson_returnsEmptyValues_whenDaoIsEmpty() = runTest {
+        val result = filterModel.extractAsJson(databaseMock)
 
         assertEquals("[]", result.getJSONArray("values").toString())
     }
 
     @Test
-    fun toJson_returnsCategories_whenDaoIsNotEmpty() = runTest {
-        val categoryEntity = CategoryEntity(
-            id = 1,
-            name = "Category1",
-            imagePath = "category_1_image"
-        )
+    fun extractAsJson_returnsCategories_whenDaoIsNotEmpty() = runTest {
+        val categoryEntity = createCategory(1)
         whenever(categoryDaoMock.getAll()).doReturn(listOf(categoryEntity))
         val expectedValuesJson = """
             [
                 {
-                    "id": 1,
-                    "uiName": "Category1"
+                    "id": ${categoryEntity.id},
+                    "uiName": "${categoryEntity.name}"
                 }
             ]
         """.let(::JSONArray)
 
-        val result = filterModel.toJson(databaseMock)
+        val result = filterModel.extractAsJson(databaseMock)
 
         assertEquals(expectedValuesJson.toString(), result.getJSONArray("values").toString())
     }

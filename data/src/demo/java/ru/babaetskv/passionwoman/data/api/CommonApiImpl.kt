@@ -77,7 +77,8 @@ class CommonApiImpl(
             }
             val availableFilters = mutableListOf<JSONObject>().apply {
                 FilterResolver.values().forEach {
-                    it.filterModel.toJson(database)
+                    it.getFilterExtractor.invoke()
+                        .extractAsJson(database)
                         .let(::add)
                 }
             }.selectAvailableFilters(products)

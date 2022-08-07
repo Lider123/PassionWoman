@@ -4,15 +4,17 @@ import org.json.JSONObject
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
 
-sealed class FilterModel {
+sealed class FilterExtractor(
+    private val filterResolver: FilterResolver
+) {
+    private val uiName: String = filterResolver.uiName
+
     protected abstract val type: FilterType
-    protected abstract val filterResolver: FilterResolver
-    protected abstract val uiName: String
     protected abstract val priority: Int
 
     protected abstract suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase)
 
-    suspend fun toJson(database: PassionWomanDatabase): JSONObject =
+    suspend fun extractAsJson(database: PassionWomanDatabase): JSONObject =
         JSONObject().apply {
             put(Filters.PARAM_TYPE, type.code)
             put(Filters.PARAM_CODE, filterResolver.code)
@@ -21,10 +23,8 @@ sealed class FilterModel {
             putFilterValues(this, database)
         }
 
-    object Category : FilterModel() {
+    class Category : FilterExtractor(FilterResolver.CATEGORY) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.CATEGORY
-        override val uiName: String = "Categories"
         override val priority: Int = 5
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -38,10 +38,8 @@ sealed class FilterModel {
         }
     }
 
-    object Season : FilterModel() {
+    class Season : FilterExtractor(FilterResolver.SEASON) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.SEASON
-        override val uiName: String = "Season"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -55,10 +53,8 @@ sealed class FilterModel {
         }
     }
 
-    object Style : FilterModel() {
+    class Style : FilterExtractor(FilterResolver.STYLE) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.STYLE
-        override val uiName: String = "Style"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -72,10 +68,8 @@ sealed class FilterModel {
         }
     }
 
-    object Country : FilterModel() {
+    class Country : FilterExtractor(FilterResolver.COUNTRY) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.COUNTRY
-        override val uiName: String = "Country"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -89,10 +83,8 @@ sealed class FilterModel {
         }
     }
 
-    object Material : FilterModel() {
+    class Material : FilterExtractor(FilterResolver.MATERIAL) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.MATERIAL
-        override val uiName: String = "Material"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -106,10 +98,8 @@ sealed class FilterModel {
         }
     }
 
-    object Brand : FilterModel() {
+    class Brand : FilterExtractor(FilterResolver.BRANDS) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.BRANDS
-        override val uiName: String = "Brands"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -123,10 +113,8 @@ sealed class FilterModel {
         }
     }
 
-    object Size : FilterModel() {
+    class Size : FilterExtractor(FilterResolver.SIZES) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.SIZES
-        override val uiName: String = "Sizes"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -140,10 +128,8 @@ sealed class FilterModel {
         }
     }
 
-    object Price : FilterModel() {
+    class Price : FilterExtractor(FilterResolver.PRICE) {
         override val type: FilterType = FilterType.RANGE
-        override val filterResolver: FilterResolver = FilterResolver.PRICE
-        override val uiName: String = "Price"
         override val priority: Int = 2
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -154,10 +140,8 @@ sealed class FilterModel {
         }
     }
 
-    object Color : FilterModel() {
+    class Color : FilterExtractor(FilterResolver.COLOR) {
         override val type: FilterType = FilterType.COLOR
-        override val filterResolver: FilterResolver = FilterResolver.COLOR
-        override val uiName: String = "Color"
         override val priority: Int = 3
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -172,10 +156,8 @@ sealed class FilterModel {
         }
     }
 
-    object Model : FilterModel() {
+    class Extractor : FilterExtractor(FilterResolver.MODEL) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.MODEL
-        override val uiName: String = "Model"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
@@ -189,10 +171,8 @@ sealed class FilterModel {
         }
     }
 
-    object Type : FilterModel() {
+    class Type : FilterExtractor(FilterResolver.TYPE) {
         override val type: FilterType = FilterType.MULTI
-        override val filterResolver: FilterResolver = FilterResolver.TYPE
-        override val uiName: String = "Type"
         override val priority: Int = 4
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
