@@ -30,7 +30,7 @@ abstract class BaseApiImpl(
 
     protected suspend fun <T> processRequest(
         delayMs: Long = DELAY_LOADING,
-        block: () -> T
+        block: suspend () -> T
     ): T = withContext(Dispatchers.IO) {
         delay(delayMs)
         doBeforeRequest()

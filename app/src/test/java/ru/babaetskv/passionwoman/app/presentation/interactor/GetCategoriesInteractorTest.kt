@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.interactor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -35,6 +36,12 @@ class GetCategoriesInteractorTest {
             image = "category_${id}_image"
         )
 
+    @Before
+    fun before() {
+        whenever(stringProvider.EMPTY_CATEGORIES_ERROR) doReturn "error"
+        whenever(stringProvider.GET_CATEGORIES_ERROR) doReturn "error"
+    }
+
     @Test
     fun execute_callsCatalogGateway() = runTest {
         whenever(catalogGatewayMock.getCategories()).doReturn(listOf(createCategoryTransformable(1)))
@@ -59,9 +66,8 @@ class GetCategoriesInteractorTest {
     }
 
     @Test
-    fun execute_throwsEmptyListException_whenCategoriesListIsEmpty() = runTest {
+    fun execute_throwsEmptyCategoriesException_whenCategoriesListIsEmpty() = runTest {
         whenever(catalogGatewayMock.getCategories()) doReturn emptyList()
-        whenever(stringProvider.EMPTY_CATEGORIES_ERROR) doReturn "error"
 
         runCatching {
             interactor.execute()
@@ -75,7 +81,6 @@ class GetCategoriesInteractorTest {
     @Test
     fun execute_throwsGetCategoriesException_whenCatchesException() = runTest {
         whenever(catalogGatewayMock.getCategories()) doThrow RuntimeException()
-        whenever(stringProvider.GET_CATEGORIES_ERROR) doReturn "error"
 
         runCatching {
             interactor.execute()

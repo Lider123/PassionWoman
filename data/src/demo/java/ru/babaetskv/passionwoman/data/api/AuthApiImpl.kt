@@ -19,8 +19,6 @@ class AuthApiImpl(
     context: Context,
     private val database: PassionWomanDatabase,
     moshi: Moshi,
-    private val moshi: Moshi,
-    private val assetManager: AssetManager,
     private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
 ) : BaseApiImpl(context, moshi), AuthApi {
@@ -59,7 +57,7 @@ class AuthApiImpl(
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<String> = processRequest {
+    override suspend fun getFavoriteIds(): List<Int> = processRequest {
         return@processRequest favoriteIdsMock
     }
 

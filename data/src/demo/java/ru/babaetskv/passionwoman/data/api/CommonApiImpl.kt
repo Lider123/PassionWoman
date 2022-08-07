@@ -116,7 +116,7 @@ class CommonApiImpl(
                 .transformList()
         }
 
-    override suspend fun getProduct(productId: String): ProductModel = processRequest {
+    override suspend fun getProduct(productId: Int): ProductModel = processRequest {
         return@processRequest database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
             ?: throw getNotFoundException("Product not found")

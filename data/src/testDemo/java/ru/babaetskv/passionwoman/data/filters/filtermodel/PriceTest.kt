@@ -8,10 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.ProductDao
 import ru.babaetskv.passionwoman.data.filters.FilterModel
@@ -33,6 +30,9 @@ class PriceTest {
 
     @Test
     fun toJson_callsProductDao() = runTest {
+        whenever(productDaoMock.getMinPrice()).doReturn(1f)
+        whenever(productDaoMock.getMaxPrice()).doReturn(10f)
+
         filterModel.toJson(databaseMock)
 
         verify(productDaoMock, times(1)).getMinPrice()

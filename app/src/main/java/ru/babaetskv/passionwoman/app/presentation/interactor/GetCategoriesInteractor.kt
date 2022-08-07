@@ -12,8 +12,8 @@ class GetCategoriesInteractor(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider
 ) : BaseInteractor<Unit, List<Category>>(), GetCategoriesUseCase {
-    override val emptyException: UseCaseException.EmptyData =
-        GetCategoriesUseCase.EmptyCategoriesException(stringProvider)
+    override val emptyException: UseCaseException.EmptyData
+        get() = GetCategoriesUseCase.EmptyCategoriesException(stringProvider)
 
     override fun transformException(cause: Exception): UseCaseException =
         GetCategoriesUseCase.GetCategoriesException(cause, stringProvider)

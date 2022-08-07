@@ -12,6 +12,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.LogOutUseCase
@@ -25,11 +26,13 @@ class LogOutInteractorTest {
     private lateinit var favoritesPrefsMock: FavoritesPreferences
     @Mock
     private lateinit var stringProviderMock: StringProvider
+    @Mock
+    private lateinit var cartFlowMock: CartFlow
     @InjectMocks
     private lateinit var interactor: LogOutInteractor
 
     @Before
-    fun beforeTest() {
+    fun before() {
         whenever(stringProviderMock.LOG_OUT_ERROR).doReturn("error")
     }
 
@@ -45,6 +48,13 @@ class LogOutInteractorTest {
         interactor.execute()
 
         verify(favoritesPrefsMock, times(1)).reset()
+    }
+
+    @Test
+    fun execute_clearsCartFlow() = runTest {
+        interactor.execute()
+
+        verify(cartFlowMock, times(1)).clear()
     }
 
     @Test

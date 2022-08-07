@@ -41,10 +41,11 @@ class GetProfileInteractorTest {
             whenever(mock.transform()) doReturn profileMock
         }
         whenever(profileGatewayMock.getProfile()) doReturn transformableMock
+        whenever(stringProviderMock.GET_PROFILE_ERROR) doReturn "error"
     }
 
     @Test
-    fun execute_callsAuthGateway(): Unit = runTest {
+    fun execute_callsProfileGateway(): Unit = runTest {
         interactor.execute()
 
         verify(profileGatewayMock, times(1)).getProfile()

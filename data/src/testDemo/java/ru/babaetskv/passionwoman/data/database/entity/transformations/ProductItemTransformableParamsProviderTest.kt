@@ -9,15 +9,13 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.ColorDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductImageDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductSizeDao
 import ru.babaetskv.passionwoman.data.database.entity.ColorEntity
+import ru.babaetskv.passionwoman.domain.utils.transform
 import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi
@@ -33,6 +31,13 @@ class ProductItemTransformableParamsProviderTest {
     lateinit var productSizeDaoMock: ProductSizeDao
     @InjectMocks
     lateinit var provider: ProductItemTransformableParamsProvider
+
+    private fun createColor(id: Int) =
+        ColorEntity(
+            id = id,
+            uiName = "color $id",
+            hex = "hex$id"
+        )
 
     @Before
     fun before() {
@@ -68,6 +73,8 @@ class ProductItemTransformableParamsProviderTest {
 
     @Test
     fun provideColor_callsColorDao() = runTest {
+        whenever(colorDaoMock.getById(any())).doReturn(createColor(1))
+
         provider.provideColor(1)
 
         verify(colorDaoMock, times(1)).getById(1)
@@ -75,16 +82,12 @@ class ProductItemTransformableParamsProviderTest {
 
     @Test
     fun provideColor_returnsColor_whenThereIsColorWithRequiredIdInTheDatabase() = runTest {
-        val colorEntity = ColorEntity(
-            id = 1,
-            uiName = "color 1",
-            hex = "hex1"
-        )
-        whenever(colorDaoMock.getById(1)).doReturn(colorEntity)
+        val color = createColor(1)
+        whenever(colorDaoMock.getById(1)).doReturn(color)
 
         val result = provider.provideColor(1)
 
-        assertEquals(colorEntity, result)
+        assertEquals(color.transform(), result)
     }
 
     @Test
@@ -103,6 +106,8 @@ class ProductItemTransformableParamsProviderTest {
 
     @Test
     fun provideSizes_callsProductSizeDao() = runTest {
+        whenever(productSizeDaoMock.getForProductItem(any())).doReturn(mock())
+
         provider.provideSizes(1)
 
         verify(productSizeDaoMock, times(1)).getForProductItem(1)
@@ -129,6 +134,8 @@ class ProductItemTransformableParamsProviderTest {
 
     @Test
     fun provideAvailableSizes_callsProductSizeDao() = runTest {
+        whenever(productSizeDaoMock.getAvailableForProductItem(any())).doReturn(mock())
+
         provider.provideAvailableSizes(1)
 
         verify(productSizeDaoMock, times(1)).getAvailableForProductItem(1)
