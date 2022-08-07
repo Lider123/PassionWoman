@@ -15,9 +15,8 @@ import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkActionException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<TRouterEvent : RouterEvent>(
@@ -70,7 +69,13 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
 
     override fun onStop() = Unit
 
-    override fun onErrorActionPressed() = Unit
+    override fun onErrorActionPressed(exception: Exception) {
+        if (exception is GatewayException.Unauthorized) {
+            launch {
+                routerEventChannel.send(RouterEvent.LogIn)
+            }
+        }
+    }
 
     override fun onBackPressed() {
         launch {
@@ -82,26 +87,54 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
 
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
-        if (error !is EmptyDataException && error.cause !is EmptyDataException) {
+        if ((error as? UseCaseException)?.isCritical != false) {
             error.printStackTrace()
             errorLogger.logException(error)
         }
-        when {
-            error is NetworkDataException && !error.dataIsOptional -> {
-                (error.cause as? EmptyDataException)?.let {
-                    errorLiveData.postValue(it)
-                } ?: errorLiveData.postValue(error)
-            }
-            error is EmptyDataException -> errorLiveData.postValue(error)
-            error is NetworkActionException -> {
-                notifier.newRequest(this, error.message)
-                    .sendError()
-            }
-            else -> {
-                notifier.newRequest(this, R.string.error_unknown)
-                    .sendError()
-            }
+        if (error !is UseCaseException) {
+            onUnknownException()
+            return
         }
+
+        when {
+            handleUnauthorizedException(error) -> return
+            error is UseCaseException.Data -> onDataException(error)
+            error is UseCaseException.EmptyData -> onEmptyDataException(error)
+            error is UseCaseException.Action -> onNetworkActionException(error)
+            else -> onUnknownException()
+        }
+    }
+
+    private fun onEmptyDataException(exception: UseCaseException.EmptyData) {
+        errorLiveData.postValue(exception)
+    }
+
+    private fun onDataException(exception: UseCaseException.Data) {
+        errorLiveData.postValue(exception)
+    }
+
+    private fun onUnknownException() {
+        notifier.newRequest(this, R.string.error_unknown)
+            .sendError()
+    }
+
+    private fun onNetworkActionException(exception: UseCaseException.Action) {
+        notifier.newRequest(this, exception.message)
+            .sendError()
+    }
+
+    private fun handleUnauthorizedException(exception: UseCaseException): Boolean {
+        val cause = exception.cause as? GatewayException.Unauthorized ?: return false
+
+        when (exception) {
+            is UseCaseException.Data -> errorLiveData.postValue(cause)
+            is UseCaseException.Action -> {
+                notifier.newRequest(this, cause.message)
+                    .sendError()
+            }
+            is UseCaseException.EmptyData -> Unit
+        }
+        return true
     }
 
     protected suspend fun navigateTo(event: TRouterEvent) {

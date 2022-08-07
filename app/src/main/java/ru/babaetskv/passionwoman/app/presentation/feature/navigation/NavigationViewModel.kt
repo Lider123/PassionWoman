@@ -40,7 +40,9 @@ interface NavigationViewModel : IViewModel {
 
     sealed class Router : RouterEvent {
 
-        object AuthScreen : Router()
+        data class AuthScreen(
+            val onAppStart: Boolean
+        ) : Router()
 
         data class ProductScreen(
             val productId: Int

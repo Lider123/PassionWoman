@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.gateway.ProfileGateway
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.SyncFavoritesUseCase
@@ -11,8 +12,9 @@ class SyncFavoritesInteractor(
     private val favoritesPreferences: FavoritesPreferences,
     private val stringProvider: StringProvider
 ) : BaseInteractor<SyncFavoritesUseCase.Params, Unit>(), SyncFavoritesUseCase {
+    override val emptyException: UseCaseException.EmptyData? = null
 
-    override fun getUseCaseException(cause: Exception): Exception =
+    override fun transformException(cause: Exception): UseCaseException =
         SyncFavoritesUseCase.SyncFavoritesException(cause, stringProvider)
 
     override suspend fun run(params: SyncFavoritesUseCase.Params) {

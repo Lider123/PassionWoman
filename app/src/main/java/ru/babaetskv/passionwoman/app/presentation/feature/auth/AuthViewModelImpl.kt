@@ -15,6 +15,7 @@ import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeUseCase
 
 class AuthViewModelImpl(
+    private val args: AuthFragment.Args,
     private val authorizeUseCase: AuthorizeUseCase,
     private val authorizeAsGuestUseCase: AuthorizeAsGuestUseCase,
     private val authPreferences: AuthPreferences,
@@ -45,9 +46,11 @@ class AuthViewModelImpl(
             val profile = authorizeUseCase.execute(authResult.token)
             authPreferences.profileIsFilled = profile.isFilled
             if (profile.isFilled) {
-                navigateTo(AuthViewModel.Router.NavigationScreen)
+                if (args.onAppStart) {
+                    navigateTo(AuthViewModel.Router.NavigationScreen)
+                } else super.onBackPressed()
             } else {
-                navigateTo(AuthViewModel.Router.SignUpScreen(profile))
+                navigateTo(AuthViewModel.Router.SignUpScreen(profile, args.onAppStart))
                 smsCodeLiveData.postValue("")
                 modeLiveData.postValue(AuthViewModel.AuthMode.LOGIN)
             }

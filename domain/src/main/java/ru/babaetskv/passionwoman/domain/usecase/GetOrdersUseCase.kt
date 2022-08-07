@@ -1,19 +1,18 @@
 package ru.babaetskv.passionwoman.domain.usecase
 
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.usecase.base.NoParamsUseCase
 
 interface GetOrdersUseCase : NoParamsUseCase<List<Order>> {
 
     class GetOrdersException(
-        cause: Exception?,
+        cause: Exception,
         stringProvider: StringProvider
-    ) : NetworkDataException(stringProvider.GET_ORDERS_ERROR, cause)
+    ) : UseCaseException.Data(cause, stringProvider.GET_ORDERS_ERROR)
 
     class EmptyOrdersException(
         stringProvider: StringProvider
-    ) : EmptyDataException(stringProvider.EMPTY_ORDERS_ERROR)
+    ) : UseCaseException.EmptyData(stringProvider.EMPTY_ORDERS_ERROR)
 }

@@ -49,7 +49,13 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
     override fun handleRouterEvent(event: NavigationViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            NavigationViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is NavigationViewModel.Router.AuthScreen -> {
+                // TODO: think about how to remove featured auth router events and use one general
+                val screen = Screens.auth(event.onAppStart)
+                if (event.onAppStart) {
+                    router.newRootScreen(screen)
+                } else router.navigateTo(screen)
+            }
             is NavigationViewModel.Router.ProductScreen -> {
                 router.navigateTo(Screens.productCard(event.productId))
             }

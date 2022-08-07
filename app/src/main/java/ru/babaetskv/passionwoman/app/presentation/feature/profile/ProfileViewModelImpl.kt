@@ -104,7 +104,7 @@ class ProfileViewModelImpl(
         if (authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED) return
 
         launch {
-            navigateTo(ProfileViewModel.Router.AuthScreen)
+            navigateTo(ProfileViewModel.Router.AuthScreen(false))
         }
     }
 

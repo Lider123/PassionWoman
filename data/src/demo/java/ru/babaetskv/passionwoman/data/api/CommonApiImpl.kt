@@ -26,27 +26,22 @@ class CommonApiImpl(
     private val productTransformableParamsProvider =
         ProductTransformableParamsProvider(database, this)
 
-    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel =
-        withContext(Dispatchers.IO) {
-            delay(DELAY_LOADING)
-            return@withContext AuthTokenModel(TOKEN)
-        }
+    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
+        return@processRequest AuthTokenModel(TOKEN)
+    }
 
-    override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext database.categoryDao.getAll()
+    override suspend fun getCategories(): List<CategoryModel> = processRequest {
+        return@processRequest database.categoryDao.getAll()
             .transformList()
     }
 
-    override suspend fun getPromotions(): List<PromotionModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext database.promotionDao.getAll()
+    override suspend fun getPromotions(): List<PromotionModel> = processRequest {
+        return@processRequest database.promotionDao.getAll()
             .transformList()
     }
 
-    override suspend fun getStories(): List<StoryModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(AssetFile.STORIES)
+    override suspend fun getStories(): List<StoryModel> = processRequest {
+        return@processRequest loadListFromAsset(AssetFile.STORIES)
     }
 
     override suspend fun getProducts(
@@ -56,9 +51,8 @@ class CommonApiImpl(
         sorting: String,
         limit: Int,
         offset: Int
-    ): ProductsPagedResponseModel = withContext(Dispatchers.IO) {
+    ): ProductsPagedResponseModel = processRequest {
         try {
-            delay(DELAY_LOADING)
             val filtersObject = Filters(JSONArray(filters))
             val sortingObject = Sorting.findValueByApiName(sorting)
             var products: List<ProductModel> = if (categoryId != null) {
@@ -88,7 +82,7 @@ class CommonApiImpl(
                 }
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
-            return@withContext products.let { result ->
+            return@processRequest products.let { result ->
                 when (sortingObject) {
                     Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
                     Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
@@ -110,23 +104,20 @@ class CommonApiImpl(
         }
     }
 
-    override suspend fun getProductsByIds(ids: String): List<ProductModel> {
-        delay(DELAY_LOADING)
+    override suspend fun getProductsByIds(ids: String): List<ProductModel> = processRequest {
         val favoriteIds = ids.split(",").map(String::toInt).toSet()
-        return database.productDao.getByIds(favoriteIds)
+        return@processRequest database.productDao.getByIds(favoriteIds)
             .transformList(productTransformableParamsProvider)
     }
 
     override suspend fun getPopularBrands(count: Int): List<BrandModel> =
-        withContext(Dispatchers.IO) {
-            delay(DELAY_LOADING)
-            return@withContext database.brandDao.getPopular(count)
+        processRequest {
+            return@processRequest database.brandDao.getPopular(count)
                 .transformList()
         }
 
-    override suspend fun getProduct(productId: Int): ProductModel = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext database.productDao.getById(productId)
+    override suspend fun getProduct(productId: String): ProductModel = processRequest {
+        return@processRequest database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
             ?: throw getNotFoundException("Product not found")
     }

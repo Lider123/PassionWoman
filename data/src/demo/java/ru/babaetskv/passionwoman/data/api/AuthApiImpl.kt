@@ -2,9 +2,6 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.Context
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -12,15 +9,19 @@ import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import timber.log.Timber
 import ru.babaetskv.passionwoman.domain.utils.transform
 import java.util.*
 import kotlin.random.Random
 
-// TODO: add token check
 class AuthApiImpl(
     context: Context,
     private val database: PassionWomanDatabase,
     moshi: Moshi,
+    private val moshi: Moshi,
+    private val assetManager: AssetManager,
+    private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
 ) : BaseApiImpl(context, moshi), AuthApi {
     private var profileMock: ProfileModel? = null
@@ -32,9 +33,17 @@ class AuthApiImpl(
         total = 0f
     )
 
-    override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext if (profileMock == null) {
+    override fun doBeforeRequest() {
+        super.doBeforeRequest()
+        val userToken = authPreferences.authToken
+        if (userToken != TOKEN) {
+            Timber.e("Incorrect token: $userToken")
+            throw getUnauthorizedException("User is not authorized")
+        }
+    }
+
+    override suspend fun getProfile(): ProfileModel = processRequest {
+        return@processRequest if (profileMock == null) {
             database.userDao.getProfile()
                 ?.transform()
                 ?.also { profileMock = it }
@@ -42,39 +51,33 @@ class AuthApiImpl(
         } else profileMock!!
     }
 
-    override suspend fun updateProfile(body: ProfileModel) = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
+    override suspend fun updateProfile(body: ProfileModel) = processRequest {
         profileMock = body
     }
 
-    override suspend fun uploadAvatar(image: MultipartBody.Part) = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
+    override suspend fun uploadAvatar(image: MultipartBody.Part) = processRequest {
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<Int> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext favoriteIdsMock
+    override suspend fun getFavoriteIds(): List<String> = processRequest {
+        return@processRequest favoriteIdsMock
     }
 
-    override suspend fun setFavoriteIds(ids: List<Int>) = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
+    override suspend fun setFavoriteIds(ids: List<Int>) = processRequest {
         favoriteIdsMock = ids
     }
 
-    override suspend fun getOrders(): List<OrderModel> {
-        delay(DELAY_LOADING)
+    override suspend fun getOrders(): List<OrderModel> = processRequest {
         for (i in ordersMock.indices) {
             val newStatus = ordersMock[i].status.let(::getNextOrderStatus)
             ordersMock[i] = ordersMock[i].copy(
                 status = newStatus
             )
         }
-        return ordersMock
+        return@processRequest ordersMock
     }
 
-    override suspend fun checkout(): CartModel {
-        delay(DELAY_LOADING)
+    override suspend fun checkout(): CartModel = processRequest {
         if (cartMock.items.isEmpty()) throw getBadRequestException("The cart is empty")
 
         val newOrder = OrderModel(
@@ -90,16 +93,14 @@ class AuthApiImpl(
         )
         ordersMock.add(newOrder)
         clearCart()
-        return cartMock
+        return@processRequest cartMock
     }
 
-    override suspend fun getCart(): CartModel {
-        delay(DELAY_LOADING)
-        return cartMock
+    override suspend fun getCart(): CartModel = processRequest {
+        return@processRequest cartMock
     }
 
-    override suspend fun addToCart(item: CartItemModel): CartModel {
-        delay(DELAY_LOADING)
+    override suspend fun addToCart(item: CartItemModel): CartModel = processRequest {
         val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
@@ -118,11 +119,10 @@ class AuthApiImpl(
             price = calculatePrice(items),
             total = calculateTotal(items)
         )
-        return cartMock
+        return@processRequest cartMock
     }
 
-    override suspend fun removeFromCart(item: CartItemModel): CartModel {
-        delay(DELAY_LOADING)
+    override suspend fun removeFromCart(item: CartItemModel): CartModel = processRequest {
         val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
@@ -144,7 +144,7 @@ class AuthApiImpl(
                 total = calculateTotal(items)
             )
         }
-        return cartMock
+        return@processRequest cartMock
     }
 
     private fun calculatePrice(items: List<CartItemModel>): Float =

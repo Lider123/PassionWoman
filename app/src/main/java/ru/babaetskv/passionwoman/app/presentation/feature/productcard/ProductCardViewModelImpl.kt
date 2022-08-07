@@ -38,8 +38,11 @@ class ProductCardViewModelImpl(
         loadData()
     }
 
-    override fun onErrorActionPressed() {
-        loadData()
+    override fun onErrorActionPressed(exception: Exception) {
+        when(exception) {
+            is GetProductUseCase.GetProductException -> loadData()
+            else -> super.onErrorActionPressed(exception)
+        }
     }
 
     override fun onSizeItemPressed(item: SelectableItem<ProductSize>) {

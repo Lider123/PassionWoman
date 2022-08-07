@@ -51,16 +51,19 @@ object Screens {
         FavoritesFragment.create()
     }
 
-    fun auth() = FragmentScreen {
-        AuthFragment.create()
+    fun auth(onAppStart: Boolean) = FragmentScreen {
+        AuthFragment.create(onAppStart)
     }
 
-    fun signUp(profile: Profile) = FragmentScreen {
-        EditProfileFragment.create(profile, true)
+    fun signUp(profile: Profile, onAppStart: Boolean) = FragmentScreen {
+        EditProfileFragment.create(profile, true, onAppStart)
     }
 
     fun editProfile(profile: Profile) = FragmentScreen {
-        EditProfileFragment.create(profile, false)
+        EditProfileFragment.create(profile,
+            signingUp = false,
+            onAppStart = false
+        )
     }
 
     fun productCard(productId: Int) = FragmentScreen {

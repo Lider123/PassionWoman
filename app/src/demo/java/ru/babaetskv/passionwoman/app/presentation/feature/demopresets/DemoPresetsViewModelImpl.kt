@@ -34,7 +34,7 @@ class DemoPresetsViewModelImpl(
             val presets = presetsLiveData.value!!
             appPrefs.applyDemoPresets(presets)
             authPrefs.applyDemoPresets(presets)
-            if (authPrefs.profileIsFilled) {
+            if (authPrefs.authType == AuthPreferences.AuthType.AUTHORIZED && authPrefs.profileIsFilled) {
                 val profile = getProfileUseCase.execute()
                 profile.copy(
                     name = resources.getString(R.string.demo_name),

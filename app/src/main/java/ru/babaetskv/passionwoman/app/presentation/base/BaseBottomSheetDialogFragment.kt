@@ -75,5 +75,7 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
         dismiss()
     }
 
+    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) = Unit
+
     fun withArgs(args: TArgs) = also { it.args = args }
 }

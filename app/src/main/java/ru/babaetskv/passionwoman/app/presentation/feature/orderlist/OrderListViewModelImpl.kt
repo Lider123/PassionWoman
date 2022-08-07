@@ -8,22 +8,29 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.model.Order
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetOrdersUseCase
 
-// TODO: if returns error 401 show stub view and ask for login
 class OrderListViewModelImpl(
     private val getOrdersUseCase: GetOrdersUseCase,
+    authPreferences: AuthPreferences,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<OrderListViewModel.Router>(dependencies), OrderListViewModel {
     private val tickerFlow = tickerFlow(DELAY_ORDER_LIST_UPDATE_MILLIS)
         .onEach {
             loadData()
         }
+    private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     override val ordersLiveData = MutableLiveData<List<Order>>()
 
     init {
+        authTypeFlow.launchIn(this)
         tickerFlow.launchIn(this)
+    }
+
+    private fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
+        loadData()
     }
 
     override fun onOrderPressed(order: Order) {

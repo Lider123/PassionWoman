@@ -72,6 +72,8 @@ abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
         super.onStop()
     }
 
+    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) = Unit
+
     protected fun installAppSplashScreen(condition: SplashScreen.KeepOnScreenCondition? = null): SplashScreen =
         installSplashScreen().apply {
             condition?.run(::setKeepOnScreenCondition)

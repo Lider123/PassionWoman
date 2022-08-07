@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.app.utils.notifier
 
 import androidx.annotation.DrawableRes
 
+// TODO: think about adding an action button to the alert
 data class AlertMessage(
     val text: String,
     @DrawableRes val iconRes: Int? = null,
