@@ -120,7 +120,7 @@ class CommonApiImpl(
     override suspend fun getPopularBrands(count: Int): List<BrandModel> =
         withContext(Dispatchers.IO) {
             delay(DELAY_LOADING)
-            return@withContext database.brandDao.getPopularBrands(count)
+            return@withContext database.brandDao.getPopular(count)
                 .transformList()
         }
 

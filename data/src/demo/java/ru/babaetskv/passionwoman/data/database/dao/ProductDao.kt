@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 
@@ -27,4 +28,7 @@ interface ProductDao {
 
     @Query("SELECT MAX(price_with_discount) FROM products")
     suspend fun getMaxPrice(): Float
+
+    @Insert
+    suspend fun insert(entity: ProductEntity)
 }

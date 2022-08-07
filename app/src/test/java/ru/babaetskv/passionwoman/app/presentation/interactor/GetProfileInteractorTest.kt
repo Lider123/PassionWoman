@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.interactor
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -10,16 +11,17 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.gateway.AuthGateway
+import ru.babaetskv.passionwoman.domain.gateway.ProfileGateway
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.utils.transform
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class GetProfileInteractorTest {
     @Mock
-    private lateinit var authGatewayMock: AuthGateway
+    private lateinit var profileGatewayMock: ProfileGateway
     @Mock
     private lateinit var stringProviderMock: StringProvider
     @InjectMocks
@@ -34,33 +36,37 @@ class GetProfileInteractorTest {
     )
 
     @Before
-    fun before(): Unit = runBlocking {
+    fun before(): Unit = runTest {
         val transformableMock: Transformable<Unit, Profile> = mock {
             whenever(mock.transform()) doReturn profileMock
         }
-        whenever(authGatewayMock.getProfile()) doReturn transformableMock
+        whenever(profileGatewayMock.getProfile()) doReturn transformableMock
     }
 
     @Test
-    fun execute_invokesAuthGateway(): Unit = runBlocking {
+    fun execute_callsAuthGateway(): Unit = runTest {
         interactor.execute()
-        verify(authGatewayMock, times(1)).getProfile()
+
+        verify(profileGatewayMock, times(1)).getProfile()
     }
 
     @Test
-    fun execute_returnsProfile() = runBlocking {
-        val actual = interactor.execute()
-        assertEquals(profileMock, actual)
+    fun execute_returnsProfile() = runTest {
+        val result = interactor.execute()
+
+        assertEquals(profileMock, result)
     }
 
     @Test
-    fun execute_throwsGetProfileException_whenCatchesException() = runBlocking {
-        whenever(authGatewayMock.getProfile()).thenThrow(RuntimeException())
-        try {
+    fun execute_throwsGetProfileException_whenCatchesException() = runTest {
+        whenever(profileGatewayMock.getProfile()).thenThrow(RuntimeException())
+
+        runCatching {
             interactor.execute()
+        }.onFailure {
+            assertTrue(it is GetProfileUseCase.GetProfileException)
+        }.onSuccess {
             fail()
-        } catch (e: Exception) {
-            assertTrue(e is GetProfileUseCase.GetProfileException)
         }
     }
 }

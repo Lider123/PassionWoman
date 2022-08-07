@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import ru.babaetskv.passionwoman.data.database.entity.BrandEntity
 
@@ -13,7 +14,7 @@ interface BrandDao {
     @Query("""
         SELECT brands.*
         FROM brands
-        INNER JOIN (
+        LEFT JOIN (
             SELECT brand_id, COUNT(brand_id) AS frequency
             FROM products
             GROUP BY brand_id
@@ -22,8 +23,11 @@ interface BrandDao {
         ORDER BY frequencies.frequency DESC
         LIMIT :count
     """)
-    suspend fun getPopularBrands(count: Int): List<BrandEntity>
+    suspend fun getPopular(count: Int): List<BrandEntity>
 
     @Query("SELECT * FROM brands WHERE id = :brandId")
     suspend fun getById(brandId: Int): BrandEntity?
+
+    @Insert
+    suspend fun insert(entity: BrandEntity)
 }

@@ -36,8 +36,9 @@ class AuthApiImpl(
         delay(DELAY_LOADING)
         return@withContext if (profileMock == null) {
             database.userDao.getProfile()
-                .transform()
-                .also { profileMock = it }
+                ?.transform()
+                ?.also { profileMock = it }
+                ?: throw getNotFoundException("Failed to found profile")
         } else profileMock!!
     }
 

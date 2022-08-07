@@ -14,7 +14,8 @@ class ProductItemTransformableParamsProvider(
 
     override suspend fun provideColor(colorId: Int): ColorModel =
         database.colorDao.getById(colorId)
-            .transform()
+            ?.transform()
+            ?: throw IllegalStateException("Failed to found color with id $colorId")
 
     override suspend fun provideSizes(productItemId: Int): List<String>? =
         database.productSizeDao.getForProductItem(productItemId).ifEmpty { null }
