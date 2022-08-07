@@ -30,7 +30,9 @@ interface ProfileViewModel : IViewModel {
 
     sealed class Router : RouterEvent {
 
-        object AuthScreen : Router()
+        data class AuthScreen(
+            val onAppStart: Boolean
+        ) : Router()
 
         data class EditProfileScreen(
             val profile: Profile

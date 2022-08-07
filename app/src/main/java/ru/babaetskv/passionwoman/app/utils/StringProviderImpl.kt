@@ -32,6 +32,11 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val EMPTY_ORDERS_ERROR: String = resources.getString(R.string.error_no_orders)
     override val CHECKOUT_ERROR: String = resources.getString(R.string.error_checkout)
 
+    override val CLIENT_ERROR: String = resources.getString(R.string.error_client)
+    override val SERVER_ERROR: String = resources.getString(R.string.error_server)
+    override val UNAUTHORIZED_ERROR: String = resources.getString(R.string.error_unauthorized)
+    override val UNKNOWN_ERROR: String = resources.getString(R.string.error_unknown)
+
     override val SORT_NEW: String = resources.getString(R.string.sort_new)
     override val SORT_POPULARITY: String = resources.getString(R.string.sort_popularity)
     override val SORT_PRICE_ASC: String = resources.getString(R.string.sort_price_asc)

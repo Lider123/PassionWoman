@@ -4,6 +4,9 @@ import android.content.res.AssetManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONArray
@@ -12,6 +15,8 @@ import retrofit2.HttpException
 import retrofit2.Response
 
 abstract class BaseApiImpl {
+
+    protected open fun doBeforeRequest() = Unit
 
     protected inline fun <reified T> loadListFromAsset(
         assetManager: AssetManager,
@@ -47,6 +52,20 @@ abstract class BaseApiImpl {
             values
         }
     }
+
+    protected suspend fun <T> processRequest(
+        delayMs: Long = DELAY_LOADING,
+        block: () -> T
+    ): T = withContext(Dispatchers.IO) {
+        delay(delayMs)
+        doBeforeRequest()
+        return@withContext block.invoke()
+    }
+
+    protected fun getUnauthorizedException(message: String) : HttpException =
+        message.toResponseBody("text/plain".toMediaType()).let {
+            Response.error<Nothing>(UNAUTHORIZED, it)
+        }.let(::HttpException)
 
     protected fun getNotFoundException(message: String) : HttpException =
         message.toResponseBody("text/plain".toMediaType()).let {
@@ -89,10 +108,14 @@ abstract class BaseApiImpl {
         @JvmStatic
         protected val DELAY_LOADING = 500L
         @JvmStatic
+        protected val UNAUTHORIZED = 401
+        @JvmStatic
         protected val NOT_FOUND = 404
         @JvmStatic
         protected val BAD_REQUEST = 400
         @JvmStatic
         protected val INTERNAL_SERVER_ERROR = 500
+        @JvmStatic
+        val TOKEN = "token"
     }
 }

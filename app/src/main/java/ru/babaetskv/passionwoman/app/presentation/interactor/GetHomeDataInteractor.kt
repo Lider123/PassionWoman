@@ -8,6 +8,7 @@ import kotlinx.coroutines.coroutineScope
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.HomeData
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
@@ -19,8 +20,9 @@ class GetHomeDataInteractor(
     private val stringProvider: StringProvider,
     private val resources: Resources
 ) : BaseInteractor<Unit, HomeData>(), GetHomeDataUseCase {
+    override val emptyException: UseCaseException.EmptyData? = null
 
-    override fun getUseCaseException(cause: Exception): Exception =
+    override fun transformException(cause: Exception): UseCaseException =
         GetHomeDataUseCase.GetHomeDataException(cause, stringProvider)
 
     override suspend fun run(params: Unit): HomeData = coroutineScope {

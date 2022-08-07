@@ -2,9 +2,6 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.res.AssetManager
 import com.squareup.moshi.Moshi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -21,25 +18,20 @@ class CommonApiImpl(
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()
 
-    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel =
-        withContext(Dispatchers.IO) {
-            delay(DELAY_LOADING)
-            return@withContext AuthTokenModel(TOKEN)
-        }
-
-    override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.CATEGORIES, moshi)
+    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
+        return@processRequest AuthTokenModel(TOKEN)
     }
 
-    override suspend fun getPromotions(): List<PromotionModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.PROMOTIONS, moshi)
+    override suspend fun getCategories(): List<CategoryModel> = processRequest {
+        return@processRequest loadListFromAsset(assetManager, AssetFile.CATEGORIES, moshi)
     }
 
-    override suspend fun getStories(): List<StoryModel> = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext loadListFromAsset(assetManager, AssetFile.STORIES, moshi)
+    override suspend fun getPromotions(): List<PromotionModel> = processRequest {
+        return@processRequest loadListFromAsset(assetManager, AssetFile.PROMOTIONS, moshi)
+    }
+
+    override suspend fun getStories(): List<StoryModel> = processRequest {
+        return@processRequest loadListFromAsset(assetManager, AssetFile.STORIES, moshi)
     }
 
     override suspend fun getProducts(
@@ -49,9 +41,8 @@ class CommonApiImpl(
         sorting: String,
         limit: Int,
         offset: Int
-    ): ProductsPagedResponseModel = withContext(Dispatchers.IO) {
+    ): ProductsPagedResponseModel = processRequest {
         try {
-            delay(DELAY_LOADING)
             val filtersObject = Filters(JSONArray(filters))
             val sortingObject = Sorting.findValueByApiName(sorting)
             var products: List<ProductModel> = if (categoryId != null) {
@@ -78,7 +69,7 @@ class CommonApiImpl(
                 addAll(loadArrayOfJsonFromAsset(assetManager, AssetFile.FILTERS_COMMON))
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
-            return@withContext products.let { result ->
+            return@processRequest products.let { result ->
                 when (sortingObject) {
                     Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
                     Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
@@ -100,26 +91,22 @@ class CommonApiImpl(
         }
     }
 
-    override suspend fun getProductsByIds(ids: String): List<ProductModel> {
-        delay(DELAY_LOADING)
+    override suspend fun getProductsByIds(ids: String): List<ProductModel> = processRequest {
         val favoriteIds = ids.split(",").toSet()
-        return CategoryProducts.values()
+        return@processRequest CategoryProducts.values()
             .flatMap<CategoryProducts, ProductModel> {
                 loadListFromAsset(assetManager, it.assetFile, moshi)
             }
             .filter { favoriteIds.contains(it.id) }
     }
 
-    override suspend fun getPopularBrands(count: Int): List<BrandModel> =
-        withContext(Dispatchers.IO) {
-            delay(DELAY_LOADING)
-            return@withContext loadListFromAsset<BrandModel>(assetManager, AssetFile.BRANDS, moshi)
-                .take(count)
-        }
+    override suspend fun getPopularBrands(count: Int): List<BrandModel> = processRequest {
+        return@processRequest loadListFromAsset<BrandModel>(assetManager, AssetFile.BRANDS, moshi)
+            .take(count)
+    }
 
-    override suspend fun getProduct(productId: String): ProductModel = withContext(Dispatchers.IO) {
-        delay(DELAY_LOADING)
-        return@withContext CategoryProducts.values()
+    override suspend fun getProduct(productId: String): ProductModel = processRequest {
+        return@processRequest CategoryProducts.values()
             .flatMap<CategoryProducts, ProductModel> {
                 loadListFromAsset(assetManager, it.assetFile, moshi)
             }
@@ -184,9 +171,5 @@ class CommonApiImpl(
 
             fun findByCategoryId(id: String) = values().find { it.categoryId == id }
         }
-    }
-
-    companion object {
-        private const val TOKEN = "token"
     }
 }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
@@ -77,6 +78,10 @@ abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : 
     override fun onStop() {
         viewModel.onStop()
         super.onStop()
+    }
+
+    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) {
+        router.navigateTo(Screens.auth(false))
     }
 
     override fun initObservers() {

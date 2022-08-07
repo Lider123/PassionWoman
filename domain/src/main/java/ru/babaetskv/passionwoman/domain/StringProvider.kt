@@ -22,6 +22,11 @@ interface StringProvider {
     val GET_ORDERS_ERROR: String
     val CHECKOUT_ERROR: String
 
+    val UNAUTHORIZED_ERROR: String
+    val CLIENT_ERROR: String
+    val SERVER_ERROR: String
+    val UNKNOWN_ERROR: String
+
     val EMPTY_CATEGORIES_ERROR: String
     val EMPTY_FAVORITES_ERROR: String
     val EMPTY_PRODUCTS_ERROR: String

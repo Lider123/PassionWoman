@@ -15,13 +15,12 @@ import ru.babaetskv.passionwoman.app.presentation.base.NewPager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.domain.StringProvider
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.GetProductsUseCase
+import kotlin.coroutines.CoroutineContext
 
 class ProductListViewModelImpl(
     private val args: ProductListFragment.Args,
@@ -29,21 +28,11 @@ class ProductListViewModelImpl(
     private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel<ProductListViewModel.Router>(dependencies), ProductListViewModel {
-    private val pagingExceptionProvider = object : NewPager.PagingExceptionProvider {
-        override val emptyError: EmptyDataException
-            get() = GetProductsUseCase.EmptyProductsException(stringProvider)
-
-        override fun getListError(cause: Exception): NetworkDataException =
-            GetProductsUseCase.GetProductsException(cause, stringProvider)
-
-        override fun getPageError(cause: Exception): NetworkDataException =
-            GetProductsUseCase.GetProductsPageException(cause, stringProvider)
-    }
     private val productsPager = NewPager(
         PAGE_SIZE,
         ::loadNext,
         ::onNextPageLoaded,
-        pagingExceptionProvider
+        ProductsPagingExceptionProvider(stringProvider)
     )
     private val searchChannel = Channel<String>(Channel.RENDEZVOUS)
     private val searchFlow = searchChannel.receiveAsFlow()
@@ -67,9 +56,11 @@ class ProductListViewModelImpl(
         searchFlow.launchIn(this)
     }
 
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        productsPager.invalidate()
+    override fun onErrorActionPressed(exception: Exception) {
+        when (exception) {
+            is GetProductsUseCase -> productsPager.invalidate()
+            else -> super.onErrorActionPressed(exception)
+        }
     }
 
     override fun onEvent(event: InnerEvent) {
@@ -127,6 +118,13 @@ class ProductListViewModelImpl(
     override fun onSearchQueryChanged(query: String) {
         launch {
             searchChannel.send(query)
+        }
+    }
+
+    override fun onError(context: CoroutineContext, error: Throwable) {
+        when (error) {
+            is GetProductsUseCase.GetProductsPageException -> Unit
+            else -> super.onError(context, error)
         }
     }
 

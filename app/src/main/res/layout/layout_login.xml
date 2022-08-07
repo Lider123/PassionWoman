@@ -112,4 +112,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
         style="@style/Widget.PassionWoman.Button.Text"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupGuest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvOr,btnGuest"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_default"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,8 @@ interface AuthViewModel : IViewModel, AuthHandler.AuthCallback, AuthHandler.OnSe
         object NavigationScreen : Router()
 
         data class SignUpScreen(
-            val profile: Profile
+            val profile: Profile,
+            val onAppStart: Boolean
         ) : Router()
     }
 }

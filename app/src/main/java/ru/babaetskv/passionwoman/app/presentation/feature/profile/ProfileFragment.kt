@@ -80,7 +80,12 @@ class ProfileFragment :
     override fun handleRouterEvent(event: ProfileViewModel.Router) {
         super.handleRouterEvent(event)
         when (event) {
-            ProfileViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
+            is ProfileViewModel.Router.AuthScreen -> {
+                val screen = Screens.auth(event.onAppStart)
+                if (event.onAppStart) {
+                    router.replaceScreen(screen)
+                } else router.navigateTo(screen)
+            }
             is ProfileViewModel.Router.EditProfileScreen -> {
                 router.navigateTo(Screens.editProfile(event.profile))
             }

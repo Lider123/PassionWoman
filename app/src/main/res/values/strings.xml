@@ -7,6 +7,7 @@
 
     <string name="in_development">Feature is in development</string>
     <string name="retry">Retry</string>
+    <string name="log_in">Log in</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -22,6 +23,9 @@
     <string name="item_product_button_buy">Buy now</string>
 
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_client">Failed to connect to the requested resource. Please try again later</string>
+    <string name="error_server">The requested resource is not available. Please try again later</string>
+    <string name="error_unauthorized">You are not authorized. Please log in and try again</string>
     <string name="error_network_unavailable">Network error. Please check your internet connection</string>
     <string name="error_no_data">No data available</string>
     <string name="error_get_categories">Failed to retrieve categories</string>

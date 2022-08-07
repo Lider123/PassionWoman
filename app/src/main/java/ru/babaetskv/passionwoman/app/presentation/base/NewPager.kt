@@ -1,8 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
 import androidx.paging.*
-import ru.babaetskv.passionwoman.domain.exceptions.EmptyDataException
-import ru.babaetskv.passionwoman.domain.exceptions.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.base.PagedResponse
 
 class NewPager<T : Any, R : PagedResponse<T>>(
@@ -57,10 +56,10 @@ class NewPager<T : Any, R : PagedResponse<T>>(
     fun invalidate() = pagingSourceFactory.invalidate()
 
     interface PagingExceptionProvider {
-        val emptyError: EmptyDataException
+        val emptyError: UseCaseException.EmptyData
 
-        fun getPageError(cause: Exception): NetworkDataException
-        fun getListError(cause: Exception): NetworkDataException
+        fun getPageError(cause: Exception): UseCaseException.Data
+        fun getListError(cause: Exception): UseCaseException.Data
     }
 
     companion object {

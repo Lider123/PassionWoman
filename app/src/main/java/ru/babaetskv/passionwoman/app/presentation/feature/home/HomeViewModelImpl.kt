@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.GetHomeDataUseCase
+import java.lang.Exception
 
 class HomeViewModelImpl(
     private val getHomeDataUseCase: GetHomeDataUseCase,
@@ -23,9 +24,11 @@ class HomeViewModelImpl(
         loadData()
     }
 
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        loadData()
+    override fun onErrorActionPressed(exception: Exception) {
+        when (exception) {
+            is GetHomeDataUseCase.GetHomeDataException -> loadData()
+            else -> super.onErrorActionPressed(exception)
+        }
     }
 
     override fun onHeaderPressed(header: HomeItem.Header) {
