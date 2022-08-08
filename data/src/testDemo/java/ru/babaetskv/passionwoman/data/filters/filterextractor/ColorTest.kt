@@ -66,7 +66,7 @@ class ColorTest {
     }
 
     @Test
-    fun extractAsJson_returnsCategories_whenDaoIsNotEmpty() = runTest {
+    fun extractAsJson_returnsColors_whenDaoIsNotEmpty() = runTest {
         val color = createColor(1)
         whenever(colorDaoMock.getAll()).doReturn(listOf(color))
         val expectedValuesJson = """

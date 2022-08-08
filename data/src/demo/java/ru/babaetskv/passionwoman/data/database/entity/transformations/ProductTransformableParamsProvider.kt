@@ -42,7 +42,7 @@ class ProductTransformableParamsProvider(
 
     override suspend fun provideAdditionalInfo(productId: Int): Map<String, List<String>> =
         withContext(Dispatchers.IO) {
-            val countries = async { database.productCountryDao.getForProduct(productId) }
+            val countries = async { database.productCountryDao.getAllCodesForProduct(productId) }
             val models = async { database.productModelDao.getForProduct(productId) }
             val materials = async { database.productMaterialDao.getForProduct(productId) }
             val seasons = async { database.productSeasonDao.getForProduct(productId) }

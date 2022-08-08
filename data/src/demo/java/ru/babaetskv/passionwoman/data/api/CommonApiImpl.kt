@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.api
 
 import android.content.Context
+import android.util.Log
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -81,7 +82,11 @@ class CommonApiImpl(
                         .extractAsJson(database)
                         .let(::add)
                 }
-            }.selectAvailableFilters(products)
+            }.also {
+                Log.e(CommonApiImpl::class.simpleName, "All filters: $it") // TODO: remove
+            }.selectAvailableFilters(products).also {
+                Log.e(CommonApiImpl::class.simpleName, "Available filters: $it") // TODO: remove
+            }
             val pagingIndices = IntRange(offset, offset + limit - 1)
             return@processRequest products.let { result ->
                 when (sortingObject) {

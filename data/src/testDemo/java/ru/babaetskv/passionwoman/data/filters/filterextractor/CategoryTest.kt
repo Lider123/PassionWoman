@@ -72,7 +72,7 @@ class CategoryTest {
         val expectedValuesJson = """
             [
                 {
-                    "id": ${categoryEntity.id},
+                    "code": ${categoryEntity.id},
                     "uiName": "${categoryEntity.name}"
                 }
             ]

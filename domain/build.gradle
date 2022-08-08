@@ -48,4 +48,7 @@ dependencies {
 
     // DateTime
     api 'net.danlew:android.joda:2.10.14'
+
+    // Tests
+    testImplementation 'junit:junit:4.13.2'
 }

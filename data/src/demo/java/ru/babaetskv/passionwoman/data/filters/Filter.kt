@@ -52,12 +52,12 @@ sealed class Filter(
         }
 
         override fun selectAvailable(products: List<ProductModel>): JSONObject? {
-            val availableIds = products.map { it.category.id }.distinct()
+            val availableIds = products.map { it.category.id.toString() }.distinct()
             val values = filterObject.getJSONArray(Filters.PARAM_VALUES)
             val newValues = JSONArray()
             for (i in 0 until values.length()) {
                 val value = values.getJSONObject(i)
-                if (value.getInt(Filters.PARAM_ID) in availableIds) newValues.put(value)
+                if (value.getString(Filters.PARAM_CODE) in availableIds) newValues.put(value)
             }
             return if (newValues.length() == 0) null else {
                 filterObject.put(Filters.PARAM_VALUES, newValues)
@@ -73,12 +73,12 @@ sealed class Filter(
         }
 
         override fun selectAvailable(products: List<ProductModel>): JSONObject? {
-            val availableIds = products.mapNotNull { it.brand?.id }.distinct()
+            val availableIds = products.mapNotNull { it.brand?.id?.toString() }.distinct()
             val values = filterObject.getJSONArray(Filters.PARAM_VALUES)
             val newValues = JSONArray()
             for (i in 0 until values.length()) {
                 val value = values.getJSONObject(i)
-                if (value.getInt(Filters.PARAM_ID) in availableIds) newValues.put(value)
+                if (value.getString(Filters.PARAM_CODE) in availableIds) newValues.put(value)
             }
             return if (newValues.length() == 0) null else {
                 filterObject.put(Filters.PARAM_VALUES, newValues)

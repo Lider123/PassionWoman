@@ -76,7 +76,7 @@ dependencies {
     // Paging TODO: move to the app layer
     api "androidx.paging:paging-runtime-ktx:3.1.0"
 
-    // Tests
+    // Tests TODO: add global versions
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.json:json:20180813'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'

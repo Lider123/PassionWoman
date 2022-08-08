@@ -30,7 +30,7 @@ sealed class FilterExtractor(
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
             val values = database.categoryDao.getAll().map {
                 JSONObject().apply {
-                    put(Filters.PARAM_ID, it.id)
+                    put(Filters.PARAM_CODE, it.id)
                     put(Filters.PARAM_UI_NAME, it.name)
                 }
             }.toJsonArray()
@@ -105,7 +105,7 @@ sealed class FilterExtractor(
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
             val values = database.brandDao.getAll().map {
                 JSONObject().apply {
-                    put(Filters.PARAM_ID, it.id)
+                    put(Filters.PARAM_CODE, it.id)
                     put(Filters.PARAM_UI_NAME, it.name)
                 }
             }.toJsonArray()

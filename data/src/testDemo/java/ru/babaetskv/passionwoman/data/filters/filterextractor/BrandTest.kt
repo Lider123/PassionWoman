@@ -72,7 +72,7 @@ class BrandTest {
         val expectedValuesJson = """
             [
                 {
-                    "id": ${brand.id},
+                    "code": ${brand.id},
                     "uiName": "${brand.name}"
                 }
             ]
