@@ -11,45 +11,16 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.babaets.passionwoman.data.database.dao.base.DaoInstrumentedTest
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.BrandDao
-import ru.babaetskv.passionwoman.data.database.entity.BrandEntity
-import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
-import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class BrandDaoInstrumentedTest {
+class BrandDaoInstrumentedTest : DaoInstrumentedTest() {
     private lateinit var database: PassionWomanDatabase
     private lateinit var brandDao: BrandDao
-
-    private fun createBrand(id: Int) =
-        BrandEntity(
-            id = id,
-            name = "Brand $id",
-            logoPath = "brand_${id}_logo_path"
-        )
-
-    private fun createProduct(id: Int, categoryId: Int, brandId: Int) =
-        ProductEntity(
-            id = id,
-            categoryId = categoryId,
-            name = "Product $id",
-            previewPath = "product_${id}_preview_path",
-            price = 1f,
-            priceWithDiscount = 1f,
-            rating = 0f,
-            description = null,
-            brandId = brandId
-        )
-
-    private fun createCategory(id: Int) =
-        CategoryEntity(
-            id = id,
-            name = "Category $id",
-            imagePath = "category_${id}_image_path"
-        )
 
     @Before
     fun before() {
@@ -147,12 +118,12 @@ class BrandDaoInstrumentedTest {
         }
         database.categoryDao.insert(createCategory(1))
         listOf(
-            createProduct(1, 1, 1),
-            createProduct(2, 1, 2),
-            createProduct(3, 1, 2),
-            createProduct(4, 1, 2),
-            createProduct(5, 1, 3),
-            createProduct(6, 1, 3),
+            createProduct(1, 1, brandId = 1),
+            createProduct(2, 1, brandId = 2),
+            createProduct(3, 1, brandId = 2),
+            createProduct(4, 1, brandId = 2),
+            createProduct(5, 1, brandId = 3),
+            createProduct(6, 1, brandId = 3),
         ).forEach {
             database.productDao.insert(it)
         }

@@ -11,44 +11,18 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.babaets.passionwoman.data.database.dao.base.DaoInstrumentedTest
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.CategoryDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductDao
-import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
-import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ProductDaoInstrumentedTest {
+class ProductDaoInstrumentedTest : DaoInstrumentedTest() {
     private lateinit var database: PassionWomanDatabase
     private lateinit var productDao: ProductDao
     private lateinit var categoryDao: CategoryDao
-
-    private fun createProduct(
-        id: Int,
-        categoryId: Int,
-        price: Float = 1f,
-        priceWithDiscount: Float = 1f
-    ) =
-        ProductEntity(
-            id = id,
-            categoryId = categoryId,
-            brandId = null,
-            description = null,
-            name = "Product $id",
-            previewPath = "product_${id}_preview_path",
-            price = price,
-            priceWithDiscount = priceWithDiscount,
-            rating = 0f
-        )
-
-    private fun createCategory(id: Int) =
-        CategoryEntity(
-            id = id,
-            imagePath = "category_${id}_image_path",
-            name = "Category $id"
-        )
 
     @Before
     fun before() {

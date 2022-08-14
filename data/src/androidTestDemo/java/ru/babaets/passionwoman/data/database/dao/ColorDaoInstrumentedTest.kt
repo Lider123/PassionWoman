@@ -11,23 +11,16 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.babaets.passionwoman.data.database.dao.base.DaoInstrumentedTest
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.ColorDao
-import ru.babaetskv.passionwoman.data.database.entity.ColorEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ColorDaoInstrumentedTest {
+class ColorDaoInstrumentedTest : DaoInstrumentedTest() {
     private lateinit var database: PassionWomanDatabase
     private lateinit var colorDao: ColorDao
-
-    private fun createColor(id: Int) =
-        ColorEntity(
-            id = id,
-            uiName = "Color $id",
-            hex = "hex$id"
-        )
 
     @Before
     fun before() {

@@ -11,23 +11,16 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.babaets.passionwoman.data.database.dao.base.DaoInstrumentedTest
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.CategoryDao
-import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class CategoryDaoInstrumentedTest {
+class CategoryDaoInstrumentedTest : DaoInstrumentedTest() {
     private lateinit var database: PassionWomanDatabase
     private lateinit var categoryDao: CategoryDao
-
-    private fun createCategory(id: Int) =
-        CategoryEntity(
-            id = id,
-            name = "Category $id",
-            imagePath = "category_${id}_image_path"
-        )
 
     @Before
     fun before() {

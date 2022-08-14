@@ -11,14 +11,14 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.babaets.passionwoman.data.database.dao.base.DaoInstrumentedTest
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.UserDao
-import ru.babaetskv.passionwoman.data.database.entity.UserEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class UserDaoInstrumentedTest {
+class UserDaoInstrumentedTest : DaoInstrumentedTest() {
     private lateinit var database: PassionWomanDatabase
     private lateinit var userDao: UserDao
 
@@ -41,13 +41,7 @@ class UserDaoInstrumentedTest {
     @Test
     @Throws(Exception::class)
     fun getProfile_returnsProfile_whenThereIsProfileInTheDatabase() = runTest {
-        val userEntity = UserEntity(
-            id = 1,
-            name = "Jane",
-            surname = "Doe",
-            phone = "9100000000",
-            avatar = null
-        )
+        val userEntity = createUser(1)
         userDao.insert(userEntity)
 
         val result = userDao.getProfile()
