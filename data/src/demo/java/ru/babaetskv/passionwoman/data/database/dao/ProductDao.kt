@@ -24,10 +24,10 @@ interface ProductDao {
     suspend fun getByIds(ids: Collection<Int>): List<ProductEntity>
 
     @Query("SELECT MIN(price_with_discount) FROM products")
-    suspend fun getMinPrice(): Float
+    suspend fun getMinPrice(): Float?
 
     @Query("SELECT MAX(price_with_discount) FROM products")
-    suspend fun getMaxPrice(): Float
+    suspend fun getMaxPrice(): Float?
 
     @Insert
     suspend fun insert(entity: ProductEntity)

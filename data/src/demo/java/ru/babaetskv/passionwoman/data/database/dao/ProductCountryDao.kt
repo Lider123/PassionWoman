@@ -8,7 +8,7 @@ import ru.babaetskv.passionwoman.data.database.entity.ProductCountryEntity
 @Dao
 interface ProductCountryDao {
 
-    @Query("SELECT * FROM product_countries")
+    @Query("SELECT * FROM product_countries ORDER BY ui_name")
     suspend fun getAll(): List<ProductCountryEntity>
 
     @Query("""

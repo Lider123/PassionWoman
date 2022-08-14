@@ -7,6 +7,7 @@ import ru.babaetskv.passionwoman.data.model.ProductItemModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
+// TODO: add createdAt field
 @Entity(
     tableName = "products",
     foreignKeys = [

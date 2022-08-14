@@ -50,7 +50,23 @@ class PriceTest {
         assertEquals("price", result.getString("code"))
         assertEquals("Price", result.getString("uiName"))
         assertEquals(2, result.getInt("priority"))
-        assertEquals(1.50f.toDouble(), result.getDouble("minValue"), 1e-2)
-        assertEquals(10.90f.toDouble(), result.getDouble("maxValue"), 1e-2)
+        assertEquals(1.50, result.getDouble("minValue"), 1e-2)
+        assertEquals(10.90, result.getDouble("maxValue"), 1e-2)
     }
+
+    @Test
+    fun extractAsJson_returnsZerosAsMinAndMaxPrices_whenThereAreNoMinAndMaxPricesInTheDatabase() =
+        runTest {
+            whenever(productDaoMock.getMinPrice()).doReturn(null)
+            whenever(productDaoMock.getMaxPrice()).doReturn(null)
+
+            val result = filterModel.extractAsJson(databaseMock)
+
+            assertEquals("range", result.getString("type"))
+            assertEquals("price", result.getString("code"))
+            assertEquals("Price", result.getString("uiName"))
+            assertEquals(2, result.getInt("priority"))
+            assertEquals(0.0, result.getDouble("minValue"), 1e-2)
+            assertEquals(0.0, result.getDouble("maxValue"), 1e-2)
+        }
 }

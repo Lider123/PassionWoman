@@ -81,18 +81,18 @@ class BrandDaoInstrumentedTest {
     @Test
     @Throws(Exception::class)
     fun getAll_returnsSortedBrandsByName_whenThereAreBrands() = runTest {
-        val brandEntity = listOf(
+        val brandEntities = listOf(
             createBrand(3),
             createBrand(1),
             createBrand(2)
         )
-        brandEntity.forEach {
+        brandEntities.forEach {
             brandDao.insert(it)
         }
 
         val result = brandDao.getAll()
 
-        assertEquals(brandEntity.sortedBy { it.name }, result)
+        assertEquals(brandEntities.sortedBy { it.name }, result)
     }
 
     @Test

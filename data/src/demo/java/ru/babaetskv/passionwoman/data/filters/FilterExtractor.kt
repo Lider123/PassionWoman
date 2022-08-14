@@ -133,8 +133,8 @@ sealed class FilterExtractor(
         override val priority: Int = 2
 
         override suspend fun putFilterValues(json: JSONObject, database: PassionWomanDatabase) {
-            val minValue = database.productDao.getMinPrice()
-            val maxValue = database.productDao.getMaxPrice()
+            val minValue = database.productDao.getMinPrice() ?: 0
+            val maxValue = database.productDao.getMaxPrice() ?: 0
             json.put(Filters.PARAM_MIN_VALUE, minValue)
             json.put(Filters.PARAM_MAX_VALUE, maxValue)
         }

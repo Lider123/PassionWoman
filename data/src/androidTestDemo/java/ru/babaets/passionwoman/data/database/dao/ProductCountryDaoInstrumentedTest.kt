@@ -12,8 +12,14 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.dao.CategoryDao
+import ru.babaetskv.passionwoman.data.database.dao.CountryToProductDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductCountryDao
+import ru.babaetskv.passionwoman.data.database.dao.ProductDao
+import ru.babaetskv.passionwoman.data.database.entity.CategoryEntity
+import ru.babaetskv.passionwoman.data.database.entity.CountryToProductEntity
 import ru.babaetskv.passionwoman.data.database.entity.ProductCountryEntity
+import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import java.io.IOException
 
 @ExperimentalCoroutinesApi
@@ -21,6 +27,40 @@ import java.io.IOException
 class ProductCountryDaoInstrumentedTest {
     private lateinit var database: PassionWomanDatabase
     private lateinit var productCountryDao: ProductCountryDao
+    private lateinit var categoryDao: CategoryDao
+    private lateinit var productDao: ProductDao
+    private lateinit var countryToProductDao: CountryToProductDao
+
+    private fun createProduct(
+        id: Int,
+        categoryId: Int,
+        price: Float = 1f,
+        priceWithDiscount: Float = 1f
+    ) =
+        ProductEntity(
+            id = id,
+            categoryId = categoryId,
+            brandId = null,
+            description = null,
+            name = "Product $id",
+            previewPath = "product_${id}_preview_path",
+            price = price,
+            priceWithDiscount = priceWithDiscount,
+            rating = 0f
+        )
+
+    private fun createCategory(id: Int) =
+        CategoryEntity(
+            id = id,
+            imagePath = "category_${id}_image_path",
+            name = "Category $id"
+        )
+
+    private fun createCountry(id: Int) =
+        ProductCountryEntity(
+            code = "country$id",
+            uiName = "Country $id"
+        )
 
     @Before
     fun before() {
@@ -28,6 +68,9 @@ class ProductCountryDaoInstrumentedTest {
         database = Room.inMemoryDatabaseBuilder(context, PassionWomanDatabase::class.java)
             .build()
         productCountryDao = database.productCountryDao
+        countryToProductDao = database.countryToProductDao
+        productDao = database.productDao
+        categoryDao = database.categoryDao
     }
 
     @Test
@@ -89,15 +132,46 @@ class ProductCountryDaoInstrumentedTest {
     @Test
     @Throws(Exception::class)
     fun getAllCodesForProduct_returnsCodes_whenThereAreCountries() = runTest {
-        val country = ProductCountryEntity(
-            code = "country1",
-            uiName = "Country 1"
+        val category = createCategory(1)
+        val products = listOf(
+            createProduct(1, category.id),
+            createProduct(2, category.id)
         )
-        productCountryDao.insert(country)
+        val countries = listOf(
+            createCountry(1),
+            createCountry(2),
+            createCountry(3)
+        )
+        categoryDao.insert(category)
+        products.forEach {
+            productDao.insert(it)
+        }
+        countries.forEach {
+            productCountryDao.insert(it)
+        }
+        listOf(
+            CountryToProductEntity(
+                id = 1,
+                countryCode = "country1",
+                productId = 1
+            ),
+            CountryToProductEntity(
+                id = 2,
+                countryCode = "country2",
+                productId = 2
+            ),
+            CountryToProductEntity(
+                id = 3,
+                countryCode = "country3",
+                productId = 1
+            )
+        ).forEach {
+            countryToProductDao.insert(it)
+        }
 
         val result = productCountryDao.getAllCodesForProduct(1)
 
-        assertEquals(listOf(country.code), result)
+        assertEquals(listOf("country1", "country3"), result)
     }
 
     @After

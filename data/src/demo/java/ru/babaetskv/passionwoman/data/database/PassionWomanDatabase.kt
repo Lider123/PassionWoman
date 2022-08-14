@@ -48,4 +48,5 @@ abstract class PassionWomanDatabase : RoomDatabase() {
     abstract val productItemDao: ProductItemDao
     abstract val productImageDao: ProductImageDao
     abstract val promotionDao: PromotionDao
+    abstract val countryToProductDao: CountryToProductDao
 }
