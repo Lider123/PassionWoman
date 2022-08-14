@@ -140,12 +140,9 @@ dependencies {
     // SplashScreen
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 
-    // Tests
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    // Testing
+    testImplementation project(path: ":domain", configuration: "testDependencies")
+    androidTestImplementation project(path: ":domain", configuration: "androidTestDependencies")
 }
 repositories {
     mavenCentral()
