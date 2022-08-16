@@ -9,7 +9,7 @@ data class CategoryModel(
     @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String,
     @Json(name = "image") val image: String,
-) : Transformable<Unit, Category> {
+) : Transformable<Unit, Category>() {
 
     override suspend fun transform(params: Unit): Category =
         Category(

@@ -31,7 +31,7 @@ data class ProductItemEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "color_id") val colorId: Int,
     @ColumnInfo(name = "product_id") val productId: Int
-) : Transformable<ProductItemEntity.TransformableParamsProvider, ProductItemModel> {
+) : Transformable<ProductItemEntity.TransformableParamsProvider, ProductItemModel>() {
 
     override suspend fun transform(params: TransformableParamsProvider): ProductItemModel =
         ProductItemModel(

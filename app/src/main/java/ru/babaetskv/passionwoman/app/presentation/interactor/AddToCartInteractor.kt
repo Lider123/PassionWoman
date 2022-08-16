@@ -6,8 +6,8 @@ import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.AddToCartUseCase
-import ru.babaetskv.passionwoman.domain.utils.transform
 
 class AddToCartInteractor(
     private val cartGateway: CartGateway,

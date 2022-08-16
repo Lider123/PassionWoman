@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
@@ -16,11 +17,25 @@ class ApiProviderImpl(
     private val database = Room.databaseBuilder(context, PassionWomanDatabase::class.java, "passionwoman")
         .createFromAsset(DATABASE_FILENAME)
         .build()
+    private val productTransformableParamsProvider =
+        ProductTransformableParamsProvider(database)
 
     override fun provideAuthApi(): AuthApi =
-        AuthApiImpl(context, database, moshi, authPreferences, dateTimeConverter)
+        AuthApiImpl(
+            context.assets,
+            database,
+            moshi,
+            authPreferences,
+            dateTimeConverter
+        )
 
-    override fun provideCommonApi(): CommonApi = CommonApiImpl(context, database, moshi)
+    override fun provideCommonApi(): CommonApi =
+        CommonApiImpl(
+            context.assets,
+            database,
+            productTransformableParamsProvider,
+            moshi
+        )
 
     companion object {
         private const val DATABASE_FILENAME = "passionwoman.db"

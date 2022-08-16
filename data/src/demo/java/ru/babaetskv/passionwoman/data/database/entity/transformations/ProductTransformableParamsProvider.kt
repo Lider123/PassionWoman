@@ -3,19 +3,18 @@ package ru.babaetskv.passionwoman.data.database.entity.transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import ru.babaetskv.passionwoman.data.api.BaseApiImpl
+import ru.babaetskv.passionwoman.data.api.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.data.model.BrandModel
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductItemModel
-import ru.babaetskv.passionwoman.domain.utils.transform
-import ru.babaetskv.passionwoman.domain.utils.transformList
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 
 class ProductTransformableParamsProvider(
-    private val database: PassionWomanDatabase,
-    private val api: BaseApiImpl
+    private val database: PassionWomanDatabase
 ) : ProductEntity.TransformableParamsProvider {
     private val productItemParamsProvider = ProductItemTransformableParamsProvider(database)
 
@@ -23,13 +22,13 @@ class ProductTransformableParamsProvider(
         withContext(Dispatchers.IO) {
             return@withContext database.categoryDao.getById(categoryId)
                 ?.transform()
-                ?: throw api.getInternalServerErrorException("Cannot find category by id $categoryId")
+                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find category by id $categoryId")
         }
 
     override suspend fun provideBrand(brandId: Int): BrandModel = withContext(Dispatchers.IO) {
         return@withContext database.brandDao.getById(brandId)
             ?.transform()
-            ?: throw api.getInternalServerErrorException("Cannot find brand by id $brandId")
+            ?: throw ApiExceptionProvider.getNotFoundException("Cannot find brand by id $brandId")
     }
 
     override suspend fun provideProductItems(productId: Int): List<ProductItemModel> =
@@ -37,7 +36,7 @@ class ProductTransformableParamsProvider(
             return@withContext database.productItemDao.getByProductId(productId)
                 .takeIf { it.isNotEmpty() }
                 ?.transformList(productItemParamsProvider)
-                ?: throw api.getInternalServerErrorException("Cannot find product items for the product with id $productId")
+                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find product items for the product with id $productId")
         }
 
     override suspend fun provideAdditionalInfo(productId: Int): Map<String, List<String>> =

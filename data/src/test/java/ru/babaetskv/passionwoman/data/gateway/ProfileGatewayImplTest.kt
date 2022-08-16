@@ -15,7 +15,7 @@ import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
-import ru.babaetskv.passionwoman.domain.utils.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi

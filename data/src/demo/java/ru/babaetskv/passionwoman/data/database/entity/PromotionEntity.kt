@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 data class PromotionEntity(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "image_path") val imagePath: String
-) : Transformable<Unit, PromotionModel> {
+) : Transformable<Unit, PromotionModel>() {
 
     override suspend fun transform(params: Unit): PromotionModel =
         PromotionModel(

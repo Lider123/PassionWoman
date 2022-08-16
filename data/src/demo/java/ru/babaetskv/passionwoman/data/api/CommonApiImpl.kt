@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.Context
+import android.content.res.AssetManager
 import android.util.Log
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
@@ -9,23 +9,22 @@ import org.json.JSONException
 import org.json.JSONObject
 import ru.babaetskv.passionwoman.data.filters.Filters
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
-import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
+import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
-import ru.babaetskv.passionwoman.domain.utils.transformList
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import java.util.*
 
 class CommonApiImpl(
-    context: Context,
+    assetManager: AssetManager,
     private val database: PassionWomanDatabase,
+    private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
     moshi: Moshi,
-) : BaseApiImpl(context, moshi), CommonApi {
+) : BaseApiImpl(assetManager, moshi), CommonApi {
     private val popularProductsCache = mutableListOf<ProductModel>()
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()
-    private val productTransformableParamsProvider =
-        ProductTransformableParamsProvider(database, this)
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
         return@processRequest AuthTokenModel(TOKEN)
@@ -103,17 +102,31 @@ class CommonApiImpl(
             }
         } catch (e: JSONException) {
             e.printStackTrace()
-            throw getBadRequestException("Failed to process filters")
+            throw ApiExceptionProvider.getBadRequestException("Failed to process filters")
         } catch (e: Exception) {
             e.printStackTrace()
-            throw getInternalServerErrorException("Internal server error")
+            throw ApiExceptionProvider.getInternalServerErrorException("Internal server error")
         }
     }
 
     override suspend fun getProductsByIds(ids: String): List<ProductModel> = processRequest {
-        val favoriteIds = ids.split(",").map(String::toInt).toSet()
-        return@processRequest database.productDao.getByIds(favoriteIds)
-            .transformList(productTransformableParamsProvider)
+        if (ids.isBlank()) return@processRequest emptyList()
+
+        if (ids.matches(REGEX_IDS_LIST).not()) {
+            throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
+        }
+
+        val productIds = ids.split(",").map(String::toInt).toSet()
+        val productEntities = database.productDao.getByIds(productIds)
+        val products = productEntities.transformList(productTransformableParamsProvider)
+        val allProductsFound = products.map(ProductModel::id)
+            .toSet()
+            .containsAll(productIds)
+        if (!allProductsFound) {
+            throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
+        }
+
+        return@processRequest products
     }
 
     override suspend fun getPopularBrands(count: Int): List<BrandModel> =
@@ -125,7 +138,7 @@ class CommonApiImpl(
     override suspend fun getProduct(productId: Int): ProductModel = processRequest {
         return@processRequest database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
-            ?: throw getNotFoundException("Product not found")
+            ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
     }
 
     private suspend fun getCategoryProducts(categoryId: Int): List<ProductModel> =
@@ -171,5 +184,6 @@ class CommonApiImpl(
     companion object {
         private const val TOKEN = "token"
         private const val PRODUCT_CACHE_SIZE = 10
+        private val REGEX_IDS_LIST = "^(\\d+,)*\\d+$".toRegex()
     }
 }

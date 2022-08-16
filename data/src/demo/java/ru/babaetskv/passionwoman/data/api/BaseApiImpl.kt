@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.Context
 import android.content.res.AssetManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -8,16 +7,11 @@ import com.squareup.moshi.Types
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.HttpException
-import retrofit2.Response
 
 abstract class BaseApiImpl(
-    context: Context,
+    protected val assetManager: AssetManager,
     protected val moshi: Moshi
 ) {
-    protected val assetManager: AssetManager = context.assets
 
     protected open fun doBeforeRequest() = Unit
 
@@ -37,26 +31,6 @@ abstract class BaseApiImpl(
         return@withContext block.invoke()
     }
 
-    protected fun getUnauthorizedException(message: String) : HttpException =
-        message.toResponseBody("text/plain".toMediaType()).let {
-            Response.error<Nothing>(UNAUTHORIZED, it)
-        }.let(::HttpException)
-
-    protected fun getNotFoundException(message: String) : HttpException =
-        message.toResponseBody("text/plain".toMediaType()).let {
-            Response.error<Nothing>(NOT_FOUND, it)
-        }.let(::HttpException)
-
-    fun getBadRequestException(message: String) : HttpException =
-        message.toResponseBody("text/plain".toMediaType()).let {
-            Response.error<Nothing>(BAD_REQUEST, it)
-        }.let(::HttpException)
-
-    fun getInternalServerErrorException(message: String) : HttpException =
-        message.toResponseBody("text/plain".toMediaType()).let {
-            Response.error<Nothing>(INTERNAL_SERVER_ERROR, it)
-        }.let(::HttpException)
-
     protected enum class AssetFile(
         val fileName: String
     ) {
@@ -66,14 +40,6 @@ abstract class BaseApiImpl(
     companion object {
         @JvmStatic
         protected val DELAY_LOADING = 500L
-        @JvmStatic
-        protected val UNAUTHORIZED = 401
-        @JvmStatic
-        protected val NOT_FOUND = 404
-        @JvmStatic
-        protected val BAD_REQUEST = 400
-        @JvmStatic
-        protected val INTERNAL_SERVER_ERROR = 500
         @JvmStatic
         val TOKEN = "token"
     }

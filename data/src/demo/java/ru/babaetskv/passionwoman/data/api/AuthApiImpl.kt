@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.Context
+import android.content.res.AssetManager
 import com.squareup.moshi.Moshi
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
@@ -9,19 +9,19 @@ import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import timber.log.Timber
-import ru.babaetskv.passionwoman.domain.utils.transform
 import java.util.*
 import kotlin.random.Random
 
 class AuthApiImpl(
-    context: Context,
+    assetManager: AssetManager,
     private val database: PassionWomanDatabase,
     moshi: Moshi,
     private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
-) : BaseApiImpl(context, moshi), AuthApi {
+) : BaseApiImpl(assetManager, moshi), AuthApi {
     private var profileMock: ProfileModel? = null
     private var favoriteIdsMock: List<Int> = emptyList()
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
@@ -36,7 +36,7 @@ class AuthApiImpl(
         val userToken = authPreferences.authToken
         if (userToken != TOKEN) {
             Timber.e("Incorrect token: $userToken")
-            throw getUnauthorizedException("User is not authorized")
+            throw ApiExceptionProvider.getUnauthorizedException("User is not authorized")
         }
     }
 
@@ -45,7 +45,7 @@ class AuthApiImpl(
             database.userDao.getProfile()
                 ?.transform()
                 ?.also { profileMock = it }
-                ?: throw getNotFoundException("Failed to found profile")
+                ?: throw ApiExceptionProvider.getNotFoundException("Failed to found profile")
         } else profileMock!!
     }
 
@@ -76,7 +76,7 @@ class AuthApiImpl(
     }
 
     override suspend fun checkout(): CartModel = processRequest {
-        if (cartMock.items.isEmpty()) throw getBadRequestException("The cart is empty")
+        if (cartMock.items.isEmpty()) throw ApiExceptionProvider.getBadRequestException("The cart is empty")
 
         val newOrder = OrderModel(
             id = UUID.randomUUID()

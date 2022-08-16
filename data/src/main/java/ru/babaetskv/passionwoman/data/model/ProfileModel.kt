@@ -11,7 +11,7 @@ data class ProfileModel(
     @Json(name = "surname") val surname: String,
     @Json(name = "phone") val phone: String,
     @Json(name = "avatar") val avatar: String?
-) : Transformable<Unit, Profile> {
+) : Transformable<Unit, Profile>() {
 
     constructor(profile: Profile) :
         this(

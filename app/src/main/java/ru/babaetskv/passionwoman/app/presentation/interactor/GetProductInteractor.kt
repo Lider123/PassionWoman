@@ -5,8 +5,8 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
-import ru.babaetskv.passionwoman.domain.utils.transform
 
 class GetProductInteractor(
     private val catalogGateway: CatalogGateway,

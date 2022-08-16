@@ -5,13 +5,12 @@ import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Story
 import ru.babaetskv.passionwoman.domain.model.Video
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
-import ru.babaetskv.passionwoman.domain.utils.transformListNotNull
 
 data class StoryModel(
     @Json(name = "id") val id: String,
     @Json(name = "image") val banner: String,
     @Json(name = "contents") val contents: List<ContentModel>
-) : Transformable<Unit, Story> {
+) : Transformable<Unit, Story>() {
 
     override suspend fun transform(params: Unit): Story =
         Story(
@@ -26,7 +25,7 @@ data class StoryModel(
         @Json(name = "text") val text: String?,
         @Json(name = "media") val media: String,
         @Json(name = "type") val type: String
-    ) : Transformable<Unit, Story.Content?> {
+    ) : Transformable<Unit, Story.Content?>() {
 
         override suspend fun transform(params: Unit): Story.Content? =
             Type.findByApiName(type)?.let {

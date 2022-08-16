@@ -8,7 +8,7 @@ data class ColorModel(
     @Json(name = "id") val id: Int,
     @Json(name = "uiName") val uiName: String,
     @Json(name = "hex") val hex: String
-) : Transformable<Unit, Color> {
+) : Transformable<Unit, Color>() {
 
     constructor(color: Color) :
         this(

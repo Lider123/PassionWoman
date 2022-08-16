@@ -5,8 +5,6 @@ import ru.babaetskv.passionwoman.domain.model.Image
 import ru.babaetskv.passionwoman.domain.model.Price
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
-import ru.babaetskv.passionwoman.domain.utils.transform
-import ru.babaetskv.passionwoman.domain.utils.transformList
 
 data class ProductModel(
     @Json(name = "id") val id: Int,
@@ -20,7 +18,7 @@ data class ProductModel(
     @Json(name = "brand") val brand: BrandModel?,
     @Json(name = "additional_info") val additionalInfo: Map<String, List<String>>?,
     @Json(name = "items") val items: List<ProductItemModel>
-) : Transformable<Unit, Product> {
+) : Transformable<Unit, Product>() {
 
     override suspend fun transform(params: Unit): Product =
         Product(

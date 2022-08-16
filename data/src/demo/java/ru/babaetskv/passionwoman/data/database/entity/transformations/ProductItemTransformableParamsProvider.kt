@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.data.database.entity.transformations
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductItemEntity
 import ru.babaetskv.passionwoman.data.model.ColorModel
-import ru.babaetskv.passionwoman.domain.utils.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 
 class ProductItemTransformableParamsProvider(
     private val database: PassionWomanDatabase

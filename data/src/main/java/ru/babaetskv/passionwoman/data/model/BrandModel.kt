@@ -9,7 +9,7 @@ data class BrandModel(
     @Json(name = "id") val id: Int,
     @Json(name = "logo_path") val logoPath: String,
     @Json(name = "name") val name: String
-) : Transformable<Unit, Brand> {
+) : Transformable<Unit, Brand>() {
 
     override suspend fun transform(params: Unit): Brand =
         Brand(

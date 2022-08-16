@@ -15,7 +15,7 @@ import ru.babaetskv.passionwoman.data.database.dao.ColorDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductImageDao
 import ru.babaetskv.passionwoman.data.database.dao.ProductSizeDao
 import ru.babaetskv.passionwoman.data.database.entity.ColorEntity
-import ru.babaetskv.passionwoman.domain.utils.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import java.lang.IllegalStateException
 
 @ExperimentalCoroutinesApi

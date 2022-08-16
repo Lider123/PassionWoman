@@ -8,7 +8,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 data class PromotionModel(
     @Json(name = "id") val id: String,
     @Json(name = "image") val banner: String
-) : Transformable<Unit, Promotion> {
+) : Transformable<Unit, Promotion>() {
 
     override suspend fun transform(params: Unit): Promotion =
         Promotion(

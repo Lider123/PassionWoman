@@ -3,7 +3,6 @@ package ru.babaetskv.passionwoman.data.model
 import com.squareup.moshi.Json
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
-import ru.babaetskv.passionwoman.domain.utils.transform
 
 data class CartItemModel(
     @Json(name = "productId") val productId: Int,
@@ -14,7 +13,7 @@ data class CartItemModel(
     @Json(name = "price") val price: Float,
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
     @Json(name = "count") val count: Int
-) : Transformable<Unit, CartItem> {
+) : Transformable<Unit, CartItem>() {
 
     constructor(item: CartItem) :
         this(

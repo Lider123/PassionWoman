@@ -11,9 +11,9 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.HomeData
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.GetHomeDataUseCase
-import ru.babaetskv.passionwoman.domain.utils.transformList
 
 class GetHomeDataInteractor(
     private val catalogGateway: CatalogGateway,

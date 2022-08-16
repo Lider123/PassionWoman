@@ -37,7 +37,7 @@ data class ProductEntity(
     @ColumnInfo(name = "rating") val rating: Float,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "brand_id") val brandId: Int?
-) : Transformable<ProductEntity.TransformableParamsProvider, ProductModel> {
+) : Transformable<ProductEntity.TransformableParamsProvider, ProductModel>() {
 
     override suspend fun transform(params: TransformableParamsProvider): ProductModel =
         ProductModel(

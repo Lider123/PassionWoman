@@ -13,7 +13,7 @@ data class UserEntity(
     @ColumnInfo(name = "surname") val surname: String?,
     @ColumnInfo(name = "phone") val phone: String,
     @ColumnInfo(name = "avatar") val avatar: String?
-) : Transformable<Unit, ProfileModel> {
+) : Transformable<Unit, ProfileModel>() {
 
     override suspend fun transform(params: Unit): ProfileModel =
         ProfileModel(
