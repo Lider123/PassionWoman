@@ -30,5 +30,5 @@ interface ProductDao {
     suspend fun getMaxPrice(): Float?
 
     @Insert
-    suspend fun insert(entity: ProductEntity)
+    suspend fun insert(vararg entities: ProductEntity)
 }

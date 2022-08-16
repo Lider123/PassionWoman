@@ -71,4 +71,17 @@ abstract class DaoInstrumentedTest {
             phone = "9100000000",
             avatar = null
         )
+
+    protected fun createProductMaterial(id: Int) =
+        ProductMaterialEntity(
+            code = "material$id",
+            uiName = "Material $id"
+        )
+
+    protected fun createMaterialToProductEntity(id: Int, materialId: Int, productId: Int) =
+        MaterialToProductEntity(
+            id = id,
+            materialCode = "material$materialId",
+            productId = productId
+        )
 }

@@ -14,8 +14,8 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.ProfileGateway
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
-import ru.babaetskv.passionwoman.domain.utils.transform
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

@@ -15,8 +15,8 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.model.Category
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.GetCategoriesUseCase
-import ru.babaetskv.passionwoman.domain.utils.transform
 import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
