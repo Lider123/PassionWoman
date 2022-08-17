@@ -2,28 +2,29 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.res.AssetManager
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.json.JSONArray
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import retrofit2.HttpException
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.ProductDao
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
+import ru.babaetskv.passionwoman.data.model.StoryModel
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CommonApiImplTest {
     private val assetManagerMock: AssetManager = mock()
     private val moshi: Moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
         .build()
     private val productDaoMock: ProductDao = mock()
     private val databaseMock: PassionWomanDatabase = mock {
@@ -228,6 +229,93 @@ class CommonApiImplTest {
             )
             assertEquals(expectedResult, result)
         }
+
+    @Test
+    fun getStories_returnsEmpty_whenThereAreNoStories() = runTest {
+        val istream = "[]".byteInputStream()
+        whenever(assetManagerMock.open(any())) doReturn istream
+
+        val result = api.getStories()
+
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun getStories_throwsInternalServerError_whenStoriesFileIsCorrupted() = runTest {
+        val istream = "1234".byteInputStream()
+        whenever(assetManagerMock.open(any())) doReturn istream
+
+        try {
+            api.getStories()
+            fail()
+        } catch (e: HttpException) {
+            assertEquals(500, e.code())
+            assertEquals("Stories source is corrupted", e.response()?.errorBody()?.string())
+        }
+    }
+
+    @Test
+    fun getStories_throwsInternalServerError_whenThereAreStoriesWithoutContent() = runTest {
+        val istream = """
+            [
+              {
+                "id": "story_1",
+                "image": "file:///android_asset/image/story_1.png",
+                "contents": []
+              }
+            ]
+        """.let(::JSONArray).toString().byteInputStream()
+        whenever(assetManagerMock.open(any())) doReturn istream
+
+        try {
+            api.getStories()
+            fail()
+        } catch (e: HttpException) {
+            assertEquals(500, e.code())
+            assertEquals("Stories without content are not allowed", e.response()?.errorBody()?.string())
+        }
+    }
+
+    @Test
+    fun getStories_returnsStories_whenThereAreStoriesWithContent() = runTest {
+        val istream = """
+            [
+              {
+                "id": "story_1",
+                "image": "story_1_image",
+                "contents": [
+                  {
+                    "id": "story_1_content_1",
+                    "title": "Story 1 content 1",
+                    "text": "Story 1 content 1 text",
+                    "media": "story_1_content_1_media",
+                    "type": "video"
+                  }
+                ]
+              }
+            ]
+        """.trimIndent().byteInputStream()
+        whenever(assetManagerMock.open(any())) doReturn istream
+
+        val result = api.getStories()
+
+        val expected = listOf(
+            StoryModel(
+                id = "story_1",
+                banner = "story_1_image",
+                contents = listOf(
+                    StoryModel.ContentModel(
+                        id = "story_1_content_1",
+                        title = "Story 1 content 1",
+                        text = "Story 1 content 1 text",
+                        media = "story_1_content_1_media",
+                        type = "video"
+                    )
+                )
+            )
+        )
+        assertEquals(expected, result)
+    }
 
     // TODO: add test cases for other methods
 }

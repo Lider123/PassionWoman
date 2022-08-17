@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.res.AssetManager
 import android.util.Log
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -41,7 +42,16 @@ class CommonApiImpl(
     }
 
     override suspend fun getStories(): List<StoryModel> = processRequest {
-        return@processRequest loadListFromAsset(AssetFile.STORIES)
+        return@processRequest try {
+            val stories = loadListFromAsset<StoryModel>(AssetFile.STORIES)
+            if (stories.any { it.contents.isEmpty() }) {
+                throw ApiExceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
+            }
+
+            stories
+        } catch (e: JsonDataException) {
+            throw ApiExceptionProvider.getInternalServerErrorException("Stories source is corrupted")
+        }
     }
 
     override suspend fun getProducts(
