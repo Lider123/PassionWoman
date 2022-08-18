@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import ru.babaetskv.passionwoman.data.database.entity.ProductModelEntity
 
@@ -16,4 +17,7 @@ interface ProductModelDao {
         WHERE model_to_product.product_id = :productId
     """)
     suspend fun getForProduct(productId: Int): List<String>
+
+    @Insert
+    suspend fun insert(vararg entities: ProductModelEntity)
 }

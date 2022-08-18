@@ -84,4 +84,17 @@ abstract class DaoInstrumentedTest {
             materialCode = "material$materialId",
             productId = productId
         )
+
+    protected fun createProductModel(id: Int) =
+        ProductModelEntity(
+            code = "model$id",
+            uiName = "Model $id"
+        )
+
+    protected fun createModelToProductEntity(id: Int, modelId: Int, productId: Int) =
+        ModelToProductEntity(
+            id = id,
+            modelCode = "model$modelId",
+            productId = productId
+        )
 }
