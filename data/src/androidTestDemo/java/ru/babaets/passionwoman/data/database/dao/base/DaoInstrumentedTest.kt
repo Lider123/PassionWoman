@@ -97,4 +97,17 @@ abstract class DaoInstrumentedTest {
             modelCode = "model$modelId",
             productId = productId
         )
+
+    protected fun createProductSeason(id: Int) =
+        ProductSeasonEntity(
+            code = "season$id",
+            uiName = "Season $id"
+        )
+
+    protected fun createSeasonToProductEntity(id: Int, seasonId: Int, productId: Int) =
+        SeasonToProductEntity(
+            id = id,
+            seasonCode = "season$seasonId",
+            productId = productId
+        )
 }
