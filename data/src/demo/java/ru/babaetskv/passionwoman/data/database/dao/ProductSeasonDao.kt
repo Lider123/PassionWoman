@@ -15,5 +15,5 @@ interface ProductSeasonDao {
         FROM product_seasons JOIN season_to_product ON code = season_to_product.product_season_code
         WHERE season_to_product.product_id = :productId
     """)
-    suspend fun getForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Int): List<String>
 }

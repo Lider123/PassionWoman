@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import ru.babaetskv.passionwoman.data.api.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
+import ru.babaetskv.passionwoman.data.database.entity.ProductItemEntity
 import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.data.model.BrandModel
 import ru.babaetskv.passionwoman.data.model.CategoryModel
@@ -14,21 +15,21 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.trans
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 
 class ProductTransformableParamsProvider(
-    private val database: PassionWomanDatabase
+    private val database: PassionWomanDatabase,
+    private val productItemParamsProvider: ProductItemEntity.TransformableParamsProvider
 ) : ProductEntity.TransformableParamsProvider {
-    private val productItemParamsProvider = ProductItemTransformableParamsProvider(database)
 
     override suspend fun provideCategory(categoryId: Int): CategoryModel =
         withContext(Dispatchers.IO) {
             return@withContext database.categoryDao.getById(categoryId)
                 ?.transform()
-                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find category by id $categoryId")
+                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find category with id $categoryId")
         }
 
     override suspend fun provideBrand(brandId: Int): BrandModel = withContext(Dispatchers.IO) {
         return@withContext database.brandDao.getById(brandId)
             ?.transform()
-            ?: throw ApiExceptionProvider.getNotFoundException("Cannot find brand by id $brandId")
+            ?: throw ApiExceptionProvider.getNotFoundException("Cannot find brand with id $brandId")
     }
 
     override suspend fun provideProductItems(productId: Int): List<ProductItemModel> =
@@ -41,12 +42,12 @@ class ProductTransformableParamsProvider(
 
     override suspend fun provideAdditionalInfo(productId: Int): Map<String, List<String>> =
         withContext(Dispatchers.IO) {
-            val countries = async { database.productCountryDao.getAllCodesForProduct(productId) }
-            val models = async { database.productModelDao.getForProduct(productId) }
-            val materials = async { database.productMaterialDao.getForProduct(productId) }
-            val seasons = async { database.productSeasonDao.getForProduct(productId) }
-            val styles = async { database.productStyleDao.getForProduct(productId) }
-            val types = async { database.productTypeDao.getForProduct(productId) }
+            val countries = async { database.productCountryDao.getCodesForProduct(productId) }
+            val models = async { database.productModelDao.getCodesForProduct(productId) }
+            val materials = async { database.productMaterialDao.getCodesForProduct(productId) }
+            val seasons = async { database.productSeasonDao.getCodesForProduct(productId) }
+            val styles = async { database.productStyleDao.getCodesForProduct(productId) }
+            val types = async { database.productTypeDao.getCodesForProduct(productId) }
             return@withContext mapOf(
                 FilterResolver.COUNTRY.code to countries.await(),
                 FilterResolver.MODEL.code to models.await(),

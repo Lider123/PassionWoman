@@ -16,7 +16,7 @@ interface ProductModelDao {
         FROM product_models JOIN model_to_product ON code = model_to_product.product_model_code
         WHERE model_to_product.product_id = :productId
     """)
-    suspend fun getForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Int): List<String>
 
     @Insert
     suspend fun insert(vararg entities: ProductModelEntity)

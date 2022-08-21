@@ -15,5 +15,5 @@ interface ProductStyleDao {
         FROM product_styles JOIN style_to_product ON code = style_to_product.product_style_code
         WHERE style_to_product.product_id = :productId
     """)
-    suspend fun getForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Int): List<String>
 }

@@ -91,15 +91,15 @@ class ProductCountryDaoInstrumentedTest : DaoInstrumentedTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getAllCodesForProduct_returnsEmpty_whenThereAreNoCountries() = runTest {
-        val result = productCountryDao.getAllCodesForProduct(1)
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoCountries() = runTest {
+        val result = productCountryDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getAllCodesForProduct_returnsCodes_whenThereAreCountries() = runTest {
+    fun getCodesForProduct_returnsCodes_whenThereAreCountries() = runTest {
         val category = createCategory(1)
         val products = listOf(
             createProduct(1, category.id),
@@ -137,7 +137,7 @@ class ProductCountryDaoInstrumentedTest : DaoInstrumentedTest() {
             countryToProductDao.insert(it)
         }
 
-        val result = productCountryDao.getAllCodesForProduct(1)
+        val result = productCountryDao.getCodesForProduct(1)
 
         assertEquals(listOf("country1", "country3"), result)
     }

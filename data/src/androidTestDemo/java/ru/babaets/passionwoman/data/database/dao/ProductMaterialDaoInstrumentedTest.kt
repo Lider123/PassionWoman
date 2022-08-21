@@ -63,29 +63,29 @@ class ProductMaterialDaoInstrumentedTest : DaoInstrumentedTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoMaterials() = runTest {
-        val result = productMaterialDao.getForProduct(1)
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoMaterials() = runTest {
+        val result = productMaterialDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoMaterialToProductEntities() = runTest {
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoMaterialToProductEntities() = runTest {
         val materials = listOf(
             createProductMaterial(1),
             createProductMaterial(2)
         )
         productMaterialDao.insert(*materials.toTypedArray())
 
-        val result = productMaterialDao.getForProduct(1)
+        val result = productMaterialDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsMaterialsForProduct_whenThereAreMaterialToProductEntities() = runTest {
+    fun getCodesForProduct_returnsMaterialsForProduct_whenThereAreMaterialToProductEntities() = runTest {
         val materials = listOf(
             createProductMaterial(1),
             createProductMaterial(2),
@@ -108,7 +108,7 @@ class ProductMaterialDaoInstrumentedTest : DaoInstrumentedTest() {
         productMaterialDao.insert(*materials.toTypedArray())
         materialToProductDao.insert(*materialToProductEntities.toTypedArray())
 
-        val result = productMaterialDao.getForProduct(2)
+        val result = productMaterialDao.getCodesForProduct(2)
 
         val expected = listOf(
             createProductMaterial(3).code,

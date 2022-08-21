@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductItemTransformableParamsProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
@@ -18,7 +19,10 @@ class ApiProviderImpl(
         .createFromAsset(DATABASE_FILENAME)
         .build()
     private val productTransformableParamsProvider =
-        ProductTransformableParamsProvider(database)
+        ProductTransformableParamsProvider(
+            database,
+            ProductItemTransformableParamsProvider(database)
+        )
 
     override fun provideAuthApi(): AuthApi =
         AuthApiImpl(

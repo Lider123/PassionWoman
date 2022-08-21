@@ -63,29 +63,29 @@ class ProductModelDaoInstrumentedTest : DaoInstrumentedTest() {
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoModels() = runTest {
-        val result = productModelDao.getForProduct(1)
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoModels() = runTest {
+        val result = productModelDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoProducts() = runTest {
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoProducts() = runTest {
         val models = listOf(
             createProductModel(1),
             createProductModel(2)
         )
         productModelDao.insert(*models.toTypedArray())
 
-        val result = productModelDao.getForProduct(1)
+        val result = productModelDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoModelToProductEntities() = runTest {
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoModelToProductEntities() = runTest {
         val models = listOf(
             createProductModel(1),
             createProductModel(2)
@@ -96,14 +96,14 @@ class ProductModelDaoInstrumentedTest : DaoInstrumentedTest() {
         categoryDao.insert(category)
         productDao.insert(product)
 
-        val result = productModelDao.getForProduct(1)
+        val result = productModelDao.getCodesForProduct(1)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsEmpty_whenThereAreNoModesForRequiredProductId() = runTest {
+    fun getCodesForProduct_returnsEmpty_whenThereAreNoModesForRequiredProductId() = runTest {
         val models = listOf(
             createProductModel(1),
             createProductModel(2)
@@ -122,14 +122,14 @@ class ProductModelDaoInstrumentedTest : DaoInstrumentedTest() {
         productDao.insert(*products.toTypedArray())
         modelToProductDao.insert(*modelToProductEntities.toTypedArray())
 
-        val result = productModelDao.getForProduct(2)
+        val result = productModelDao.getCodesForProduct(2)
 
         assertTrue(result.isEmpty())
     }
 
     @Test
     @Throws(Exception::class)
-    fun getForProduct_returnsModelsForRequiredProductId_whenThereAreModesForRequiredProductId() = runTest {
+    fun getCodesForProduct_returnsModelsForRequiredProductId_whenThereAreModesForRequiredProductId() = runTest {
         val models = listOf(
             createProductModel(1),
             createProductModel(2),
@@ -152,7 +152,7 @@ class ProductModelDaoInstrumentedTest : DaoInstrumentedTest() {
         productDao.insert(*products.toTypedArray())
         modelToProductDao.insert(*modelToProductEntities.toTypedArray())
 
-        val result = productModelDao.getForProduct(2)
+        val result = productModelDao.getCodesForProduct(2)
 
         val expected = listOf("model3", "model4")
         assertEquals(expected, result)
