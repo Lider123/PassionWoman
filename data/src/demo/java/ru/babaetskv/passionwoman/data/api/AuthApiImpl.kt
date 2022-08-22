@@ -82,7 +82,8 @@ class AuthApiImpl(
             id = UUID.randomUUID()
                 .toString()
                 .filter { it.isDigit() }
-                .take(8),
+                .take(8)
+                .toInt(),
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },

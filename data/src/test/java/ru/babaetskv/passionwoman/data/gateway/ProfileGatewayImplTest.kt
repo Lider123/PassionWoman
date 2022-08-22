@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import retrofit2.HttpException
 import ru.babaetskv.passionwoman.data.api.AuthApi
+import ru.babaetskv.passionwoman.data.model.OrderModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
@@ -61,12 +62,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.getProfile()).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Unauthorized)
-        }.onSuccess {
             fail()
+        } catch(e: Exception) {
+            assertTrue(e is GatewayException.Unauthorized)
         }
     }
 
@@ -77,12 +77,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.getProfile()).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -93,12 +92,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.getProfile()).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -109,12 +107,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.getProfile()).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -125,12 +122,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.getProfile()).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Server)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Server)
         }
     }
 
@@ -138,12 +134,11 @@ class ProfileGatewayImplTest {
     fun getProfile_throwsUnknownException_whenGotCommonException(): Unit = runTest {
         whenever(authApiMock.getProfile()).thenThrow(RuntimeException())
 
-        runCatching {
+        try {
             gateway.getProfile()
-        }.onFailure {
-            assertTrue(it is GatewayException.Unknown)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unknown)
         }
     }
 
@@ -163,12 +158,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.updateProfile(any())).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Unauthorized)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unauthorized)
         }
     }
 
@@ -179,12 +173,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.updateProfile(any())).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -195,12 +188,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.updateProfile(any())).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -211,12 +203,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.updateProfile(any())).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -227,12 +218,11 @@ class ProfileGatewayImplTest {
         }
         whenever(authApiMock.updateProfile(any())).thenThrow(httpExceptionMock)
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Server)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Server)
         }
     }
 
@@ -240,12 +230,11 @@ class ProfileGatewayImplTest {
     fun updateProfile_throwsUnknownException_whenGotCommonException(): Unit = runTest {
         whenever(authApiMock.updateProfile(any())).thenThrow(RuntimeException())
 
-        runCatching {
+        try {
             gateway.updateProfile(createProfileMock().transform())
-        }.onFailure {
-            assertTrue(it is GatewayException.Unknown)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unknown)
         }
     }
 
@@ -292,12 +281,11 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Unauthorized)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unauthorized)
         }
     }
 
@@ -311,12 +299,11 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -330,12 +317,11 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -349,12 +335,11 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Client)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
         }
     }
 
@@ -368,12 +353,11 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Server)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Server)
         }
     }
 
@@ -384,12 +368,128 @@ class ProfileGatewayImplTest {
             whenever(mock.toString()).doReturn("file://sample_file")
         }
 
-        runCatching {
+        try {
             gateway.updateAvatar(uriMock)
-        }.onFailure {
-            assertTrue(it is GatewayException.Unknown)
-        }.onSuccess {
             fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unknown)
+        }
+    }
+
+    @Test
+    fun getOrders_returnsOrders() = runTest {
+        val orders = listOf(
+            OrderModel(
+                id = 1,
+                createdAt = "order_1_created_at",
+                cartItems = emptyList(),
+                status = "order_1_status"
+            ),
+            OrderModel(
+                id = 2,
+                createdAt = "order_2_created_at",
+                cartItems = emptyList(),
+                status = "order_2_status"
+            )
+        )
+        whenever(authApiMock.getOrders()).doReturn(orders)
+
+        val result = gateway.getOrders()
+
+        assertEquals(orders, result)
+    }
+
+    @Test
+    fun getOrders_callsAuthApi() = runTest {
+        gateway.getOrders()
+
+        verify(authApiMock, times(1)).getOrders()
+    }
+
+    @Test
+    fun getOrders_throwsUnauthorizedException_whenGotUnauthorizedException(): Unit = runTest {
+        val httpExceptionMock = mock<HttpException> {
+            whenever(mock.code()).doReturn(401)
+        }
+        whenever(authApiMock.getOrders()).thenThrow(httpExceptionMock)
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch(e: Exception) {
+            assertTrue(e is GatewayException.Unauthorized)
+        }
+    }
+
+    @Test
+    fun getOrders_throwsClientException_whenGotNotFoundException(): Unit = runTest {
+        val httpExceptionMock = mock<HttpException> {
+            whenever(mock.code()).doReturn(404)
+        }
+        whenever(authApiMock.getOrders()).thenThrow(httpExceptionMock)
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
+        }
+    }
+
+    @Test
+    fun getOrders_throwsClientException_whenGotBadRequestException(): Unit = runTest {
+        val httpExceptionMock = mock<HttpException> {
+            whenever(mock.code()).doReturn(400)
+        }
+        whenever(authApiMock.getOrders()).thenThrow(httpExceptionMock)
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
+        }
+    }
+
+    @Test
+    fun getOrders_throwsClientException_whenGotForbiddenException(): Unit = runTest {
+        val httpExceptionMock = mock<HttpException> {
+            whenever(mock.code()).doReturn(403)
+        }
+        whenever(authApiMock.getOrders()).thenThrow(httpExceptionMock)
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Client)
+        }
+    }
+
+    @Test
+    fun getOrders_throwsServerException_whenGotInternalServerException(): Unit = runTest {
+        val httpExceptionMock = mock<HttpException> {
+            whenever(mock.code()).doReturn(500)
+        }
+        whenever(authApiMock.getOrders()).thenThrow(httpExceptionMock)
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Server)
+        }
+    }
+
+    @Test
+    fun getOrders_throwsUnknownException_whenGotCommonException(): Unit = runTest {
+        whenever(authApiMock.getOrders()).thenThrow(RuntimeException())
+
+        try {
+            gateway.getOrders()
+            fail()
+        } catch (e: Exception) {
+            assertTrue(e is GatewayException.Unknown)
         }
     }
 
