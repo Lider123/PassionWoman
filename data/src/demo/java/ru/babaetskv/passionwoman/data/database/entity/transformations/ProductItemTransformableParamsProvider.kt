@@ -11,6 +11,7 @@ class ProductItemTransformableParamsProvider(
 
     override suspend fun provideImages(productItemId: Int): List<String> =
         database.productImageDao.getForProductItem(productItemId)
+            .map(AssetDbFormatter::formatAssetDbPath)
 
     override suspend fun provideColor(colorId: Int): ColorModel =
         database.colorDao.getById(colorId)

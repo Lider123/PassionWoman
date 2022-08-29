@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -49,6 +50,7 @@ interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     }
 
     fun showError(exception: Exception?) {
+        Log.e(ViewComponent::class.java.simpleName, "showError(exception=$exception)") // TODO: remove
         val errorView = componentView.findViewById<StubView>(R.id.errorView) ?: return
 
         exception ?: run {

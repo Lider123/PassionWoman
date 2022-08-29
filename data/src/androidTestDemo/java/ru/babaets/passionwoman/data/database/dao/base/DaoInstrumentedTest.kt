@@ -110,4 +110,23 @@ abstract class DaoInstrumentedTest {
             seasonCode = "season$seasonId",
             productId = productId
         )
+
+    protected fun createProductSize(id: Int) =
+        ProductSizeEntity(
+            code = "size$id",
+            uiName = "size $id"
+        )
+
+    protected fun createSizeToProductItemEntity(
+        id: Int,
+        sizeCode: String,
+        productItemId: Int,
+        isAvailable: Boolean = true
+    ) =
+        SizeToProductItemEntity(
+            id = id,
+            sizeCode = sizeCode,
+            productItemId = productItemId,
+            isAvailable = isAvailable
+        )
 }

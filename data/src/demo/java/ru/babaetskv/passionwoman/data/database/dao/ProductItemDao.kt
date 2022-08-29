@@ -12,5 +12,5 @@ interface ProductItemDao {
     suspend fun getByProductId(productId: Int): List<ProductItemEntity>
 
     @Insert
-    suspend fun insert(entity: ProductItemEntity)
+    suspend fun insert(vararg entities: ProductItemEntity)
 }

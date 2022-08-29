@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.data.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.babaetskv.passionwoman.data.database.entity.transformations.AssetDbFormatter
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
@@ -17,10 +18,10 @@ data class UserEntity(
 
     override suspend fun transform(params: Unit): ProfileModel =
         ProfileModel(
-            id = id.toString(),
+            id = id,
             name = name.orEmpty(),
             surname = surname.orEmpty(),
             phone = phone,
-            avatar = avatar
+            avatar = avatar?.let(AssetDbFormatter::formatAssetDbPath)
         )
 }

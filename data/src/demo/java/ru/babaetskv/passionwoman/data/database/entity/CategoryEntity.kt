@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.data.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.babaetskv.passionwoman.data.database.entity.transformations.AssetDbFormatter
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
@@ -17,6 +18,6 @@ data class CategoryEntity(
         CategoryModel(
             id = id,
             name = name,
-            image = imagePath
+            image = AssetDbFormatter.formatAssetDbPath(imagePath)
         )
 }

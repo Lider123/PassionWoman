@@ -28,7 +28,7 @@ class GetProfileInteractorTest {
     private lateinit var interactor: GetProfileInteractor
 
     private val profileMock = Profile(
-        id = "id",
+        id = 1,
         name = "John",
         surname = "Doe",
         phone = "",

@@ -48,6 +48,8 @@ class ProductItemTransformableParamsProviderTest {
 
     @Test
     fun provideImages_callsImageDao() = runTest {
+        whenever(imageDaoMock.getForProductItem(any())) doReturn emptyList()
+
         provider.provideImages(1)
 
         verify(imageDaoMock, times(1)).getForProductItem(1)
@@ -63,12 +65,12 @@ class ProductItemTransformableParamsProviderTest {
     }
 
     @Test
-    fun provideImages_returnsImagePathsList_whenThereAreImagesInTheDatabase() = runTest {
-        whenever(imageDaoMock.getForProductItem(1)).doReturn(listOf("path"))
+    fun provideImages_returnsImagePathsWithPrefixes_whenThereAreImagesInTheDatabase() = runTest {
+        whenever(imageDaoMock.getForProductItem(1)) doReturn listOf("static/image/image.jpg")
 
         val result = provider.provideImages(1)
 
-        assertEquals(listOf("path"), result)
+        assertEquals(listOf("asset:///demo_db_editor/static/image/image.jpg"), result)
     }
 
     @Test

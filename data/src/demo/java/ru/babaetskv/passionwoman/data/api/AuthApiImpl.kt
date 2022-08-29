@@ -36,7 +36,7 @@ class AuthApiImpl(
         val userToken = authPreferences.authToken
         if (userToken != TOKEN) {
             Timber.e("Incorrect token: $userToken")
-            throw ApiExceptionProvider.getUnauthorizedException("User is not authorized")
+            throw ApiExceptionProvider.getUnauthorizedException("Unauthorized")
         }
     }
 
@@ -45,7 +45,7 @@ class AuthApiImpl(
             database.userDao.getProfile()
                 ?.transform()
                 ?.also { profileMock = it }
-                ?: throw ApiExceptionProvider.getNotFoundException("Failed to found profile")
+                ?: throw ApiExceptionProvider.getNotFoundException("Profile is not found")
         } else profileMock!!
     }
 

@@ -86,7 +86,7 @@ class ProductTransformableParamsProviderTest {
         val category = CategoryEntity(
             id = 1,
             name = "Category 1",
-            imagePath = "category_1_image_path"
+            imagePath = "static/image/category_1_image_path.jpg"
         )
         whenever(categoryDaoMock.getById(1)) doReturn category
 
@@ -101,7 +101,7 @@ class ProductTransformableParamsProviderTest {
             val category = CategoryEntity(
                 id = 1,
                 name = "Category 1",
-                imagePath = "category_1_image_path"
+                imagePath = "static/image/category_1_image_path.jpg"
             )
             whenever(categoryDaoMock.getById(1)) doReturn category
 
@@ -110,7 +110,7 @@ class ProductTransformableParamsProviderTest {
             val expected = CategoryModel(
                 id = 1,
                 name = "Category 1",
-                image = "category_1_image_path"
+                image = "asset:///demo_db_editor/static/image/category_1_image_path.jpg"
             )
             assertEquals(expected, result)
         }
@@ -135,7 +135,7 @@ class ProductTransformableParamsProviderTest {
         val brand = BrandEntity(
             id = 1,
             name = "Brand 1",
-            logoPath = "brand_1_logo_path"
+            logoPath = "static/image/brand_1_logo_path.jpg"
         )
         whenever(brandDaoMock.getById(1)) doReturn brand
 
@@ -150,7 +150,7 @@ class ProductTransformableParamsProviderTest {
             val brand = BrandEntity(
                 id = 1,
                 name = "Brand 1",
-                logoPath = "brand_1_logo_path"
+                logoPath = "static/image/brand_1_logo_path.jpg"
             )
             whenever(brandDaoMock.getById(1)) doReturn brand
 
@@ -159,7 +159,7 @@ class ProductTransformableParamsProviderTest {
             val expected = BrandModel(
                 id = 1,
                 name = "Brand 1",
-                logoPath = "brand_1_logo_path"
+                logoPath = "asset:///demo_db_editor/static/image/brand_1_logo_path.jpg"
             )
             assertEquals(expected, result)
         }

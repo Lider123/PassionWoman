@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.database.entity
 
 import androidx.room.*
+import ru.babaetskv.passionwoman.data.database.entity.transformations.AssetDbFormatter
 import ru.babaetskv.passionwoman.data.model.BrandModel
 import ru.babaetskv.passionwoman.data.model.CategoryModel
 import ru.babaetskv.passionwoman.data.model.ProductItemModel
@@ -45,7 +46,7 @@ data class ProductEntity(
             category = params.provideCategory(categoryId),
             name = name,
             description = description,
-            preview = previewPath,
+            preview = AssetDbFormatter.formatAssetDbPath(previewPath),
             price = price,
             priceWithDiscount = priceWithDiscount,
             rating = rating,

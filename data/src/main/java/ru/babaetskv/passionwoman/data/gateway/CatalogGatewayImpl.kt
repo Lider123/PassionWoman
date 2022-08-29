@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.data.gateway
 
+import android.util.Log
 import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
@@ -37,7 +38,9 @@ class CatalogGatewayImpl(
     }
 
     override suspend fun getPromotions(): List<Transformable<Unit, Promotion>> = networkRequest {
-        api.getPromotions()
+        api.getPromotions().also {
+            Log.e("TEST", it.toString()) // TODO: remove
+        }
     }
 
     override suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>> =

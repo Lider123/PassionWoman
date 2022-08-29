@@ -32,7 +32,7 @@ class ProfileViewModelImpl(
 
     override val guestProfile: Profile
         get() = Profile(
-            id = "-1",
+            id = -1,
             name = stringProvider.GUEST_PROFILE_NAME,
             surname = "",
             phone = "",

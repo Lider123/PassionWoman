@@ -31,7 +31,7 @@ class ProfileGatewayImplTest {
 
     private fun createProfileMock() =
         ProfileModel(
-            id = "profile1",
+            id = 1,
             name = "John",
             surname = "Doe",
             phone = "0000000000",

@@ -6,7 +6,7 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class ProfileModel(
-    @Json(name = "id") val id: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String,
     @Json(name = "surname") val surname: String,
     @Json(name = "phone") val phone: String,

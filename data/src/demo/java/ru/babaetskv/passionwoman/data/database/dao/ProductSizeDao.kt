@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import ru.babaetskv.passionwoman.data.database.entity.ProductSizeEntity
 
@@ -23,4 +24,7 @@ interface ProductSizeDao {
         WHERE size_to_product_item.product_item_id = :productItemId AND is_available = 1
     """)
     suspend fun getAvailableForProductItem(productItemId: Int): List<String>
+
+    @Insert
+    suspend fun insert(vararg entities: ProductSizeEntity)
 }

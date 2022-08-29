@@ -96,7 +96,7 @@ class CommonApiImplTest {
         val category = CategoryModel(
             id = 1,
             name = "Category 1",
-            image = "category_1_image_path"
+            image = "asset:///demo_db_editor/static/image/category_1.jpg"
         )
         whenever(productDaoMock.getByIds(any())).thenAnswer { invocation ->
             val ids: Collection<Int> = invocation.getArgument(0)
@@ -107,7 +107,7 @@ class CommonApiImplTest {
                     brandId = null,
                     name = "Product $1",
                     description = null,
-                    previewPath = "product_${it}_preview_path",
+                    previewPath = "static/image/product_${it}_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
@@ -132,7 +132,7 @@ class CommonApiImplTest {
             val category = CategoryModel(
                 id = 1,
                 name = "Category 1",
-                image = "category_1_image_path"
+                image = "asset:///demo_db_editor/static/image/category_1.jpg"
             )
             val product = ProductEntity(
                 id = 1,
@@ -140,7 +140,7 @@ class CommonApiImplTest {
                 brandId = null,
                 name = "Product $1",
                 description = null,
-                previewPath = "product_1_preview_path",
+                previewPath = "static/image/product_1_preview.jpg",
                 price = 1f,
                 priceWithDiscount = 1f,
                 rating = 0f
@@ -166,7 +166,7 @@ class CommonApiImplTest {
         runTest {
             val categoryModel = CategoryModel(
                 id = 1,
-                image = "category_1_image_path",
+                image = "asset:///demo_db_editor/static/image/category_1.jpg",
                 name = "Category 1"
             )
             val products = listOf(
@@ -176,7 +176,7 @@ class CommonApiImplTest {
                     brandId = null,
                     name = "Product 1",
                     description = null,
-                    previewPath = "product_1_preview_path",
+                    previewPath = "static/image/product_1_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
@@ -187,7 +187,7 @@ class CommonApiImplTest {
                     brandId = null,
                     name = "Product 2",
                     description = null,
-                    previewPath = "product_2_preview_path",
+                    previewPath = "static/image/product_2_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
@@ -208,7 +208,7 @@ class CommonApiImplTest {
                     description = null,
                     items = emptyList(),
                     name = "Product 1",
-                    preview = "product_1_preview_path",
+                    preview = "asset:///demo_db_editor/static/image/product_1_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
@@ -221,7 +221,7 @@ class CommonApiImplTest {
                     description = null,
                     items = emptyList(),
                     name = "Product 2",
-                    preview = "product_2_preview_path",
+                    preview = "asset:///demo_db_editor/static/image/product_2_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
