@@ -39,7 +39,7 @@ def products():
 def create_product():
     if request.method == 'POST':
         print(request.form, file=sys.stderr)  # TODO: remove
-        print(request.form.getlist("color_id[]"), file=sys.stderr)  # TODO: remove
+        print(request.form.getlist("product_item_color[]"), file=sys.stderr)  # TODO: remove
         name = request.form['name']
         image = request.files['image']
         category_id = request.form['category_id']
@@ -69,8 +69,8 @@ def create_product():
         # TODO: insert new product into database
 
     _categories = db.get_categories()
-    colors = [dict(color) for color in db.get_colors()]
-    return render_template("create_product.html", categories=_categories, colorsJson=json.dumps(colors))
+    colors = db.get_colors()
+    return render_template("create_product.html", categories=_categories, colors=colors)
 
 
 @app.route("/categories/new", methods=('GET', 'POST'))
