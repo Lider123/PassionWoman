@@ -70,7 +70,7 @@ class ProductItemTransformableParamsProviderTest {
 
         val result = provider.provideImages(1)
 
-        assertEquals(listOf("asset:///demo_db_editor/static/image/image.jpg"), result)
+        assertEquals(listOf("file:///android_asset/demo_db_editor/static/image/image.jpg"), result)
     }
 
     @Test

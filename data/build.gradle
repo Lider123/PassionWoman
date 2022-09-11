@@ -73,9 +73,6 @@ dependencies {
     demoAnnotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
-    // Paging TODO: move to the app layer
-    api "androidx.paging:paging-runtime-ktx:3.1.0"
-
     // Testing
     testImplementation project(path: ":domain", configuration: "testDependencies")
     androidTestImplementation project(path: ":domain", configuration: "androidTestDependencies")

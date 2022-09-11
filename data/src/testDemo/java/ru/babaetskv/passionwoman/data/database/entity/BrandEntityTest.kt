@@ -36,7 +36,7 @@ class BrandEntityTest {
         val result = brand.transform()
 
         assertEquals(
-            "asset:///demo_db_editor/static/image/brand_1_logo.jpg",
+            "file:///android_asset/demo_db_editor/static/image/brand_1_logo.jpg",
             result.logoPath
         )
     }

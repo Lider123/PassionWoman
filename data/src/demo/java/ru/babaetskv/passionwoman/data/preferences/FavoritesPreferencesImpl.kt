@@ -19,7 +19,7 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
         if (favoriteIds.contains(id)) return
 
         favoriteIds.add(0, id)
-        actionsChannel.offer(FavoritesPreferences.Action.Put(id))
+        actionsChannel.trySend(FavoritesPreferences.Action.Put(id))
     }
 
     override fun getFavoriteIds(): Collection<Int> = favoriteIds
@@ -29,7 +29,7 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
             clear()
             addAll(ids)
         }
-        actionsChannel.offer(FavoritesPreferences.Action.Set)
+        actionsChannel.trySend(FavoritesPreferences.Action.Set)
     }
 
     override fun setFavoriteIds(vararg ids: Int) {
@@ -37,7 +37,7 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
             clear()
             addAll(ids.toList())
         }
-        actionsChannel.offer(FavoritesPreferences.Action.Set)
+        actionsChannel.trySend(FavoritesPreferences.Action.Set)
     }
 
     override fun deleteFavoriteId(id: Int) {
@@ -45,7 +45,7 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
 
         favoriteIds.run {
             remove(id)
-            actionsChannel.offer(FavoritesPreferences.Action.Delete(id))
+            actionsChannel.trySend(FavoritesPreferences.Action.Delete(id))
         }
     }
 

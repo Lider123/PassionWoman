@@ -77,7 +77,7 @@ class ProductEntityTest {
         val result = product.transform(transformableParamsProviderMock)
 
         assertEquals(
-            "asset:///demo_db_editor/static/image/product_1_preview_path.jpg",
+            "file:///android_asset/demo_db_editor/static/image/product_1_preview_path.jpg",
             result.preview
         )
     }

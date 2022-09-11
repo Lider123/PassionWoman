@@ -62,7 +62,7 @@ class UserEntityTest {
     fun transform_returnsModelWithFormattedAvatar() = runTest {
         val result = user.transform()
 
-        assertEquals("asset:///demo_db_editor/static/image/user_1.jpg", result.avatar)
+        assertEquals("file:///android_asset/demo_db_editor/static/image/user_1.jpg", result.avatar)
     }
 
     @Test

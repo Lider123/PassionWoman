@@ -166,7 +166,7 @@ class CommonApiImplTest {
         runTest {
             val categoryModel = CategoryModel(
                 id = 1,
-                image = "asset:///demo_db_editor/static/image/category_1.jpg",
+                image = "file:///android_asset/demo_db_editor/static/image/category_1.jpg",
                 name = "Category 1"
             )
             val products = listOf(
@@ -208,7 +208,7 @@ class CommonApiImplTest {
                     description = null,
                     items = emptyList(),
                     name = "Product 1",
-                    preview = "asset:///demo_db_editor/static/image/product_1_preview.jpg",
+                    preview = "file:///android_asset/demo_db_editor/static/image/product_1_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f
@@ -221,7 +221,7 @@ class CommonApiImplTest {
                     description = null,
                     items = emptyList(),
                     name = "Product 2",
-                    preview = "asset:///demo_db_editor/static/image/product_2_preview.jpg",
+                    preview = "file:///android_asset/demo_db_editor/static/image/product_2_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
                     rating = 0f

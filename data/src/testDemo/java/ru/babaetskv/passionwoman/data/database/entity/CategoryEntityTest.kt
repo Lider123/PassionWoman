@@ -36,7 +36,7 @@ class CategoryEntityTest {
         val result = category.transform()
 
         assertEquals(
-            "asset:///demo_db_editor/static/image/category_1_image.jpg",
+            "file:///android_asset/demo_db_editor/static/image/category_1_image.jpg",
             result.image
         )
     }
