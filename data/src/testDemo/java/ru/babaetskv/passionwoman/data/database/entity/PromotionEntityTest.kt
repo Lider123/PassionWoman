@@ -27,6 +27,9 @@ class PromotionEntityTest {
     fun transform_returnsModelWithFormattedImagePath() = runTest {
         val result = promotion.transform()
 
-        assertEquals("asset:///demo_db_editor/static/image/promotion_1.jpg", result.banner)
+        assertEquals(
+            "file:///android_asset/demo_db_editor/static/image/promotion_1.jpg",
+            result.banner
+        )
     }
 }

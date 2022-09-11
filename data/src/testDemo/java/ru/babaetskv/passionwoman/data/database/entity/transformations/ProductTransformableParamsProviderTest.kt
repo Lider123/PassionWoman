@@ -110,7 +110,7 @@ class ProductTransformableParamsProviderTest {
             val expected = CategoryModel(
                 id = 1,
                 name = "Category 1",
-                image = "asset:///demo_db_editor/static/image/category_1_image_path.jpg"
+                image = "file:///android_asset/demo_db_editor/static/image/category_1_image_path.jpg"
             )
             assertEquals(expected, result)
         }
@@ -159,7 +159,7 @@ class ProductTransformableParamsProviderTest {
             val expected = BrandModel(
                 id = 1,
                 name = "Brand 1",
-                logoPath = "asset:///demo_db_editor/static/image/brand_1_logo_path.jpg"
+                logoPath = "file:///android_asset/demo_db_editor/static/image/brand_1_logo_path.jpg"
             )
             assertEquals(expected, result)
         }
