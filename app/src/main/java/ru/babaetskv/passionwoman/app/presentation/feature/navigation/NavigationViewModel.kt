@@ -45,7 +45,7 @@ interface NavigationViewModel : IViewModel {
         ) : Router()
 
         data class ProductScreen(
-            val productId: String
+            val productId: Int
         ) : Router()
     }
 }

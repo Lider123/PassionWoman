@@ -6,12 +6,12 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class ProfileModel(
-    @Json(name = "id") val id: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String,
     @Json(name = "surname") val surname: String,
     @Json(name = "phone") val phone: String,
     @Json(name = "avatar") val avatar: String?
-) : Transformable<Unit, Profile> {
+) : Transformable<Unit, Profile>() {
 
     constructor(profile: Profile) :
         this(
@@ -22,7 +22,7 @@ data class ProfileModel(
             avatar = profile.avatar?.toString()
         )
 
-    override fun transform(params: Unit): Profile =
+    override suspend fun transform(params: Unit): Profile =
         Profile(
             id = id,
             name = name,

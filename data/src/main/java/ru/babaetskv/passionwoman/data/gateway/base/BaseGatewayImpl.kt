@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
 import ru.babaetskv.passionwoman.domain.StringProvider
 
 abstract class BaseGatewayImpl(
-    private val stringProvider: StringProvider
+    protected val stringProvider: StringProvider
 ) {
 
     protected inline fun <T> networkRequest(block: () -> T): T {

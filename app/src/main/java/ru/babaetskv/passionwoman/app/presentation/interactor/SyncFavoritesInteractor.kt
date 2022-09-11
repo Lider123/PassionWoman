@@ -18,7 +18,7 @@ class SyncFavoritesInteractor(
         SyncFavoritesUseCase.SyncFavoritesException(cause, stringProvider)
 
     override suspend fun run(params: SyncFavoritesUseCase.Params) {
-        val favorites: MutableSet<String> = profileGateway.getFavoriteIds().toMutableSet()
+        val favorites: MutableSet<Int> = profileGateway.getFavoriteIds().toMutableSet()
         val oldFavorites = favoritesPreferences.getFavoriteIds()
         if (!favorites.containsAll(oldFavorites) || !oldFavorites.containsAll(favorites)) {
             if (oldFavorites.isNotEmpty()) {

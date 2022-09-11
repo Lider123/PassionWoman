@@ -6,15 +6,14 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
-import ru.babaetskv.passionwoman.domain.utils.transformList
 
 data class ProductsPagedResponseModel(
     @Json(name = "products") val products: List<ProductModel>,
     @Json(name = "total") val total: Int,
     @Json(name = "availableFilters") val availableFilters: List<JSONObject>
-) : Transformable<StringProvider, ProductsPagedResponse> {
+) : Transformable<StringProvider, ProductsPagedResponse>() {
 
-    override fun transform(params: StringProvider): ProductsPagedResponse =
+    override suspend fun transform(params: StringProvider): ProductsPagedResponse =
         ProductsPagedResponse(
             items = products.transformList(),
             total = total,

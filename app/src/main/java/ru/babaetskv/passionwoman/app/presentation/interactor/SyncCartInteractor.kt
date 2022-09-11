@@ -5,8 +5,8 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.SyncCartUseCase
-import ru.babaetskv.passionwoman.domain.utils.transform
 
 class SyncCartInteractor(
     private val cartGateway: CartGateway,

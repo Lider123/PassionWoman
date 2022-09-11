@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class AuthPreferencesImpl : AuthPreferences {
-    private val userIdLiveData: MutableLiveData<String>
+    private val userIdLiveData: MutableLiveData<Int>
 
     override var authType: AuthPreferences.AuthType = AuthPreferences.AuthType.NONE
         set(value) {
@@ -15,7 +15,7 @@ class AuthPreferencesImpl : AuthPreferences {
     override var authToken: String = ""
     override var profileIsFilled: Boolean = false
     override val authTypeFlow = MutableStateFlow(authType)
-    override var userId: String = "null"
+    override var userId: Int = -1
         set(value) {
             field = value
             userIdLiveData.postValue(value)
@@ -25,14 +25,14 @@ class AuthPreferencesImpl : AuthPreferences {
         userIdLiveData = MutableLiveData(userId)
     }
 
-    override fun observeUserId(observer: (String) -> Unit) {
+    override fun observeUserId(observer: (Int) -> Unit) {
         userIdLiveData.observeForever(observer)
     }
 
     override fun reset() {
         authType = AuthPreferences.AuthType.NONE
         authToken = ""
-        userId = "null"
+        userId = -1
         profileIsFilled = false
     }
 }

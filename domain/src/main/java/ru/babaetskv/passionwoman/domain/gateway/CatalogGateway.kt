@@ -10,7 +10,7 @@ interface CatalogGateway {
     suspend fun getCategories(): List<Transformable<Unit, Category>>
 
     suspend fun getProducts(
-        categoryId: String?,
+        categoryId: Int?,
         query: String,
         limit: Int,
         offset: Int,
@@ -22,9 +22,9 @@ interface CatalogGateway {
 
     suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>>
 
-    suspend fun getFavorites(favoriteIds: Collection<String>): List<Transformable<Unit, Product>>
+    suspend fun getFavorites(favoriteIds: Collection<Int>): List<Transformable<Unit, Product>>
 
-    suspend fun getProduct(productId: String): Transformable<Unit, Product>
+    suspend fun getProduct(productId: Int): Transformable<Unit, Product>
 
     suspend fun getStories(): List<Transformable<Unit, Story>>
 }

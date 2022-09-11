@@ -8,7 +8,7 @@ import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 @Parcelize
 data class Color(
-    val code: String,
+    val id: Int,
     val uiName: String,
     val hex: String
 ) : Parcelable {
@@ -20,7 +20,7 @@ data class Color(
 
         fun fromJson(json: JSONObject): Color? = try {
             Color(
-                code = json.getString(Filter.PARAM_CODE),
+                id = json.getInt(Filter.PARAM_ID),
                 uiName = json.getString(Filter.PARAM_UI_NAME),
                 hex = json.getString(Filter.PARAM_HEX)
             )

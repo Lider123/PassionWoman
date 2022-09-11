@@ -15,20 +15,22 @@ class NewPager<T : Any, R : PagedResponse<T>>(
 
             override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
                 val currentPage = params.key ?: START_PAGE
-                return try {
+                try {
                     val limit = params.loadSize
                     val offset = limit * (currentPage - 1)
                     val response = loadNext.invoke(limit, offset)
-                    if (response.isEmpty() && currentPage == START_PAGE) throw exceptionProvider.emptyError
+                    if (response.isEmpty() && currentPage == START_PAGE) {
+                        return LoadResult.Error(exceptionProvider.emptyError)
+                    }
 
                     doOnNextPageLoaded.invoke(response)
-                    LoadResult.Page(
+                    return LoadResult.Page(
                         data = response,
                         prevKey = if (currentPage == START_PAGE) null else currentPage - 1,
                         nextKey = if (response.isNotEmpty()) currentPage + 1 else null
                     )
                 } catch (e: Exception) {
-                    LoadResult.Error(if (currentPage == START_PAGE) {
+                    return LoadResult.Error(if (currentPage == START_PAGE) {
                         exceptionProvider.getListError(e)
                     } else exceptionProvider.getPageError(e))
                 }

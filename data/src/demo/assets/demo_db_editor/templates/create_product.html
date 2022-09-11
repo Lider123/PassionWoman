@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %} New product | Demo DB Editor {% endblock %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="input_name">Name</label>
+        <input type="text" class="form-control" id="input_name" name="name" placeholder="Product name"/>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label" for="image">Preview</label>
+        <input class="form-control" type="file" id="image" name="image" accept="image/*" value="{{ request.form['image'] }}" onchange="updatePreview()"/>
+        <img id="preview" src="" height="200"/>
+    </div>
+
+    <div class="form-group">
+        <select class="form-control" name="category_id">
+            <option value="">select category...</option>
+            {% for category in categories %}
+                <option value="{{ category['id'] }}">{{ category['name'] }}</option>
+            {% endfor %}
+            <!-- TODO: add option to create new category -->
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="input_price">Price</label>
+        <input type="text" class="form-control" id="input_price" name="price" placeholder="Product price"/>
+    </div>
+
+    <div class="form-group">
+        <label for="input_price_with_discount">Price with discount</label>
+        <input type="text" class="form-control" id="input_price_with_discount" name="price_with_discount" placeholder="Product price with discount"/>
+    </div>
+
+    <div class="form-group">
+        <label for="input_rating">Rating</label>
+        <input type="text" class="form-control" id="input_rating" name="rating" placeholder="Enter rating (from 0 to 5)"/>
+    </div>
+
+    <div class="form-group">
+        <h2>Items</h2>
+        <button type="button" class="btn-secondary" id="btnAddItem">Add</button>
+
+        <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="addItemModalLabel">Add product item</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+
+                  <div class="modal-body">
+
+                      <select id="select_color" class="form-control">
+                          <option value="">select color...</option>
+                          {% for color in colors %}
+                              <option value="{{ color['id'] }}">{{ color['ui_name'] }}</option>
+                          {% endfor %}
+                          <!-- TODO: add option to create new color -->
+                      </select>
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" id="btnAddItemModalCancel">Close</button>
+                      <button type="button" class="btn btn-primary" id="btnAddItemModalApply">Apply</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-bordered" id="table_items"></table>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modal = new bootstrap.Modal(document.getElementById('addItemModal'))
+
+    document.getElementById("btnAddItem").addEventListener("click", function () {
+        var colorSelector = document.getElementById('select_color')
+        colorSelector.value = ""
+
+        modal.show()
+    });
+
+    document.getElementById("btnAddItemModalCancel").addEventListener("click", function () {
+        modal.hide()
+    });
+
+    document.getElementById("btnAddItemModalApply").addEventListener("click", function () {
+        var colorSelector = document.getElementById('select_color')
+        var colorId = colorSelector.value
+        var colorName = colorSelector.options[colorSelector.selectedIndex].text
+
+        var productItemsTable = document.getElementById('table_items')
+        var row = productItemsTable.insertRow()
+        var cell = row.insertCell()
+
+        var input = document.createElement('input')
+        input.name = "product_item_color[]"
+        input.value = colorId
+        input.type = "hidden"
+        cell.appendChild(input)
+
+        var paragraph = document.createElement('p')
+        paragraph.innerHTML = colorName
+        cell.appendChild(paragraph)
+
+        modal.hide()
+    });
+
+    function updatePreview() {
+        preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 package ru.babaetskv.passionwoman.domain.model
 
 data class CartItem(
-    val productId: String,
+    val productId: Int,
     val preview: Image,
     val selectedColor: Color,
     val selectedSize: ProductSize,
@@ -14,7 +14,7 @@ data class CartItem(
     constructor(product: Product, selectedColor: Color, selectedSize: ProductSize) :
             this(
                 productId = product.id,
-                preview = product.colors
+                preview = product.items
                     .find { it.color == selectedColor }
                     ?.images
                     ?.get(0)

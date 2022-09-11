@@ -6,11 +6,11 @@ import ru.babaetskv.passionwoman.domain.model.Promotion
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class PromotionModel(
-    @Json(name = "id") val id: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "image") val banner: String
-) : Transformable<Unit, Promotion> {
+) : Transformable<Unit, Promotion>() {
 
-    override fun transform(params: Unit): Promotion =
+    override suspend fun transform(params: Unit): Promotion =
         Promotion(
             id = id,
             banner = Image(banner)

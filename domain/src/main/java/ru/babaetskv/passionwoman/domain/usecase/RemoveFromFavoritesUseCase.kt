@@ -4,7 +4,7 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.usecase.base.ActionUseCase
 
-interface RemoveFromFavoritesUseCase : ActionUseCase<String> {
+interface RemoveFromFavoritesUseCase : ActionUseCase<Int> {
 
     class RemoveFromFavoritesException(
         cause: Exception,

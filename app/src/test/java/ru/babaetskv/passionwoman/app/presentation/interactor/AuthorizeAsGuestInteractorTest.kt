@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.interactor
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
@@ -13,6 +14,7 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class AuthorizeAsGuestInteractorTest {
     @Mock
@@ -23,22 +25,30 @@ class AuthorizeAsGuestInteractorTest {
     private lateinit var interactor: AuthorizeAsGuestInteractor
 
     @Test
-    fun execute_setsAuthTypeWithGuest_whenIsSuccess() = runBlocking {
+    fun execute_setsAuthTypeWithGuest_whenIsSuccess() = runTest {
         interactor.execute()
 
         verify(authPrefsMock, times(1)).authType = AuthPreferences.AuthType.GUEST
     }
 
     @Test
-    fun execute_throwsAuthorizeAsGuestException_whenCatchesException() = runBlocking {
+    fun execute_setsEmptyAsAuthToken_whenIsSuccess() = runTest {
+        interactor.execute()
+
+        verify(authPrefsMock, times(1)).authToken = ""
+    }
+
+    @Test
+    fun execute_throwsAuthorizeAsGuestException_whenCatchesException() = runTest {
         doThrow(RuntimeException()).whenever(authPrefsMock).authType = any()
         whenever(stringProviderMock.AUTHORIZE_AS_GUEST_ERROR).thenReturn("error")
 
-        try {
+        runCatching {
             interactor.execute()
+        }.onFailure {
+            assertTrue(it is AuthorizeAsGuestUseCase.AuthorizeAsGuestException)
+        }.onSuccess {
             fail()
-        } catch (e: Exception) {
-            assertTrue(e is AuthorizeAsGuestUseCase.AuthorizeAsGuestException)
         }
     }
 }

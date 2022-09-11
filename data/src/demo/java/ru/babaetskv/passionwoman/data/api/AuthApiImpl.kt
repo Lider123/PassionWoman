@@ -5,22 +5,25 @@ import com.squareup.moshi.Moshi
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import timber.log.Timber
 import java.util.*
 import kotlin.random.Random
 
 class AuthApiImpl(
-    private val moshi: Moshi,
-    private val assetManager: AssetManager,
+    assetManager: AssetManager,
+    private val database: PassionWomanDatabase,
+    moshi: Moshi,
     private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
-) : BaseApiImpl(), AuthApi {
+) : BaseApiImpl(assetManager, moshi), AuthApi {
     private var profileMock: ProfileModel? = null
-    private var favoriteIdsMock: List<String>? = null
+    private var favoriteIdsMock: List<Int> = emptyList()
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
     private var cartMock: CartModel = CartModel(
         items = emptyList(),
@@ -33,14 +36,16 @@ class AuthApiImpl(
         val userToken = authPreferences.authToken
         if (userToken != TOKEN) {
             Timber.e("Incorrect token: $userToken")
-            throw getUnauthorizedException("User is not authorized")
+            throw ApiExceptionProvider.getUnauthorizedException("Unauthorized")
         }
     }
 
     override suspend fun getProfile(): ProfileModel = processRequest {
         return@processRequest if (profileMock == null) {
-            loadObjectFromAsset<ProfileModel>(assetManager, AssetFile.PROFILE, moshi)
-                .also { profileMock = it }
+            database.userDao.getProfile()
+                ?.transform()
+                ?.also { profileMock = it }
+                ?: throw ApiExceptionProvider.getNotFoundException("Profile is not found")
         } else profileMock!!
     }
 
@@ -52,14 +57,11 @@ class AuthApiImpl(
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<String> = processRequest {
-        return@processRequest if (favoriteIdsMock == null) {
-            loadListFromAsset<String>(assetManager, AssetFile.FAVORITE_IDS, moshi)
-                .also { favoriteIdsMock = it }
-        } else favoriteIdsMock!!
+    override suspend fun getFavoriteIds(): List<Int> = processRequest {
+        return@processRequest favoriteIdsMock
     }
 
-    override suspend fun setFavoriteIds(ids: List<String>) = processRequest {
+    override suspend fun setFavoriteIds(ids: List<Int>) = processRequest {
         favoriteIdsMock = ids
     }
 
@@ -74,13 +76,14 @@ class AuthApiImpl(
     }
 
     override suspend fun checkout(): CartModel = processRequest {
-        if (cartMock.items.isEmpty()) throw getBadRequestException("The cart is empty")
+        if (cartMock.items.isEmpty()) throw ApiExceptionProvider.getBadRequestException("The cart is empty")
 
         val newOrder = OrderModel(
             id = UUID.randomUUID()
                 .toString()
                 .filter { it.isDigit() }
-                .take(8),
+                .take(8)
+                .toInt(),
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },

@@ -86,7 +86,7 @@ class CartItemsAdapter(
 
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =
             oldItem.productId == newItem.productId
-                    && oldItem.selectedColor.code == newItem.selectedColor.code
+                    && oldItem.selectedColor.id == newItem.selectedColor.id
                     && oldItem.selectedSize.value == newItem.selectedSize.value
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean =

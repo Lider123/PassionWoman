@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %} Products | Demo DB Editor {% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+        {% for product in products %}
+            <tr>
+                <td class="text-center">
+                    <img src="{{ product['preview_path'] }}" alt="{{ product['preview_path'] }}" height="400"/>
+                </td>
+                <td>
+                    <h1>{{ product['id'] }} - {{ product['name'] }}</h1>
+                    <h2>{{ product['category_name'] }}</h2>
+                    {% if product['description'] is not none %}
+                        <p>{{ product['description'] }}</p>
+                    {% endif %}
+                    <p>{{ product['brand_name'] if product['brand_name'] is not none else 'no brand' }}</p>
+                    <p>price: {{ product['price'] }}</p>
+                    <p>with discount: {{ product['price_with_discount'] }}</p>
+                    <p>rating: {{ product['rating'] }}</p>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updatePreview() {
+        preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+{% endblock %}

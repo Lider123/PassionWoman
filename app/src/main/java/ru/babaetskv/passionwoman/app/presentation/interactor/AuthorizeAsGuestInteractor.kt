@@ -17,7 +17,7 @@ class AuthorizeAsGuestInteractor(
 
     override suspend fun run(params: Unit) {
         authPreferences.authToken = ""
-        authPreferences.userId = "guest"
+        authPreferences.userId = -1
         authPreferences.authType = AuthPreferences.AuthType.GUEST
     }
 }

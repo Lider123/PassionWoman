@@ -21,7 +21,7 @@ class FirebaseAnalyticsHandler(
         analytics.logEvent(
             event.getName(FirebaseEventKeys),
             event.getParams(FirebaseParamsKeys).apply {
-                putString(FirebaseParamsKeys.USER_ID, authPreferences.userId)
+                putInt(FirebaseParamsKeys.USER_ID, authPreferences.userId)
             }
         )
     }

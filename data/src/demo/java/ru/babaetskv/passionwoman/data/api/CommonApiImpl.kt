@@ -1,19 +1,28 @@
 package ru.babaetskv.passionwoman.data.api
 
 import android.content.res.AssetManager
+import android.util.Log
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import ru.babaetskv.passionwoman.data.Filters
+import ru.babaetskv.passionwoman.data.filters.Filters
+import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
+import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import java.util.*
 
 class CommonApiImpl(
-    private val moshi: Moshi,
-    private val assetManager: AssetManager
-) : BaseApiImpl(), CommonApi {
+    assetManager: AssetManager,
+    private val database: PassionWomanDatabase,
+    private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
+    moshi: Moshi,
+) : BaseApiImpl(assetManager, moshi), CommonApi {
     private val popularProductsCache = mutableListOf<ProductModel>()
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()
@@ -23,19 +32,30 @@ class CommonApiImpl(
     }
 
     override suspend fun getCategories(): List<CategoryModel> = processRequest {
-        return@processRequest loadListFromAsset(assetManager, AssetFile.CATEGORIES, moshi)
+        return@processRequest database.categoryDao.getAll()
+            .transformList()
     }
 
     override suspend fun getPromotions(): List<PromotionModel> = processRequest {
-        return@processRequest loadListFromAsset(assetManager, AssetFile.PROMOTIONS, moshi)
+        return@processRequest database.promotionDao.getAll()
+            .transformList()
     }
 
     override suspend fun getStories(): List<StoryModel> = processRequest {
-        return@processRequest loadListFromAsset(assetManager, AssetFile.STORIES, moshi)
+        return@processRequest try {
+            val stories = loadListFromAsset<StoryModel>(AssetFile.STORIES)
+            if (stories.any { it.contents.isEmpty() }) {
+                throw ApiExceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
+            }
+
+            stories
+        } catch (e: JsonDataException) {
+            throw ApiExceptionProvider.getInternalServerErrorException("Stories source is corrupted")
+        }
     }
 
     override suspend fun getProducts(
-        categoryId: String?,
+        categoryId: Int?,
         query: String,
         filters: String,
         sorting: String,
@@ -46,7 +66,7 @@ class CommonApiImpl(
             val filtersObject = Filters(JSONArray(filters))
             val sortingObject = Sorting.findValueByApiName(sorting)
             var products: List<ProductModel> = if (categoryId != null) {
-                getCategoryProducts(CategoryProducts.findByCategoryId(categoryId)!!)
+                getCategoryProducts(categoryId)
             } else when {
                 filtersObject.isDiscountOnly -> getSaleProducts()
                 sortingObject == Sorting.POPULARITY -> getPopularProducts()
@@ -66,8 +86,16 @@ class CommonApiImpl(
                 }
             }
             val availableFilters = mutableListOf<JSONObject>().apply {
-                addAll(loadArrayOfJsonFromAsset(assetManager, AssetFile.FILTERS_COMMON))
-            }.selectAvailableFilters(products)
+                FilterResolver.values().forEach {
+                    it.getFilterExtractor.invoke()
+                        .extractAsJson(database)
+                        .let(::add)
+                }
+            }.also {
+                Log.e(CommonApiImpl::class.simpleName, "All filters: $it") // TODO: remove
+            }.selectAvailableFilters(products).also {
+                Log.e(CommonApiImpl::class.simpleName, "Available filters: $it") // TODO: remove
+            }
             val pagingIndices = IntRange(offset, offset + limit - 1)
             return@processRequest products.let { result ->
                 when (sortingObject) {
@@ -84,49 +112,72 @@ class CommonApiImpl(
             }
         } catch (e: JSONException) {
             e.printStackTrace()
-            throw getBadRequestException("Failed to process filters")
+            throw ApiExceptionProvider.getBadRequestException("Failed to process filters")
         } catch (e: Exception) {
             e.printStackTrace()
-            throw getInternalServerErrorException("Internal server error")
+            throw ApiExceptionProvider.getInternalServerErrorException("Internal server error")
         }
     }
 
     override suspend fun getProductsByIds(ids: String): List<ProductModel> = processRequest {
-        val favoriteIds = ids.split(",").toSet()
-        return@processRequest CategoryProducts.values()
-            .flatMap<CategoryProducts, ProductModel> {
-                loadListFromAsset(assetManager, it.assetFile, moshi)
-            }
-            .filter { favoriteIds.contains(it.id) }
-    }
+        if (ids.isBlank()) return@processRequest emptyList()
 
-    override suspend fun getPopularBrands(count: Int): List<BrandModel> = processRequest {
-        return@processRequest loadListFromAsset<BrandModel>(assetManager, AssetFile.BRANDS, moshi)
-            .take(count)
-    }
-
-    override suspend fun getProduct(productId: String): ProductModel = processRequest {
-        return@processRequest CategoryProducts.values()
-            .flatMap<CategoryProducts, ProductModel> {
-                loadListFromAsset(assetManager, it.assetFile, moshi)
-            }
-            .find { it.id == productId } ?: throw getNotFoundException("Product not found")
-    }
-
-    private fun getCategoryProducts(category: CategoryProducts): List<ProductModel> =
-        loadListFromAsset(assetManager, category.assetFile, moshi)
-
-    private fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
-        getAllProducts(null).let {
-            Filters.discountOnlyFilters.applyToProducts(it)
-        }.also {
-            saleProductsCache.addAll(it)
+        if (ids.matches(REGEX_IDS_LIST).not()) {
+            throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
         }
+
+        val productIds = ids.split(",").map(String::toInt).toSet()
+        val productEntities = database.productDao.getByIds(productIds)
+        val products = productEntities.transformList(productTransformableParamsProvider)
+        val allProductsFound = products.map(ProductModel::id)
+            .toSet()
+            .containsAll(productIds)
+        if (!allProductsFound) {
+            throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
+        }
+
+        return@processRequest products
     }
 
-    private fun getPopularProducts() = getAllProducts(popularProductsCache)
+    override suspend fun getPopularBrands(count: Int): List<BrandModel> =
+        processRequest {
+            return@processRequest database.brandDao.getPopular(count)
+                .transformList()
+        }
 
-    private fun getNewProducts() = getAllProducts(newProductsCache)
+    override suspend fun getProduct(productId: Int): ProductModel = processRequest {
+        return@processRequest database.productDao.getById(productId)
+            ?.transform(productTransformableParamsProvider)
+            ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
+    }
+
+    private suspend fun getCategoryProducts(categoryId: Int): List<ProductModel> =
+        database.productDao.getByCategoryId(categoryId)
+            .transformList(productTransformableParamsProvider)
+
+    private suspend fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
+        database.productDao.getWithDiscount()
+            .transformList(productTransformableParamsProvider)
+            .also {
+                saleProductsCache.addAll(it)
+            }
+    }
+
+    private suspend fun getPopularProducts() = popularProductsCache.ifEmpty {
+        database.productDao.getRandom(PRODUCT_CACHE_SIZE)
+            .transformList(productTransformableParamsProvider)
+            .also {
+                popularProductsCache.addAll(it)
+            }
+    }
+
+    private suspend fun getNewProducts() = newProductsCache.ifEmpty {
+        database.productDao.getRandom(PRODUCT_CACHE_SIZE)
+            .transformList(productTransformableParamsProvider)
+            .also {
+                newProductsCache.addAll(it)
+            }
+    }
 
     private fun List<JSONObject>.selectAvailableFilters(products: List<ProductModel>): List<JSONObject> {
         val array =  JSONArray().apply {
@@ -140,36 +191,9 @@ class CommonApiImpl(
         }
     }
 
-    private fun getAllProducts(cache: MutableList<ProductModel>?): List<ProductModel> =
-        if (cache?.isNotEmpty() == true) {
-            cache
-        } else {
-            CategoryProducts.values().asList()
-                .flatMap { loadListFromAsset<ProductModel>(assetManager, it.assetFile, moshi) }
-                .shuffled()
-                .also {
-                    cache?.addAll(it)
-                }
-        }
-
-    private enum class CategoryProducts(
-        val categoryId: String,
-        val assetFile: AssetFile
-    ) {
-        BRA("category_bra", AssetFile.PRODUCTS_BRA),
-        PANTIES("category_panties", AssetFile.PRODUCTS_PANTIES),
-        LINGERIE("category_lingerie", AssetFile.PRODUCTS_LINGERIE),
-        EROTIC("category_erotic", AssetFile.PRODUCTS_EROTIC),
-        SWIM("category_swim", AssetFile.PRODUCTS_SWIM),
-        CORSET("category_corsets", AssetFile.PRODUCTS_CORSET),
-        GARTERBELT("category_garter_belts", AssetFile.PRODUCTS_GARTER_BELTS),
-        BABYDOLL("category_babydolls", AssetFile.PRODUCTS_BABYDOLL),
-        STOCKINGS("category_stockings", AssetFile.PRODUCTS_STOCKINGS),
-        PANTYHOSE("category_pantyhose", AssetFile.PRODUCTS_PANTYHOSE);
-
-        companion object {
-
-            fun findByCategoryId(id: String) = values().find { it.categoryId == id }
-        }
+    companion object {
+        private const val TOKEN = "token"
+        private const val PRODUCT_CACHE_SIZE = 10
+        private val REGEX_IDS_LIST = "^(\\d+,)*\\d+$".toRegex()
     }
 }

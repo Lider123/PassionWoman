@@ -5,9 +5,9 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetFavoritesUseCase
-import ru.babaetskv.passionwoman.domain.utils.transformList
 
 class GetFavoritesInteractor(
     private val catalogGateway: CatalogGateway,
