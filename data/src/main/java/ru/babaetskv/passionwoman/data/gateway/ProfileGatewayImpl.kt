@@ -8,6 +8,7 @@ import retrofit2.HttpException
 import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.model.ProfileModel
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
@@ -20,8 +21,9 @@ import java.lang.Exception
 
 class ProfileGatewayImpl(
     private val api: AuthApi,
-    stringProvider: StringProvider
-) : BaseGatewayImpl(stringProvider), ProfileGateway {
+    stringProvider: StringProvider,
+    dispatchers: AppDispatchers
+) : BaseGatewayImpl(stringProvider, dispatchers), ProfileGateway {
 
     override suspend fun getProfile(): Transformable<Unit, Profile> = networkRequest {
         api.getProfile()

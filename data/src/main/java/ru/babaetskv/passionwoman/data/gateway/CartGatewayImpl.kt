@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.data.gateway
 import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.model.CartItemModel
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.Cart
@@ -11,8 +12,9 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 class CartGatewayImpl(
     private val authApi: AuthApi,
-    stringProvider: StringProvider
-) : BaseGatewayImpl(stringProvider), CartGateway {
+    stringProvider: StringProvider,
+    dispatchers: AppDispatchers
+) : BaseGatewayImpl(stringProvider, dispatchers), CartGateway {
 
     override suspend fun checkout(): Transformable<Unit, Cart> = networkRequest {
         authApi.checkout()

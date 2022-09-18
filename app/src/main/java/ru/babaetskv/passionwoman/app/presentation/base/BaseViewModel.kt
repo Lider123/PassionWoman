@@ -47,7 +47,7 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         }
 
     override val coroutineContext: CoroutineContext =
-        viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
+        viewModelScope.coroutineContext + CoroutineExceptionHandler(::onError)
     override val loadingLiveData = MutableLiveData(false)
     override val errorLiveData = MutableLiveData<Exception?>(null)
     override val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()

@@ -1,20 +1,24 @@
 package ru.babaetskv.passionwoman.data.gateway.base
 
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
 import ru.babaetskv.passionwoman.domain.StringProvider
 
 abstract class BaseGatewayImpl(
-    protected val stringProvider: StringProvider
+    protected val stringProvider: StringProvider,
+    protected val dispatchers: AppDispatchers
 ) {
 
-    protected inline fun <T> networkRequest(block: () -> T): T {
-        try {
-            return block.invoke()
-        } catch (e: Exception) {
-            throw getGatewayException(e)
+    protected suspend fun <T> networkRequest(block: suspend () -> T): T =
+        withContext(dispatchers.IO) {
+            try {
+                return@withContext block.invoke()
+            } catch (e: Exception) {
+                throw getGatewayException(e)
+            }
         }
-    }
 
     @PublishedApi
     internal fun getGatewayException(e: java.lang.Exception): GatewayException {

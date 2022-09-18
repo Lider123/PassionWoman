@@ -13,6 +13,10 @@ sealed class InnerEvent : Event {
         val data: List<Filter>
     ) : InnerEvent()
 
+    data class LoginWithPhone(
+        val phone: String
+    ) : InnerEvent()
+
     object UpdateProfile : InnerEvent()
 
     object PickCameraImage : InnerEvent()

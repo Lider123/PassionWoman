@@ -7,6 +7,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.babaetskv.passionwoman.app.DefaultAppDispatchers
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseErrorLogger
@@ -64,6 +65,7 @@ import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.dataflow.CartFlowImpl
 import ru.babaetskv.passionwoman.data.gateway.CartGatewayImpl
 import ru.babaetskv.passionwoman.data.gateway.ProfileGatewayImpl
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
 import ru.babaetskv.passionwoman.domain.gateway.*
@@ -81,6 +83,7 @@ val appModule = module {
     single { NetworkStateChecker(androidContext()) }
     single<DeeplinkGenerator> { FirebaseDeeplinkGenerator() }
     single<DeeplinkHandler> { FirebaseDeeplinkHandler() }
+    single<AppDispatchers> { DefaultAppDispatchers() }
 }
 
 val navigationModule = module {
@@ -156,10 +159,10 @@ val interactorModule = module {
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
-    single<AuthGateway> { AuthGatewayImpl(get(), get()) }
-    single<ProfileGateway> { ProfileGatewayImpl(get(), get()) }
-    single<CartGateway> { CartGatewayImpl(get(), get()) }
+    single<CatalogGateway> { CatalogGatewayImpl(get(), get(), get()) }
+    single<AuthGateway> { AuthGatewayImpl(get(), get(), get()) }
+    single<ProfileGateway> { ProfileGatewayImpl(get(), get(), get()) }
+    single<CartGateway> { CartGatewayImpl(get(), get(), get()) }
 }
 
 val dataFlowModule = module {
@@ -172,7 +175,7 @@ val networkModule = module {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
-    single<ApiProvider> { ApiProviderImpl(get(), get(), get(), DefaultDateTimeConverter) }
+    single<ApiProvider> { ApiProviderImpl(get(), get(), get(), DefaultDateTimeConverter, get()) }
     single { get<ApiProvider>().provideAuthApi() }
     single { get<ApiProvider>().provideCommonApi() }
 }

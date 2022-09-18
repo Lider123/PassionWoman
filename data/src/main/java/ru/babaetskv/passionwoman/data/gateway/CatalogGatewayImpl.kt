@@ -4,6 +4,7 @@ import android.util.Log
 import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.domain.model.*
@@ -12,8 +13,9 @@ import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class CatalogGatewayImpl(
     private val api: CommonApi,
-    stringProvider: StringProvider
-) : BaseGatewayImpl(stringProvider), CatalogGateway {
+    stringProvider: StringProvider,
+    dispatchers: AppDispatchers
+) : BaseGatewayImpl(stringProvider, dispatchers), CatalogGateway {
 
     override suspend fun getCategories(): List<Transformable<Unit, Category>> = networkRequest {
         api.getCategories()

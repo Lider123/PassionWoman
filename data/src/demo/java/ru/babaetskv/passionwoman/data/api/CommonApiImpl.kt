@@ -13,6 +13,7 @@ import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.data.model.*
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import java.util.*
@@ -22,7 +23,8 @@ class CommonApiImpl(
     private val database: PassionWomanDatabase,
     private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
     moshi: Moshi,
-) : BaseApiImpl(assetManager, moshi), CommonApi {
+    dispatchers: AppDispatchers
+) : BaseApiImpl(assetManager, moshi, dispatchers), CommonApi {
     private val popularProductsCache = mutableListOf<ProductModel>()
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()

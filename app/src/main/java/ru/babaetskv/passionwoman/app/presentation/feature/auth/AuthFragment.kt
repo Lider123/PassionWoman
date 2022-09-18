@@ -7,8 +7,6 @@ import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -19,6 +17,7 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
+import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
 import ru.babaetskv.passionwoman.app.utils.*
 
 class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, AuthFragment.Args>() {
@@ -113,8 +112,12 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, AuthFragm
         viewModel.lastPhoneLiveData.observe(viewLifecycleOwner, ::populateLastPhone)
         viewModel.modeLiveData.observe(viewLifecycleOwner, ::populateMode)
         viewModel.smsCodeLiveData.observe(viewLifecycleOwner, ::populateSmsCode)
-        lifecycleScope.launchWhenResumed {
-            viewModel.eventBus.collect(::handleEvent)
+    }
+
+    override fun onEvent(event: InnerEvent) {
+        when (event) {
+            is InnerEvent.LoginWithPhone -> authHandler.loginWithPhone(event.phone, viewModel)
+            else -> super.onEvent(event)
         }
     }
 
@@ -172,14 +175,6 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, AuthFragm
 
     private fun populateLastPhone(phone: String) {
         binding.layoutSmsConfirm.tvTitle.text = getString(R.string.sms_title_template, phone)
-    }
-
-    private fun handleEvent(event: AuthViewModel.Event) {
-        when (event) {
-            is AuthViewModel.Event.LoginWithPhone -> {
-                authHandler.loginWithPhone(event.phone, viewModel)
-            }
-        }
     }
 
     @Parcelize

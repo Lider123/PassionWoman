@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
@@ -20,8 +21,9 @@ class AuthApiImpl(
     private val database: PassionWomanDatabase,
     moshi: Moshi,
     private val authPreferences: AuthPreferences,
-    private val dateTimeConverter: DateTimeConverter
-) : BaseApiImpl(assetManager, moshi), AuthApi {
+    private val dateTimeConverter: DateTimeConverter,
+    dispatchers: AppDispatchers
+) : BaseApiImpl(assetManager, moshi, dispatchers), AuthApi {
     private var profileMock: ProfileModel? = null
     private var favoriteIdsMock: List<Int> = emptyList()
     private var ordersMock: MutableList<OrderModel> = mutableListOf()

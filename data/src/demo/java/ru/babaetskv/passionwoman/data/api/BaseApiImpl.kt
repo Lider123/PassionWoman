@@ -4,13 +4,14 @@ import android.content.res.AssetManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 
 abstract class BaseApiImpl(
     protected val assetManager: AssetManager,
-    protected val moshi: Moshi
+    protected val moshi: Moshi,
+    protected val dispatchers: AppDispatchers
 ) {
 
     protected open fun doBeforeRequest() = Unit
@@ -25,7 +26,7 @@ abstract class BaseApiImpl(
     protected suspend fun <T> processRequest(
         delayMs: Long = DELAY_LOADING,
         block: suspend () -> T
-    ): T = withContext(Dispatchers.IO) {
+    ): T = withContext(dispatchers.IO) {
         delay(delayMs)
         doBeforeRequest()
         return@withContext block.invoke()
