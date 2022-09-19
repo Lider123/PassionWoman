@@ -6,6 +6,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
+import ru.babaetskv.passionwoman.domain.AppDispatchers
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.HomeData
@@ -17,6 +18,7 @@ import ru.babaetskv.passionwoman.domain.usecase.GetHomeDataUseCase
 class GetHomeDataInteractor(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider,
+    private val dispatchers: AppDispatchers,
     private val resources: Resources
 ) : BaseInteractor<Unit, HomeData>(), GetHomeDataUseCase {
     override val emptyException: UseCaseException.EmptyData? = null
@@ -26,13 +28,13 @@ class GetHomeDataInteractor(
 
     override suspend fun run(params: Unit): HomeData = coroutineScope {
         val brandsCount = 2 * resources.getInteger(R.integer.brands_list_span_count)
-        val promotionsAsync = async {
+        val promotionsAsync = async(dispatchers.Default) {
             catalogGateway.getPromotions().transformList()
         }
-        val storiesAsync = async {
+        val storiesAsync = async(dispatchers.Default) {
             catalogGateway.getStories().transformList()
         }
-        val saleProductsAsync = async {
+        val saleProductsAsync = async(dispatchers.Default) {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -44,7 +46,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val popularProductsAsync = async {
+        val popularProductsAsync = async(dispatchers.Default) {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -54,7 +56,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val newProductsAsync = async {
+        val newProductsAsync = async(dispatchers.Default) {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -64,7 +66,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val brandsAsync = async {
+        val brandsAsync = async(dispatchers.Default) {
             catalogGateway.getPopularBrands(brandsCount).transformList()
         }
         return@coroutineScope HomeData(
