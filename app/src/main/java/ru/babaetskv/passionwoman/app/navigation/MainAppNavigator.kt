@@ -43,7 +43,17 @@ class MainAppNavigator(
     }
 
     private fun openIntoBottomSheet(screen: BottomSheetDialogFragmentScreen) {
-        screen.createBottomSheetFragment(fragmentFactory)
-            .show(fragmentManager, screen.screenKey)
+        val fragment = screen.createBottomSheetFragment(fragmentFactory)
+        val transaction = fragmentManager.beginTransaction()
+        transaction.setReorderingAllowed(true)
+        setupFragmentTransaction(
+            screen,
+            transaction,
+            fragmentManager.findFragmentById(containerId),
+            fragment
+        )
+        transaction.addToBackStack(screen.screenKey)
+        localStackCopy.add(screen.screenKey)
+        fragment.show(transaction, screen.screenKey)
     }
 }

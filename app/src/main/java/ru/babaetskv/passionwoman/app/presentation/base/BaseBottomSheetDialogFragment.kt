@@ -68,7 +68,7 @@ abstract class BaseBottomSheetDialogFragment<VM : IViewModel, TArgs : Parcelable
 
     override fun onBackPressed() {
         Timber.e("onBackPressed()") // TODO: remove
-        dismiss()
+        viewModel.onBackPressed()
     }
 
     fun withArgs(args: TArgs) = also { it.args = args }
