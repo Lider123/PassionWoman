@@ -5,60 +5,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/margin_default"
     android:orientation="vertical"
-    tools:theme="@style/Theme.PassionWoman">
+    android:background="@drawable/bg_bottom_sheet"
+    android:layout_marginTop="@dimen/margin_extra_small">
 
-    <View
-        android:id="@+id/vBottomSheetContainerDivider"
-        android:layout_width="35dp"
-        android:layout_height="5dp"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_bottom_sheet_top_divider" />
-
-    <LinearLayout
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/bg_bottom_sheet"
-        android:layout_marginTop="@dimen/margin_extra_small">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginHorizontal="@dimen/margin_default"
+        android:text="@string/sorting_title"
+        android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSortings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/margin_default"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_item_sorting"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnApplySorting"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_marginHorizontal="@dimen/margin_default"
-            android:text="@string/sorting_title"
-            android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSortings"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="@dimen/margin_default"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_item_sorting"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnApplySorting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_default"
-                android:layout_marginHorizontal="@dimen/margin_default"
-                android:layout_marginBottom="@dimen/margin_default"
-                android:text="@string/sorting_apply"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
-                style="?attr/coloredButtonStyle"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+            android:layout_marginBottom="@dimen/margin_default"
+            android:text="@string/sorting_apply"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
+            style="?attr/coloredButtonStyle"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

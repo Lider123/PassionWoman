@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
-import timber.log.Timber
 
 abstract class BaseFragment<VM : IViewModel, TArgs : Parcelable> :
     Fragment(),
@@ -71,7 +70,6 @@ abstract class BaseFragment<VM : IViewModel, TArgs : Parcelable> :
     }
 
     override fun onBackPressed() {
-        Timber.e("onBackPressed()") // TODO: remove
         viewModel.onBackPressed()
     }
 

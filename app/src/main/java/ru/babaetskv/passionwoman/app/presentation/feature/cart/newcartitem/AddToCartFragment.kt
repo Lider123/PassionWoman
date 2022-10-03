@@ -9,10 +9,10 @@ import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentAddToCartBinding
-import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class AddToCartFragment : BaseBottomSheetDialogFragment<AddToCartViewModel, AddToCartFragment.Args>() {
+class AddToCartFragment : BaseFragment<AddToCartViewModel, AddToCartFragment.Args>() {
     private val binding: FragmentAddToCartBinding by viewBinding()
     private val adapter: ListDelegationAdapter<List<AddToCartItem>> by lazy {
         ListDelegationAdapter(

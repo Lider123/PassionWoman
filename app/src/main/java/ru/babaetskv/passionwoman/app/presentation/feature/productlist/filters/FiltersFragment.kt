@@ -9,13 +9,12 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentFiltersBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
-import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 // TODO: fix filters application for tablets
-class FiltersFragment :
-    BaseBottomSheetDialogFragment<FiltersViewModel, FiltersFragment.Args>() {
+class FiltersFragment : BaseFragment<FiltersViewModel, FiltersFragment.Args>() {
     private val binding: FragmentFiltersBinding by viewBinding()
     private val adapter: FiltersAdapter by lazy {
         FiltersAdapter(viewModel::onFilterChanged)

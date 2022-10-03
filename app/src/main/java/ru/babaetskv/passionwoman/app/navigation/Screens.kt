@@ -72,11 +72,11 @@ object Screens {
         ProductCardFragment.create(productId)
     }
 
-    fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {
+    fun sorting(sorting: Sorting) = FragmentScreen {
         SortingFragment.create(sorting)
     }
 
-    fun contacts() = BottomSheetDialogFragmentScreen {
+    fun contacts() = FragmentScreen {
         ContactsFragment.create()
     }
 
@@ -85,7 +85,7 @@ object Screens {
         filters: List<Filter>,
         productsCount: Int
     ) =
-        BottomSheetDialogFragmentScreen {
+        FragmentScreen {
             FiltersFragment.create(categoryId, filters, productsCount)
         }
 
@@ -102,7 +102,7 @@ object Screens {
         )
     }
 
-    fun newCartItem(product: Product) = BottomSheetDialogFragmentScreen {
+    fun newCartItem(product: Product) = FragmentScreen {
         AddToCartFragment.create(product)
     }
 
