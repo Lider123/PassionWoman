@@ -7,18 +7,15 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import timber.log.Timber
 
-abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+abstract class BaseBottomSheetDialogFragment<VM : IViewModel, TArgs : Parcelable> :
     BottomSheetDialogFragment(),
-    FragmentComponent<VM, TRouterEvent, TArgs>
-    where VM : IViewModel {
+    FragmentComponent<VM, TArgs> {
     override var componentArguments: Bundle
         get() = requireArguments()
         set(value) {
@@ -29,8 +26,6 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
     override var _args: TArgs? = null
     override val componentView: View
         get() = requireView()
-    override val componentLifecycleScope: LifecycleCoroutineScope
-        get() = lifecycleScope
     override val componentViewLifecycleOwner: LifecycleOwner
         get() = viewLifecycleOwner
 
@@ -72,10 +67,9 @@ abstract class BaseBottomSheetDialogFragment<VM, TRouterEvent: RouterEvent, TArg
     }
 
     override fun onBackPressed() {
+        Timber.e("onBackPressed()") // TODO: remove
         dismiss()
     }
-
-    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) = Unit
 
     fun withArgs(args: TArgs) = also { it.args = args }
 }

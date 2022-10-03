@@ -15,7 +15,7 @@ class OrderListViewModelImpl(
     private val getOrdersUseCase: GetOrdersUseCase,
     authPreferences: AuthPreferences,
     dependencies: ViewModelDependencies
-) : BaseViewModel<OrderListViewModel.Router>(dependencies), OrderListViewModel {
+) : BaseViewModel(dependencies), OrderListViewModel {
     private val tickerFlow = tickerFlow(DELAY_ORDER_LIST_UPDATE_MILLIS)
         .onEach {
             loadData()

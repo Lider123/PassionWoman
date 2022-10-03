@@ -6,14 +6,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentCartBinding
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Cart
 
-class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentComponent.NoArgs>() {
+class CartFragment : BaseFragment<CartViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentCartBinding by viewBinding()
     private val adapter: CartItemsAdapter by lazy {
         CartItemsAdapter(viewModel::onAddCartItemPressed, viewModel::onRemoveCartItemPressed)
@@ -38,13 +37,6 @@ class CartFragment : BaseFragment<CartViewModel, CartViewModel.Router, FragmentC
     override fun initObservers() {
         super.initObservers()
         viewModel.cartLiveData.observe(viewLifecycleOwner, ::populateCart)
-    }
-
-    override fun handleRouterEvent(event: CartViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            is CartViewModel.Router.Orders -> router.navigateTo(Screens.orders())
-        }
     }
 
     private fun populateCart(cart: Cart) {

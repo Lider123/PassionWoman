@@ -13,7 +13,7 @@ class AddToCartViewModelImpl(
     private val args: AddToCartFragment.Args,
     private val addToCartUseCase: AddToCartUseCase,
     dependencies: ViewModelDependencies
-) : BaseViewModel<AddToCartViewModel.Router>(dependencies), AddToCartViewModel {
+) : BaseViewModel(dependencies), AddToCartViewModel {
     private var selectedProductItem: ProductItem = args.product.items[0]
     private var selectedProductSize: ProductSize? = availableProductSizes.getOrNull(0)
     private val product: Product

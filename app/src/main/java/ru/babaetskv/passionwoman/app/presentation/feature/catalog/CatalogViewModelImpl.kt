@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.analytics.event.SelectCategoryEvent
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.model.Category
@@ -11,7 +11,7 @@ import ru.babaetskv.passionwoman.domain.usecase.GetCategoriesUseCase
 class CatalogViewModelImpl(
     private val getCategoriesUseCase: GetCategoriesUseCase,
     dependencies: ViewModelDependencies
-) : BaseViewModel<CatalogViewModel.Router>(dependencies), CatalogViewModel {
+) : BaseViewModel(dependencies), CatalogViewModel {
     override val categoriesLiveData = MutableLiveData<List<Category>>(emptyList())
 
     init {
@@ -27,15 +27,11 @@ class CatalogViewModelImpl(
 
     override fun onCategoryPressed(category: Category) {
         analyticsHandler.log(SelectCategoryEvent(category))
-        launch {
-            navigateTo(CatalogViewModel.Router.CategoryScreen(category))
-        }
+        router.navigateTo(Screens.category(category))
     }
 
     override fun onSearchPressed() {
-        launch {
-            navigateTo(CatalogViewModel.Router.SearchScreen)
-        }
+        router.navigateTo(Screens.search())
     }
 
     private fun loadData() {

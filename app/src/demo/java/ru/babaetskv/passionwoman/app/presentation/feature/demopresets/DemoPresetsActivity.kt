@@ -11,8 +11,9 @@ import ru.babaetskv.passionwoman.app.databinding.ActivityDemoPresetsBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.MainActivity
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 
-class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewModelImpl.Router>() {
+class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel>() {
     private val binding: ActivityDemoPresetsBinding by viewBinding()
     private val adapter: ListDelegationAdapter<List<DemoPreset>> by lazy {
         ListDelegationAdapter(
@@ -28,7 +29,6 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installAppSplashScreen()
-
         super.onCreate(savedInstanceState)
     }
 
@@ -50,13 +50,13 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel, DemoPresetsViewMo
         viewModel.presetsLiveData.observe(this, ::populatePresets)
     }
 
-    override fun handleRouterEvent(event: DemoPresetsViewModelImpl.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            DemoPresetsViewModelImpl.Router.MainFlow -> {
-                startActivity(Intent(this@DemoPresetsActivity, MainActivity::class.java))
+            DemoPresetsViewModel.StartMainFlowEvent -> {
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
+            else -> super.onEvent(event)
         }
     }
 

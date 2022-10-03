@@ -4,13 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.CartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.home.HomeFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileFragment
 import ru.babaetskv.passionwoman.domain.model.Cart
-import ru.babaetskv.passionwoman.domain.model.CartItem
 
 interface NavigationViewModel : IViewModel {
     val selectedTabLiveData: LiveData<Tab>
@@ -36,16 +34,5 @@ interface NavigationViewModel : IViewModel {
         data class MergeFavorites(
             val callback: (merge: Boolean) -> Unit
         ) : Dialog()
-    }
-
-    sealed class Router : RouterEvent {
-
-        data class AuthScreen(
-            val onAppStart: Boolean
-        ) : Router()
-
-        data class ProductScreen(
-            val productId: Int
-        ) : Router()
     }
 }

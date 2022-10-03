@@ -4,27 +4,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
+import ru.babaetskv.passionwoman.app.navigation.AppRouter
+import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel<TRouterEvent : RouterEvent>(
+abstract class BaseViewModel(
     private val dependencies: ViewModelDependencies
 ) : ViewModel(), IViewModel, CoroutineScope {
-    private val routerEventChannel = Channel<RouterEvent>(Channel.RENDEZVOUS)
-    private val eventFlow: Flow<InnerEvent> = eventHub.flow
-        .onEach(::onEvent)
+    private val eventHub: EventHub
+        get() = dependencies.eventHub
 
     protected val notifier: Notifier
         get() = dependencies.notifier
@@ -34,6 +33,10 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         get() = dependencies.errorLogger
     protected val networkStateChecker: NetworkStateChecker
         get() = dependencies.networkStateChecker
+    protected val router: AppRouter
+        get() = dependencies.router
+    protected val isPortraitModeOnly: Boolean
+        get() = dependencies.config.isPortraitModeOnly
     protected open val logScreenOpening: Boolean = true
 
     val networkAvailabilityFlow: Flow<Boolean> =
@@ -50,9 +53,8 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
     override val loadingLiveData = MutableLiveData(false)
     override val errorLiveData = MutableLiveData<Exception?>(null)
-    override val routerEventBus: Flow<RouterEvent> = routerEventChannel.receiveAsFlow()
-    final override  val eventHub: EventHub
-        get() = dependencies.eventHub
+    final override val eventFlow: Flow<Event> = eventHub.flow
+        .onEach(::onEvent)
 
     init {
         eventFlow.launchIn(viewModelScope)
@@ -71,19 +73,15 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
 
     override fun onErrorActionPressed(exception: Exception) {
         if (exception is GatewayException.Unauthorized) {
-            launch {
-                routerEventChannel.send(RouterEvent.LogIn)
-            }
+            router.navigateTo(Screens.auth(false))
         }
     }
 
     override fun onBackPressed() {
-        launch {
-            routerEventChannel.send(RouterEvent.GoBack)
-        }
+        router.exit()
     }
 
-    protected open fun onEvent(event: InnerEvent) = Unit
+    protected open fun onEvent(event: Event) = Unit
 
     protected open fun onError(context: CoroutineContext, error: Throwable) {
         loadingLiveData.postValue(false)
@@ -137,11 +135,7 @@ abstract class BaseViewModel<TRouterEvent : RouterEvent>(
         return true
     }
 
-    protected suspend fun navigateTo(event: TRouterEvent) {
-        routerEventChannel.send(event)
-    }
-
-    protected suspend fun sendEvent(event: InnerEvent) {
+    protected suspend fun sendEvent(event: Event) {
         eventHub.post(event)
     }
 

@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentContactsBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 
-class ContactsFragment : BaseBottomSheetDialogFragment<ContactsViewModel, ContactsViewModel.Router, FragmentComponent.NoArgs>() {
+class ContactsFragment : BaseBottomSheetDialogFragment<ContactsViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentContactsBinding by viewBinding()
     private val adapter: ContactsOptionsAdapter by lazy {
         ContactsOptionsAdapter(viewModel::onOptionPressed)

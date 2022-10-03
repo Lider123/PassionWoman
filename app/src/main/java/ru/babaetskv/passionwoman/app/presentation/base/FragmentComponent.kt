@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.os.bundleOf
 import kotlinx.parcelize.Parcelize
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 
-interface FragmentComponent<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : Parcelable> :
-    ViewComponent<VM, TRouterEvent> {
+interface FragmentComponent<VM : IViewModel, TArgs : Parcelable> : ViewComponent<VM> {
     var componentArguments: Bundle
     var _args: TArgs?
     var args: TArgs

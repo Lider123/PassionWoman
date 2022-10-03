@@ -14,7 +14,7 @@ import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
-class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingViewModel.Router, SortingFragment.Args>() {
+class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingFragment.Args>() {
     private val binding: FragmentSortingBinding by viewBinding()
     private val sortingAdapter: SortingAdapter by lazy {
         SortingAdapter(viewModel.stringProvider, viewModel::onSortingPressed)

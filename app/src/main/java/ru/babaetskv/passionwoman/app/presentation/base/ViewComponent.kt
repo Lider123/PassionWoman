@@ -1,48 +1,40 @@
 package ru.babaetskv.passionwoman.app.presentation.base
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.coroutines.flow.collect
+import androidx.lifecycle.lifecycleScope
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
 import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
+import timber.log.Timber
 
-interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
+interface ViewComponent<VM : IViewModel> {
     val viewModel: VM
     val screenName: String
     val componentView: View
     val componentViewLifecycleOwner: LifecycleOwner
-    val componentLifecycleScope: LifecycleCoroutineScope
     val componentContext: Context
 
     fun onBackPressed()
-    fun handleLogInRouterEvent(event: RouterEvent.LogIn)
+
+    fun onEvent(event: Event) = Unit
 
     fun initViews() = Unit
 
-    @Suppress("UNCHECKED_CAST")
     fun initObservers() {
+        Timber.e("initObservers()")
         viewModel.loadingLiveData.observe(componentViewLifecycleOwner, ::showLoading)
         viewModel.errorLiveData.observe(componentViewLifecycleOwner, ::showError)
-        componentLifecycleScope.launchWhenResumed {
-            viewModel.routerEventBus.collect {
-                when (it) {
-                    is RouterEvent.GoBack -> onBackPressed()
-                    is RouterEvent.LogIn -> handleLogInRouterEvent(it)
-                    else -> handleRouterEvent(it as TRouterEvent)
-                }
-            }
+        componentViewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            Timber.e("launchWhenResumed()")
+            viewModel.eventFlow.collect(::onEvent)
         }
     }
-
-    fun handleRouterEvent(event: TRouterEvent) = Unit
 
     fun showLoading(show: Boolean) {
         componentView.findViewById<View>(R.id.mockView)?.isVisible = show
@@ -50,7 +42,6 @@ interface ViewComponent<VM : IViewModel, TRouterEvent : RouterEvent> {
     }
 
     fun showError(exception: Exception?) {
-        Log.e(ViewComponent::class.java.simpleName, "showError(exception=$exception)") // TODO: remove
         val errorView = componentView.findViewById<StubView>(R.id.errorView) ?: return
 
         exception ?: run {

@@ -12,7 +12,7 @@ import ru.babaetskv.passionwoman.app.databinding.FragmentAddToCartBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
 import ru.babaetskv.passionwoman.domain.model.Product
 
-class AddToCartFragment : BaseBottomSheetDialogFragment<AddToCartViewModel, AddToCartViewModel.Router, AddToCartFragment.Args>() {
+class AddToCartFragment : BaseBottomSheetDialogFragment<AddToCartViewModel, AddToCartFragment.Args>() {
     private val binding: FragmentAddToCartBinding by viewBinding()
     private val adapter: ListDelegationAdapter<List<AddToCartItem>> by lazy {
         ListDelegationAdapter(

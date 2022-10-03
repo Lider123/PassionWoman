@@ -1,17 +1,16 @@
 package ru.babaetskv.passionwoman.app.presentation.event
 
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 class EventHub {
-    private val channel = BroadcastChannel<InnerEvent>(Channel.BUFFERED)
+    private val eventsFlow = MutableSharedFlow<Event>()
 
-    val flow: Flow<InnerEvent>
-        get() = channel.openSubscription().receiveAsFlow()
+    val flow: Flow<Event>
+        get() = eventsFlow.asSharedFlow()
 
-    suspend fun post(event: InnerEvent) {
-        channel.send(event)
+    suspend fun post(event: Event) {
+        eventsFlow.emit(event)
     }
 }

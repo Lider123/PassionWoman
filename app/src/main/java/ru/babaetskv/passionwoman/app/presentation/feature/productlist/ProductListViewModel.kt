@@ -5,7 +5,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -25,23 +25,15 @@ interface ProductListViewModel : IViewModel {
     fun onSearchQueryChanged(query: String)
     fun onLoadStateChanged(states: CombinedLoadStates)
 
-    sealed class Router : RouterEvent {
+    data class UpdateSortingEvent(
+        val data: Sorting
+    ) : Event
 
-        data class ProductCardScreen(
-            val product: Product
-        ) : Router()
+    data class UpdateFiltersEvent(
+        val data: List<Filter>
+    ) : Event
 
-        data class SortingScreen(
-            val selectedSorting: Sorting
-        ) : Router()
-
-        data class FiltersScreen(
-            val filters: List<Filter>,
-            val productsCount: Int
-        ) : Router()
-
-        data class NewCartItem(
-            val product: Product
-        ) : Router()
-    }
+    data class OpenLandscapeProductCard(
+        val product: Product
+    ) : Event
 }

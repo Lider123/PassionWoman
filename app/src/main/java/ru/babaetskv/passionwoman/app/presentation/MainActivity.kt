@@ -6,27 +6,23 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.Screens
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.navigation.MainAppNavigator
 import ru.babaetskv.passionwoman.app.presentation.base.BaseActivity
 import ru.babaetskv.passionwoman.app.presentation.base.ViewComponent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertSnackbarFactory
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 import java.util.*
 
-class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
+class MainActivity : BaseActivity<MainViewModel>() {
     private val navigatorHolder: NavigatorHolder by inject()
-    private val router: AppRouter by inject()
-    private val currentFragment: ViewComponent<*, *>?
-        get() = supportFragmentManager.findFragmentById(R.id.container) as? ViewComponent<*, *>
+    private val currentFragment: ViewComponent<*>?
+        get() = supportFragmentManager.findFragmentById(R.id.container) as? ViewComponent<*>
     private val navigator: AppNavigator by lazy {
         MainAppNavigator(this, R.id.container)
     }
@@ -44,7 +40,7 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
     private var savedFragments = mutableListOf<Fragment>()
 
     override val contentViewRes: Int = R.layout.activity_main
-    override val viewModel: MainViewModel by viewModel()
+    override val viewModel: MainViewModel by viewModel<MainViewModelImpl>()
     override val applyInsets: Boolean = false
     override val screenName: String = ""
 
@@ -96,27 +92,10 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
         currentFragment?.onBackPressed() ?: super.onBackPressed()
     }
 
-    override fun initObservers() {
-        super.initObservers()
-        lifecycleScope.launchWhenResumed {
-            viewModel.eventBus.collect(::handleEvent)
-        }
-    }
-
-    override fun handleRouterEvent(event: MainViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            MainViewModel.Router.OnboardingScreen -> router.newRootScreen(Screens.onboarding())
-            MainViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth(true))
-            is MainViewModel.Router.SignUpScreen -> {
-                router.newRootScreen(Screens.signUp(event.profile, true))
-            }
-            is MainViewModel.Router.NavigationScreen -> {
-                router.newRootScreen(Screens.navigation(event.payload))
-            }
-            is MainViewModel.Router.ProductScreen -> {
-                router.navigateTo(Screens.productCard(event.productId))
-            }
+            is MainViewModel.ShowAlertMessageEvent -> handleAlertMessage(event.message)
+            else -> super.onEvent(event)
         }
     }
 
@@ -124,12 +103,6 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModel.Router>() {
         snackbarIsVisible = isVisible
         if (!isVisible) alertMessageQueue.poll()?.let {
             showAlertMessage(it)
-        }
-    }
-
-    private fun handleEvent(event: MainViewModel.Event) {
-        when (event) {
-            is MainViewModel.Event.ShowAlertMessage -> handleAlertMessage(event.message)
         }
     }
 

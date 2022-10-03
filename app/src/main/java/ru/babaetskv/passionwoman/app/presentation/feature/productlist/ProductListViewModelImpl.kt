@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.NewPager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductsPagedResponse
@@ -27,7 +28,7 @@ class ProductListViewModelImpl(
     override val stringProvider: StringProvider,
     private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
-) : BaseViewModel<ProductListViewModel.Router>(dependencies), ProductListViewModel {
+) : BaseViewModel(dependencies), ProductListViewModel {
     private val productsPager = NewPager(
         PAGE_SIZE,
         ::loadNext,
@@ -63,32 +64,35 @@ class ProductListViewModelImpl(
         }
     }
 
-    override fun onEvent(event: InnerEvent) {
+    override fun onEvent(event: Event) {
         when (event) {
-            is InnerEvent.UpdateSorting -> updateSorting(event.data)
-            is InnerEvent.UpdateFilters -> updateFilters(event.data)
+            is ProductListViewModel.UpdateSortingEvent -> updateSorting(event.data)
+            is ProductListViewModel.UpdateFiltersEvent -> updateFilters(event.data)
             else -> super.onEvent(event)
         }
     }
 
     override fun onProductPressed(product: Product) {
         analyticsHandler.log(SelectProductEvent(product))
-        launch {
-            navigateTo(ProductListViewModel.Router.ProductCardScreen(product))
+        if (isPortraitModeOnly) {
+            router.navigateTo(Screens.productCard(product.id))
+        } else launch {
+            sendEvent(ProductListViewModel.OpenLandscapeProductCard(product))
         }
     }
 
     override fun onBuyPressed(product: Product) {
-        launch {
-            navigateTo(ProductListViewModel.Router.NewCartItem(product))
-        }
+        router.openBottomSheet(Screens.newCartItem(product))
     }
 
     override fun onFiltersPressed() {
         filters?.let {
-            launch {
-                navigateTo(ProductListViewModel.Router.FiltersScreen(it, totalProductsCount))
-            }
+            val screen = Screens.filters(
+                (args.mode as? ProductListMode.Category)?.category?.id,
+                it,
+                totalProductsCount
+            )
+            router.openBottomSheet(screen)
         } ?: run {
             notifier.newRequest(this@ProductListViewModelImpl, R.string.product_list_no_filters)
                 .sendAlert()
@@ -96,9 +100,7 @@ class ProductListViewModelImpl(
     }
 
     override fun onSortingPressed() {
-        launch {
-            navigateTo(ProductListViewModel.Router.SortingScreen(sortingLiveData.value!!))
-        }
+        router.openBottomSheet(Screens.sorting(sortingLiveData.value!!))
     }
 
     override fun onLoadStateChanged(states: CombinedLoadStates) {
@@ -129,12 +131,12 @@ class ProductListViewModelImpl(
     }
 
     private suspend fun loadNext(limit: Int, offset: Int): ProductsPagedResponse {
-        if (args.mode is ProductListMode.SearchMode && searchQuery.isBlank()) {
+        if (args.mode is ProductListMode.Search && searchQuery.isBlank()) {
             throw GetProductsUseCase.EmptyProductsException(stringProvider)
         }
 
         val params = GetProductsUseCase.Params(
-            categoryId = (args.mode as? ProductListMode.CategoryMode)?.category?.id,
+            categoryId = (args.mode as? ProductListMode.Category)?.category?.id,
             query = searchQuery,
             filters = pagerFilters,
             sorting = sortingLiveData.value!!,

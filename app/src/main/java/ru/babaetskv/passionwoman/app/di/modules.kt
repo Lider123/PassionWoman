@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.di
 
+import android.content.Context
 import android.content.res.Resources
 import com.github.terrakok.cicerone.Cicerone
 import com.squareup.moshi.Moshi
@@ -7,6 +8,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseErrorLogger
@@ -15,7 +17,8 @@ import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.utils.StringProviderImpl
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
-import ru.babaetskv.passionwoman.app.presentation.MainViewModel
+import ru.babaetskv.passionwoman.app.presentation.MainViewModelImpl
+import ru.babaetskv.passionwoman.app.AppConfig
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
@@ -58,6 +61,7 @@ import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.interactor.*
+import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
@@ -90,8 +94,12 @@ val navigationModule = module {
 }
 
 val viewModelModule = module {
-    single { ViewModelDependencies(get(), get(), get(), get(), get()) }
-    viewModel { MainViewModel(get(), get(), get(), get(), get()) }
+    single {
+        val isPortraitModeOnly = get<Context>().bool(R.bool.portrait_mode_only)
+        AppConfig(isPortraitModeOnly)
+    }
+    single { ViewModelDependencies(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { MainViewModelImpl(get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModelImpl(args, get(), get(), get())

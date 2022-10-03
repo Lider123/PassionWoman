@@ -18,7 +18,7 @@ import ru.babaetskv.passionwoman.domain.model.Story
 import kotlin.math.abs
 
 class StoriesFragment :
-    BaseFragment<StoriesViewModel, StoriesViewModel.Router, StoriesFragment.Args>() {
+    BaseFragment<StoriesViewModel, StoriesFragment.Args>() {
     private val binding: FragmentStoriesBinding by viewBinding()
     private val adapter: StoryPagesAdapter by lazy {
         StoryPagesAdapter(this,

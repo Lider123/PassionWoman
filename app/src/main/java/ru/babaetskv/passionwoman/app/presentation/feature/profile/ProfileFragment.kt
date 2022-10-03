@@ -9,11 +9,10 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
@@ -24,7 +23,7 @@ import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 class ProfileFragment :
-    BaseFragment<ProfileViewModel, ProfileViewModel.Router, FragmentComponent.NoArgs>() {
+    BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentProfileBinding by viewBinding()
     private val profileMenuItemsAdapter: ProfileMenuItemAdapter by lazy {
         ProfileMenuItemAdapter(viewModel::onMenuItemPressed)
@@ -77,34 +76,16 @@ class ProfileFragment :
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
     }
 
-    override fun handleRouterEvent(event: ProfileViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            is ProfileViewModel.Router.AuthScreen -> {
-                val screen = Screens.auth(event.onAppStart)
-                if (event.onAppStart) {
-                    router.replaceScreen(screen)
-                } else router.navigateTo(screen)
-            }
-            is ProfileViewModel.Router.EditProfileScreen -> {
-                router.navigateTo(Screens.editProfile(event.profile))
-            }
-            ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
-            ProfileViewModel.Router.OrdersScreen -> router.navigateTo(Screens.orders())
-            ProfileViewModel.Router.ContactsScreen -> router.openBottomSheet(Screens.contacts())
-        }
-    }
-
-    override fun onEvent(event: InnerEvent) {
-        when (event) {
-            InnerEvent.PickCameraImage -> {
+            ProfileViewModel.PickCameraImageEvent -> {
                 ImagePicker.with(this)
                     .cameraOnly()
                     .cropSquare()
                     .maxResultSize(400, 400)
                     .start()
             }
-            InnerEvent.PickGalleryImage -> {
+            ProfileViewModel.PickGalleryImageEvent -> {
                 ImagePicker.with(this)
                     .galleryOnly()
                     .cropSquare()

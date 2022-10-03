@@ -8,14 +8,13 @@ import androidx.viewpager2.widget.ViewPager2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentOnboardingBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import java.util.*
 import kotlin.math.min
 
-class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel.Router, FragmentComponent.NoArgs>() {
+class OnboardingFragment : BaseFragment<OnboardingViewModel, FragmentComponent.NoArgs>() {
     private val adapter: OnboardingPagesAdapter by lazy {
         OnboardingPagesAdapter()
     }
@@ -66,15 +65,6 @@ class OnboardingFragment : BaseFragment<OnboardingViewModel, OnboardingViewModel
         super.initObservers()
         viewModel.pagesLiveData.observe(viewLifecycleOwner, ::populatePages)
         viewModel.currPageLiveData.observe(viewLifecycleOwner, ::populateCurrPage)
-    }
-
-    override fun handleRouterEvent(event: OnboardingViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            OnboardingViewModel.Router.AuthScreen -> {
-                router.newRootScreen(Screens.auth(true))
-            }
-        }
     }
 
     private fun populateCurrPage(page: Int) {

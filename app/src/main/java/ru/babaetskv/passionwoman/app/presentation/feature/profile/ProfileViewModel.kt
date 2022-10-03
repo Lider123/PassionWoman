@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 interface ProfileViewModel : IViewModel {
@@ -28,20 +28,9 @@ interface ProfileViewModel : IViewModel {
         LOG_OUT_CONFIRMATION, PICK_AVATAR
     }
 
-    sealed class Router : RouterEvent {
+    object PickCameraImageEvent : Event
 
-        data class AuthScreen(
-            val onAppStart: Boolean
-        ) : Router()
+    object PickGalleryImageEvent : Event
 
-        data class EditProfileScreen(
-            val profile: Profile
-        ) : Router()
-
-        object FavoritesScreen : Router()
-
-        object OrdersScreen : Router()
-
-        object ContactsScreen: Router()
-    }
+    object UpdateProfileEvent : Event
 }

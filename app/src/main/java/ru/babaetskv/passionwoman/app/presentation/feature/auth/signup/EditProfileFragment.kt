@@ -9,7 +9,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
@@ -18,7 +17,7 @@ import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Profile
 
-class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
+class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragment.Args>() {
     private val binding: FragmentEditProfileBinding by viewBinding()
 
     override val layoutRes: Int = R.layout.fragment_edit_profile
@@ -75,15 +74,6 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     override fun initObservers() {
         super.initObservers()
         viewModel.dataIsValidLiveData.observe(viewLifecycleOwner, ::updateDoneButton)
-    }
-
-    override fun handleRouterEvent(event: EditProfileViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            EditProfileViewModel.Router.NavigationScreen -> {
-                router.newRootScreen(Screens.navigation(null))
-            }
-        }
     }
 
     private fun updateDoneButton(dataIsValid: Boolean) {

@@ -1,21 +1,21 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
 import android.os.Parcelable
+import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
-import ru.babaetskv.passionwoman.domain.model.Category
 
 sealed class ProductListMode : Parcelable {
 
     @Parcelize
-    data class CategoryMode(
-        val category: Category
+    data class Category(
+        val category: ru.babaetskv.passionwoman.domain.model.Category
     ) : ProductListMode()
 
     @Parcelize
-    data class SpecificMode(
-        val title: String
+    data class Specific(
+        @StringRes val titleRes: Int
     ) : ProductListMode()
 
     @Parcelize
-    object SearchMode : ProductListMode()
+    object Search : ProductListMode()
 }

@@ -11,17 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.SimpleKeyboardAnimator
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
-abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
-    AppCompatActivity(),
-    ViewComponent<VM, TRouterEvent> {
+abstract class BaseActivity<VM : IViewModel> : AppCompatActivity(), ViewComponent<VM> {
     private val keyboardAnimator: SimpleKeyboardAnimator by lazy {
         SimpleKeyboardAnimator(window)
     }
@@ -30,8 +25,6 @@ abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
         get() = findViewById(android.R.id.content)
     override val componentContext: Context
         get() = this
-    override val componentLifecycleScope: LifecycleCoroutineScope
-        get() = lifecycleScope
     override val componentViewLifecycleOwner: LifecycleOwner
         get() = this
 
@@ -71,8 +64,6 @@ abstract class BaseActivity<VM : IViewModel, TRouterEvent : RouterEvent> :
         viewModel.onStop()
         super.onStop()
     }
-
-    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) = Unit
 
     protected fun installAppSplashScreen(condition: SplashScreen.KeepOnScreenCondition? = null): SplashScreen =
         installSplashScreen().apply {

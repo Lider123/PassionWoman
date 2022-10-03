@@ -7,22 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
-import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
-import ru.babaetskv.passionwoman.app.navigation.Screens
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
+import timber.log.Timber
 
-abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+abstract class BaseFragment<VM : IViewModel, TArgs : Parcelable> :
     Fragment(),
-    FragmentComponent<VM, TRouterEvent, TArgs> {
-    protected val router: AppRouter by inject()
+    FragmentComponent<VM, TArgs> {
     protected open val applyTopInset: Boolean = true
     protected open val applyBottomInset: Boolean = true
 
@@ -36,8 +28,6 @@ abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : 
     override var _args: TArgs? = null
     override val componentView: View
         get() = requireView()
-    override val componentLifecycleScope: LifecycleCoroutineScope
-        get() = lifecycleScope
     override val componentViewLifecycleOwner: LifecycleOwner
         get() = viewLifecycleOwner
 
@@ -80,22 +70,10 @@ abstract class BaseFragment<VM : IViewModel, TRouterEvent: RouterEvent, TArgs : 
         super.onStop()
     }
 
-    override fun handleLogInRouterEvent(event: RouterEvent.LogIn) {
-        router.navigateTo(Screens.auth(false))
-    }
-
-    override fun initObservers() {
-        super.initObservers()
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            viewModel.eventHub.flow.collect(::onEvent)
-        }
-    }
-
     override fun onBackPressed() {
-        router.exit()
+        Timber.e("onBackPressed()") // TODO: remove
+        viewModel.onBackPressed()
     }
-
-    protected open fun onEvent(event: InnerEvent) = Unit
 
     fun withArgs(args: TArgs) = also { it.args = args }
 }

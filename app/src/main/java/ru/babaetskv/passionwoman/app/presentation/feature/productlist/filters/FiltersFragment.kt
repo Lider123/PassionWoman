@@ -15,7 +15,7 @@ import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 // TODO: fix filters application for tablets
 class FiltersFragment :
-    BaseBottomSheetDialogFragment<FiltersViewModel, FiltersViewModel.Router, FiltersFragment.Args>() {
+    BaseBottomSheetDialogFragment<FiltersViewModel, FiltersFragment.Args>() {
     private val binding: FragmentFiltersBinding by viewBinding()
     private val adapter: FiltersAdapter by lazy {
         FiltersAdapter(viewModel::onFilterChanged)

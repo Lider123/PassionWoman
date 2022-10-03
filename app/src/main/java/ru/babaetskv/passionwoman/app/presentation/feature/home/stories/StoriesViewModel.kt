@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.feature.home.stories
 
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.domain.model.Story
 
 interface StoriesViewModel : IViewModel {
@@ -12,6 +11,4 @@ interface StoriesViewModel : IViewModel {
     fun onCurrentStoryChanged(position: Int)
     fun onPrevStoryPressed()
     fun onNextStoryPressed()
-
-    sealed class Router : RouterEvent
 }

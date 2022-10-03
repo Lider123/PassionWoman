@@ -23,7 +23,8 @@ interface BottomSheetDialogFragmentScreen : FragmentScreen {
             override val screenKey = key ?: fragmentCreator::class.java.name
             override val clearContainer = clearContainer
 
-            override fun createBottomSheetFragment(factory: FragmentFactory) = fragmentCreator.create(factory)
+            override fun createBottomSheetFragment(factory: FragmentFactory) =
+                fragmentCreator.create(factory)
         }
     }
 }

@@ -22,7 +22,12 @@ class MainAppNavigator(
         currentFragment: Fragment?,
         nextFragment: Fragment
     ) {
-        fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out, R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+        fragmentTransaction.setCustomAnimations(
+            R.anim.fragment_fade_in,
+            R.anim.fragment_fade_out,
+            R.anim.fragment_fade_in,
+            R.anim.fragment_fade_out
+        )
     }
 
     override fun applyCommands(commands: Array<out Command>) {
@@ -38,6 +43,7 @@ class MainAppNavigator(
     }
 
     private fun openIntoBottomSheet(screen: BottomSheetDialogFragmentScreen) {
-        screen.createBottomSheetFragment(fragmentFactory).show(fragmentManager, screen.screenKey)
+        screen.createBottomSheetFragment(fragmentFactory)
+            .show(fragmentManager, screen.screenKey)
     }
 }

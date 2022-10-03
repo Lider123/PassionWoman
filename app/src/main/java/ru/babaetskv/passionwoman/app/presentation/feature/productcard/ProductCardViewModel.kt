@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductSize
@@ -20,6 +19,4 @@ interface ProductCardViewModel : IViewModel {
     fun onFavoritePressed()
     fun onAddToCartPressed()
     fun onSharePressed()
-
-    sealed class Router : RouterEvent
 }
