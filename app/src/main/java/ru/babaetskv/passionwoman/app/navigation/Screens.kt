@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.app.navigation
 
+import androidx.annotation.StringRes
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListFragment
@@ -31,21 +32,22 @@ object Screens {
 
     fun category(category: Category) = FragmentScreen {
         ProductListFragment.create(
-            mode = ProductListMode.CategoryMode(category),
+            mode = ProductListMode.Category(category),
             filters = listOf(),
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
         )
     }
 
-    fun productList(title: String, filters: List<Filter>, sorting: Sorting) = FragmentScreen {
-        ProductListFragment.create(
-            mode = ProductListMode.SpecificMode(title),
-            filters = filters,
-            sorting = sorting,
-            actionsAvailable = false
-        )
-    }
+    fun productList(@StringRes titleRes: Int, filters: List<Filter>, sorting: Sorting) =
+        FragmentScreen {
+            ProductListFragment.create(
+                mode = ProductListMode.Specific(titleRes),
+                filters = filters,
+                sorting = sorting,
+                actionsAvailable = false
+            )
+        }
 
     fun favorites() = FragmentScreen {
         FavoritesFragment.create()
@@ -70,11 +72,11 @@ object Screens {
         ProductCardFragment.create(productId)
     }
 
-    fun sorting(sorting: Sorting) = BottomSheetDialogFragmentScreen {
+    fun sorting(sorting: Sorting) = FragmentScreen {
         SortingFragment.create(sorting)
     }
 
-    fun contacts() = BottomSheetDialogFragmentScreen {
+    fun contacts() = FragmentScreen {
         ContactsFragment.create()
     }
 
@@ -83,7 +85,7 @@ object Screens {
         filters: List<Filter>,
         productsCount: Int
     ) =
-        BottomSheetDialogFragmentScreen {
+        FragmentScreen {
             FiltersFragment.create(categoryId, filters, productsCount)
         }
 
@@ -93,14 +95,14 @@ object Screens {
 
     fun search() = FragmentScreen {
         ProductListFragment.create(
-            mode = ProductListMode.SearchMode,
+            mode = ProductListMode.Search,
             filters = emptyList(),
             sorting = Sorting.DEFAULT,
             actionsAvailable = true
         )
     }
 
-    fun newCartItem(product: Product) = BottomSheetDialogFragmentScreen {
+    fun newCartItem(product: Product) = FragmentScreen {
         AddToCartFragment.create(product)
     }
 

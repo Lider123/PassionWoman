@@ -4,7 +4,6 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.applyDemoPresets
 import ru.babaetskv.passionwoman.app.utils.toDemoPresets
@@ -20,7 +19,7 @@ class DemoPresetsViewModelImpl(
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val resources: Resources,
     dependencies: ViewModelDependencies
-) : BaseViewModel<DemoPresetsViewModelImpl.Router>(dependencies), DemoPresetsViewModel {
+) : BaseViewModel(dependencies), DemoPresetsViewModel {
     override val presetsLiveData = MutableLiveData(
         appPrefs.toDemoPresets() + authPrefs.toDemoPresets()
     )
@@ -43,11 +42,7 @@ class DemoPresetsViewModelImpl(
                     updateProfileUseCase.execute(it)
                 }
             }
-            navigateTo(Router.MainFlow)
+            sendEvent(DemoPresetsViewModel.StartMainFlowEvent)
         }
-    }
-
-    sealed class Router : RouterEvent {
-        object MainFlow : Router()
     }
 }

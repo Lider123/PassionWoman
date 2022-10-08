@@ -4,11 +4,11 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
@@ -23,7 +23,7 @@ class ProfileViewModelImpl(
     private val updateAvatarUseCase: UpdateAvatarUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseViewModel<ProfileViewModel.Router>(dependencies), ProfileViewModel {
+) : BaseViewModel(dependencies), ProfileViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
     override val menuItemsLiveData = MutableLiveData(ProfileMenuItem.values().asList())
@@ -43,35 +43,25 @@ class ProfileViewModelImpl(
         authTypeFlow.launchIn(this)
     }
 
-    override fun onEvent(event: InnerEvent) {
+    override fun onEvent(event: Event) {
         when (event) {
-            InnerEvent.UpdateProfile -> loadProfile(false)
+            ProfileViewModel.UpdateProfileEvent -> loadProfile(false)
             else -> super.onEvent(event)
         }
     }
 
     override fun onMenuItemPressed(item: ProfileMenuItem) {
-        launch {
-            when (item) {
-                ProfileMenuItem.FAVORITES -> {
-                    navigateTo(ProfileViewModel.Router.FavoritesScreen)
-                }
-                ProfileMenuItem.ORDERS -> {
-                    navigateTo(ProfileViewModel.Router.OrdersScreen)
-                }
-                ProfileMenuItem.CONTACTS -> {
-                    navigateTo(ProfileViewModel.Router.ContactsScreen)
-                }
-            }
+        when (item) {
+            ProfileMenuItem.FAVORITES -> router.navigateTo(Screens.favorites())
+            ProfileMenuItem.ORDERS -> router.navigateTo(Screens.orders())
+            ProfileMenuItem.CONTACTS -> router.openBottomSheet(Screens.contacts())
         }
     }
 
     override fun onEditPressed() {
         val profile = profileLiveData.value ?: return
 
-        launch {
-            navigateTo(ProfileViewModel.Router.EditProfileScreen(profile))
-        }
+        router.navigateTo(Screens.editProfile(profile))
     }
 
     override fun onEditAvatarPressed() {
@@ -83,14 +73,14 @@ class ProfileViewModelImpl(
     override fun onGalleryPressed() {
         dialogLiveData.postValue(null)
         launchWithLoading {
-            sendEvent(InnerEvent.PickGalleryImage)
+            sendEvent(ProfileViewModel.PickGalleryImageEvent)
         }
     }
 
     override fun onCameraPressed() {
         dialogLiveData.postValue(null)
         launchWithLoading {
-            sendEvent(InnerEvent.PickCameraImage)
+            sendEvent(ProfileViewModel.PickCameraImageEvent)
         }
     }
 
@@ -103,9 +93,7 @@ class ProfileViewModelImpl(
     override fun onLogInPressed() {
         if (authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED) return
 
-        launch {
-            navigateTo(ProfileViewModel.Router.AuthScreen(false))
-        }
+        router.navigateTo(Screens.auth(false))
     }
 
     override fun onLogOutDeclined() {

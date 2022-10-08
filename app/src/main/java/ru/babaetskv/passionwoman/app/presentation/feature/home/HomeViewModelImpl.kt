@@ -1,10 +1,12 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import androidx.lifecycle.MutableLiveData
+import com.github.terrakok.cicerone.Screen
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -17,7 +19,7 @@ class HomeViewModelImpl(
     private val getHomeDataUseCase: GetHomeDataUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseViewModel<HomeViewModel.Router>(dependencies), HomeViewModel {
+) : BaseViewModel(dependencies), HomeViewModel {
     override val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
 
     init {
@@ -32,34 +34,33 @@ class HomeViewModelImpl(
     }
 
     override fun onHeaderPressed(header: HomeItem.Header) {
-        when (header) {
-            HEADER_PRODUCTS_SALE -> launch {
-                navigateTo(
-                    HomeViewModel.Router.ProductListScreen(
+        val screen: Screen? = when (header) {
+            HEADER_PRODUCTS_SALE -> {
+                Screens.productList(
                     R.string.home_sale_products_title,
                     listOf(
                         Filter.DiscountOnly(stringProvider, true)
                     ),
                     Sorting.DEFAULT
-                ))
+                )
             }
-            HEADER_PRODUCTS_POPULAR -> launch {
-                navigateTo(
-                    HomeViewModel.Router.ProductListScreen(
+            HEADER_PRODUCTS_POPULAR -> {
+                Screens.productList(
                     R.string.home_popular_products_title,
                     listOf(),
                     Sorting.POPULARITY
-                ))
+                )
             }
-            HEADER_PRODUCTS_NEW -> launch {
-                navigateTo(
-                    HomeViewModel.Router.ProductListScreen(
+            HEADER_PRODUCTS_NEW -> {
+                Screens.productList(
                     R.string.home_new_products_title,
                     listOf(),
                     Sorting.NEW
-                ))
+                )
             }
+            else -> null
         }
+        screen?.let(router::navigateTo)
     }
 
     override fun onPromotionPressed(promotion: Promotion) {
@@ -76,22 +77,20 @@ class HomeViewModelImpl(
             val initialStoryIndex = stories.indexOfFirst { it.id == story.id }
             if (initialStoryIndex < 0) return
 
-            launchWithLoading {
-                navigateTo(HomeViewModel.Router.StoriesScreen(stories, initialStoryIndex))
-            }
+            router.navigateTo(Screens.stories(stories, initialStoryIndex))
         }
     }
 
     override fun onBuyProductPressed(product: Product) {
-        launch {
-            navigateTo(HomeViewModel.Router.NewCartItemScreen(product))
-        }
+        router.openBottomSheet(Screens.newCartItem(product))
     }
 
     override fun onProductPressed(product: Product) {
         analyticsHandler.log(SelectProductEvent(product))
-        launch {
-            navigateTo(HomeViewModel.Router.ProductCardScreen(product))
+        if (isPortraitModeOnly) {
+            router.navigateTo(Screens.productCard(product.id))
+        } else launch {
+            sendEvent(HomeViewModel.OpenLandscapeProductCardEvent(product))
         }
     }
 

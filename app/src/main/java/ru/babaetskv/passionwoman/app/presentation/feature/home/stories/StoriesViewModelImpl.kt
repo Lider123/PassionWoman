@@ -7,7 +7,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 class StoriesViewModelImpl(
     args: StoriesFragment.Args,
     dependencies: ViewModelDependencies
-) : BaseViewModel<StoriesViewModel.Router>(dependencies), StoriesViewModel {
+) : BaseViewModel(dependencies), StoriesViewModel {
     override val storiesLiveData = MutableLiveData(args.stories)
     override val currStoryIndexLiveData = MutableLiveData(args.initialStoryIndex)
 

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -24,7 +25,7 @@ class FavoritesViewModelImpl(
     favoritesPreferences: FavoritesPreferences,
     override val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseViewModel<FavoritesViewModel.Router>(dependencies), FavoritesViewModel {
+) : BaseViewModel(dependencies), FavoritesViewModel {
     private val favoritesActionsFlow: Flow<FavoritesPreferences.Action> =
         favoritesPreferences.favoritesUpdatesFlow
             .filterNotNull()
@@ -54,15 +55,18 @@ class FavoritesViewModelImpl(
 
     override fun onProductPressed(product: Product) {
         analyticsHandler.log(SelectProductEvent(product))
-        launch {
-            navigateTo(FavoritesViewModel.Router.ProductCardScreen(product))
+
+        if (isPortraitModeOnly) {
+            router.navigateTo(Screens.productCard(product.id))
+        } else {
+            launch {
+                sendEvent(FavoritesViewModel.OpenLandscapeProductCardEvent(product))
+            }
         }
     }
 
     override fun onBuyPressed(product: Product) {
-        launch {
-            navigateTo(FavoritesViewModel.Router.NewCartItem(product))
-        }
+        router.openBottomSheet(Screens.newCartItem(product))
     }
 
     private suspend fun onFavoritesUpdated(action: FavoritesPreferences.Action) {

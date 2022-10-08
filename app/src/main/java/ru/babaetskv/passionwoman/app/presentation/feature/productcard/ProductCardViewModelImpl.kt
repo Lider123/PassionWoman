@@ -27,7 +27,7 @@ class ProductCardViewModelImpl(
     private val deeplinkGenerator: DeeplinkGenerator,
     private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
-) : BaseViewModel<ProductCardViewModel.Router>(dependencies), ProductCardViewModel {
+) : BaseViewModel(dependencies), ProductCardViewModel {
     override val productLiveData = MutableLiveData<Product>()
     override val colorsLiveData = MutableLiveData<List<SelectableItem<Color>>>()
     override val productPhotosLiveData = MutableLiveData<List<ProductImageItem>>()

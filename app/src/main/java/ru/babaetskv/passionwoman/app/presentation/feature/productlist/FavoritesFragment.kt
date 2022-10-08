@@ -6,16 +6,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
-import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 
-class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Router, FragmentComponent.NoArgs>() {
+class FavoritesFragment : BaseFragment<FavoritesViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentProductListBinding by viewBinding()
     private val productsAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(viewModel::onProductPressed, viewModel::onBuyPressed)
@@ -48,25 +47,15 @@ class FavoritesFragment : BaseFragment<FavoritesViewModel, FavoritesViewModel.Ro
         viewModel.sortingLiveData.observe(viewLifecycleOwner, ::populateSorting)
     }
 
-
-    override fun handleRouterEvent(event: FavoritesViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            is FavoritesViewModel.Router.ProductCardScreen -> {
-                if (requireContext().bool(R.bool.portrait_mode_only)) {
-                    router.navigateTo(Screens.productCard(event.product.id))
-                } else {
-                    val detailsFragment = ProductCardFragment.create(event.product.id,
-                        isSeparate = false
-                    )
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentDetailsContainer, detailsFragment)
-                        .commit()
-                }
+            is FavoritesViewModel.OpenLandscapeProductCardEvent -> {
+                val fragment = ProductCardFragment.create(event.product.id, isSeparate = false)
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentDetailsContainer, fragment)
+                    .commit()
             }
-            is FavoritesViewModel.Router.NewCartItem -> {
-                router.openBottomSheet(Screens.newCartItem(event.product))
-            }
+            else -> super.onEvent(event)
         }
     }
 

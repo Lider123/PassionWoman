@@ -2,14 +2,12 @@ package ru.babaetskv.passionwoman.app.presentation.base
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
-import ru.babaetskv.passionwoman.app.presentation.event.EventHub
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 
 interface IViewModel {
     val loadingLiveData: LiveData<Boolean>
     val errorLiveData: LiveData<Exception?>
-    val routerEventBus: Flow<RouterEvent>
-    val eventHub: EventHub
+    val eventFlow: Flow<Event>
 
     fun onErrorActionPressed(exception: Exception)
     fun onStart(screenName: String)

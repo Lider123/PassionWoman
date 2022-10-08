@@ -9,9 +9,8 @@ import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 class ContactsViewModelImpl(
     private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
-) : BaseViewModel<ContactsViewModel.Router>(dependencies), ContactsViewModel {
-    override val optionsLiveData =
-        MutableLiveData(ContactsOption.values().asList())
+) : BaseViewModel(dependencies), ContactsViewModel {
+    override val optionsLiveData = MutableLiveData(ContactsOption.values().asList())
 
     override fun onOptionPressed(option: ContactsOption) {
         when (option) {

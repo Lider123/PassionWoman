@@ -6,25 +6,23 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
-import kotlinx.coroutines.flow.collect
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductListBinding
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.feature.productcard.ProductCardFragment
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
-import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 // TODO: fix actions view
-class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewModel.Router, ProductListFragment.Args>() {
+class ProductListFragment : BaseFragment<ProductListViewModel, ProductListFragment.Args>() {
     private val binding: FragmentProductListBinding by viewBinding()
     private val productsAdapter: PagedProductsAdapter by lazy {
         PagedProductsAdapter(viewModel::onProductPressed, viewModel::onBuyPressed).apply {
@@ -71,49 +69,30 @@ class ProductListFragment : BaseFragment<ProductListViewModel, ProductListViewMo
         viewModel.appliedFiltersCountLiveData.observe(viewLifecycleOwner, ::populateFiltersBadge)
     }
 
-    override fun handleRouterEvent(event: ProductListViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            is ProductListViewModel.Router.ProductCardScreen -> {
-                if (requireContext().bool(R.bool.portrait_mode_only)) {
-                    router.navigateTo(Screens.productCard(event.product.id))
-                } else {
-                    val detailsFragment = ProductCardFragment.create(event.product.id,
-                        isSeparate = false
-                    )
-                    childFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentDetailsContainer, detailsFragment)
-                        .commit()
-                }
+            is ProductListViewModel.OpenLandscapeProductCard -> {
+                val fragment = ProductCardFragment.create(event.product.id, isSeparate = false)
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentDetailsContainer, fragment)
+                    .commit()
             }
-            is ProductListViewModel.Router.SortingScreen -> {
-                router.openBottomSheet(Screens.sorting(event.selectedSorting))
-            }
-            is ProductListViewModel.Router.FiltersScreen -> {
-                router.openBottomSheet(Screens.filters(
-                    (args.mode as? ProductListMode.CategoryMode)?.category?.id,
-                    event.filters,
-                    event.productsCount
-                ))
-            }
-            is ProductListViewModel.Router.NewCartItem -> {
-                router.openBottomSheet(Screens.newCartItem(event.product))
-            }
+            else -> super.onEvent(event)
         }
     }
 
     private fun populateMode(mode: ProductListMode) {
         binding.run {
             when (mode) {
-                is ProductListMode.CategoryMode -> {
+                is ProductListMode.Category -> {
                     toolbar.title = mode.category.name
                     layoutSearch.isVisible = false
                 }
-                is ProductListMode.SpecificMode -> {
-                    toolbar.title = mode.title
+                is ProductListMode.Specific -> {
+                    toolbar.title = getString(mode.titleRes)
                     layoutSearch.isVisible = false
                 }
-                is ProductListMode.SearchMode -> {
+                is ProductListMode.Search -> {
                     toolbar.title = ""
                     layoutSearch.isVisible = true
                 }

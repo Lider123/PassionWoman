@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -24,7 +25,7 @@ class CartViewModelImpl(
     private val checkoutUseCase: CheckoutUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseViewModel<CartViewModel.Router>(dependencies), CartViewModel {
+) : BaseViewModel(dependencies), CartViewModel {
     private val mCartFlow: Flow<Cart>
         get() = cartFlow.subscribe().onEach {
             val error = if (it.isEmpty) {
@@ -61,7 +62,7 @@ class CartViewModelImpl(
             checkoutUseCase.execute(Unit)
             notifier.newRequest(this, R.string.cart_order_created)
                 .sendAlert()
-            navigateTo(CartViewModel.Router.Orders)
+            router.navigateTo(Screens.orders())
         }
     }
 }

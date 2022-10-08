@@ -22,7 +22,7 @@ import ru.babaetskv.passionwoman.domain.model.ProductSize
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 import kotlin.math.abs
 
-class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
+class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
     private val productPhotosAdapter: ProductPhotosAdapter by lazy {
         ProductPhotosAdapter()

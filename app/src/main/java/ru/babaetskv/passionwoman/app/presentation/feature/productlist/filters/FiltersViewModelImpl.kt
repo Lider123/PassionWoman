@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.event.InnerEvent
+import ru.babaetskv.passionwoman.app.presentation.feature.productlist.ProductListViewModel
 import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.GetProductsUseCase
@@ -19,7 +19,7 @@ class FiltersViewModelImpl(
     private val args: FiltersFragment.Args,
     private val getProductsUseCase: GetProductsUseCase,
     dependencies: ViewModelDependencies
-) : BaseViewModel<FiltersViewModel.Router>(dependencies), FiltersViewModel {
+) : BaseViewModel(dependencies), FiltersViewModel {
     private val filterUpdatesChannel = Channel<Filter>(Channel.RENDEZVOUS)
     private val filterUpdatesFlow = filterUpdatesChannel.receiveAsFlow()
         .debounce(200L)
@@ -51,7 +51,8 @@ class FiltersViewModelImpl(
 
     override fun onApplyFiltersPressed() {
         launch {
-            sendEvent(InnerEvent.UpdateFilters(filtersLiveData.value ?: args.filters))
+            val event = ProductListViewModel.UpdateFiltersEvent(filtersLiveData.value ?: args.filters)
+            sendEvent(event)
             onBackPressed()
         }
     }

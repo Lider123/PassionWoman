@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
-import ru.babaetskv.passionwoman.app.presentation.event.RouterEvent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
@@ -15,14 +15,7 @@ interface FavoritesViewModel : IViewModel {
     fun onProductPressed(product: Product)
     fun onBuyPressed(product: Product)
 
-    sealed class Router : RouterEvent {
-
-        data class ProductCardScreen(
-            val product: Product
-        ) : Router()
-
-        data class NewCartItem(
-            val product: Product
-        ) : Router()
-    }
+    data class OpenLandscapeProductCardEvent(
+        val product: Product
+    ) : Event
 }

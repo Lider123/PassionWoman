@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
+import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 class OnboardingViewModelImpl(
     appPreferences: AppPreferences,
     dependencies: ViewModelDependencies
-) : BaseViewModel<OnboardingViewModel.Router>(dependencies), OnboardingViewModel {
+) : BaseViewModel(dependencies), OnboardingViewModel {
     private val pages = listOf(
         OnboardingPage(R.drawable.onboarding_1, R.string.onboarding_1),
         OnboardingPage(R.drawable.onboarding_2, R.string.onboarding_2),
@@ -49,8 +49,6 @@ class OnboardingViewModelImpl(
     }
 
     private fun onNextPressed() {
-        launch {
-            navigateTo(OnboardingViewModel.Router.AuthScreen)
-        }
+        router.newRootScreen(Screens.auth(true))
     }
 }

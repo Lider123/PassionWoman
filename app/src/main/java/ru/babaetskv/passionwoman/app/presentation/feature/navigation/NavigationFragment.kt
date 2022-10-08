@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
@@ -16,7 +15,7 @@ import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
 import ru.babaetskv.passionwoman.domain.model.Cart
 
-class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, NavigationFragment.Args>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
     private var activeDialog: Dialog? = null
 
@@ -44,22 +43,6 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
         viewModel.cartLiveData.observe(viewLifecycleOwner, ::populateCart)
-    }
-
-    override fun handleRouterEvent(event: NavigationViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            is NavigationViewModel.Router.AuthScreen -> {
-                // TODO: think about how to remove featured auth router events and use one general
-                val screen = Screens.auth(event.onAppStart)
-                if (event.onAppStart) {
-                    router.newRootScreen(screen)
-                } else router.navigateTo(screen)
-            }
-            is NavigationViewModel.Router.ProductScreen -> {
-                router.navigateTo(Screens.productCard(event.productId))
-            }
-        }
     }
 
     private fun populateCart(cart: Cart) {

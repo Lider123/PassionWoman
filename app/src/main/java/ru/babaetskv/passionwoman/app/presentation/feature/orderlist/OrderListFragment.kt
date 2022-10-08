@@ -11,7 +11,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.domain.model.Order
 
-class OrderListFragment : BaseFragment<OrderListViewModel, OrderListViewModel.Router, FragmentComponent.NoArgs>() {
+class OrderListFragment : BaseFragment<OrderListViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentOrderListBinding by viewBinding()
     private val ordersAdapter: OrdersAdapter by lazy {
         OrdersAdapter(viewModel::onOrderPressed)

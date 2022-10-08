@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
@@ -15,7 +14,7 @@ import ru.babaetskv.passionwoman.app.utils.integer
 import ru.babaetskv.passionwoman.domain.model.Category
 
 class CatalogFragment :
-    BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
+    BaseFragment<CatalogViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
     private val categoriesAdapter: CategoriesAdapter by lazy {
         CategoriesAdapter(viewModel::onCategoryPressed)
@@ -50,18 +49,6 @@ class CatalogFragment :
     override fun initObservers() {
         super.initObservers()
         viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::populateCategories)
-    }
-
-    override fun handleRouterEvent(event: CatalogViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            is CatalogViewModel.Router.CategoryScreen -> {
-                router.navigateTo(Screens.category(event.category))
-            }
-            is CatalogViewModel.Router.SearchScreen -> {
-                router.navigateTo(Screens.search())
-            }
-        }
     }
 
     private fun populateCategories(categories: List<Category>) {
