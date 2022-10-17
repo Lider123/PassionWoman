@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class ColorModel(
-    @Json(name = "id") val id: Int,
+    @Json(name = "id") val id: Long,
     @Json(name = "uiName") val uiName: String,
     @Json(name = "hex") val hex: String
 ) : Transformable<Unit, Color>() {

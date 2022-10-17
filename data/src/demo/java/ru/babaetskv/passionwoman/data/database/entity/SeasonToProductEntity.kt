@@ -25,7 +25,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class SeasonToProductEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "product_season_code") val seasonCode: String,
-    @ColumnInfo(name = "product_id") val productId: Int
+    @ColumnInfo(name = "product_id") val productId: Long
 )

@@ -7,12 +7,12 @@ import ru.babaetskv.passionwoman.data.model.*
 interface AuthApi {
 
     @GET("api/profile/favoriteIds")
-    suspend fun getFavoriteIds(): List<Int>
+    suspend fun getFavoriteIds(): List<Long>
 
     @Multipart
     @POST("api/profile/favoriteIds")
     suspend fun setFavoriteIds(
-        @Part("favoriteIds") ids: List<Int>
+        @Part("favoriteIds") ids: List<Long>
     )
 
     @GET("api/profile")

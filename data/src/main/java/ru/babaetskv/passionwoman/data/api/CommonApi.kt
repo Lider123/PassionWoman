@@ -18,7 +18,7 @@ interface CommonApi {
 
     @GET("api/catalog/products")
     suspend fun getProducts(
-        @Query("category") categoryId: Int?,
+        @Query("category") categoryId: Long?,
         @Query("query") query: String,
         @Query("filters") filters: String,
         @Query("sorting") sorting: String,
@@ -36,7 +36,7 @@ interface CommonApi {
 
     @GET("api/catalog/products/{productId}")
     suspend fun getProduct(
-        @Path("productId") productId: Int
+        @Path("productId") productId: Long
     ): ProductModel
 
     @GET("api/catalog/stories")

@@ -8,7 +8,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 @Entity(tableName = "colors")
 data class ColorEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "ui_name") val uiName: String,
     @ColumnInfo(name = "hex") val hex: String
 ) : Transformable<Unit, ColorModel>() {

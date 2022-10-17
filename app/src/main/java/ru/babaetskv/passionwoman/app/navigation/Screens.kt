@@ -68,7 +68,7 @@ object Screens {
         )
     }
 
-    fun productCard(productId: Int) = FragmentScreen {
+    fun productCard(productId: Long) = FragmentScreen {
         ProductCardFragment.create(productId)
     }
 
@@ -81,7 +81,7 @@ object Screens {
     }
 
     fun filters(
-        categoryId: Int?,
+        categoryId: Long?,
         filters: List<Filter>,
         productsCount: Int
     ) =

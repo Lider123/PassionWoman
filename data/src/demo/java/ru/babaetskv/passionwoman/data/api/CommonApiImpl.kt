@@ -1,13 +1,12 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
 import android.util.Log
 import com.squareup.moshi.JsonDataException
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import ru.babaetskv.passionwoman.data.AssetProvider
 import ru.babaetskv.passionwoman.data.filters.Filters
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
@@ -18,11 +17,10 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.trans
 import java.util.*
 
 class CommonApiImpl(
-    assetManager: AssetManager,
     private val database: PassionWomanDatabase,
+    private val assetProvider: AssetProvider,
     private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
-    moshi: Moshi,
-) : BaseApiImpl(assetManager, moshi), CommonApi {
+) : BaseApiImpl(), CommonApi {
     private val popularProductsCache = mutableListOf<ProductModel>()
     private val newProductsCache = mutableListOf<ProductModel>()
     private val saleProductsCache = mutableListOf<ProductModel>()
@@ -43,7 +41,7 @@ class CommonApiImpl(
 
     override suspend fun getStories(): List<StoryModel> = processRequest {
         return@processRequest try {
-            val stories = loadListFromAsset<StoryModel>(AssetFile.STORIES)
+            val stories = assetProvider.loadListFromAsset<StoryModel>(AssetProvider.AssetFile.STORIES)
             if (stories.any { it.contents.isEmpty() }) {
                 throw ApiExceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
             }
@@ -55,7 +53,7 @@ class CommonApiImpl(
     }
 
     override suspend fun getProducts(
-        categoryId: Int?,
+        categoryId: Long?,
         query: String,
         filters: String,
         sorting: String,
@@ -126,8 +124,8 @@ class CommonApiImpl(
             throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
         }
 
-        val productIds = ids.split(",").map(String::toInt).toSet()
-        val productEntities = database.productDao.getByIds(productIds)
+        val productIds: Set<Long> = ids.split(",").map(String::toLong).toSet()
+        val productEntities = database.productDao.getByIds(productIds.toList())
         val products = productEntities.transformList(productTransformableParamsProvider)
         val allProductsFound = products.map(ProductModel::id)
             .toSet()
@@ -145,13 +143,13 @@ class CommonApiImpl(
                 .transformList()
         }
 
-    override suspend fun getProduct(productId: Int): ProductModel = processRequest {
+    override suspend fun getProduct(productId: Long): ProductModel = processRequest {
         return@processRequest database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
             ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
     }
 
-    private suspend fun getCategoryProducts(categoryId: Int): List<ProductModel> =
+    private suspend fun getCategoryProducts(categoryId: Long): List<ProductModel> =
         database.productDao.getByCategoryId(categoryId)
             .transformList(productTransformableParamsProvider)
 

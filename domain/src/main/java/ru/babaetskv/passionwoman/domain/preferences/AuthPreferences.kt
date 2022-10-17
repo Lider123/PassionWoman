@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.Flow
 interface AuthPreferences {
     var authType: AuthType
     var authToken: String
-    var userId: Int
+    var userId: Long
     var profileIsFilled: Boolean
     val authTypeFlow: Flow<AuthType>
 
-    fun observeUserId(observer: (Int) -> Unit)
+    fun observeUserId(observer: (Long) -> Unit)
     fun reset()
 
     enum class AuthType {

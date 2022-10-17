@@ -9,7 +9,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 @Entity(tableName = "promotions")
 data class PromotionEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo(name = "image_path") val imagePath: String
 ) : Transformable<Unit, PromotionModel>() {
 

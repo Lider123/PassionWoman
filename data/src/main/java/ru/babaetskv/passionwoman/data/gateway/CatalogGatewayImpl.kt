@@ -20,7 +20,7 @@ class CatalogGatewayImpl(
     }
 
     override suspend fun getProducts(
-        categoryId: Int?,
+        categoryId: Long?,
         query: String,
         limit: Int,
         offset: Int,
@@ -49,12 +49,12 @@ class CatalogGatewayImpl(
         }
 
     override suspend fun getFavorites(
-        favoriteIds: Collection<Int>
+        favoriteIds: Collection<Long>
     ): List<Transformable<Unit, Product>> = networkRequest {
         api.getProductsByIds(favoriteIds.joinToString(","))
     }
 
-    override suspend fun getProduct(productId: Int): Transformable<Unit, Product> =
+    override suspend fun getProduct(productId: Long): Transformable<Unit, Product> =
         networkRequest {
             api.getProduct(productId)
         }

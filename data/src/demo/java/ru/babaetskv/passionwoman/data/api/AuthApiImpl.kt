@@ -1,7 +1,5 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
-import com.squareup.moshi.Moshi
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -16,14 +14,12 @@ import java.util.*
 import kotlin.random.Random
 
 class AuthApiImpl(
-    assetManager: AssetManager,
     private val database: PassionWomanDatabase,
-    moshi: Moshi,
     private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
-) : BaseApiImpl(assetManager, moshi), AuthApi {
+) : BaseApiImpl(), AuthApi {
     private var profileMock: ProfileModel? = null
-    private var favoriteIdsMock: List<Int> = emptyList()
+    private var favoriteIdsMock: List<Long> = emptyList()
     private var ordersMock: MutableList<OrderModel> = mutableListOf()
     private var cartMock: CartModel = CartModel(
         items = emptyList(),
@@ -57,11 +53,11 @@ class AuthApiImpl(
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<Int> = processRequest {
+    override suspend fun getFavoriteIds(): List<Long> = processRequest {
         return@processRequest favoriteIdsMock
     }
 
-    override suspend fun setFavoriteIds(ids: List<Int>) = processRequest {
+    override suspend fun setFavoriteIds(ids: List<Long>) = processRequest {
         favoriteIdsMock = ids
     }
 

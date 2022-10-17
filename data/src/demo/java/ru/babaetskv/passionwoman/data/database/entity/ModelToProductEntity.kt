@@ -26,7 +26,7 @@ import ru.babaetskv.passionwoman.data.model.ProductModel
     ]
 )
 data class ModelToProductEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "product_model_code") val modelCode: String,
-    @ColumnInfo(name = "product_id") val productId: Int
+    @ColumnInfo(name = "product_id") val productId: Long
 )

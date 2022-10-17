@@ -9,8 +9,8 @@ import ru.babaetskv.passionwoman.data.database.entity.ProductImageEntity
 interface ProductImageDao {
 
     @Query("SELECT image_path FROM product_images WHERE product_item_id = :productItemId")
-    suspend fun getForProductItem(productItemId: Int): List<String>
+    suspend fun getForProductItem(productItemId: Long): List<String>
 
     @Insert
-    suspend fun insert(entity: ProductImageEntity)
+    suspend fun insert(vararg entity: ProductImageEntity): Array<Long>
 }

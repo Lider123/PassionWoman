@@ -12,7 +12,7 @@ interface ColorDao {
     suspend fun getAll(): List<ColorEntity>
 
     @Query("SELECT * FROM colors WHERE id = :colorId")
-    suspend fun getById(colorId: Int): ColorEntity?
+    suspend fun getById(colorId: Long): ColorEntity?
 
     @Insert
     suspend fun insert(entity: ColorEntity)

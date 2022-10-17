@@ -14,6 +14,7 @@ import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 class MainViewModelImpl(
     private val deeplinkHandler: DeeplinkHandler,

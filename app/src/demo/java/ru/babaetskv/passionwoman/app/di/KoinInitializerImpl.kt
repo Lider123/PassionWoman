@@ -22,6 +22,7 @@ class KoinInitializerImpl : KoinInitializer {
                 preferencesModule,
                 gatewayModule,
                 dataFlowModule,
+                assetsModule,
                 demoModule
             )
         }

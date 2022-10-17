@@ -7,7 +7,7 @@ import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class ProductModel(
-    @Json(name = "id") val id: Int,
+    @Json(name = "id") val id: Long,
     @Json(name = "category") val category: CategoryModel,
     @Json(name = "name") val name: String,
     @Json(name = "description") val description: String?,
@@ -31,6 +31,7 @@ data class ProductModel(
             priceWithDiscount = Price(priceWithDiscount),
             rating = rating,
             brand = brand?.transform(),
+            additionalInfo = additionalInfo,
             items = items.transformList()
         )
 }

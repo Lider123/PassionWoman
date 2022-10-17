@@ -1,26 +1,12 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-abstract class BaseApiImpl(
-    protected val assetManager: AssetManager,
-    protected val moshi: Moshi
-) {
+abstract class BaseApiImpl {
 
     protected open fun doBeforeRequest() = Unit
-
-    protected inline fun <reified T> loadListFromAsset(assetFile: AssetFile): List<T> {
-        val json = assetManager.open(assetFile.fileName).bufferedReader().use { it.readText() }
-        val listType = Types.newParameterizedType(List::class.java, T::class.java)
-        val adapter: JsonAdapter<List<T>> = moshi.adapter(listType)
-        return adapter.fromJson(json) ?: emptyList()
-    }
 
     protected suspend fun <T> processRequest(
         delayMs: Long = DELAY_LOADING,
@@ -29,12 +15,6 @@ abstract class BaseApiImpl(
         delay(delayMs)
         doBeforeRequest()
         return@withContext block.invoke()
-    }
-
-    protected enum class AssetFile(
-        val fileName: String
-    ) {
-        STORIES("stories.json"),
     }
 
     companion object {

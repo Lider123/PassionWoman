@@ -28,9 +28,9 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
     ]
 )
 data class ProductItemEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "color_id") val colorId: Int,
-    @ColumnInfo(name = "product_id") val productId: Int
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "color_id") val colorId: Long,
+    @ColumnInfo(name = "product_id") val productId: Long
 ) : Transformable<ProductItemEntity.TransformableParamsProvider, ProductItemModel>() {
 
     override suspend fun transform(params: TransformableParamsProvider): ProductItemModel =
@@ -42,9 +42,9 @@ data class ProductItemEntity(
         )
 
     interface TransformableParamsProvider {
-        suspend fun provideColor(colorId: Int): ColorModel
-        suspend fun provideSizes(productItemId: Int): List<String>?
-        suspend fun provideAvailableSizes(productItemId: Int): List<String>?
-        suspend fun provideImages(productItemId: Int): List<String>
+        suspend fun provideColor(colorId: Long): ColorModel
+        suspend fun provideSizes(productItemId: Long): List<String>?
+        suspend fun provideAvailableSizes(productItemId: Long): List<String>?
+        suspend fun provideImages(productItemId: Long): List<String>
     }
 }

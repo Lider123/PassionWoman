@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.domain.usecase.base.UseCase
 interface GetProductsUseCase : UseCase<GetProductsUseCase.Params, ProductsPagedResponse> {
 
     data class Params(
-        val categoryId: Int?,
+        val categoryId: Long?,
         val query: String,
         val limit: Int,
         val offset: Int,

@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class ProductImageEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "image_path") val imagePath: String,
-    @ColumnInfo(name = "product_item_id") val productItemId: Int
+    @ColumnInfo(name = "product_item_id") val productItemId: Long
 )

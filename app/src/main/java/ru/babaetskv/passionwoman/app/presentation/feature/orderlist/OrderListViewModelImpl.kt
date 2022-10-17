@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetOrdersUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 class OrderListViewModelImpl(
     private val getOrdersUseCase: GetOrdersUseCase,

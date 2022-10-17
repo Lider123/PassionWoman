@@ -1,7 +1,7 @@
 package ru.babaetskv.passionwoman.domain.model
 
 data class CartItem(
-    val productId: Int,
+    val productId: Long,
     val preview: Image,
     val selectedColor: Color,
     val selectedSize: ProductSize,

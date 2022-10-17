@@ -19,20 +19,20 @@ class ProductTransformableParamsProvider(
     private val productItemParamsProvider: ProductItemEntity.TransformableParamsProvider
 ) : ProductEntity.TransformableParamsProvider {
 
-    override suspend fun provideCategory(categoryId: Int): CategoryModel =
+    override suspend fun provideCategory(categoryId: Long): CategoryModel =
         withContext(Dispatchers.IO) {
             return@withContext database.categoryDao.getById(categoryId)
                 ?.transform()
                 ?: throw ApiExceptionProvider.getNotFoundException("Cannot find category with id $categoryId")
         }
 
-    override suspend fun provideBrand(brandId: Int): BrandModel = withContext(Dispatchers.IO) {
+    override suspend fun provideBrand(brandId: Long): BrandModel = withContext(Dispatchers.IO) {
         return@withContext database.brandDao.getById(brandId)
             ?.transform()
             ?: throw ApiExceptionProvider.getNotFoundException("Cannot find brand with id $brandId")
     }
 
-    override suspend fun provideProductItems(productId: Int): List<ProductItemModel> =
+    override suspend fun provideProductItems(productId: Long): List<ProductItemModel> =
         withContext(Dispatchers.IO) {
             return@withContext database.productItemDao.getByProductId(productId)
                 .takeIf { it.isNotEmpty() }
@@ -40,7 +40,7 @@ class ProductTransformableParamsProvider(
                 ?: throw ApiExceptionProvider.getNotFoundException("Cannot find product items for the product with id $productId")
         }
 
-    override suspend fun provideAdditionalInfo(productId: Int): Map<String, List<String>> =
+    override suspend fun provideAdditionalInfo(productId: Long): Map<String, List<String>> =
         withContext(Dispatchers.IO) {
             val countries = async { database.productCountryDao.getCodesForProduct(productId) }
             val models = async { database.productModelDao.getCodesForProduct(productId) }
