@@ -2,6 +2,9 @@ package ru.babaetskv.passionwoman.data.api
 
 import android.content.Context
 import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.api.decorator.CheckTokenAuthApiDecorator
+import ru.babaetskv.passionwoman.data.api.decorator.DelayAuthApiDecorator
+import ru.babaetskv.passionwoman.data.api.decorator.DelayCommonApiDecorator
 import ru.babaetskv.passionwoman.data.database.DatabaseProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductItemTransformableParamsProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
@@ -22,16 +25,11 @@ class ApiProviderImpl(
         )
 
     override fun provideAuthApi(): AuthApi =
-        AuthApiImpl(
-            database,
-            authPreferences,
-            dateTimeConverter
-        )
+        AuthApiImpl(database, dateTimeConverter)
+            .let { CheckTokenAuthApiDecorator(authPreferences, it) }
+            .let(::DelayAuthApiDecorator)
 
     override fun provideCommonApi(): CommonApi =
-        CommonApiImpl(
-            database,
-            assetProvider,
-            productTransformableParamsProvider,
-        )
+        CommonApiImpl(database, assetProvider, productTransformableParamsProvider)
+            .let(::DelayCommonApiDecorator)
 }

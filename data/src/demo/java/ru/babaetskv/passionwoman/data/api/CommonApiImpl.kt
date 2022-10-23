@@ -19,24 +19,20 @@ class CommonApiImpl(
     private val database: PassionWomanDatabase,
     private val assetProvider: AssetProvider,
     private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
-) : BaseApiImpl(), CommonApi {
+) : CommonApi {
 
-    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
-        return@processRequest AuthTokenModel(TOKEN)
-    }
+    override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = AuthTokenModel(TOKEN)
 
-    override suspend fun getCategories(): List<CategoryModel> = processRequest {
-        return@processRequest database.categoryDao.getAll()
+    override suspend fun getCategories(): List<CategoryModel> =
+        database.categoryDao.getAll()
             .transformList()
-    }
 
-    override suspend fun getPromotions(): List<PromotionModel> = processRequest {
-        return@processRequest database.promotionDao.getAll()
+    override suspend fun getPromotions(): List<PromotionModel> =
+        database.promotionDao.getAll()
             .transformList()
-    }
 
-    override suspend fun getStories(): List<StoryModel> = processRequest {
-        return@processRequest try {
+    override suspend fun getStories(): List<StoryModel> =
+        try {
             val stories = assetProvider.loadListFromAsset<StoryModel>(AssetProvider.AssetFile.STORIES)
             if (stories.any { it.contents.isEmpty() }) {
                 throw ApiExceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
@@ -46,7 +42,6 @@ class CommonApiImpl(
         } catch (e: JsonDataException) {
             throw ApiExceptionProvider.getInternalServerErrorException("Stories source is corrupted")
         }
-    }
 
     override suspend fun getProducts(
         categoryId: Long?,
@@ -55,7 +50,7 @@ class CommonApiImpl(
         sorting: String,
         limit: Int,
         offset: Int
-    ): ProductsPagedResponseModel = processRequest {
+    ): ProductsPagedResponseModel =
         try {
             val filtersObject = Filters(JSONArray(filters))
             val sortingObject = Sorting.findValueByApiName(sorting)
@@ -75,7 +70,7 @@ class CommonApiImpl(
                 }
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
-            return@processRequest products
+            products
                 .slice(products.indices.intersect(pagingIndices))
                 .let {
                     ProductsPagedResponseModel(
@@ -91,10 +86,9 @@ class CommonApiImpl(
             e.printStackTrace()
             throw ApiExceptionProvider.getInternalServerErrorException("Internal server error")
         }
-    }
 
-    override suspend fun getProductsByIds(ids: String): List<ProductModel> = processRequest {
-        if (ids.isBlank()) return@processRequest emptyList()
+    override suspend fun getProductsByIds(ids: String): List<ProductModel> {
+        if (ids.isBlank()) return emptyList()
 
         if (ids.matches(REGEX_IDS_LIST).not()) {
             throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
@@ -110,19 +104,17 @@ class CommonApiImpl(
             throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
         }
 
-        return@processRequest products
+        return products
     }
 
-    override suspend fun getPopularBrands(count: Int): List<BrandModel> = processRequest {
-        return@processRequest database.brandDao.getPopular(count)
+    override suspend fun getPopularBrands(count: Int): List<BrandModel> =
+        database.brandDao.getPopular(count)
             .transformList()
-    }
 
-    override suspend fun getProduct(productId: Long): ProductModel = processRequest {
-        return@processRequest database.productDao.getById(productId)
+    override suspend fun getProduct(productId: Long): ProductModel =
+        database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
             ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
-    }
 
     private fun applyQueryToProducts(query: String, products: List<ProductModel>): List<ProductModel> {
         if (query.isBlank()) return products
