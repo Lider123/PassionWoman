@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 data class CategoryEntity(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "image_path") val imagePath: String
 ) : Transformable<Unit, CategoryModel>() {
 

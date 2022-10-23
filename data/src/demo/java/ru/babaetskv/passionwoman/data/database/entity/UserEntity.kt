@@ -10,6 +10,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey val id: Long,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "name") val name: String?,
     @ColumnInfo(name = "surname") val surname: String?,
     @ColumnInfo(name = "phone") val phone: String,

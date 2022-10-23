@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.util.Log
 import com.squareup.moshi.JsonDataException
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -52,6 +51,7 @@ class CommonApiImpl(
         }
     }
 
+    // TODO: fix repeating products of NEW filter
     override suspend fun getProducts(
         categoryId: Long?,
         query: String,
@@ -68,7 +68,6 @@ class CommonApiImpl(
             } else when {
                 filtersObject.isDiscountOnly -> getSaleProducts()
                 sortingObject == Sorting.POPULARITY -> getPopularProducts()
-                sortingObject == Sorting.NEW -> getNewProducts()
                 else -> getPopularProducts()
             }
             products = filtersObject.applyToProducts(products)
@@ -89,16 +88,13 @@ class CommonApiImpl(
                         .extractAsJson(database)
                         .let(::add)
                 }
-            }.also {
-                Log.e(CommonApiImpl::class.simpleName, "All filters: $it") // TODO: remove
-            }.selectAvailableFilters(products).also {
-                Log.e(CommonApiImpl::class.simpleName, "Available filters: $it") // TODO: remove
-            }
+            }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
             return@processRequest products.let { result ->
                 when (sortingObject) {
                     Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
                     Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
+                    Sorting.NEW -> result.sortedByDescending { it.createdAt }
                     else -> result
                 }.slice(products.indices.intersect(pagingIndices))
             }.let {

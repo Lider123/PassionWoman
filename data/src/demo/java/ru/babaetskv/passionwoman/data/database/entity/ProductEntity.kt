@@ -8,7 +8,6 @@ import ru.babaetskv.passionwoman.data.model.ProductItemModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
-// TODO: add createdAt field
 @Entity(
     tableName = "products",
     foreignKeys = [
@@ -37,6 +36,7 @@ data class ProductEntity(
     @ColumnInfo(name = "price_with_discount") val priceWithDiscount: Float,
     @ColumnInfo(name = "rating") val rating: Float,
     @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "brand_id") val brandId: Long?
 ) : Transformable<ProductEntity.TransformableParamsProvider, ProductModel>() {
 
@@ -54,6 +54,7 @@ data class ProductEntity(
                  params.provideBrand(it)
             },
             additionalInfo = params.provideAdditionalInfo(id),
+            createdAt = createdAt,
             items = params.provideProductItems(id)
         )
 

@@ -28,7 +28,9 @@ class DemoPresetsActivity : BaseActivity<DemoPresetsViewModel>() {
     override val screenName: String = ScreenKeys.DEMO_PRESETS
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installAppSplashScreen()
+        installAppSplashScreen {
+            viewModel.splashScreenVisible
+        }
         super.onCreate(savedInstanceState)
     }
 

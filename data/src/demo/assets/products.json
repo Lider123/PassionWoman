@@ -11,6 +11,7 @@
     "price": 75.0,
     "priceWithDiscount": 67.5,
     "rating": 3.8,
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -45,6 +46,7 @@
     "price": 11.75,
     "priceWithDiscount": 10.56,
     "rating": 0,
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -85,6 +87,7 @@
       "logo_path": "static/image/brand_16.jpg",
       "name": "Luce Del Sole"
     },
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -126,6 +129,7 @@
       "logo_path": "static/image/brand_17.webp",
       "name": "Aveline"
     },
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -178,6 +182,7 @@
       "logo_path": "static/image/brand_16.jpg",
       "name": "Luce Del Sole"
     },
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -221,6 +226,7 @@
     "price": 75.0,
     "priceWithDiscount": 75.0,
     "rating": 3.8,
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -246,6 +252,7 @@
     "price": 80.0,
     "priceWithDiscount": 80.0,
     "rating": 4.2,
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -262,10 +269,6 @@
       }
     ]
   },
-
-
-
-
   {
     "id": 0,
     "category": {
@@ -279,6 +282,7 @@
     "price": 75.0,
     "priceWithDiscount": 75.0,
     "rating": 3.8,
+    "createdAt": 0,
     "items": [
       {
         "color": {
@@ -290,6 +294,294 @@
         "images": [
           "static/image/product_erotic_1_item_1_1.jpg",
           "static/image/product_erotic_1_item_1_2.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 7,
+      "name": "Garter belts",
+      "image": "static/image/category_garter_belts.jpg"
+    },
+    "name": "Sexy garter belt",
+    "description": "Suspender belt. Made of soft, elastic lace. The belt is decorated with an organza bow with a gold accessory.",
+    "preview": "static/image/product_garter_belt_1_preview.webp",
+    "price": 32.0,
+    "priceWithDiscount": 28.8,
+    "rating": 4.6,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 2,
+          "uiName": "black",
+          "hex": "#000000"
+        },
+        "sizes": ["L"],
+        "availableSizes": ["L"],
+        "images": [
+          "static/image/product_garter_belt_1_item_1_1.webp",
+          "static/image/product_garter_belt_1_item_1_2.webp"
+        ]
+      },
+      {
+        "color": {
+          "id": 1,
+          "uiName": "white",
+          "hex": "#ffffff"
+        },
+        "images": [
+          "static/image/product_garter_belt_1_item_2_1.webp",
+          "static/image/product_garter_belt_1_item_2_2.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 3,
+      "name": "Lingerie",
+      "image": "static/image/category_lingerie.jpg"
+    },
+    "name": "Cute set",
+    "description": "Lingerie set, consisting of a balconette bra with tanga panties. Made in white combined with lace details. Adjustable straps.",
+    "preview": "static/image/product_lingerie_1_preview.webp",
+    "price": 75.0,
+    "priceWithDiscount": 75.0,
+    "rating": 3.8,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 1,
+          "uiName": "white",
+          "hex": "#ffffff"
+        },
+        "availableSizes": ["85B", "85C", "90C", "95B", "95C", "100B", "100C", "105B"],
+        "sizes": ["85B", "85C", "90B", "90C", "95B", "95C", "100B", "100C", "105B", "105C"],
+        "images": [
+          "static/image/product_lingerie_1_item_1_1.webp",
+          "static/image/product_lingerie_1_item_1_2.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 3,
+      "name": "Lingerie",
+      "image": "static/image/category_lingerie.jpg"
+    },
+    "name": "Set Infinity Lingerie",
+    "preview": "static/image/product_lingerie_2_preview.webp",
+    "price": 26.62,
+    "priceWithDiscount": 22.61,
+    "rating": 0.0,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 12,
+          "uiName": "multicolor",
+          "hex": "multicolor"
+        },
+        "images": [
+          "static/image/product_lingerie_2_multicolor_1.webp",
+          "static/image/product_lingerie_2_multicolor_2.webp",
+          "static/image/product_lingerie_2_multicolor_3.webp"
+        ]
+      }
+    ]
+  },
+
+
+
+
+  {
+    "id": 0,
+    "category": {
+      "id": 3,
+      "name": "Lingerie",
+      "image": "static/image/category_lingerie.jpg"
+    },
+    "name": "Set ORIGINAL SIN",
+    "preview": "static/image/product_lingerie_3_preview.webp",
+    "price": 24.98,
+    "priceWithDiscount": 10.71,
+    "rating": 0.0,
+    "description": "Underwired soft cup set.",
+    "additional_info": {
+      "season": ["all_season"],
+      "type": ["underwear_set"],
+      "country": ["china"]
+    },
+    "brand": {
+      "id": 18,
+      "logo_path": "static/image/brand_18.webp",
+      "name": "ORIGINAL SIN"
+    },
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 3,
+          "uiName": "red",
+          "hex": "#ff0000"
+        },
+        "sizes": ["75B", "80B"],
+        "availableSizes": ["80B"],
+        "images": [
+          "static/image/product_lingerie_3_red_1.webp",
+          "static/image/product_lingerie_3_red_2.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 5,
+      "name": "Swim",
+      "image": "static/image/category_swim.jpg"
+    },
+    "name": "Separate swimsuit Nothing but love",
+    "description" : "The swimsuit is made of soft elastic ribbed material. The upper part of the leotard has the shape of a top with sealed cups, the seals are removable, the length of the straps is adjustable. The model's parameters are 88-60-88 and is 166 cm tall. She wears a size S swimsuit.",
+    "preview": "static/image/product_swim_1_preview.webp",
+    "price": 41.41,
+    "priceWithDiscount": 41.41,
+    "rating": 3.4,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 6,
+          "uiName": "yellow",
+          "hex": "#e5e500"
+        },
+        "images": [
+          "static/image/product_swim_1_item_1_1.webp",
+          "static/image/product_swim_1_item_1_2.webp",
+          "static/image/product_swim_1_item_1_3.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 2,
+      "name": "Panties",
+      "image": "static/image/category_panties.jpg"
+    },
+    "name": "Cute panties",
+    "description": "Best choice for yourself or your girlfriend!",
+    "additional_info": {
+      "model": ["brazilian"]
+    },
+    "preview": "static/image/product_panties_1_preview.jpg",
+    "price": 60.0,
+    "priceWithDiscount": 60.0,
+    "rating": 4.5,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 5,
+          "uiName": "purple",
+          "hex": "#800080"
+        },
+        "images": [
+          "static/image/product_panties_1_item_1_1.jpg",
+          "static/image/product_panties_1_item_1_2.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 9,
+      "name": "Stockings",
+      "image": "static/image/category_stockings.jpg"
+    },
+    "name": "Sexy stockings",
+    "preview": "static/image/product_stockings_1_preview.jpg",
+    "price": 37.0,
+    "priceWithDiscount": 33.3,
+    "rating": 4.3,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 2,
+          "uiName": "black",
+          "hex": "#000000"
+        },
+        "images": [
+          "static/image/product_stockings_1_item_1_1.jpg",
+          "static/image/product_stockings_1_item_1_2.jpg"
+        ]
+      },
+      {
+        "color": {
+          "id": 1,
+          "uiName": "white",
+          "hex": "#ffffff"
+        },
+        "images": [
+          "static/image/product_stockings_1_item_2_1.jpg",
+          "static/image/product_stockings_1_item_2_2.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 0,
+    "category": {
+      "id": 3,
+      "name": "Lingerie",
+      "image": "static/image/category_lingerie.jpg"
+    },
+    "name": "Set VITORICCI",
+    "preview": "static/image/product_lingerie_4_preview.webp",
+    "price": 29.46,
+    "priceWithDiscount": 17.46,
+    "rating": 0.0,
+    "additional_info": {
+      "season": ["all_season"],
+      "material": ["polyester", "spandex"],
+      "style": ["evening", "vintage", "gift", "party", "wedding"],
+      "type": ["underwear_set"],
+      "country": ["china"]
+    },
+    "brand": {
+      "id": 20,
+      "logo_path": "static/image/brand_19.webp",
+      "name": "VITORICCI"
+    },
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 2,
+          "uiName": "black",
+          "hex": "#000000"
+        },
+        "sizes": ["S"],
+        "availableSizes": ["S"],
+        "images": [
+          "static/image/product_lingerie_4_black_1.webp",
+          "static/image/product_lingerie_4_black_2.webp",
+          "static/image/product_lingerie_4_black_3.webp",
+          "static/image/product_lingerie_4_black_4.webp",
+          "static/image/product_lingerie_4_black_5.webp",
+          "static/image/product_lingerie_4_black_6.webp",
+          "static/image/product_lingerie_4_black_7.webp",
+          "static/image/product_lingerie_4_black_8.webp"
         ]
       }
     ]

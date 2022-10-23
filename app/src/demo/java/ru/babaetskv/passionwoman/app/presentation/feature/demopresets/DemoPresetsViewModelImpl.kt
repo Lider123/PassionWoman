@@ -26,10 +26,12 @@ class DemoPresetsViewModelImpl(
     override val presetsLiveData = MutableLiveData(
         appPrefs.toDemoPresets() + authPrefs.toDemoPresets()
     )
+    override var splashScreenVisible: Boolean = true
 
     init {
         launchWithLoading {
             initDatabaseUseCase.execute()
+            splashScreenVisible = false
         }
     }
 

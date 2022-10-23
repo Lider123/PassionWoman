@@ -14,6 +14,7 @@ data class ProductModel(
     @Json(name = "preview") val preview: String,
     @Json(name = "price") val price: Float,
     @Json(name = "priceWithDiscount") val priceWithDiscount: Float,
+    @Json(name = "createdAt") val createdAt: Long,
     @Json(name = "rating") val rating: Float,
     @Json(name = "brand") val brand: BrandModel?,
     @Json(name = "additional_info") val additionalInfo: Map<String, List<String>>?,

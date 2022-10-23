@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 data class BrandEntity(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "logo_path") val logoPath: String,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "name") val name: String
 ) : Transformable<Unit, BrandModel>() {
 
