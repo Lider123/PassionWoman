@@ -20,9 +20,6 @@ class CommonApiImpl(
     private val assetProvider: AssetProvider,
     private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
 ) : BaseApiImpl(), CommonApi {
-    private val popularProductsCache = mutableListOf<ProductModel>()
-    private val newProductsCache = mutableListOf<ProductModel>()
-    private val saleProductsCache = mutableListOf<ProductModel>()
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = processRequest {
         return@processRequest AuthTokenModel(TOKEN)
@@ -51,7 +48,6 @@ class CommonApiImpl(
         }
     }
 
-    // TODO: fix repeating products of NEW filter
     override suspend fun getProducts(
         categoryId: Long?,
         query: String,
@@ -63,25 +59,14 @@ class CommonApiImpl(
         try {
             val filtersObject = Filters(JSONArray(filters))
             val sortingObject = Sorting.findValueByApiName(sorting)
-            var products: List<ProductModel> = if (categoryId != null) {
-                getCategoryProducts(categoryId)
-            } else when {
+            var products: List<ProductModel> = when {
+                categoryId != null -> getCategoryProducts(categoryId)
                 filtersObject.isDiscountOnly -> getSaleProducts()
-                sortingObject == Sorting.POPULARITY -> getPopularProducts()
-                else -> getPopularProducts()
+                else -> getAllProducts()
             }
             products = filtersObject.applyToProducts(products)
-            if (query.isNotBlank()) {
-                val queryParts = query.lowercase(Locale.getDefault()).split(" ")
-                products = products.filter { product ->
-                    val nameParts = product.name.lowercase(Locale.getDefault()).split(" ")
-                    nameParts.any { namePart ->
-                        queryParts.any { queryPart ->
-                            namePart.startsWith(queryPart)
-                        }
-                    }
-                }
-            }
+            products = applyQueryToProducts(query, products)
+            products = sortingObject.applyToProducts(products)
             val availableFilters = mutableListOf<JSONObject>().apply {
                 FilterResolver.values().forEach {
                     it.getFilterExtractor.invoke()
@@ -90,20 +75,15 @@ class CommonApiImpl(
                 }
             }.selectAvailableFilters(products)
             val pagingIndices = IntRange(offset, offset + limit - 1)
-            return@processRequest products.let { result ->
-                when (sortingObject) {
-                    Sorting.PRICE_ASC -> result.sortedBy { it.priceWithDiscount }
-                    Sorting.PRICE_DESC -> result.sortedByDescending { it.priceWithDiscount }
-                    Sorting.NEW -> result.sortedByDescending { it.createdAt }
-                    else -> result
-                }.slice(products.indices.intersect(pagingIndices))
-            }.let {
-                ProductsPagedResponseModel(
-                    products = it,
-                    total = products.size,
-                    availableFilters = availableFilters
-                )
-            }
+            return@processRequest products
+                .slice(products.indices.intersect(pagingIndices))
+                .let {
+                    ProductsPagedResponseModel(
+                        products = it,
+                        total = products.size,
+                        availableFilters = availableFilters
+                    )
+                }
         } catch (e: JSONException) {
             e.printStackTrace()
             throw ApiExceptionProvider.getBadRequestException("Failed to process filters")
@@ -133,11 +113,10 @@ class CommonApiImpl(
         return@processRequest products
     }
 
-    override suspend fun getPopularBrands(count: Int): List<BrandModel> =
-        processRequest {
-            return@processRequest database.brandDao.getPopular(count)
-                .transformList()
-        }
+    override suspend fun getPopularBrands(count: Int): List<BrandModel> = processRequest {
+        return@processRequest database.brandDao.getPopular(count)
+            .transformList()
+    }
 
     override suspend fun getProduct(productId: Long): ProductModel = processRequest {
         return@processRequest database.productDao.getById(productId)
@@ -145,33 +124,40 @@ class CommonApiImpl(
             ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
     }
 
+    private fun applyQueryToProducts(query: String, products: List<ProductModel>): List<ProductModel> {
+        if (query.isBlank()) return products
+
+        val queryParts = query.lowercase(Locale.getDefault()).split(" ")
+        return products.filter { product ->
+            val nameParts = product.name.lowercase(Locale.getDefault()).split(" ")
+            nameParts.any { namePart ->
+                queryParts.any { queryPart ->
+                    namePart.startsWith(queryPart)
+                }
+            }
+        }
+    }
+
+    private fun Sorting.applyToProducts(products: List<ProductModel>): List<ProductModel> =
+        when (this) {
+            Sorting.PRICE_ASC -> products.sortedBy(ProductModel::priceWithDiscount)
+            Sorting.PRICE_DESC -> products.sortedByDescending(ProductModel::priceWithDiscount)
+            Sorting.RATING -> products.sortedByDescending(ProductModel::rating)
+            Sorting.NEW -> products.sortedByDescending(ProductModel::createdAt)
+            Sorting.POPULARITY -> products
+        }
+
     private suspend fun getCategoryProducts(categoryId: Long): List<ProductModel> =
         database.productDao.getByCategoryId(categoryId)
             .transformList(productTransformableParamsProvider)
 
-    private suspend fun getSaleProducts(): List<ProductModel> = saleProductsCache.ifEmpty {
+    private suspend fun getSaleProducts(): List<ProductModel> =
         database.productDao.getWithDiscount()
             .transformList(productTransformableParamsProvider)
-            .also {
-                saleProductsCache.addAll(it)
-            }
-    }
 
-    private suspend fun getPopularProducts() = popularProductsCache.ifEmpty {
-        database.productDao.getRandom(PRODUCT_CACHE_SIZE)
+    private suspend fun getAllProducts(): List<ProductModel> =
+        database.productDao.getAll()
             .transformList(productTransformableParamsProvider)
-            .also {
-                popularProductsCache.addAll(it)
-            }
-    }
-
-    private suspend fun getNewProducts() = newProductsCache.ifEmpty {
-        database.productDao.getRandom(PRODUCT_CACHE_SIZE)
-            .transformList(productTransformableParamsProvider)
-            .also {
-                newProductsCache.addAll(it)
-            }
-    }
 
     private fun List<JSONObject>.selectAvailableFilters(products: List<ProductModel>): List<JSONObject> {
         val array =  JSONArray().apply {
@@ -187,7 +173,6 @@ class CommonApiImpl(
 
     companion object {
         private const val TOKEN = "token"
-        private const val PRODUCT_CACHE_SIZE = 10
         private val REGEX_IDS_LIST = "^(\\d+,)*\\d+$".toRegex()
     }
 }

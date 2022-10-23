@@ -37,6 +37,7 @@ interface StringProvider {
     val SORT_POPULARITY: String
     val SORT_PRICE_ASC: String
     val SORT_PRICE_DESC: String
+    val SORT_RATING: String
 
     val FILTER_DISCOUNT: String
 

@@ -8,6 +8,9 @@ import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 @Dao
 interface ProductDao {
 
+    @Query("SELECT * FROM products")
+    suspend fun getAll(): List<ProductEntity>
+
     @Query("SELECT * FROM products WHERE id = :productId")
     suspend fun getById(productId: Long): ProductEntity?
 
