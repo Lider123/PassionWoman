@@ -1112,5 +1112,100 @@
         ]
       }
     ]
+  },
+
+
+
+
+  {
+    "id": 0,
+    "category": {
+      "id": 8,
+      "name": "",
+      "image": ""
+    },
+    "name": "Babydoll ANDETTA Women's style",
+    "additional_info": {
+      "season": ["all_season"],
+      "material": ["net", "lace"],
+      "country": ["russia"],
+      "style": ["evening", "vintage", "home", "classic", "cocktail", "casual", "party", "wedding"]
+    },
+    "preview": "static/image/product_babydoll_2_preview.webp",
+    "price": 29.63,
+    "priceWithDiscount": 19.42,
+    "rating": 5,
+    "createdAt": 0,
+    "items": [
+      {
+        "color": {
+          "id": 8,
+          "uiName": "",
+          "hex": ""
+        },
+        "sizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "availableSizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "images": [
+          "static/image/product_babydoll_2_beige_1.webp",
+          "static/image/product_babydoll_2_beige_2.webp",
+          "static/image/product_babydoll_2_beige_3.webp",
+          "static/image/product_babydoll_2_beige_4.webp",
+          "static/image/product_babydoll_2_beige_5.webp",
+          "static/image/product_babydoll_2_beige_6.webp"
+        ]
+      },
+      {
+        "color": {
+          "id": 1,
+          "uiName": "",
+          "hex": ""
+        },
+        "sizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "availableSizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "images": [
+          "static/image/product_babydoll_2_white_1.webp",
+          "static/image/product_babydoll_2_white_2.webp",
+          "static/image/product_babydoll_2_white_3.webp",
+          "static/image/product_babydoll_2_white_4.webp",
+          "static/image/product_babydoll_2_white_5.webp",
+          "static/image/product_babydoll_2_white_6.webp"
+        ]
+      },
+      {
+        "color": {
+          "id": 10,
+          "uiName": "",
+          "hex": ""
+        },
+        "sizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "availableSizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "images": [
+          "static/image/product_babydoll_2_rose_1.webp",
+          "static/image/product_babydoll_2_rose_2.webp",
+          "static/image/product_babydoll_2_rose_3.webp",
+          "static/image/product_babydoll_2_rose_4.webp",
+          "static/image/product_babydoll_2_rose_5.webp",
+          "static/image/product_babydoll_2_rose_6.webp",
+          "static/image/product_babydoll_2_rose_7.webp"
+        ]
+      },
+      {
+        "color": {
+          "id": 2,
+          "uiName": "",
+          "hex": ""
+        },
+        "sizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "availableSizes": ["75B", "75C", "75D", "75E", "80B", "80C", "80D", "80E", "85B", "85C", "85D", "85E", "90B", "90C", "90D", "90E"],
+        "images": [
+          "static/image/product_babydoll_2_black_1.webp",
+          "static/image/product_babydoll_2_black_2.webp",
+          "static/image/product_babydoll_2_black_3.webp",
+          "static/image/product_babydoll_2_black_4.webp",
+          "static/image/product_babydoll_2_black_5.webp",
+          "static/image/product_babydoll_2_black_6.webp"
+        ]
+      }
+    ]
   }
 ]
