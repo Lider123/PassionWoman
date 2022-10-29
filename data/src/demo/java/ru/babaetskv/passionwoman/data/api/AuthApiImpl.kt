@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.data.api
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -24,13 +26,14 @@ class AuthApiImpl(
         total = 0f
     )
 
-    override suspend fun getProfile(): ProfileModel =
-        if (profileMock == null) {
+    override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
+        return@withContext if (profileMock == null) {
             database.userDao.getProfile()
                 ?.transform()
                 ?.also { profileMock = it }
                 ?: throw ApiExceptionProvider.getNotFoundException("Profile is not found")
         } else profileMock!!
+    }
 
     override suspend fun updateProfile(body: ProfileModel) {
         profileMock = body

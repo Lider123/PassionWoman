@@ -23,13 +23,15 @@ class CommonApiImpl(
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel = AuthTokenModel(TOKEN)
 
-    override suspend fun getCategories(): List<CategoryModel> =
-        database.categoryDao.getAll()
+    override suspend fun getCategories(): List<CategoryModel> = withContext(Dispatchers.IO) {
+        return@withContext database.categoryDao.getAll()
             .transformList()
+    }
 
-    override suspend fun getPromotions(): List<PromotionModel> =
-        database.promotionDao.getAll()
+    override suspend fun getPromotions(): List<PromotionModel> = withContext(Dispatchers.IO) {
+        return@withContext database.promotionDao.getAll()
             .transformList()
+    }
 
     override suspend fun getStories(): List<StoryModel> =
         try {
@@ -87,34 +89,38 @@ class CommonApiImpl(
             throw ApiExceptionProvider.getInternalServerErrorException("Internal server error")
         }
 
-    override suspend fun getProductsByIds(ids: String): List<ProductModel> {
-        if (ids.isBlank()) return emptyList()
+    override suspend fun getProductsByIds(ids: String): List<ProductModel> =
+        withContext(Dispatchers.IO) {
+            if (ids.isBlank()) return@withContext emptyList()
 
-        if (ids.matches(REGEX_IDS_LIST).not()) {
-            throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
+            if (ids.matches(REGEX_IDS_LIST).not()) {
+                throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
+            }
+
+            val productIds: Set<Long> = ids.split(",").map(String::toLong).toSet()
+            val productEntities = database.productDao.getByIds(productIds.toList())
+            val products = productEntities.transformList(productTransformableParamsProvider)
+            val allProductsFound = products.map(ProductModel::id)
+                .toSet()
+                .containsAll(productIds)
+            if (!allProductsFound) {
+                throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
+            }
+
+            return@withContext products
         }
-
-        val productIds: Set<Long> = ids.split(",").map(String::toLong).toSet()
-        val productEntities = database.productDao.getByIds(productIds.toList())
-        val products = productEntities.transformList(productTransformableParamsProvider)
-        val allProductsFound = products.map(ProductModel::id)
-            .toSet()
-            .containsAll(productIds)
-        if (!allProductsFound) {
-            throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
-        }
-
-        return products
-    }
 
     override suspend fun getPopularBrands(count: Int): List<BrandModel> =
-        database.brandDao.getPopular(count)
-            .transformList()
+        withContext(Dispatchers.IO) {
+            return@withContext database.brandDao.getPopular(count)
+                .transformList()
+        }
 
-    override suspend fun getProduct(productId: Long): ProductModel =
-        database.productDao.getById(productId)
+    override suspend fun getProduct(productId: Long): ProductModel = withContext(Dispatchers.IO) {
+        return@withContext database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
             ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
+    }
 
     private fun applyQueryToProducts(query: String, products: List<ProductModel>): List<ProductModel> {
         if (query.isBlank()) return products
@@ -140,16 +146,20 @@ class CommonApiImpl(
         }
 
     private suspend fun getCategoryProducts(categoryId: Long): List<ProductModel> =
-        database.productDao.getByCategoryId(categoryId)
-            .transformList(productTransformableParamsProvider)
+        withContext(Dispatchers.IO) {
+            return@withContext database.productDao.getByCategoryId(categoryId)
+                .transformList(productTransformableParamsProvider)
+        }
 
-    private suspend fun getSaleProducts(): List<ProductModel> =
-        database.productDao.getWithDiscount()
+    private suspend fun getSaleProducts(): List<ProductModel> = withContext(Dispatchers.IO) {
+        return@withContext database.productDao.getWithDiscount()
             .transformList(productTransformableParamsProvider)
+    }
 
-    private suspend fun getAllProducts(): List<ProductModel> =
-        database.productDao.getAll()
+    private suspend fun getAllProducts(): List<ProductModel> = withContext(Dispatchers.IO) {
+        return@withContext database.productDao.getAll()
             .transformList(productTransformableParamsProvider)
+    }
 
     private fun List<JSONObject>.selectAvailableFilters(products: List<ProductModel>): List<JSONObject> {
         val array =  JSONArray().apply {

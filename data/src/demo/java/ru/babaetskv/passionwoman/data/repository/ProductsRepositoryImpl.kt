@@ -49,7 +49,7 @@ class ProductsRepositoryImpl(
         }
     }
 
-    private suspend fun insertProduct(product: Product): Long {
+    private suspend fun insertProduct(product: Product): Long = withContext(Dispatchers.IO) {
         val entity = ProductEntity(
             brandId = product.brand?.id,
             categoryId = product.category.id,
@@ -60,50 +60,53 @@ class ProductsRepositoryImpl(
             price = product.price.toFloat(),
             rating = product.rating
         )
-        return database.productDao.insert(entity)[0]
+        return@withContext database.productDao.insert(entity)[0]
     }
 
-    private suspend fun insertProductItems(items: List<ProductItem>, productId: Long) {
-        val entities = items.map { item ->
-            ProductItemEntity(
-                colorId = item.color.id,
-                productId = productId
-            )
-        }
-        val itemIds = database.productItemDao.insert(*entities.toTypedArray())
-        insertProductSizes(items, itemIds)
-        insertProductImages(items, itemIds)
-    }
-
-    private suspend fun insertProductSizes(items: List<ProductItem>, itemIds: Array<Long>) {
-        val entities = items.flatMapIndexed { i, item ->
-            item.sizes.map { size ->
-                SizeToProductItemEntity(
-                    sizeCode = size.value,
-                    productItemId = itemIds[i],
-                    isAvailable = size.isAvailable
+    private suspend fun insertProductItems(items: List<ProductItem>, productId: Long) =
+        withContext(Dispatchers.IO) {
+            val entities = items.map { item ->
+                ProductItemEntity(
+                    colorId = item.color.id,
+                    productId = productId
                 )
             }
+            val itemIds = database.productItemDao.insert(*entities.toTypedArray())
+            insertProductSizes(items, itemIds)
+            insertProductImages(items, itemIds)
         }
-        database.sizeToProductDao.insert(*entities.toTypedArray())
-    }
 
-    private suspend fun insertProductImages(items: List<ProductItem>, itemIds: Array<Long>) {
-        val entities: List<ProductImageEntity> = items.flatMapIndexed { i, item ->
-            item.images.map {
-                ProductImageEntity(
-                    imagePath = it.url,
-                    productItemId = itemIds[i]
-                )
+    private suspend fun insertProductSizes(items: List<ProductItem>, itemIds: Array<Long>) =
+        withContext(Dispatchers.IO) {
+            val entities = items.flatMapIndexed { i, item ->
+                item.sizes.map { size ->
+                    SizeToProductItemEntity(
+                        sizeCode = size.value,
+                        productItemId = itemIds[i],
+                        isAvailable = size.isAvailable
+                    )
+                }
             }
+            database.sizeToProductDao.insert(*entities.toTypedArray())
         }
-        database.productImageDao.insert(*entities.toTypedArray())
-    }
+
+    private suspend fun insertProductImages(items: List<ProductItem>, itemIds: Array<Long>) =
+        withContext(Dispatchers.IO) {
+            val entities: List<ProductImageEntity> = items.flatMapIndexed { i, item ->
+                item.images.map {
+                    ProductImageEntity(
+                        imagePath = it.url,
+                        productItemId = itemIds[i]
+                    )
+                }
+            }
+            database.productImageDao.insert(*entities.toTypedArray())
+        }
 
     private suspend fun insertProductAdditionalInfo(
         info: Map<String, List<String>>,
         productId: Long
-    ) {
+    ) = withContext(Dispatchers.IO) {
         info.forEach { (code, values) ->
             val resolver = FilterResolver.findByCode(code) ?: return@forEach
 

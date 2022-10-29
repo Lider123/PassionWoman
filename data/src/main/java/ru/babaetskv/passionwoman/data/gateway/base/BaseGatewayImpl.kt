@@ -8,6 +8,7 @@ abstract class BaseGatewayImpl(
     protected val stringProvider: StringProvider
 ) {
 
+    // TODO: thing about replacing with a decorator
     protected inline fun <T> networkRequest(block: () -> T): T {
         try {
             return block.invoke()

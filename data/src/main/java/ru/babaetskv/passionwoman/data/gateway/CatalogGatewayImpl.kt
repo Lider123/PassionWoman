@@ -1,6 +1,8 @@
 package ru.babaetskv.passionwoman.data.gateway
 
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.utils.toJsonArray
@@ -15,9 +17,12 @@ class CatalogGatewayImpl(
     stringProvider: StringProvider
 ) : BaseGatewayImpl(stringProvider), CatalogGateway {
 
-    override suspend fun getCategories(): List<Transformable<Unit, Category>> = networkRequest {
-        api.getCategories()
-    }
+    override suspend fun getCategories(): List<Transformable<Unit, Category>> =
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getCategories()
+            }
+        }
 
     override suspend fun getProducts(
         categoryId: Long?,
@@ -26,40 +31,54 @@ class CatalogGatewayImpl(
         offset: Int,
         filters: List<Filter>,
         sorting: Sorting
-    ): Transformable<StringProvider, ProductsPagedResponse> = networkRequest {
-        api.getProducts(
-            categoryId,
-            query,
-            filters.mapNotNull { it.toJsonObject() }.toJsonArray().toString(),
-            sorting.apiName,
-            limit,
-            offset
-        )
-    }
-
-    override suspend fun getPromotions(): List<Transformable<Unit, Promotion>> = networkRequest {
-        api.getPromotions().also {
-            Log.e("TEST", it.toString()) // TODO: remove
+    ): Transformable<StringProvider, ProductsPagedResponse> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.getProducts(
+                categoryId,
+                query,
+                filters.mapNotNull { it.toJsonObject() }.toJsonArray().toString(),
+                sorting.apiName,
+                limit,
+                offset
+            )
         }
     }
 
+    override suspend fun getPromotions(): List<Transformable<Unit, Promotion>> =
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getPromotions().also {
+                    Log.e("TEST", it.toString()) // TODO: remove
+                }
+            }
+        }
+
     override suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>> =
-        networkRequest {
-            api.getPopularBrands(count)
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getPopularBrands(count)
+            }
         }
 
     override suspend fun getFavorites(
         favoriteIds: Collection<Long>
-    ): List<Transformable<Unit, Product>> = networkRequest {
-        api.getProductsByIds(favoriteIds.joinToString(","))
+    ): List<Transformable<Unit, Product>> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.getProductsByIds(favoriteIds.joinToString(","))
+        }
     }
 
     override suspend fun getProduct(productId: Long): Transformable<Unit, Product> =
-        networkRequest {
-            api.getProduct(productId)
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getProduct(productId)
+            }
         }
 
-    override suspend fun getStories(): List<Transformable<Unit, Story>> = networkRequest {
-        api.getStories()
-    }
+    override suspend fun getStories(): List<Transformable<Unit, Story>> =
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getStories()
+            }
+        }
 }

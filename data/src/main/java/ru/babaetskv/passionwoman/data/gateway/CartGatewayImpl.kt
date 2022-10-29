@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.data.gateway
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.gateway.base.BaseGatewayImpl
 import ru.babaetskv.passionwoman.data.model.CartItemModel
@@ -14,20 +16,29 @@ class CartGatewayImpl(
     stringProvider: StringProvider
 ) : BaseGatewayImpl(stringProvider), CartGateway {
 
-    override suspend fun checkout(): Transformable<Unit, Cart> = networkRequest {
-        authApi.checkout()
+    override suspend fun checkout(): Transformable<Unit, Cart> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            authApi.checkout()
+        }
     }
 
-    override suspend fun addToCart(item: CartItem): Transformable<Unit, Cart> = networkRequest {
-        authApi.addToCart(CartItemModel(item))
-    }
-
-    override suspend fun removeFromCart(item: CartItem): Transformable<Unit, Cart> =
-        networkRequest {
-            authApi.removeFromCart(CartItemModel(item))
+    override suspend fun addToCart(item: CartItem): Transformable<Unit, Cart> =
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                authApi.addToCart(CartItemModel(item))
+            }
         }
 
-    override suspend fun getCart(): Transformable<Unit, Cart> = networkRequest {
-        authApi.getCart()
+    override suspend fun removeFromCart(item: CartItem): Transformable<Unit, Cart> =
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                authApi.removeFromCart(CartItemModel(item))
+            }
+        }
+
+    override suspend fun getCart(): Transformable<Unit, Cart> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            authApi.getCart()
+        }
     }
 }

@@ -1,6 +1,8 @@
 package ru.babaetskv.passionwoman.data.gateway
 
 import android.net.Uri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -20,33 +22,45 @@ class ProfileGatewayImpl(
     stringProvider: StringProvider
 ) : BaseGatewayImpl(stringProvider), ProfileGateway {
 
-    override suspend fun getProfile(): Transformable<Unit, Profile> = networkRequest {
-        api.getProfile()
+    override suspend fun getProfile(): Transformable<Unit, Profile> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.getProfile()
+        }
     }
 
-    override suspend fun updateProfile(profile: Profile) = networkRequest {
-        api.updateProfile(ProfileModel(profile))
+    override suspend fun updateProfile(profile: Profile) = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.updateProfile(ProfileModel(profile))
+        }
     }
 
-    override suspend fun updateAvatar(imageUri: Uri) = networkRequest {
-        imageUri.toString().let {
-            if (it.isNotEmpty() && it.startsWith("file://")) {
-                api.uploadAvatar(getImagePart(it))
+    override suspend fun updateAvatar(imageUri: Uri) = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            imageUri.toString().let {
+                if (it.isNotEmpty() && it.startsWith("file://")) {
+                    api.uploadAvatar(getImagePart(it))
+                }
             }
         }
     }
 
-    override suspend fun getFavoriteIds(): List<Long> = networkRequest {
-        api.getFavoriteIds()
+    override suspend fun getFavoriteIds(): List<Long> = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.getFavoriteIds()
+        }
     }
 
-    override suspend fun setFavoriteIds(ids: List<Long>) = networkRequest {
-        api.setFavoriteIds(ids)
+    override suspend fun setFavoriteIds(ids: List<Long>) = withContext(Dispatchers.IO) {
+        return@withContext networkRequest {
+            api.setFavoriteIds(ids)
+        }
     }
 
     override suspend fun getOrders(): List<Transformable<DateTimeConverter, Order>> =
-        networkRequest {
-            api.getOrders()
+        withContext(Dispatchers.IO) {
+            return@withContext networkRequest {
+                api.getOrders()
+            }
         }
 
     private fun getImagePart(path: String): MultipartBody.Part {

@@ -50,7 +50,7 @@ abstract class BaseViewModel(
         }
 
     override val coroutineContext: CoroutineContext =
-        viewModelScope.coroutineContext + Dispatchers.IO + CoroutineExceptionHandler(::onError)
+        viewModelScope.coroutineContext + CoroutineExceptionHandler(::onError)
     override val loadingLiveData = MutableLiveData(false)
     override val errorLiveData = MutableLiveData<Exception?>(null)
     final override val eventFlow: Flow<Event> = eventHub.flow
