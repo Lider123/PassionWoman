@@ -8,7 +8,9 @@ import ru.babaetskv.passionwoman.data.model.CartModel
 import ru.babaetskv.passionwoman.data.model.OrderModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 
-class DelayAuthApiDecorator(api: AuthApi) : AuthApiDecorator(api) {
+class DelayAuthApiDecorator(
+    private val api: AuthApi
+) : AuthApi {
 
     override suspend fun addToCart(item: CartItemModel): CartModel {
         delay(DELAY_LOADING)

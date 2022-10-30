@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
@@ -15,6 +16,7 @@ import kotlin.random.Random
 
 class AuthApiImpl(
     private val database: PassionWomanDatabase,
+    private val exceptionProvider: ApiExceptionProvider,
     private val dateTimeConverter: DateTimeConverter
 ) : AuthApi {
     private var profileMock: ProfileModel? = null
@@ -31,7 +33,7 @@ class AuthApiImpl(
             database.userDao.getProfile()
                 ?.transform()
                 ?.also { profileMock = it }
-                ?: throw ApiExceptionProvider.getNotFoundException("Profile is not found")
+                ?: throw exceptionProvider.getNotFoundException("Profile is not found")
         } else profileMock!!
     }
 
@@ -60,8 +62,9 @@ class AuthApiImpl(
     }
 
     override suspend fun checkout(): CartModel {
+        // TODO: insert order to the database
         if (cartMock.items.isEmpty()) {
-            throw ApiExceptionProvider.getBadRequestException("The cart is empty")
+            throw exceptionProvider.getBadRequestException("The cart is empty")
         }
 
         val newOrder = OrderModel(

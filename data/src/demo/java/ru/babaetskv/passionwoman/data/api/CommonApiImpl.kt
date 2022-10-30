@@ -6,6 +6,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.filters.Filters
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
@@ -18,6 +19,7 @@ import java.util.*
 class CommonApiImpl(
     private val database: PassionWomanDatabase,
     private val assetProvider: AssetProvider,
+    private val exceptionProvider: ApiExceptionProvider,
     private val productTransformableParamsProvider: ProductEntity.TransformableParamsProvider,
 ) : CommonApi {
 
@@ -37,12 +39,12 @@ class CommonApiImpl(
         try {
             val stories = assetProvider.loadListFromAsset<StoryModel>(AssetProvider.AssetFile.STORIES)
             if (stories.any { it.contents.isEmpty() }) {
-                throw ApiExceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
+                throw exceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
             }
 
             stories
         } catch (e: JsonDataException) {
-            throw ApiExceptionProvider.getInternalServerErrorException("Stories source is corrupted")
+            throw exceptionProvider.getInternalServerErrorException("Stories source is corrupted")
         }
 
     override suspend fun getProducts(
@@ -83,10 +85,10 @@ class CommonApiImpl(
                 }
         } catch (e: JSONException) {
             e.printStackTrace()
-            throw ApiExceptionProvider.getBadRequestException("Failed to process filters")
+            throw exceptionProvider.getBadRequestException("Failed to process filters")
         } catch (e: Exception) {
             e.printStackTrace()
-            throw ApiExceptionProvider.getInternalServerErrorException("Internal server error")
+            throw exceptionProvider.getInternalServerErrorException("Internal server error")
         }
 
     override suspend fun getProductsByIds(ids: String): List<ProductModel> =
@@ -94,7 +96,7 @@ class CommonApiImpl(
             if (ids.isBlank()) return@withContext emptyList()
 
             if (ids.matches(REGEX_IDS_LIST).not()) {
-                throw ApiExceptionProvider.getBadRequestException("Wrong ids list formatting")
+                throw exceptionProvider.getBadRequestException("Wrong ids list formatting")
             }
 
             val productIds: Set<Long> = ids.split(",").map(String::toLong).toSet()
@@ -104,7 +106,7 @@ class CommonApiImpl(
                 .toSet()
                 .containsAll(productIds)
             if (!allProductsFound) {
-                throw ApiExceptionProvider.getNotFoundException("One or more products with specified ids are not found")
+                throw exceptionProvider.getNotFoundException("One or more products with specified ids are not found")
             }
 
             return@withContext products
@@ -119,7 +121,7 @@ class CommonApiImpl(
     override suspend fun getProduct(productId: Long): ProductModel = withContext(Dispatchers.IO) {
         return@withContext database.productDao.getById(productId)
             ?.transform(productTransformableParamsProvider)
-            ?: throw ApiExceptionProvider.getNotFoundException("Product not found")
+            ?: throw exceptionProvider.getNotFoundException("Product not found")
     }
 
     private fun applyQueryToProducts(query: String, products: List<ProductModel>): List<ProductModel> {

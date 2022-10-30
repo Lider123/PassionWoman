@@ -3,7 +3,7 @@ package ru.babaetskv.passionwoman.data.database.entity.transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import ru.babaetskv.passionwoman.data.api.ApiExceptionProvider
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 import ru.babaetskv.passionwoman.data.database.entity.ProductItemEntity
@@ -16,6 +16,7 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.trans
 
 class ProductTransformableParamsProvider(
     private val database: PassionWomanDatabase,
+    private val exceptionProvider: ApiExceptionProvider,
     private val productItemParamsProvider: ProductItemEntity.TransformableParamsProvider
 ) : ProductEntity.TransformableParamsProvider {
 
@@ -23,13 +24,13 @@ class ProductTransformableParamsProvider(
         withContext(Dispatchers.IO) {
             return@withContext database.categoryDao.getById(categoryId)
                 ?.transform()
-                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find category with id $categoryId")
+                ?: throw exceptionProvider.getNotFoundException("Cannot find category with id $categoryId")
         }
 
     override suspend fun provideBrand(brandId: Long): BrandModel = withContext(Dispatchers.IO) {
         return@withContext database.brandDao.getById(brandId)
             ?.transform()
-            ?: throw ApiExceptionProvider.getNotFoundException("Cannot find brand with id $brandId")
+            ?: throw exceptionProvider.getNotFoundException("Cannot find brand with id $brandId")
     }
 
     override suspend fun provideProductItems(productId: Long): List<ProductItemModel> =
@@ -37,7 +38,7 @@ class ProductTransformableParamsProvider(
             return@withContext database.productItemDao.getByProductId(productId)
                 .takeIf { it.isNotEmpty() }
                 ?.transformList(productItemParamsProvider)
-                ?: throw ApiExceptionProvider.getNotFoundException("Cannot find product items for the product with id $productId")
+                ?: throw exceptionProvider.getNotFoundException("Cannot find product items for the product with id $productId")
         }
 
     override suspend fun provideAdditionalInfo(productId: Long): Map<String, List<String>> =

@@ -9,6 +9,7 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeUseCase
+import timber.log.Timber
 
 class AuthorizeInteractor(
     private val authGateway: AuthGateway,
@@ -22,7 +23,9 @@ class AuthorizeInteractor(
         AuthorizeUseCase.AuthorizeException(cause, stringProvider)
 
     override suspend fun run(params: String): Profile {
+        Timber.e("run(params=$params)") // TODO: remove
         val authToken = authGateway.authorize(params)
+        Timber.e("authToken=$authToken") // TODO: remove
         authPreferences.authToken = authToken
         authPreferences.authType = AuthPreferences.AuthType.AUTHORIZED
         return profileGateway.getProfile().transform().also {

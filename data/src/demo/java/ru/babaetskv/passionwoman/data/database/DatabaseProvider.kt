@@ -19,6 +19,7 @@ object DatabaseProvider {
 
     fun provideDatabase(context: Context): PassionWomanDatabase =
         database ?: run {
+            // TODO: save to preferences if database was initialised
             context.deleteDatabase(DATABASE_NAME)
             createDatabase(context)
         }

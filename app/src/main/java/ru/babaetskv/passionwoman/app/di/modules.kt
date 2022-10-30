@@ -56,8 +56,6 @@ import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.NotifierImpl
 import ru.babaetskv.passionwoman.data.api.ApiProvider
 import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
-import ru.babaetskv.passionwoman.data.gateway.AuthGatewayImpl
-import ru.babaetskv.passionwoman.data.gateway.CatalogGatewayImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.interactor.*
@@ -67,11 +65,12 @@ import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.AssetProvider
 import ru.babaetskv.passionwoman.data.dataflow.CartFlowImpl
-import ru.babaetskv.passionwoman.data.gateway.CartGatewayImpl
-import ru.babaetskv.passionwoman.data.gateway.ProfileGatewayImpl
+import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvider
+import ru.babaetskv.passionwoman.data.gateway.exception.GatewayExceptionProviderImpl
+import ru.babaetskv.passionwoman.data.gateway.provider.GatewayProvider
+import ru.babaetskv.passionwoman.data.gateway.provider.GatewayProviderImpl
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.dataflow.CartFlow
-import ru.babaetskv.passionwoman.domain.gateway.*
 import ru.babaetskv.passionwoman.domain.usecase.*
 
 val appModule = module {
@@ -165,10 +164,12 @@ val interactorModule = module {
 }
 
 val gatewayModule = module {
-    single<CatalogGateway> { CatalogGatewayImpl(get(), get()) }
-    single<AuthGateway> { AuthGatewayImpl(get(), get()) }
-    single<ProfileGateway> { ProfileGatewayImpl(get(), get()) }
-    single<CartGateway> { CartGatewayImpl(get(), get()) }
+    single<GatewayExceptionProvider> { GatewayExceptionProviderImpl(get()) }
+    single<GatewayProvider> { GatewayProviderImpl(get(), get(), get()) }
+    factory { get<GatewayProvider>().provideCatalogGateway() }
+    factory { get<GatewayProvider>().provideAuthGateway() }
+    factory { get<GatewayProvider>().provideProfileGateway() }
+    factory { get<GatewayProvider>().provideCartGateway() }
 }
 
 val dataFlowModule = module {

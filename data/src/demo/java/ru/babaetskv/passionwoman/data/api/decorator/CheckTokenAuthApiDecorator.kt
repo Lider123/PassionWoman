@@ -1,8 +1,8 @@
 package ru.babaetskv.passionwoman.data.api.decorator
 
 import okhttp3.MultipartBody
-import ru.babaetskv.passionwoman.data.api.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.api.AuthApi
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.data.model.CartModel
 import ru.babaetskv.passionwoman.data.model.OrderModel
@@ -12,8 +12,9 @@ import timber.log.Timber
 
 class CheckTokenAuthApiDecorator(
     private val authPreferences: AuthPreferences,
-    api: AuthApi
-) : AuthApiDecorator(api) {
+    private val exceptionProvider: ApiExceptionProvider,
+    private val api: AuthApi
+) : AuthApi {
 
     override suspend fun addToCart(item: CartItemModel): CartModel {
         checkToken()
@@ -52,24 +53,24 @@ class CheckTokenAuthApiDecorator(
 
     override suspend fun setFavoriteIds(ids: List<Long>) {
         checkToken()
-        setFavoriteIds(ids)
+        api.setFavoriteIds(ids)
     }
 
     override suspend fun updateProfile(body: ProfileModel) {
         checkToken()
-        updateProfile(body)
+        api.updateProfile(body)
     }
 
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         checkToken()
-        uploadAvatar(image)
+        api.uploadAvatar(image)
     }
 
     private fun checkToken() {
         val userToken = authPreferences.authToken
         if (userToken != TOKEN) {
             Timber.e("Incorrect token: $userToken")
-            throw ApiExceptionProvider.getUnauthorizedException("Unauthorized")
+            throw exceptionProvider.getUnauthorizedException("Unauthorized")
         }
     }
 

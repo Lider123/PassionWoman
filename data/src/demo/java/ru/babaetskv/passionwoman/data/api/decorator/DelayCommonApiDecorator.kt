@@ -4,7 +4,9 @@ import kotlinx.coroutines.delay
 import ru.babaetskv.passionwoman.data.api.CommonApi
 import ru.babaetskv.passionwoman.data.model.*
 
-class DelayCommonApiDecorator(api: CommonApi) : CommonApiDecorator(api) {
+class DelayCommonApiDecorator(
+    private val api: CommonApi
+) : CommonApi {
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel {
         delay(DELAY_LOADING)
