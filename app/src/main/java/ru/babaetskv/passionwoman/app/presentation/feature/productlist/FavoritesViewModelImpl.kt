@@ -16,6 +16,7 @@ import ru.babaetskv.passionwoman.domain.model.Sorting
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetFavoritesUseCase
 import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 

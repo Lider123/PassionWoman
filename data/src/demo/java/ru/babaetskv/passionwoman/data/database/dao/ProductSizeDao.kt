@@ -16,14 +16,14 @@ interface ProductSizeDao {
         FROM product_sizes JOIN size_to_product_item ON code = size_to_product_item.product_size_code
         WHERE size_to_product_item.product_item_id = :productItemId
     """)
-    suspend fun getForProductItem(productItemId: Int): List<String>
+    suspend fun getForProductItem(productItemId: Long): List<String>
 
     @Query("""
         SELECT code
         FROM product_sizes JOIN size_to_product_item ON code = size_to_product_item.product_size_code
         WHERE size_to_product_item.product_item_id = :productItemId AND is_available = 1
     """)
-    suspend fun getAvailableForProductItem(productItemId: Int): List<String>
+    suspend fun getAvailableForProductItem(productItemId: Long): List<String>
 
     @Insert
     suspend fun insert(vararg entities: ProductSizeEntity)

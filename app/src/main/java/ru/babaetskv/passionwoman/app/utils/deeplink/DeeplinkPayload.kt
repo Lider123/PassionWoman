@@ -7,6 +7,6 @@ sealed class DeeplinkPayload : Parcelable {
 
     @Parcelize
     data class Product(
-        val productId: Int
+        val productId: Long
     ) : DeeplinkPayload()
 }

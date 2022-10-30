@@ -8,5 +8,5 @@ import ru.babaetskv.passionwoman.data.database.entity.SizeToProductItemEntity
 interface SizeToProductDao {
 
     @Insert
-    fun insert(vararg entities: SizeToProductItemEntity)
+    suspend fun insert(vararg entities: SizeToProductItemEntity)
 }

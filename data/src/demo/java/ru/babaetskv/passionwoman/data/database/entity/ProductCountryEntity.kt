@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "product_countries")
 data class ProductCountryEntity(
     @PrimaryKey val code: String,
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "ui_name") val uiName: String
 )

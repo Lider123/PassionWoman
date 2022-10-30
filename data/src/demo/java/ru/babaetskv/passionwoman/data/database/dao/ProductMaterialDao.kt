@@ -16,7 +16,7 @@ interface ProductMaterialDao {
         FROM product_materials JOIN material_to_product ON code = material_to_product.product_material_code
         WHERE material_to_product.product_id = :productId
     """)
-    suspend fun getCodesForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Long): List<String>
 
     @Insert
     suspend fun insert(vararg entities: ProductMaterialEntity)

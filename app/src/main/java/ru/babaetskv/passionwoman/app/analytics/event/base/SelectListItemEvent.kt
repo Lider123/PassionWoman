@@ -33,7 +33,7 @@ abstract class SelectListItemEvent(
     }
 
     data class CommonParams(
-        val id: Int,
+        val id: Long,
         val name: String
     )
 }

@@ -15,5 +15,5 @@ interface ProductTypeDao {
         FROM product_types JOIN type_to_product ON code = type_to_product.product_type_code
         WHERE type_to_product.product_id = :productId
     """)
-    suspend fun getCodesForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Long): List<String>
 }

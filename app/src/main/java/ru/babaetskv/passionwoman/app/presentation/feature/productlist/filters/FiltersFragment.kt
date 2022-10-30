@@ -63,7 +63,7 @@ class FiltersFragment : BaseFragment<FiltersViewModel, FiltersFragment.Args>() {
 
     @Parcelize
     data class Args(
-        val categoryId: Int?,
+        val categoryId: Long?,
         val filters: List<Filter>,
         val initialProductsCount: Int
     ) : Parcelable
@@ -71,7 +71,7 @@ class FiltersFragment : BaseFragment<FiltersViewModel, FiltersFragment.Args>() {
     companion object {
 
         fun create(
-            categoryId: Int?,
+            categoryId: Long?,
             filters: List<Filter>,
             initialProductsCount: Int
         ) =

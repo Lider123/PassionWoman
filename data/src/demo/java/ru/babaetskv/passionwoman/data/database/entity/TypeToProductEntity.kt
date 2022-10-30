@@ -25,7 +25,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class TypeToProductEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "product_type_code") val typeCode: String,
-    @ColumnInfo(name = "product_id") val productId: Int
+    @ColumnInfo(name = "product_id") val productId: Long
 )

@@ -11,12 +11,12 @@ import ru.babaetskv.passionwoman.domain.usecase.GetProductUseCase
 class GetProductInteractor(
     private val catalogGateway: CatalogGateway,
     private val stringProvider: StringProvider
-) : BaseInteractor<Int, Product>(), GetProductUseCase {
+) : BaseInteractor<Long, Product>(), GetProductUseCase {
     override val emptyException: UseCaseException.EmptyData? = null
 
     override fun transformException(cause: Exception): UseCaseException =
         GetProductUseCase.GetProductException(cause, stringProvider)
 
-    override suspend fun run(params: Int): Product =
+    override suspend fun run(params: Long): Product =
         catalogGateway.getProduct(params).transform()
 }

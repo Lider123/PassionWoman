@@ -8,11 +8,14 @@ import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
 @Dao
 interface ProductDao {
 
+    @Query("SELECT * FROM products")
+    suspend fun getAll(): List<ProductEntity>
+
     @Query("SELECT * FROM products WHERE id = :productId")
-    suspend fun getById(productId: Int): ProductEntity?
+    suspend fun getById(productId: Long): ProductEntity?
 
     @Query("SELECT * FROM products WHERE category_id = :categoryId")
-    suspend fun getByCategoryId(categoryId: Int): List<ProductEntity>
+    suspend fun getByCategoryId(categoryId: Long): List<ProductEntity>
 
     @Query("SELECT * FROM products ORDER BY RANDOM() LIMIT :limit")
     suspend fun getRandom(limit: Int): List<ProductEntity>
@@ -21,7 +24,7 @@ interface ProductDao {
     suspend fun getWithDiscount(): List<ProductEntity>
 
     @Query("SELECT * FROM products WHERE id in (:ids)")
-    suspend fun getByIds(ids: Collection<Int>): List<ProductEntity>
+    suspend fun getByIds(ids: List<Long>): List<ProductEntity>
 
     @Query("SELECT MIN(price_with_discount) FROM products")
     suspend fun getMinPrice(): Float?
@@ -30,5 +33,5 @@ interface ProductDao {
     suspend fun getMaxPrice(): Float?
 
     @Insert
-    suspend fun insert(vararg entities: ProductEntity)
+    suspend fun insert(vararg entities: ProductEntity): Array<Long>
 }

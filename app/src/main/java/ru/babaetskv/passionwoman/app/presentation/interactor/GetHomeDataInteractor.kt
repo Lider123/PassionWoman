@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import android.content.res.Resources
 import ru.babaetskv.passionwoman.app.R
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
@@ -27,13 +26,13 @@ class GetHomeDataInteractor(
 
     override suspend fun run(params: Unit): HomeData = coroutineScope {
         val brandsCount = 2 * resources.getInteger(R.integer.brands_list_span_count)
-        val promotionsAsync = async(Dispatchers.IO) {
+        val promotionsAsync = async {
             catalogGateway.getPromotions().transformList()
         }
-        val storiesAsync = async(Dispatchers.IO) {
+        val storiesAsync = async {
             catalogGateway.getStories().transformList()
         }
-        val saleProductsAsync = async(Dispatchers.IO) {
+        val saleProductsAsync = async {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -45,7 +44,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val popularProductsAsync = async(Dispatchers.IO) {
+        val popularProductsAsync = async {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -55,7 +54,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val newProductsAsync = async(Dispatchers.IO) {
+        val newProductsAsync = async {
             catalogGateway.getProducts(
                 categoryId = null,
                 query = "",
@@ -65,7 +64,7 @@ class GetHomeDataInteractor(
                 offset = 0
             ).transform(stringProvider)
         }
-        val brandsAsync = async(Dispatchers.IO) {
+        val brandsAsync = async {
             catalogGateway.getPopularBrands(brandsCount).transformList()
         }
         return@coroutineScope HomeData(

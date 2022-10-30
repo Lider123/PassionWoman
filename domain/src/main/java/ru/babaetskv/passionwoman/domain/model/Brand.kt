@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Brand(
-    val id: Int,
+    val id: Long,
     val logo: Image,
     val name: String
 ) : Parcelable

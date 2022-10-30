@@ -13,6 +13,7 @@ import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 import ru.babaetskv.passionwoman.domain.usecase.GetHomeDataUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 import java.lang.Exception
 
 class HomeViewModelImpl(

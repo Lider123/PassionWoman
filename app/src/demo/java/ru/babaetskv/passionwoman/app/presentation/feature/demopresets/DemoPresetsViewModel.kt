@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.app.presentation.event.Event
 
 interface DemoPresetsViewModel : IViewModel {
     val presetsLiveData: LiveData<List<DemoPreset>>
+    val splashScreenVisible: Boolean
 
     fun onPresetChanged(preset: DemoPreset)
     fun onApplyPressed()

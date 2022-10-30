@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class CartItemModel(
-    @Json(name = "productId") val productId: Int,
+    @Json(name = "productId") val productId: Long,
     @Json(name = "preview") val preview: String,
     @Json(name = "selectedColor") val selectedColor: ColorModel,
     @Json(name = "selectedSize") val selectedSize: String,

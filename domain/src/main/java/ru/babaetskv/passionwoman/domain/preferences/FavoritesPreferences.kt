@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.Flow
 interface FavoritesPreferences {
     val favoritesUpdatesFlow: Flow<Action?>
 
-    fun putFavoriteId(id: Int)
-    fun setFavoriteIds(ids: Collection<Int>)
-    fun setFavoriteIds(vararg ids: Int)
-    fun getFavoriteIds(): Collection<Int>
-    fun deleteFavoriteId(id: Int)
-    fun isFavorite(id: Int): Boolean
+    fun putFavoriteId(id: Long)
+    fun setFavoriteIds(ids: Collection<Long>)
+    fun setFavoriteIds(vararg ids: Long)
+    fun getFavoriteIds(): Collection<Long>
+    fun deleteFavoriteId(id: Long)
+    fun isFavorite(id: Long): Boolean
     fun reset()
 
     sealed class Action {
@@ -18,11 +18,11 @@ interface FavoritesPreferences {
         object Set : Action()
 
         data class Put(
-            val favoriteId: Int
+            val favoriteId: Long
         ) : Action()
 
         data class Delete(
-            val favoriteId: Int
+            val favoriteId: Long
         ) : Action()
     }
 }

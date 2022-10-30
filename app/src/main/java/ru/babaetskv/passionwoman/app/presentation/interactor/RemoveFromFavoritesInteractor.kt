@@ -9,13 +9,13 @@ import ru.babaetskv.passionwoman.domain.usecase.RemoveFromFavoritesUseCase
 class RemoveFromFavoritesInteractor(
     private val favoritesPreferences: FavoritesPreferences,
     private val stringProvider: StringProvider
-) : BaseInteractor<Int, Unit>(), RemoveFromFavoritesUseCase {
+) : BaseInteractor<Long, Unit>(), RemoveFromFavoritesUseCase {
     override val emptyException: UseCaseException.EmptyData? = null
 
     override fun transformException(cause: Exception): UseCaseException =
         RemoveFromFavoritesUseCase.RemoveFromFavoritesException(cause, stringProvider)
 
-    override suspend fun run(params: Int) {
+    override suspend fun run(params: Long) {
         favoritesPreferences.deleteFavoriteId(params)
     }
 }

@@ -16,7 +16,7 @@ interface ProductCountryDao {
         FROM product_countries JOIN country_to_product ON code = country_to_product.product_country_code
         WHERE country_to_product.product_id = :productId
     """)
-    suspend fun getCodesForProduct(productId: Int): List<String>
+    suspend fun getCodesForProduct(productId: Long): List<String>
 
     @Insert
     suspend fun insert(entity: ProductCountryEntity)

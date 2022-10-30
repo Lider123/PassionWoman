@@ -1,23 +1,15 @@
-package ru.babaetskv.passionwoman.data.gateway.base
+package ru.babaetskv.passionwoman.data.gateway.exception
 
 import retrofit2.HttpException
-import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
+import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvider
 
-abstract class BaseGatewayImpl(
-    protected val stringProvider: StringProvider
-) {
+class GatewayExceptionProviderImpl(
+    private val stringProvider: StringProvider
+) : GatewayExceptionProvider {
 
-    protected inline fun <T> networkRequest(block: () -> T): T {
-        try {
-            return block.invoke()
-        } catch (e: Exception) {
-            throw getGatewayException(e)
-        }
-    }
-
-    @PublishedApi
-    internal fun getGatewayException(e: java.lang.Exception): GatewayException {
+    override fun getGatewayException(e: Exception): GatewayException {
         if (e !is HttpException) return GatewayException.Unknown(e, stringProvider)
 
         return when {

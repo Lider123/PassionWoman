@@ -111,6 +111,7 @@
     <string name="sort_popularity">By popularity</string>
     <string name="sort_price_asc">By price ascending</string>
     <string name="sort_price_desc">By price descending</string>
+    <string name="sort_rating">By rating</string>
 
     <string name="sorting_apply">Apply</string>
     <string name="sorting_title">Sorting</string>

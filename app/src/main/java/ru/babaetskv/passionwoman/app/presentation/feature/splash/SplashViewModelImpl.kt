@@ -8,6 +8,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 @Deprecated("Use Android 12 SplashScreen API")
 class SplashViewModelImpl(

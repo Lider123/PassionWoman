@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.model.AuthResult
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 class AuthViewModelImpl(
     private val args: AuthFragment.Args,

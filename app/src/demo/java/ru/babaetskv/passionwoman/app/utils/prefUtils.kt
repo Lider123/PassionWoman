@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.utils
 
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.feature.demopresets.DemoPreset
-import ru.babaetskv.passionwoman.data.api.BaseApiImpl
+import ru.babaetskv.passionwoman.data.api.decorator.CheckTokenAuthApiDecorator
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
@@ -38,7 +38,7 @@ fun AuthPreferences.applyDemoPresets(presets: List<DemoPreset>) {
     presets.find { it.id == DemoPreset.PreferenceId.AUTHENTICATION }?.let {
         authType = it.value as AuthPreferences.AuthType
         authToken = if (authType == AuthPreferences.AuthType.AUTHORIZED) {
-            BaseApiImpl.TOKEN
+            CheckTokenAuthApiDecorator.TOKEN
         } else ""
     }
     presets.find { it.id == DemoPreset.PreferenceId.PROFILE_EXISTS }?.let {

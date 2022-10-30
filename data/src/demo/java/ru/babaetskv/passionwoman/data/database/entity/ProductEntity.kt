@@ -8,7 +8,6 @@ import ru.babaetskv.passionwoman.data.model.ProductItemModel
 import ru.babaetskv.passionwoman.data.model.ProductModel
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
-// TODO: add createdAt field
 @Entity(
     tableName = "products",
     foreignKeys = [
@@ -29,15 +28,16 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
     ]
 )
 data class ProductEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "category_id") val categoryId: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @ColumnInfo(name = "category_id") val categoryId: Long,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "preview_path") val previewPath: String,
     @ColumnInfo(name = "price") val price: Float,
     @ColumnInfo(name = "price_with_discount") val priceWithDiscount: Float,
     @ColumnInfo(name = "rating") val rating: Float,
     @ColumnInfo(name = "description") val description: String?,
-    @ColumnInfo(name = "brand_id") val brandId: Int?
+    @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "brand_id") val brandId: Long?
 ) : Transformable<ProductEntity.TransformableParamsProvider, ProductModel>() {
 
     override suspend fun transform(params: TransformableParamsProvider): ProductModel =
@@ -54,13 +54,14 @@ data class ProductEntity(
                  params.provideBrand(it)
             },
             additionalInfo = params.provideAdditionalInfo(id),
+            createdAt = createdAt,
             items = params.provideProductItems(id)
         )
 
     interface TransformableParamsProvider {
-        suspend fun provideCategory(categoryId: Int): CategoryModel
-        suspend fun provideBrand(brandId: Int): BrandModel
-        suspend fun provideProductItems(productId: Int): List<ProductItemModel>
-        suspend fun provideAdditionalInfo(productId: Int): Map<String, List<String>>
+        suspend fun provideCategory(categoryId: Long): CategoryModel
+        suspend fun provideBrand(brandId: Long): BrandModel
+        suspend fun provideProductItems(productId: Long): List<ProductItemModel>
+        suspend fun provideAdditionalInfo(productId: Long): Map<String, List<String>>
     }
 }

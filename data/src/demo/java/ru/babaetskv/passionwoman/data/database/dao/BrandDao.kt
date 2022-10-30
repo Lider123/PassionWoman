@@ -26,7 +26,7 @@ interface BrandDao {
     suspend fun getPopular(count: Int): List<BrandEntity>
 
     @Query("SELECT * FROM brands WHERE id = :brandId")
-    suspend fun getById(brandId: Int): BrandEntity?
+    suspend fun getById(brandId: Long): BrandEntity?
 
     @Insert
     suspend fun insert(entity: BrandEntity)

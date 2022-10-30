@@ -137,14 +137,14 @@ sealed class Filter(
         }
 
         override fun selectAvailable(products: List<ProductModel>): JSONObject? {
-            val availableIds: List<Int> = products.flatMap { it.items }
+            val availableIds: List<Long> = products.flatMap { it.items }
                 .map { it.color.id }
                 .distinct()
             val values = filterObject.getJSONArray(Filters.PARAM_VALUES)
             val newValues = JSONArray()
             for (i in 0 until values.length()) {
                 val value = values.getJSONObject(i)
-                if (value.getInt(Filters.PARAM_ID) in availableIds) newValues.put(value)
+                if (value.getLong(Filters.PARAM_ID) in availableIds) newValues.put(value)
             }
             return if (newValues.length() == 0) null else {
                 filterObject.put(Filters.PARAM_VALUES, newValues)

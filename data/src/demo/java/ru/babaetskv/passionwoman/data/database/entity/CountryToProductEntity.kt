@@ -25,7 +25,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class CountryToProductEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "product_country_code") val countryCode: String,
-    @ColumnInfo(name = "product_id") val productId: Int
+    @ColumnInfo(name = "product_id") val productId: Long
 )

@@ -20,7 +20,7 @@ class FirebaseDeeplinkHandler : DeeplinkHandler {
     private fun createPayloadFromUrl(url: Uri): DeeplinkPayload? {
         return when (url.host) {
             DeeplinkGenerator.PRODUCT_HOST -> {
-                url.getQueryParameter(DeeplinkGenerator.PRODUCT_PARAM_ID)?.toIntOrNull()?.let {
+                url.getQueryParameter(DeeplinkGenerator.PRODUCT_PARAM_ID)?.toLongOrNull()?.let {
                     DeeplinkPayload.Product(it)
                 }
             }

@@ -9,8 +9,8 @@ import ru.babaetskv.passionwoman.data.database.entity.ProductItemEntity
 interface ProductItemDao {
 
     @Query("SELECT * FROM product_items WHERE product_id = :productId")
-    suspend fun getByProductId(productId: Int): List<ProductItemEntity>
+    suspend fun getByProductId(productId: Long): List<ProductItemEntity>
 
     @Insert
-    suspend fun insert(vararg entities: ProductItemEntity)
+    suspend fun insert(vararg entities: ProductItemEntity): Array<Long>
 }
