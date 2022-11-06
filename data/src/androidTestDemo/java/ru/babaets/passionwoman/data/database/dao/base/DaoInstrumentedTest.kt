@@ -4,19 +4,20 @@ import ru.babaetskv.passionwoman.data.database.entity.*
 
 abstract class DaoInstrumentedTest {
 
-    protected fun createBrand(id: Int) =
+    protected fun createBrand(id: Long) =
         BrandEntity(
             id = id,
             name = "Brand $id",
-            logoPath = "brand_${id}_logo_path"
+            logoPath = "brand_${id}_logo_path",
+            createdAt = 0
         )
 
     protected fun createProduct(
-        id: Int,
-        categoryId: Int,
+        id: Long,
+        categoryId: Long,
         price: Float = 1f,
         priceWithDiscount: Float = 1f,
-        brandId: Int? = null) =
+        brandId: Long? = null) =
         ProductEntity(
             id = id,
             categoryId = categoryId,
@@ -26,17 +27,18 @@ abstract class DaoInstrumentedTest {
             priceWithDiscount = priceWithDiscount,
             rating = 0f,
             description = null,
-            brandId = brandId
+            brandId = brandId,
+            createdAt = 0
         )
 
-    protected fun createCategory(id: Int) =
+    protected fun createCategory(id: Long) =
         CategoryEntity(
             id = id,
             name = "Category $id",
             imagePath = "category_${id}_image_path"
         )
 
-    protected fun createColor(id: Int) =
+    protected fun createColor(id: Long) =
         ColorEntity(
             id = id,
             uiName = "Color $id",
@@ -49,21 +51,21 @@ abstract class DaoInstrumentedTest {
             uiName = "Country $id"
         )
 
-    protected fun createProductImage(id: Int, productItemId: Int) =
+    protected fun createProductImage(id: Long, productItemId: Long) =
         ProductImageEntity(
             id = id,
             imagePath = "product_image_${id}_path",
             productItemId = productItemId
         )
 
-    protected fun createProductItem(id: Int, productId: Int, colorId: Int) =
+    protected fun createProductItem(id: Long, productId: Long, colorId: Long) =
         ProductItemEntity(
             id = id,
             productId = productId,
             colorId = colorId
         )
 
-    protected fun createUser(id: Int) =
+    protected fun createUser(id: Long) =
         UserEntity(
             id = id,
             name = "Jane",
@@ -78,7 +80,7 @@ abstract class DaoInstrumentedTest {
             uiName = "Material $id"
         )
 
-    protected fun createMaterialToProductEntity(id: Int, materialId: Int, productId: Int) =
+    protected fun createMaterialToProductEntity(id: Long, materialId: Int, productId: Long) =
         MaterialToProductEntity(
             id = id,
             materialCode = "material$materialId",
@@ -91,7 +93,7 @@ abstract class DaoInstrumentedTest {
             uiName = "Model $id"
         )
 
-    protected fun createModelToProductEntity(id: Int, modelId: Int, productId: Int) =
+    protected fun createModelToProductEntity(id: Long, modelId: Int, productId: Long) =
         ModelToProductEntity(
             id = id,
             modelCode = "model$modelId",
@@ -104,7 +106,7 @@ abstract class DaoInstrumentedTest {
             uiName = "Season $id"
         )
 
-    protected fun createSeasonToProductEntity(id: Int, seasonId: Int, productId: Int) =
+    protected fun createSeasonToProductEntity(id: Long, seasonId: Int, productId: Long) =
         SeasonToProductEntity(
             id = id,
             seasonCode = "season$seasonId",
@@ -118,9 +120,9 @@ abstract class DaoInstrumentedTest {
         )
 
     protected fun createSizeToProductItemEntity(
-        id: Int,
+        id: Long,
         sizeCode: String,
-        productItemId: Int,
+        productItemId: Long,
         isAvailable: Boolean = true
     ) =
         SizeToProductItemEntity(

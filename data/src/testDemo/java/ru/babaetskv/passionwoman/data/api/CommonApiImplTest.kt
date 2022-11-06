@@ -1,17 +1,16 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.squareup.moshi.JsonDataException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.json.JSONArray
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import retrofit2.HttpException
+import ru.babaetskv.passionwoman.data.assets.AssetProvider
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.ProductDao
 import ru.babaetskv.passionwoman.data.database.entity.ProductEntity
@@ -22,10 +21,8 @@ import ru.babaetskv.passionwoman.data.model.StoryModel
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CommonApiImplTest {
-    private val assetManagerMock: AssetManager = mock()
-    private val moshi: Moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    private val assetProviderMock: AssetProvider = mock()
+    private val exceptionProviderMock: ApiExceptionProvider = mock()
     private val productDaoMock: ProductDao = mock()
     private val databaseMock: PassionWomanDatabase = mock {
         whenever(mock.productDao) doReturn productDaoMock
@@ -34,21 +31,24 @@ class CommonApiImplTest {
         mock()
     private val api =
         CommonApiImpl(
-            assetManagerMock,
             databaseMock,
-            productTransformableParamsProviderMock,
-            moshi
+            assetProviderMock,
+            exceptionProviderMock,
+            productTransformableParamsProviderMock
         )
 
     @Test
-    fun getProductByIds_returnsEmpty_whenIdsAreEmpty() = runTest {
+    fun getProductsByIds_returnsEmpty_whenIdsAreEmpty() = runTest {
         val result = api.getProductsByIds("")
 
         assertTrue(result.isEmpty())
     }
 
     @Test
-    fun getProductByIds_throwsBadRequest_whenIdsAreWrongFormatted() = runTest {
+    fun getProductsByIds_throwsBadRequest_whenIdsAreWrongFormatted() = runTest {
+        val exceptionMock: HttpException = mock()
+        whenever(exceptionProviderMock.getBadRequestException(any())) doReturn exceptionMock
+
         listOf(
             "1 2",
             "1!2",
@@ -85,21 +85,23 @@ class CommonApiImplTest {
                 api.getProductsByIds(it)
                 fail()
             } catch (e: HttpException) {
-                assertEquals(400, e.code())
-                assertEquals("Wrong ids list formatting", e.response()?.errorBody()?.string())
+                verify(exceptionProviderMock, times(1))
+                    .getBadRequestException("Wrong ids list formatting")
+                clearInvocations(exceptionProviderMock)
+                assertEquals(exceptionMock, e)
             }
         }
     }
 
     @Test
-    fun getProductByIds_doesNotThrow_whenIdsAreWellFormatted() = runTest {
+    fun getProductsByIds_doesNotThrow_whenIdsAreWellFormatted() = runTest {
         val category = CategoryModel(
             id = 1,
             name = "Category 1",
             image = "asset:///demo_db_editor/static/image/category_1.jpg"
         )
         whenever(productDaoMock.getByIds(any())).thenAnswer { invocation ->
-            val ids: Collection<Int> = invocation.getArgument(0)
+            val ids: Collection<Long> = invocation.getArgument(0)
             ids.map {
                 ProductEntity(
                     id = it,
@@ -127,7 +129,7 @@ class CommonApiImplTest {
     }
 
     @Test
-    fun getProductByIds_throwsNotFound_whenThereAreNoProductWithRequiredIdInTheDatabase() =
+    fun getProductsByIds_throwsNotFound_whenThereAreNoProductWithRequiredIdInTheDatabase() =
         runTest {
             val category = CategoryModel(
                 id = 1,
@@ -145,24 +147,24 @@ class CommonApiImplTest {
                 priceWithDiscount = 1f,
                 rating = 0f
             )
-            whenever(productDaoMock.getByIds(setOf(1, 2))) doReturn listOf(product)
+            val exceptionMock: HttpException = mock()
+            whenever(productDaoMock.getByIds(listOf(1, 2))) doReturn listOf(product)
             whenever(productTransformableParamsProviderMock.provideCategory(any())) doReturn category
             whenever(productTransformableParamsProviderMock.provideProductItems(any())) doReturn emptyList()
+            whenever(exceptionProviderMock.getNotFoundException(any())) doReturn exceptionMock
 
             try {
                 api.getProductsByIds("1,2")
                 fail()
             } catch (e: HttpException) {
-                assertEquals(404, e.code())
-                assertEquals(
-                    "One or more products with specified ids are not found",
-                    e.response()?.errorBody()?.string()
-                )
+                verify(exceptionProviderMock, times(1))
+                    .getNotFoundException("One or more products with specified ids are not found")
+                assertEquals(exceptionMock, e)
             }
         }
 
     @Test
-    fun getProductByIds_returnsProducts_whenThereAreProductWithRequiredIdsInTheDatabase() =
+    fun getProductsByIds_returnsProducts_whenThereAreProductWithRequiredIdsInTheDatabase() =
         runTest {
             val categoryModel = CategoryModel(
                 id = 1,
@@ -179,6 +181,7 @@ class CommonApiImplTest {
                     previewPath = "static/image/product_1_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
+                    createdAt = 0,
                     rating = 0f
                 ),
                 ProductEntity(
@@ -190,10 +193,11 @@ class CommonApiImplTest {
                     previewPath = "static/image/product_2_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
+                    createdAt = 0,
                     rating = 0f
                 )
             )
-            whenever(productDaoMock.getByIds(setOf(1, 2))).doReturn(products)
+            whenever(productDaoMock.getByIds(listOf(1, 2))).doReturn(products)
             whenever(productTransformableParamsProviderMock.provideCategory(any())) doReturn categoryModel
             whenever(productTransformableParamsProviderMock.provideProductItems(any())) doReturn emptyList()
 
@@ -211,6 +215,7 @@ class CommonApiImplTest {
                     preview = "file:///android_asset/demo_db_editor/static/image/product_1_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
+                    createdAt = 0,
                     rating = 0f
                 ),
                 ProductModel(
@@ -224,6 +229,7 @@ class CommonApiImplTest {
                     preview = "file:///android_asset/demo_db_editor/static/image/product_2_preview.jpg",
                     price = 1f,
                     priceWithDiscount = 1f,
+                    createdAt = 0,
                     rating = 0f
                 )
             )
@@ -232,8 +238,7 @@ class CommonApiImplTest {
 
     @Test
     fun getStories_returnsEmpty_whenThereAreNoStories() = runTest {
-        val istream = "[]".byteInputStream()
-        whenever(assetManagerMock.open(any())) doReturn istream
+        whenever(assetProviderMock.loadListFromAsset(AssetProvider.AssetFile.STORIES, StoryModel::class.java)) doReturn emptyList()
 
         val result = api.getStories()
 
@@ -242,79 +247,65 @@ class CommonApiImplTest {
 
     @Test
     fun getStories_throwsInternalServerError_whenStoriesFileIsCorrupted() = runTest {
-        val istream = "1234".byteInputStream()
-        whenever(assetManagerMock.open(any())) doReturn istream
+        val exceptionMock: HttpException = mock()
+        whenever(assetProviderMock.loadListFromAsset(AssetProvider.AssetFile.STORIES, StoryModel::class.java)) doThrow JsonDataException()
+        whenever(exceptionProviderMock.getInternalServerErrorException(any())) doReturn exceptionMock
 
         try {
             api.getStories()
             fail()
         } catch (e: HttpException) {
-            assertEquals(500, e.code())
-            assertEquals("Stories source is corrupted", e.response()?.errorBody()?.string())
+            verify(exceptionProviderMock, times(1))
+                .getInternalServerErrorException("Stories source is corrupted")
+            assertEquals(exceptionMock, e)
         }
     }
 
     @Test
     fun getStories_throwsInternalServerError_whenThereAreStoriesWithoutContent() = runTest {
-        val istream = """
-            [
-              {
-                "id": "story_1",
-                "image": "file:///android_asset/image/story_1.png",
-                "contents": []
-              }
-            ]
-        """.let(::JSONArray).toString().byteInputStream()
-        whenever(assetManagerMock.open(any())) doReturn istream
+        val stories = listOf(
+            StoryModel(
+                id = "1",
+                banner = "banner",
+                contents = emptyList()
+            )
+        )
+        val exceptionMock = mock<HttpException>()
+        whenever(assetProviderMock.loadListFromAsset(AssetProvider.AssetFile.STORIES, StoryModel::class.java)) doReturn stories
+        whenever(exceptionProviderMock.getInternalServerErrorException(any())) doReturn exceptionMock
 
         try {
             api.getStories()
             fail()
         } catch (e: HttpException) {
-            assertEquals(500, e.code())
-            assertEquals("Stories without content are not allowed", e.response()?.errorBody()?.string())
+            verify(exceptionProviderMock, times(1))
+                .getInternalServerErrorException("Stories without content are not allowed")
+            assertEquals(exceptionMock, e)
         }
     }
 
     @Test
     fun getStories_returnsStories_whenThereAreStoriesWithContent() = runTest {
-        val istream = """
-            [
-              {
-                "id": "story_1",
-                "image": "story_1_image",
-                "contents": [
-                  {
-                    "id": "story_1_content_1",
-                    "title": "Story 1 content 1",
-                    "text": "Story 1 content 1 text",
-                    "media": "story_1_content_1_media",
-                    "type": "video"
-                  }
-                ]
-              }
-            ]
-        """.trimIndent().byteInputStream()
-        whenever(assetManagerMock.open(any())) doReturn istream
-
-        val result = api.getStories()
-
-        val expected = listOf(
+        val stories = listOf(
             StoryModel(
                 id = "story_1",
-                banner = "story_1_image",
+                banner = "story_1_banner",
                 contents = listOf(
                     StoryModel.ContentModel(
                         id = "story_1_content_1",
-                        title = "Story 1 content 1",
-                        text = "Story 1 content 1 text",
                         media = "story_1_content_1_media",
-                        type = "video"
+                        text = null,
+                        title = "Content",
+                        type = "image"
                     )
                 )
             )
         )
-        assertEquals(expected, result)
+        whenever(assetProviderMock.loadListFromAsset(AssetProvider.AssetFile.STORIES, StoryModel::class.java)) doReturn stories
+
+        val result = api.getStories()
+
+        assertEquals(stories, result)
     }
 
     // TODO: add test cases for other methods

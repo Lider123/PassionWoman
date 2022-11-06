@@ -63,7 +63,8 @@ import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
-import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.assets.AssetProvider
+import ru.babaetskv.passionwoman.data.assets.AssetProviderImpl
 import ru.babaetskv.passionwoman.data.dataflow.CartFlowImpl
 import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvider
 import ru.babaetskv.passionwoman.data.gateway.exception.GatewayExceptionProviderImpl
@@ -177,7 +178,7 @@ val dataFlowModule = module {
 }
 
 val assetsModule = module {
-    single { AssetProvider(androidContext(), get()) }
+    single<AssetProvider> { AssetProviderImpl(androidContext(), get()) }
 }
 
 val networkModule = module {

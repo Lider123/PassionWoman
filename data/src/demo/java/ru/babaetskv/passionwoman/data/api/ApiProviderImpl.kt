@@ -1,7 +1,7 @@
 package ru.babaetskv.passionwoman.data.api
 
 import android.content.Context
-import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.assets.AssetProvider
 import ru.babaetskv.passionwoman.data.api.decorator.CheckTokenAuthApiDecorator
 import ru.babaetskv.passionwoman.data.api.decorator.DelayAuthApiDecorator
 import ru.babaetskv.passionwoman.data.api.decorator.DelayCommonApiDecorator

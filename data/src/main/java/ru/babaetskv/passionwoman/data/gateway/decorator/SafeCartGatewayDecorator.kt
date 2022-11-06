@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.data.gateway.decorator
 
+import ru.babaetskv.passionwoman.data.gateway.decorator.base.CartGatewayDecorator
 import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvider
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.Cart
@@ -7,34 +8,34 @@ import ru.babaetskv.passionwoman.domain.model.CartItem
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 class SafeCartGatewayDecorator(
-    private val gateway: CartGateway,
+    gateway: CartGateway,
     private val exceptionProvider: GatewayExceptionProvider
-) : CartGateway {
+) : CartGatewayDecorator(gateway) {
 
     override suspend fun addToCart(item: CartItem): Transformable<Unit, Cart> =
         try {
-            gateway.addToCart(item)
+            super.addToCart(item)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun checkout(): Transformable<Unit, Cart> =
         try {
-            gateway.checkout()
+            super.checkout()
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun getCart(): Transformable<Unit, Cart> =
         try {
-            gateway.getCart()
+            super.getCart()
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun removeFromCart(item: CartItem): Transformable<Unit, Cart> =
         try {
-            gateway.removeFromCart(item)
+            super.removeFromCart(item)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }

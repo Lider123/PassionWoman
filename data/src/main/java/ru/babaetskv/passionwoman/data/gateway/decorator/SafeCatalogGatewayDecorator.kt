@@ -1,5 +1,6 @@
 package ru.babaetskv.passionwoman.data.gateway.decorator
 
+import ru.babaetskv.passionwoman.data.gateway.decorator.base.CatalogGatewayDecorator
 import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvider
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.gateway.CatalogGateway
@@ -8,13 +9,13 @@ import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
 class SafeCatalogGatewayDecorator(
-    private val gateway: CatalogGateway,
+    gateway: CatalogGateway,
     private val exceptionProvider: GatewayExceptionProvider
-) : CatalogGateway {
+) : CatalogGatewayDecorator(gateway) {
 
     override suspend fun getCategories(): List<Transformable<Unit, Category>> =
         try {
-            gateway.getCategories()
+            super.getCategories()
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
@@ -23,21 +24,21 @@ class SafeCatalogGatewayDecorator(
         favoriteIds: Collection<Long>
     ): List<Transformable<Unit, Product>> =
         try {
-            gateway.getFavorites(favoriteIds)
+            super.getFavorites(favoriteIds)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>> =
         try {
-            gateway.getPopularBrands(count)
+            super.getPopularBrands(count)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun getProduct(productId: Long): Transformable<Unit, Product> =
         try {
-            gateway.getProduct(productId)
+            super.getProduct(productId)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
@@ -51,21 +52,21 @@ class SafeCatalogGatewayDecorator(
         sorting: Sorting
     ): Transformable<StringProvider, ProductsPagedResponse> =
         try {
-            gateway.getProducts(categoryId, query, limit, offset, filters, sorting)
+            super.getProducts(categoryId, query, limit, offset, filters, sorting)
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun getPromotions(): List<Transformable<Unit, Promotion>> =
         try {
-            gateway.getPromotions()
+            super.getPromotions()
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }
 
     override suspend fun getStories(): List<Transformable<Unit, Story>> =
         try {
-            gateway.getStories()
+            super.getStories()
         } catch (e: Exception) {
             throw exceptionProvider.getGatewayException(e)
         }

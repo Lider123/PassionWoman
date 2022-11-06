@@ -1,8 +1,5 @@
 package ru.babaetskv.passionwoman.data.api
 
-import android.content.res.AssetManager
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -12,27 +9,20 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import retrofit2.HttpException
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.UserDao
 import ru.babaetskv.passionwoman.data.database.entity.UserEntity
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
-import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class AuthApiImplTest {
     private val userDaoMock: UserDao = mock()
-
-    private val assetManager: AssetManager = mock()
-    private val database: PassionWomanDatabase = mock {
+    private val exceptionProviderMock: ApiExceptionProvider = mock()
+    private val databaseMock: PassionWomanDatabase = mock {
         whenever(mock.userDao) doReturn userDaoMock
-    }
-    private val moshi: Moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-    private val authPreferences: AuthPreferences = mock {
-        whenever(mock.authToken) doReturn "token"
     }
     private val dateTimeConverter: DateTimeConverter = mock()
 
@@ -40,7 +30,7 @@ class AuthApiImplTest {
 
     @Before
     fun before() {
-        authApiImpl = AuthApiImpl(assetManager, database, moshi, authPreferences, dateTimeConverter)
+        authApiImpl = AuthApiImpl(databaseMock, exceptionProviderMock, dateTimeConverter)
     }
 
     @Test
@@ -57,30 +47,22 @@ class AuthApiImplTest {
         authApiImpl.getProfile()
         authApiImpl.getProfile()
 
-        verify(userDaoMock, times(1)).getProfile()
-    }
-
-    @Test
-    fun getProfile_throwsUnauthorized_whenGotIncorrectToken() = runTest {
-        whenever(authPreferences.authToken) doReturn "1234"
-
-        try {
-            authApiImpl.getProfile()
-            fail()
-        } catch (e: HttpException) {
-            assertEquals(401, e.code())
-            assertEquals("Unauthorized", e.response()?.errorBody()?.string())
-        }
+        verify(userDaoMock, times(1))
+            .getProfile()
     }
 
     @Test
     fun getProfile_throwsNotFound_whenThereIsNoProfileInTheDatabase() = runTest {
+        val notFoundException: HttpException = mock()
+        whenever(exceptionProviderMock.getNotFoundException(any())) doReturn notFoundException
+
         try {
             authApiImpl.getProfile()
             fail()
         } catch (e: HttpException) {
-            assertEquals(404, e.code())
-            assertEquals("Profile is not found", e.response()?.errorBody()?.string())
+            verify(exceptionProviderMock, times(1))
+                .getNotFoundException("Profile is not found")
+            assertEquals(notFoundException, e)
         }
     }
 
@@ -122,26 +104,6 @@ class AuthApiImplTest {
             avatar = null
         )
         assertEquals(expected, result)
-    }
-
-    @Test
-    fun updateProfile_throwsUnauthorized_whenGotIncorrectToken() = runTest {
-        val profile = ProfileModel(
-            id = 1,
-            name = "Jane",
-            surname = "Doe",
-            phone = "+79000000000",
-            avatar = null
-        )
-        whenever(authPreferences.authToken) doReturn "1234"
-
-        try {
-            authApiImpl.updateProfile(profile)
-            fail()
-        } catch (e: HttpException) {
-            assertEquals(401, e.code())
-            assertEquals("Unauthorized", e.response()?.errorBody()?.string())
-        }
     }
 
     @Test

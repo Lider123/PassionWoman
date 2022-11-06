@@ -19,51 +19,51 @@ class AuthApiImpl(
     private val exceptionProvider: ApiExceptionProvider,
     private val dateTimeConverter: DateTimeConverter
 ) : AuthApi {
-    private var profileMock: ProfileModel? = null
-    private var favoriteIdsMock: List<Long> = emptyList()
-    private var ordersMock: MutableList<OrderModel> = mutableListOf()
-    private var cartMock: CartModel = CartModel(
+    private var profile: ProfileModel? = null
+    private var favoriteIds: List<Long> = emptyList()
+    private var orders: MutableList<OrderModel> = mutableListOf()
+    private var cart: CartModel = CartModel(
         items = emptyList(),
         price = 0f,
         total = 0f
     )
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
-        return@withContext if (profileMock == null) {
+        return@withContext if (profile == null) {
             database.userDao.getProfile()
                 ?.transform()
-                ?.also { profileMock = it }
+                ?.also { profile = it }
                 ?: throw exceptionProvider.getNotFoundException("Profile is not found")
-        } else profileMock!!
+        } else profile!!
     }
 
     override suspend fun updateProfile(body: ProfileModel) {
-        profileMock = body
+        profile = body
     }
 
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         // TODO: think up how to save image
     }
 
-    override suspend fun getFavoriteIds(): List<Long> = favoriteIdsMock
+    override suspend fun getFavoriteIds(): List<Long> = favoriteIds
 
     override suspend fun setFavoriteIds(ids: List<Long>) {
-        favoriteIdsMock = ids
+        favoriteIds = ids
     }
 
     override suspend fun getOrders(): List<OrderModel> {
-        for (i in ordersMock.indices) {
-            val newStatus = ordersMock[i].status.let(::getNextOrderStatus)
-            ordersMock[i] = ordersMock[i].copy(
+        for (i in orders.indices) {
+            val newStatus = orders[i].status.let(::getNextOrderStatus)
+            orders[i] = orders[i].copy(
                 status = newStatus
             )
         }
-        return ordersMock
+        return orders
     }
 
     override suspend fun checkout(): CartModel {
         // TODO: insert order to the database
-        if (cartMock.items.isEmpty()) {
+        if (cart.items.isEmpty()) {
             throw exceptionProvider.getBadRequestException("The cart is empty")
         }
 
@@ -76,18 +76,18 @@ class AuthApiImpl(
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },
-            cartItems = cartMock.items,
+            cartItems = cart.items,
             status = Order.Status.PENDING.apiName
         )
-        ordersMock.add(newOrder)
+        orders.add(newOrder)
         clearCart()
-        return cartMock
+        return cart
     }
 
-    override suspend fun getCart(): CartModel = cartMock
+    override suspend fun getCart(): CartModel = cart
 
     override suspend fun addToCart(item: CartItemModel): CartModel {
-        val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
+        val items: MutableList<CartItemModel> = cart.items.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
                 && it.selectedSize == item.selectedSize
@@ -100,16 +100,16 @@ class AuthApiImpl(
                 count = it.count + item.count
             ))
         } ?: items.add(item)
-        cartMock = CartModel(
+        cart = CartModel(
             items = items,
             price = calculatePrice(items),
             total = calculateTotal(items)
         )
-        return cartMock
+        return cart
     }
 
     override suspend fun removeFromCart(item: CartItemModel): CartModel {
-        val items: MutableList<CartItemModel> = cartMock.items.toMutableList()
+        val items: MutableList<CartItemModel> = cart.items.toMutableList()
         val existingItem = items.find {
             it.productId == item.productId
                     && it.selectedSize == item.selectedSize
@@ -124,13 +124,13 @@ class AuthApiImpl(
                     count = remainingCount
                 ))
             }
-            cartMock = CartModel(
+            cart = CartModel(
                 items = items,
                 price = calculatePrice(items),
                 total = calculateTotal(items)
             )
         }
-        return cartMock
+        return cart
     }
 
     private fun calculatePrice(items: List<CartItemModel>): Float =
@@ -156,7 +156,7 @@ class AuthApiImpl(
         }?.apiName ?: status
 
     private fun clearCart() {
-        cartMock = CartModel(
+        cart = CartModel(
             items = emptyList(),
             price = 0f,
             total = 0f

@@ -2,30 +2,31 @@ package ru.babaetskv.passionwoman.data.api.decorator
 
 import kotlinx.coroutines.delay
 import ru.babaetskv.passionwoman.data.api.CommonApi
+import ru.babaetskv.passionwoman.data.api.decorator.base.CommonApiDecorator
 import ru.babaetskv.passionwoman.data.model.*
 
 class DelayCommonApiDecorator(
-    private val api: CommonApi
-) : CommonApi {
+    api: CommonApi
+) : CommonApiDecorator(api) {
 
     override suspend fun authorize(body: AccessTokenModel): AuthTokenModel {
         delay(DELAY_LOADING)
-        return api.authorize(body)
+        return super.authorize(body)
     }
 
     override suspend fun getCategories(): List<CategoryModel> {
         delay(DELAY_LOADING)
-        return api.getCategories()
+        return super.getCategories()
     }
 
     override suspend fun getPopularBrands(count: Int): List<BrandModel> {
         delay(DELAY_LOADING)
-        return api.getPopularBrands(count)
+        return super.getPopularBrands(count)
     }
 
     override suspend fun getProduct(productId: Long): ProductModel {
         delay(DELAY_LOADING)
-        return api.getProduct(productId)
+        return super.getProduct(productId)
     }
 
     override suspend fun getProducts(
@@ -37,22 +38,22 @@ class DelayCommonApiDecorator(
         offset: Int
     ): ProductsPagedResponseModel {
         delay(DELAY_LOADING)
-        return api.getProducts(categoryId, query, filters, sorting, limit, offset)
+        return super.getProducts(categoryId, query, filters, sorting, limit, offset)
     }
 
     override suspend fun getProductsByIds(ids: String): List<ProductModel> {
         delay(DELAY_LOADING)
-        return api.getProductsByIds(ids)
+        return super.getProductsByIds(ids)
     }
 
     override suspend fun getPromotions(): List<PromotionModel> {
         delay(DELAY_LOADING)
-        return api.getPromotions()
+        return super.getPromotions()
     }
 
     override suspend fun getStories(): List<StoryModel> {
         delay(DELAY_LOADING)
-        return api.getStories()
+        return super.getStories()
     }
 
     companion object {
