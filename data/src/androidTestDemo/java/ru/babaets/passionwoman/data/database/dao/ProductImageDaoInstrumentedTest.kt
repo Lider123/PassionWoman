@@ -99,7 +99,7 @@ class ProductImageDaoInstrumentedTest : DaoInstrumentedTest() {
 
             val result = productImageDao.getForProductItem(1)
 
-            assertEquals(images.filter { it.productItemId == 1 }.map { it.imagePath }, result)
+            assertEquals(images.filter { it.productItemId == 1L }.map { it.imagePath }, result)
         }
 
     @After

@@ -109,7 +109,7 @@ class ProductDaoInstrumentedTest : DaoInstrumentedTest() {
 
             val result = productDao.getByCategoryId(1)
 
-            assertEquals(products.filter { it.categoryId == 1 }, result)
+            assertEquals(products.filter { it.categoryId == 1L }, result)
         }
 
     @Test
@@ -264,7 +264,7 @@ class ProductDaoInstrumentedTest : DaoInstrumentedTest() {
 
         val result = productDao.getByIds(listOf(2, 3, 4))
 
-        assertEquals(products.filter { it.id in listOf(2, 3, 4) }, result)
+        assertEquals(products.filter { it.id in listOf(2L, 3L, 4L) }, result)
     }
 
     @Test
@@ -321,7 +321,7 @@ class ProductDaoInstrumentedTest : DaoInstrumentedTest() {
 
         val result = productDao.getByIds(listOf(1, 2))
 
-        assertEquals(products.filter { it.id in listOf(1, 2) }, result)
+        assertEquals(products.filter { it.id in listOf(1L, 2L) }, result)
     }
 
     @Test

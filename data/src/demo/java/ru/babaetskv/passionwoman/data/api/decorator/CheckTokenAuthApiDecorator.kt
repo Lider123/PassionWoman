@@ -2,6 +2,7 @@ package ru.babaetskv.passionwoman.data.api.decorator
 
 import okhttp3.MultipartBody
 import ru.babaetskv.passionwoman.data.api.AuthApi
+import ru.babaetskv.passionwoman.data.api.decorator.base.AuthApiDecorator
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.data.model.CartModel
@@ -13,57 +14,57 @@ import timber.log.Timber
 class CheckTokenAuthApiDecorator(
     private val authPreferences: AuthPreferences,
     private val exceptionProvider: ApiExceptionProvider,
-    private val api: AuthApi
-) : AuthApi {
+    api: AuthApi
+) : AuthApiDecorator(api) {
 
     override suspend fun addToCart(item: CartItemModel): CartModel {
         checkToken()
-        return api.addToCart(item)
+        return super.addToCart(item)
     }
 
     override suspend fun checkout(): CartModel {
         checkToken()
-        return api.checkout()
+        return super.checkout()
     }
 
     override suspend fun getCart(): CartModel {
         checkToken()
-        return api.getCart()
+        return super.getCart()
     }
 
     override suspend fun getFavoriteIds(): List<Long> {
         checkToken()
-        return api.getFavoriteIds()
+        return super.getFavoriteIds()
     }
 
     override suspend fun getOrders(): List<OrderModel> {
         checkToken()
-        return api.getOrders()
+        return super.getOrders()
     }
 
     override suspend fun getProfile(): ProfileModel {
         checkToken()
-        return api.getProfile()
+        return super.getProfile()
     }
 
     override suspend fun removeFromCart(item: CartItemModel): CartModel {
         checkToken()
-        return api.removeFromCart(item)
+        return super.removeFromCart(item)
     }
 
     override suspend fun setFavoriteIds(ids: List<Long>) {
         checkToken()
-        api.setFavoriteIds(ids)
+        super.setFavoriteIds(ids)
     }
 
     override suspend fun updateProfile(body: ProfileModel) {
         checkToken()
-        api.updateProfile(body)
+        super.updateProfile(body)
     }
 
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         checkToken()
-        api.uploadAvatar(image)
+        super.uploadAvatar(image)
     }
 
     private fun checkToken() {

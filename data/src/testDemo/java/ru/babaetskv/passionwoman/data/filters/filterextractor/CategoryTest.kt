@@ -28,7 +28,7 @@ class CategoryTest {
 
     private val filterModel = FilterExtractor.Category()
 
-    private fun createCategory(id: Int) =
+    private fun createCategory(id: Long) =
         CategoryEntity(
             id = id,
             name = "Category $id",

@@ -11,6 +11,7 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.*
 import retrofit2.HttpException
+import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
 import ru.babaetskv.passionwoman.data.database.dao.*
 import ru.babaetskv.passionwoman.data.database.entity.BrandEntity
@@ -25,9 +26,11 @@ import ru.babaetskv.passionwoman.data.model.ProductItemModel
 @RunWith(MockitoJUnitRunner::class)
 class ProductTransformableParamsProviderTest {
     @Mock
-    private lateinit var productItemTransformableParamsProvider: ProductItemEntity.TransformableParamsProvider
+    private lateinit var databaseMock: PassionWomanDatabase
     @Mock
-    private lateinit var database: PassionWomanDatabase
+    private lateinit var exceptionProviderMock: ApiExceptionProvider
+    @Mock
+    private lateinit var productItemTransformableParamsProviderMock: ProductItemEntity.TransformableParamsProvider
     @InjectMocks
     private lateinit var provider: ProductTransformableParamsProvider
 
@@ -55,29 +58,30 @@ class ProductTransformableParamsProviderTest {
 
     @Before
     fun before() {
-        whenever(database.categoryDao) doReturn categoryDaoMock
-        whenever(database.brandDao) doReturn brandDaoMock
-        whenever(database.productItemDao) doReturn productItemDaoMock
-        whenever(database.productCountryDao) doReturn productCountryDaoMock
-        whenever(database.productModelDao) doReturn productModelDaoMock
-        whenever(database.productMaterialDao) doReturn productMaterialDaoMock
-        whenever(database.productSeasonDao) doReturn productSeasonDaoMock
-        whenever(database.productStyleDao) doReturn productStyleDaoMock
-        whenever(database.productTypeDao) doReturn productTypeDaoMock
+        whenever(databaseMock.categoryDao) doReturn categoryDaoMock
+        whenever(databaseMock.brandDao) doReturn brandDaoMock
+        whenever(databaseMock.productItemDao) doReturn productItemDaoMock
+        whenever(databaseMock.productCountryDao) doReturn productCountryDaoMock
+        whenever(databaseMock.productModelDao) doReturn productModelDaoMock
+        whenever(databaseMock.productMaterialDao) doReturn productMaterialDaoMock
+        whenever(databaseMock.productSeasonDao) doReturn productSeasonDaoMock
+        whenever(databaseMock.productStyleDao) doReturn productStyleDaoMock
+        whenever(databaseMock.productTypeDao) doReturn productTypeDaoMock
     }
 
     @Test
     fun provideCategory_throwsNotFound_whenThereIsNoCategoryWithRequiredIdInTheDatabase() =
         runTest {
+            val exceptionMock: HttpException = mock()
+            whenever(exceptionProviderMock.getNotFoundException(any())) doReturn exceptionMock
+
             try {
                 provider.provideCategory(1)
                 fail()
             } catch (e: HttpException) {
-                assertEquals(404, e.code())
-                assertEquals(
-                    "Cannot find category with id 1",
-                    e.response()?.errorBody()?.string()
-                )
+                verify(exceptionProviderMock, times(1))
+                    .getNotFoundException("Cannot find category with id 1")
+                assertEquals(e, exceptionMock)
             }
         }
 
@@ -118,15 +122,16 @@ class ProductTransformableParamsProviderTest {
     @Test
     fun provideBrand_throwsNotFound_whenThereIsNoBrandWithRequiredIdInTheDatabase() =
         runTest {
+            val exceptionMock: HttpException = mock()
+            whenever(exceptionProviderMock.getNotFoundException(any())) doReturn exceptionMock
+
             try {
                 provider.provideBrand(1)
                 fail()
             } catch (e: HttpException) {
-                assertEquals(404, e.code())
-                assertEquals(
-                    "Cannot find brand with id 1",
-                    e.response()?.errorBody()?.string()
-                )
+                verify(exceptionProviderMock, times(1))
+                    .getNotFoundException("Cannot find brand with id 1")
+                assertEquals(exceptionMock, e)
             }
         }
 
@@ -177,8 +182,8 @@ class ProductTransformableParamsProviderTest {
             hex = "hex1"
         )
         whenever(productItemDaoMock.getByProductId(1)) doReturn listOf(productItem)
-        whenever(productItemTransformableParamsProvider.provideColor(1)) doReturn color
-        whenever(productItemTransformableParamsProvider.provideImages(1)) doReturn emptyList()
+        whenever(productItemTransformableParamsProviderMock.provideColor(1)) doReturn color
+        whenever(productItemTransformableParamsProviderMock.provideImages(1)) doReturn emptyList()
 
         provider.provideProductItems(1)
 
@@ -187,17 +192,17 @@ class ProductTransformableParamsProviderTest {
 
     @Test
     fun provideProductItems_throwNotFound_whenThereAreNoItemsForRequiredProductId() = runTest {
+        val exceptionMock: HttpException = mock()
         whenever(productItemDaoMock.getByProductId(1)) doReturn emptyList()
+        whenever(exceptionProviderMock.getNotFoundException(any())) doReturn exceptionMock
 
         try {
             provider.provideProductItems(1)
             fail()
         } catch (e: HttpException) {
-            assertEquals(404, e.code())
-            assertEquals(
-                "Cannot find product items for the product with id 1",
-                e.response()?.errorBody()?.string()
-            )
+            verify(exceptionProviderMock, times(1))
+                .getNotFoundException("Cannot find product items for the product with id 1")
+            assertEquals(e, exceptionMock)
         }
     }
 
@@ -216,15 +221,15 @@ class ProductTransformableParamsProviderTest {
             )
         )
         whenever(productItemDaoMock.getByProductId(1)) doReturn productItems
-        whenever(productItemTransformableParamsProvider.provideColor(any())).doAnswer { invocation ->
-            val colorId = invocation.getArgument<Int>(0)
+        whenever(productItemTransformableParamsProviderMock.provideColor(any())).doAnswer { invocation ->
+            val colorId = invocation.getArgument<Long>(0)
             ColorModel(
                 id = colorId,
                 uiName = "Color $colorId",
                 hex = "hex$colorId"
             )
         }
-        whenever(productItemTransformableParamsProvider.provideImages(any())) doReturn emptyList()
+        whenever(productItemTransformableParamsProviderMock.provideImages(any())) doReturn emptyList()
 
         val result = provider.provideProductItems(1)
 

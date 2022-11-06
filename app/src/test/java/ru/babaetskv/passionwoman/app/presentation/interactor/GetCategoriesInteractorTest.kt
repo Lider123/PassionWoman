@@ -17,6 +17,7 @@ import ru.babaetskv.passionwoman.domain.model.Category
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
 import ru.babaetskv.passionwoman.domain.usecase.GetCategoriesUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
@@ -29,7 +30,7 @@ class GetCategoriesInteractorTest {
     @InjectMocks
     private lateinit var interactor: GetCategoriesInteractor
 
-    private fun createCategoryTransformable(id: Int): Transformable<Unit, Category> =
+    private fun createCategoryTransformable(id: Long): Transformable<Unit, Category> =
         CategoryModel(
             id = id,
             name = "Category $id",

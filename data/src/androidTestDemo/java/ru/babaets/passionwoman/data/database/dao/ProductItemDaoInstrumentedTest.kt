@@ -91,7 +91,7 @@ class ProductItemDaoInstrumentedTest : DaoInstrumentedTest() {
 
             val result = productItemDao.getByProductId(1)
 
-            assertEquals(productItems.filter { it.productId == 1 }, result)
+            assertEquals(productItems.filter { it.productId == 1L }, result)
         }
 
     @After

@@ -1,7 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
-import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.assets.AssetProvider
 import ru.babaetskv.passionwoman.data.model.ProductModel
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
@@ -22,7 +22,10 @@ class InitDatabaseInteractor(
 
     override suspend fun run(params: Unit) {
         val products: List<ProductModel> =
-            assetProvider.loadListFromAsset(AssetProvider.AssetFile.PRODUCTS)
+            assetProvider.loadListFromAsset(
+                AssetProvider.AssetFile.PRODUCTS,
+                ProductModel::class.java
+            )
         for (product in products) repository.saveProduct(product.transform())
         repository.dump()
     }

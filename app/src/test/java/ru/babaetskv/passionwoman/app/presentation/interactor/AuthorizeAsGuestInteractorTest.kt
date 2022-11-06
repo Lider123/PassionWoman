@@ -13,6 +13,7 @@ import org.mockito.kotlin.*
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
+import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

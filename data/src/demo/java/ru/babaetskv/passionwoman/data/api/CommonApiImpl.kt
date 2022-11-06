@@ -5,7 +5,7 @@ import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import ru.babaetskv.passionwoman.data.AssetProvider
+import ru.babaetskv.passionwoman.data.assets.AssetProvider
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.filters.Filters
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
@@ -37,7 +37,10 @@ class CommonApiImpl(
 
     override suspend fun getStories(): List<StoryModel> =
         try {
-            val stories = assetProvider.loadListFromAsset<StoryModel>(AssetProvider.AssetFile.STORIES)
+            val stories = assetProvider.loadListFromAsset(
+                AssetProvider.AssetFile.STORIES,
+                StoryModel::class.java
+            )
             if (stories.any { it.contents.isEmpty() }) {
                 throw exceptionProvider.getInternalServerErrorException("Stories without content are not allowed")
             }

@@ -28,7 +28,7 @@ class BrandTest {
 
     private val filterModel = FilterExtractor.Brand()
 
-    private fun createBrand(id: Int) =
+    private fun createBrand(id: Long) =
         BrandEntity(
             id = id,
             name = "Brand $id",

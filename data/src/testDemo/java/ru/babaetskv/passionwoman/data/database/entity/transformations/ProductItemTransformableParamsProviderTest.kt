@@ -32,7 +32,7 @@ class ProductItemTransformableParamsProviderTest {
     @InjectMocks
     lateinit var provider: ProductItemTransformableParamsProvider
 
-    private fun createColor(id: Int) =
+    private fun createColor(id: Long) =
         ColorEntity(
             id = id,
             uiName = "color $id",
