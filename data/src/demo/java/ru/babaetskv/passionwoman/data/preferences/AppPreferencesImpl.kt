@@ -4,4 +4,5 @@ import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 
 class AppPreferencesImpl : AppPreferences {
     override var onboardingShowed: Boolean = false
+    override var pushToken: String = ""
 }

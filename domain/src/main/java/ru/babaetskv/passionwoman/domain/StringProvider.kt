@@ -21,6 +21,8 @@ interface StringProvider {
     val GET_CART_ITEMS_ERROR: String
     val GET_ORDERS_ERROR: String
     val CHECKOUT_ERROR: String
+    val REGISTER_PUSH_TOKEN_ERROR: String
+    val UNREGISTER_PUSH_TOKEN_ERROR: String
 
     val UNAUTHORIZED_ERROR: String
     val CLIENT_ERROR: String

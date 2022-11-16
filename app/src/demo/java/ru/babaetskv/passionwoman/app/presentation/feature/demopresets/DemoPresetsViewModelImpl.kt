@@ -11,6 +11,7 @@ import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.usecase.InitDatabaseUseCase
+import ru.babaetskv.passionwoman.domain.usecase.RegisterPushTokenUseCase
 import ru.babaetskv.passionwoman.domain.usecase.UpdateProfileUseCase
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
@@ -20,6 +21,7 @@ class DemoPresetsViewModelImpl(
     private val getProfileUseCase: GetProfileUseCase,
     private val updateProfileUseCase: UpdateProfileUseCase,
     private val initDatabaseUseCase: InitDatabaseUseCase,
+    private val registerPushTokenUseCase: RegisterPushTokenUseCase,
     private val resources: Resources,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), DemoPresetsViewModel {
@@ -45,6 +47,7 @@ class DemoPresetsViewModelImpl(
             appPrefs.applyDemoPresets(presets)
             authPrefs.applyDemoPresets(presets)
             if (authPrefs.authType == AuthPreferences.AuthType.AUTHORIZED && authPrefs.profileIsFilled) {
+                registerPushTokenUseCase.execute()
                 val profile = getProfileUseCase.execute()
                 profile.copy(
                     name = resources.getString(R.string.demo_name),

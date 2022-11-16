@@ -1,18 +1,20 @@
 package ru.babaetskv.passionwoman.app.di
 
-import android.app.Application
+import android.content.Context
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 import ru.babaetskv.passionwoman.app.BuildConfig
 
-class KoinInitializerImpl : KoinInitializer {
+object KoinInitializer {
+    var isInitialized: Boolean = false
+        private set
 
-    override fun init(app: Application) {
+    fun init(appContext: Context) {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
-            androidContext(app)
+            androidContext(appContext)
             modules(
                 appModule,
                 networkModule,
@@ -26,5 +28,6 @@ class KoinInitializerImpl : KoinInitializer {
                 demoModule
             )
         }
+        isInitialized = true
     }
 }

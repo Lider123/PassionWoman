@@ -67,6 +67,16 @@ class CheckTokenAuthApiDecorator(
         super.uploadAvatar(image)
     }
 
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        checkToken()
+        super.registerPushToken(token)
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        checkToken()
+        super.unregisterPushToken(token)
+    }
+
     private fun checkToken() {
         val userToken = authPreferences.authToken
         if (userToken != TOKEN) {

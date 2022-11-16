@@ -3,6 +3,8 @@ package ru.babaetskv.passionwoman.data.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import okio.buffer
+import okio.sink
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
@@ -11,22 +13,27 @@ import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.util.*
 import kotlin.random.Random
 
 class AuthApiImpl(
     private val database: PassionWomanDatabase,
     private val exceptionProvider: ApiExceptionProvider,
+    private val authPreferences: AuthPreferences,
     private val dateTimeConverter: DateTimeConverter
 ) : AuthApi {
     private var profile: ProfileModel? = null
     private var favoriteIds: List<Long> = emptyList()
-    private var orders: MutableList<OrderModel> = mutableListOf()
+    private var orders: MutableList<OrderModel> = mutableListOf() // TODO: setup push send on status update
     private var cart: CartModel = CartModel(
         items = emptyList(),
         price = 0f,
         total = 0f
     )
+    private val pushTokens = mutableMapOf<String, MutableSet<String>>()
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         return@withContext if (profile == null) {
@@ -131,6 +138,32 @@ class AuthApiImpl(
             )
         }
         return cart
+    }
+
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        val tokenString = readPart(token)
+        val activeUserTokens: MutableSet<String> = pushTokens[authPreferences.authToken]
+            ?: mutableSetOf()
+        activeUserTokens.add(tokenString)
+        pushTokens[authPreferences.authToken] = activeUserTokens
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        val tokenString = readPart(token)
+        val activeUserTokens: MutableSet<String> = pushTokens[authPreferences.authToken]
+            ?: return
+
+        if (!activeUserTokens.contains(tokenString)) return
+
+        activeUserTokens.remove(tokenString)
+        pushTokens[authPreferences.authToken] = activeUserTokens
+    }
+
+    private suspend fun readPart(part: MultipartBody.Part): String = withContext(Dispatchers.IO) {
+        val ostream: OutputStream = ByteArrayOutputStream()
+        val buffer = ostream.sink().buffer()
+        part.body.writeTo(buffer)
+        return@withContext ostream.toString()
     }
 
     private fun calculatePrice(items: List<CartItemModel>): Float =

@@ -13,7 +13,7 @@ import ru.babaetskv.passionwoman.domain.usecase.InitDatabaseUseCase
 val demoModule = module {
     single { DatabaseProvider.provideDatabase(androidContext()) }
 
-    viewModel { DemoPresetsViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { DemoPresetsViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
 
     factory<InitDatabaseUseCase> { InitDatabaseInteractor(get(), get(), get()) }
 

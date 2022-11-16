@@ -1,5 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.github.terrakok.cicerone.Screen
 import kotlinx.coroutines.launch
@@ -7,6 +9,9 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.permission.Permission
+import ru.babaetskv.passionwoman.app.permission.PermissionManager
+import ru.babaetskv.passionwoman.app.permission.PermissionStatus
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -17,14 +22,21 @@ import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 import java.lang.Exception
 
 class HomeViewModelImpl(
+    private val permissionManager: PermissionManager,
     private val getHomeDataUseCase: GetHomeDataUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), HomeViewModel {
     override val homeItemsLiveData = MutableLiveData(emptyList<HomeItem>())
+    override val pushPermissionStatusLiveData = MutableLiveData<PermissionStatus>()
 
     init {
         loadData()
+    }
+
+    override fun onStart(screenName: String) {
+        super.onStart(screenName)
+        if (Build.VERSION.SDK_INT >= 33) checkPushPermission()
     }
 
     override fun onErrorActionPressed(exception: Exception) {
@@ -102,6 +114,25 @@ class HomeViewModelImpl(
             .sendAlert()
     }
 
+    override fun onPushRationaleDialogConfirm() {
+        pushPermissionStatusLiveData.postValue(PermissionStatus.REQUEST_PERMISSION)
+    }
+
+    override fun onPushRationaleDialogReject() {
+        pushPermissionStatusLiveData.postValue(PermissionStatus.DENIED)
+    }
+
+    @RequiresApi(33)
+    override fun onPushPermissionRequestResult(isGranted: Boolean) {
+        if (!isGranted) {
+            notifier.newRequest(this, R.string.home_push_permission_not_granted_error)
+                .sendError()
+        }
+        pushPermissionStatusLiveData.postValue(
+            if (isGranted) PermissionStatus.GRANTED else PermissionStatus.DENIED
+        )
+    }
+
     private fun loadData() {
         launchWithLoading {
             val data = getHomeDataUseCase.execute()
@@ -128,6 +159,12 @@ class HomeViewModelImpl(
                 }
             })
         }
+    }
+
+    @RequiresApi(33)
+    private fun checkPushPermission() {
+        val status = permissionManager.getStatus(Permission.PUSH_NOTIFICATION)
+        pushPermissionStatusLiveData.postValue(status)
     }
 
     companion object {

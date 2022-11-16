@@ -24,6 +24,8 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val REMOVE_FROM_CART_ERROR: String = resources.getString(R.string.error_remove_from_cart)
     override val GET_CART_ITEMS_ERROR: String = resources.getString(R.string.error_get_cart_items)
     override val GET_ORDERS_ERROR: String = resources.getString(R.string.error_get_orders)
+    override val REGISTER_PUSH_TOKEN_ERROR: String = resources.getString(R.string.error_register_push_token)
+    override val UNREGISTER_PUSH_TOKEN_ERROR: String = resources.getString(R.string.error_unregister_push_token)
 
     override val EMPTY_CATEGORIES_ERROR: String = resources.getString(R.string.error_no_categories)
     override val EMPTY_FAVORITES_ERROR: String = resources.getString(R.string.error_no_favorites)

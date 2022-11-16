@@ -40,6 +40,7 @@ class MainViewModelImpl(
     }
 
     override fun handleIntent(intent: Intent, startApp: Boolean) {
+        // TODO: handle notification
         launch {
             val deeplinkPayload = deeplinkHandler.handle(intent.data)
             if (startApp) {

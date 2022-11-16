@@ -36,4 +36,12 @@ abstract class AuthApiDecorator(
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         api.uploadAvatar(image)
     }
+
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        api.registerPushToken(token)
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        api.unregisterPushToken(token)
+    }
 }

@@ -29,7 +29,7 @@ class ApiProviderImpl(
         )
 
     override fun provideAuthApi(): AuthApi =
-        AuthApiImpl(database, exceptionProvider, dateTimeConverter)
+        AuthApiImpl(database, exceptionProvider, authPreferences, dateTimeConverter)
             .let { CheckTokenAuthApiDecorator(authPreferences, exceptionProvider, it) }
             .let(::DelayAuthApiDecorator)
 

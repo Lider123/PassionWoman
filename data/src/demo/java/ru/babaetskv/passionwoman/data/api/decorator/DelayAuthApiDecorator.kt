@@ -63,6 +63,16 @@ class DelayAuthApiDecorator(
         super.uploadAvatar(image)
     }
 
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        delay(DELAY_LOADING)
+        super.registerPushToken(token)
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        delay(DELAY_LOADING)
+        super.unregisterPushToken(token)
+    }
+
     companion object {
         private const val DELAY_LOADING = 500L
     }
