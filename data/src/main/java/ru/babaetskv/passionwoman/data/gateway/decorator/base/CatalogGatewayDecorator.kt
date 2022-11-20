@@ -15,13 +15,13 @@ abstract class CatalogGatewayDecorator(
 
     override suspend fun getFavorites(
         favoriteIds: Collection<Long>
-    ): List<Transformable<Unit, Product>> = getFavorites(favoriteIds)
+    ): List<Transformable<Unit, Product>> = gateway.getFavorites(favoriteIds)
 
     override suspend fun getPopularBrands(count: Int): List<Transformable<Unit, Brand>> =
         gateway.getPopularBrands(count)
 
     override suspend fun getProduct(productId: Long): Transformable<Unit, Product> =
-        getProduct(productId)
+        gateway.getProduct(productId)
 
     override suspend fun getProducts(
         categoryId: Long?,

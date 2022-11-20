@@ -11,15 +11,17 @@ import ru.babaetskv.passionwoman.data.database.DatabaseProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductItemTransformableParamsProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
+import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 
 class ApiProviderImpl(
     context: Context,
     private val assetProvider: AssetProvider,
-    private val authPreferences: AuthPreferences,
+    private val authPrefs: AuthPreferences,
+    private val appPrefs: AppPreferences,
     private val dateTimeConverter: DateTimeConverter
 ) : ApiProvider {
-    private val database = DatabaseProvider.provideDatabase(context)
+    private val database = DatabaseProvider.provideDatabase(context, appPrefs)
     private val exceptionProvider: ApiExceptionProvider = ApiExceptionProviderImpl()
     private val productTransformableParamsProvider =
         ProductTransformableParamsProvider(
@@ -30,7 +32,7 @@ class ApiProviderImpl(
 
     override fun provideAuthApi(): AuthApi =
         AuthApiImpl(database, exceptionProvider, dateTimeConverter)
-            .let { CheckTokenAuthApiDecorator(authPreferences, exceptionProvider, it) }
+            .let { CheckTokenAuthApiDecorator(authPrefs, exceptionProvider, it) }
             .let(::DelayAuthApiDecorator)
 
     override fun provideCommonApi(): CommonApi =
