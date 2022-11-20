@@ -30,7 +30,7 @@ class DemoPresetsViewModelImpl(
 
     init {
         launchWithLoading {
-            initDatabaseUseCase.execute()
+            if (!appPrefs.databaseFilled) initDatabaseUseCase.execute()
             splashScreenVisible = false
         }
     }

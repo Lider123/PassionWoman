@@ -11,11 +11,11 @@ import ru.babaetskv.passionwoman.domain.repository.ProductsRepository
 import ru.babaetskv.passionwoman.domain.usecase.InitDatabaseUseCase
 
 val demoModule = module {
-    single { DatabaseProvider.provideDatabase(androidContext()) }
+    single { DatabaseProvider.provideDatabase(androidContext(), get()) }
 
     viewModel { DemoPresetsViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
 
-    factory<InitDatabaseUseCase> { InitDatabaseInteractor(get(), get(), get()) }
+    factory<InitDatabaseUseCase> { InitDatabaseInteractor(get(), get(), get(), get()) }
 
     single<ProductsRepository> { ProductsRepositoryImpl(get()) }
 }

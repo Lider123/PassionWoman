@@ -187,7 +187,7 @@ val networkModule = module {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
-    single<ApiProvider> { ApiProviderImpl(get(), get(), get(), DefaultDateTimeConverter) }
+    single<ApiProvider> { ApiProviderImpl(get(), get(), get(), get(), DefaultDateTimeConverter) }
     single { get<ApiProvider>().provideAuthApi() }
     single { get<ApiProvider>().provideCommonApi() }
 }

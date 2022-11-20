@@ -1,14 +1,49 @@
 package ru.babaetskv.passionwoman.data.preferences
 
+import com.chibatching.kotpref.KotprefModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.babaetskv.passionwoman.domain.preferences.FavoritesPreferences
-import java.util.*
 
-class FavoritesPreferencesImpl : FavoritesPreferences {
+class FavoritesPreferencesImpl : KotprefModel(), FavoritesPreferences {
+    private var favoriteIdsPref: String by stringPref()
     private val actionsChannel = Channel<FavoritesPreferences.Action?>(Channel.RENDEZVOUS)
-    private val favoriteIds = LinkedList<Long>()
+    private val favoriteIds: MutableList<Long>
+        get() = object : MutableList<Long> by readFavoriteIdsPref() {
+
+            override fun add(index: Int, element: Long) {
+                favoriteIdsPref = readFavoriteIdsPref()
+                    .apply {
+                        add(index, element)
+                    }
+                    .joinToString(",")
+            }
+
+            override fun remove(element: Long): Boolean {
+                val result: Boolean
+                favoriteIdsPref = readFavoriteIdsPref()
+                    .apply {
+                        result = remove(element)
+                    }
+                    .joinToString(",")
+                return result
+            }
+
+            override fun clear() {
+                favoriteIdsPref = ""
+            }
+
+            override fun addAll(elements: Collection<Long>): Boolean {
+                val result: Boolean
+                favoriteIdsPref = readFavoriteIdsPref()
+                    .apply {
+                        result = addAll(elements)
+                    }
+                    .joinToString(",")
+                return result
+            }
+        }
 
     override val favoritesUpdatesFlow: Flow<FavoritesPreferences.Action?>
         get() = actionsChannel.receiveAsFlow()
@@ -48,6 +83,13 @@ class FavoritesPreferencesImpl : FavoritesPreferences {
             actionsChannel.trySend(FavoritesPreferences.Action.Delete(id))
         }
     }
+
+    private fun readFavoriteIdsPref(): MutableList<Long> =
+        favoriteIdsPref.takeIf(String::isNotEmpty)
+            ?.split(",")
+            ?.map(String::toLong)
+            ?.toMutableList()
+            ?: mutableListOf()
 
     override fun reset() {
         favoriteIds.clear()
