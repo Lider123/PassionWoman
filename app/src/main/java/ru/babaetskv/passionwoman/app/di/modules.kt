@@ -100,7 +100,7 @@ val viewModelModule = module {
         AppConfig(isPortraitModeOnly)
     }
     single { ViewModelDependencies(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { MainViewModelImpl(get(), get(), get(), get(), get()) }
+    viewModel { MainViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModelImpl(args, get(), get(), get())

@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
@@ -49,6 +49,6 @@ class OnboardingViewModelImpl(
     }
 
     private fun onNextPressed() {
-        router.newRootScreen(Screens.auth(true))
+        router.newRootScreen(ScreenProvider.auth(true))
     }
 }

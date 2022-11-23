@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.splash
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.preferences.AppPreferences
@@ -24,16 +24,16 @@ class SplashViewModelImpl(
         launch {
             delay(DELAY)
             when {
-                !appPreferences.onboardingShowed -> router.newRootScreen(Screens.onboarding())
+                !appPreferences.onboardingShowed -> router.newRootScreen(ScreenProvider.onboarding())
                 authPreferences.authType == AuthPreferences.AuthType.NONE -> {
-                    router.newRootScreen(Screens.auth(true))
+                    router.newRootScreen(ScreenProvider.auth(true))
                 }
                 authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED
                     && !authPreferences.profileIsFilled -> launchWithLoading {
                     val profile = getProfileUseCase.execute()
-                    router.newRootScreen(Screens.signUp(profile, true))
+                    router.newRootScreen(ScreenProvider.signUp(profile, true))
                 }
-                else -> router.newRootScreen(Screens.navigation(args.payload))
+                else -> router.newRootScreen(ScreenProvider.navigation(args.payload))
             }
         }
     }

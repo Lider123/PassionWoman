@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
@@ -41,7 +41,7 @@ class NavigationViewModelImpl(
         mCartFlow.launchIn(this)
         args.payload?.let {
             when (it) {
-                is DeeplinkPayload.Product -> router.navigateTo(Screens.productCard(it.productId))
+                is DeeplinkPayload.Product -> router.navigateTo(ScreenProvider.productCard(it.productId))
             }
         }
     }
@@ -59,7 +59,7 @@ class NavigationViewModelImpl(
 
     private fun onAuthTypeUpdated(authType: AuthPreferences.AuthType) {
         when (authType) {
-            AuthPreferences.AuthType.NONE -> router.newRootScreen(Screens.auth(true))
+            AuthPreferences.AuthType.NONE -> router.newRootScreen(ScreenProvider.auth(true))
             AuthPreferences.AuthType.AUTHORIZED -> launch {
                 // TODO: make cart and favorites syncing parallel
                 syncCart()
