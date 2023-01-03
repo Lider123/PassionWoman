@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -37,7 +37,7 @@ class HomeViewModelImpl(
     override fun onHeaderPressed(header: HomeItem.Header) {
         val screen: Screen? = when (header) {
             HEADER_PRODUCTS_SALE -> {
-                Screens.productList(
+                ScreenProvider.productList(
                     R.string.home_sale_products_title,
                     listOf(
                         Filter.DiscountOnly(stringProvider, true)
@@ -46,14 +46,14 @@ class HomeViewModelImpl(
                 )
             }
             HEADER_PRODUCTS_POPULAR -> {
-                Screens.productList(
+                ScreenProvider.productList(
                     R.string.home_popular_products_title,
                     listOf(),
                     Sorting.POPULARITY
                 )
             }
             HEADER_PRODUCTS_NEW -> {
-                Screens.productList(
+                ScreenProvider.productList(
                     R.string.home_new_products_title,
                     listOf(),
                     Sorting.NEW
@@ -78,18 +78,18 @@ class HomeViewModelImpl(
             val initialStoryIndex = stories.indexOfFirst { it.id == story.id }
             if (initialStoryIndex < 0) return
 
-            router.navigateTo(Screens.stories(stories, initialStoryIndex))
+            router.navigateTo(ScreenProvider.stories(stories, initialStoryIndex))
         }
     }
 
     override fun onBuyProductPressed(product: Product) {
-        router.openBottomSheet(Screens.newCartItem(product))
+        router.openBottomSheet(ScreenProvider.newCartItem(product))
     }
 
     override fun onProductPressed(product: Product) {
         analyticsHandler.log(SelectProductEvent(product))
         if (isPortraitModeOnly) {
-            router.navigateTo(Screens.productCard(product.id))
+            router.navigateTo(ScreenProvider.productCard(product.id))
         } else launch {
             sendEvent(HomeViewModel.OpenLandscapeProductCardEvent(product))
         }

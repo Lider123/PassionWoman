@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.auth.AuthException
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.model.AuthResult
@@ -42,11 +42,11 @@ class AuthViewModelImpl(
             authPreferences.profileIsFilled = profile.isFilled
             if (profile.isFilled) {
                 if (args.onAppStart) {
-                    router.newRootScreen(Screens.navigation(null))
+                    router.newRootScreen(ScreenProvider.navigation(null))
                 } else super.onBackPressed()
             } else {
                 router.run {
-                    val screen = Screens.signUp(profile, args.onAppStart)
+                    val screen = ScreenProvider.signUp(profile, args.onAppStart)
                     if (args.onAppStart) newRootScreen(screen) else replaceScreen(screen)
                 }
                 smsCodeLiveData.postValue("")
@@ -87,7 +87,7 @@ class AuthViewModelImpl(
     override fun onGuestPressed() {
         launchWithLoading {
             authorizeAsGuestUseCase.execute()
-            router.newRootScreen(Screens.navigation(null))
+            router.newRootScreen(ScreenProvider.navigation(null))
         }
     }
 

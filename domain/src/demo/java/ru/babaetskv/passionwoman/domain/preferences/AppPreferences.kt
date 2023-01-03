@@ -4,4 +4,5 @@ interface AppPreferences {
     var onboardingShowed: Boolean
     var databaseInitialized: Boolean
     var databaseFilled: Boolean
+    var demoOnStartShowed: Boolean
 }

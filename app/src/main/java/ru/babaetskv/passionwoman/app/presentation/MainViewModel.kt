@@ -6,7 +6,7 @@ import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 
 interface MainViewModel : IViewModel {
-    val dataIsReady: Boolean
+    val appIsReady: Boolean
 
     fun handleIntent(intent: Intent, startApp: Boolean)
 

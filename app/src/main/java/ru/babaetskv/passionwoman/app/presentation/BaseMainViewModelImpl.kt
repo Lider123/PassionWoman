@@ -5,7 +5,7 @@ import com.github.terrakok.cicerone.Screen
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
@@ -16,22 +16,23 @@ import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
-class MainViewModelImpl(
+abstract class BaseMainViewModelImpl(
     private val deeplinkHandler: DeeplinkHandler,
-    private val authPreferences: AuthPreferences,
-    private val appPreferences: AppPreferences,
+    private val authPrefs: AuthPreferences,
+    protected val appPrefs: AppPreferences,
     private val getProfileUseCase: GetProfileUseCase,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), MainViewModel {
     private var alertChannel: ReceiveChannel<AlertMessage>? = null
 
-    override var dataIsReady: Boolean = false
-        private set
+    override var appIsReady: Boolean = false
+        protected set
     override val logScreenOpening: Boolean = false
 
     override fun onStart(screenName: String) {
         super.onStart(screenName)
         subscribeOnAlerts()
+        prepareApp()
     }
 
     override fun onStop() {
@@ -48,7 +49,6 @@ class MainViewModelImpl(
                 resolveScreen(deeplinkPayload)
                     ?.let(router::navigateTo)
             }
-            dataIsReady = true
         }
     }
 
@@ -72,23 +72,27 @@ class MainViewModelImpl(
         }
     }
 
-    private fun navigateOnStart(payload: DeeplinkPayload?) {
+    protected open fun navigateOnStart(payload: DeeplinkPayload?) {
         when {
-            !appPreferences.onboardingShowed -> router.newRootScreen(Screens.onboarding())
-            authPreferences.authType == AuthPreferences.AuthType.NONE -> {
-                router.newRootScreen(Screens.auth(true))
+            !appPrefs.onboardingShowed -> router.newRootScreen(ScreenProvider.onboarding())
+            authPrefs.authType == AuthPreferences.AuthType.NONE -> {
+                router.newRootScreen(ScreenProvider.auth(true))
             }
-            authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED
-                && !authPreferences.profileIsFilled -> launchWithLoading {
+            authPrefs.authType == AuthPreferences.AuthType.AUTHORIZED
+                && !authPrefs.profileIsFilled -> launchWithLoading {
                 val profile = getProfileUseCase.execute()
-                router.newRootScreen(Screens.signUp(profile, true))
+                router.newRootScreen(ScreenProvider.signUp(profile, true))
             }
-            else -> router.newRootScreen(Screens.navigation(payload))
+            else -> router.newRootScreen(ScreenProvider.navigation(payload))
         }
     }
 
     private fun resolveScreen(payload: DeeplinkPayload?): Screen? = when (payload) {
-        is DeeplinkPayload.Product -> Screens.productCard(payload.productId)
+        is DeeplinkPayload.Product -> ScreenProvider.productCard(payload.productId)
         else -> null
+    }
+
+    protected open fun prepareApp() {
+        appIsReady = true
     }
 }

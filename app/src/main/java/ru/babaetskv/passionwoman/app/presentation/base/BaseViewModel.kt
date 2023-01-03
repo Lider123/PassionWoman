@@ -10,7 +10,7 @@ import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.base.ErrorLogger
 import ru.babaetskv.passionwoman.app.analytics.event.OpenScreenEvent
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
@@ -73,7 +73,7 @@ abstract class BaseViewModel(
 
     override fun onErrorActionPressed(exception: Exception) {
         if (exception is GatewayException.Unauthorized) {
-            router.navigateTo(Screens.auth(false))
+            router.navigateTo(ScreenProvider.auth(false))
         }
     }
 

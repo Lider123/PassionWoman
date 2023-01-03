@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
 import ru.babaetskv.passionwoman.app.presentation.event.Event
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 interface ProfileViewModel : IViewModel {

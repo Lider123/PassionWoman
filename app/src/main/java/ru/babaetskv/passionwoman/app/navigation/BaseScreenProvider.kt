@@ -20,7 +20,7 @@ import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
-object Screens {
+abstract class BaseScreenProvider {
 
     fun onboarding() = FragmentScreen {
         OnboardingFragment.create()

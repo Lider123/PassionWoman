@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.Event
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ContactsProfileMenuItem
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.FavoritesProfileMenuItem
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.OrdersProfileMenuItem
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
@@ -17,7 +21,7 @@ import ru.babaetskv.passionwoman.domain.usecase.LogOutUseCase
 import ru.babaetskv.passionwoman.domain.usecase.UpdateAvatarUseCase
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
-class ProfileViewModelImpl(
+abstract class BaseProfileViewModelImpl(
     private val getProfileUseCase: GetProfileUseCase,
     private val authPreferences: AuthPreferences,
     private val logOutUseCase: LogOutUseCase,
@@ -27,7 +31,11 @@ class ProfileViewModelImpl(
 ) : BaseViewModel(dependencies), ProfileViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
 
-    override val menuItemsLiveData = MutableLiveData(ProfileMenuItem.values().asList())
+    override val menuItemsLiveData = MutableLiveData(listOf(
+        FavoritesProfileMenuItem(),
+        OrdersProfileMenuItem(),
+        ContactsProfileMenuItem()
+    ))
     override val profileLiveData = MutableLiveData<Profile?>()
     override val dialogLiveData = MutableLiveData<ProfileViewModel.Dialog?>()
 
@@ -53,16 +61,16 @@ class ProfileViewModelImpl(
 
     override fun onMenuItemPressed(item: ProfileMenuItem) {
         when (item) {
-            ProfileMenuItem.FAVORITES -> router.navigateTo(Screens.favorites())
-            ProfileMenuItem.ORDERS -> router.navigateTo(Screens.orders())
-            ProfileMenuItem.CONTACTS -> router.openBottomSheet(Screens.contacts())
+            is FavoritesProfileMenuItem -> router.navigateTo(ScreenProvider.favorites())
+            is OrdersProfileMenuItem -> router.navigateTo(ScreenProvider.orders())
+            is ContactsProfileMenuItem -> router.openBottomSheet(ScreenProvider.contacts())
         }
     }
 
     override fun onEditPressed() {
         val profile = profileLiveData.value ?: return
 
-        router.navigateTo(Screens.editProfile(profile))
+        router.navigateTo(ScreenProvider.editProfile(profile))
     }
 
     override fun onEditAvatarPressed() {
@@ -94,7 +102,7 @@ class ProfileViewModelImpl(
     override fun onLogInPressed() {
         if (authPreferences.authType == AuthPreferences.AuthType.AUTHORIZED) return
 
-        router.navigateTo(Screens.auth(false))
+        router.navigateTo(ScreenProvider.auth(false))
     }
 
     override fun onLogOutDeclined() {

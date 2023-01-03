@@ -10,4 +10,6 @@
 
     <string name="demo_name">Jane</string>
     <string name="demo_surname">Doe</string>
+
+    <string name="profile_demo_presets">Demo presets</string>
 </resources>

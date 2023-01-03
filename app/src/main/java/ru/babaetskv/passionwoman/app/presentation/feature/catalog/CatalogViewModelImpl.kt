@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.analytics.event.SelectCategoryEvent
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.model.Category
@@ -28,11 +28,11 @@ class CatalogViewModelImpl(
 
     override fun onCategoryPressed(category: Category) {
         analyticsHandler.log(SelectCategoryEvent(category))
-        router.navigateTo(Screens.category(category))
+        router.navigateTo(ScreenProvider.category(category))
     }
 
     override fun onSearchPressed() {
-        router.navigateTo(Screens.search())
+        router.navigateTo(ScreenProvider.search())
     }
 
     private fun loadData() {
