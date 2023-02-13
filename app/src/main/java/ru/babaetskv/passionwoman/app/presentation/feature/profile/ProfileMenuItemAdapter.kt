@@ -2,11 +2,13 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProfileMenuBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
 import ru.babaetskv.passionwoman.app.presentation.base.EqualDiffUtilCallback
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
 import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 
@@ -29,8 +31,13 @@ class ProfileMenuItemAdapter(
                     onMenuItemClick.invoke(item)
                 }
                 tvMenuItem.run {
-                    setCompoundDrawablesWithIntrinsicBounds(item.iconRes, 0, R.drawable.ic_forward, 0)
-                    setText(item.titleRes)
+                    setCompoundDrawablesWithIntrinsicBounds(
+                        item.getIcon(context),
+                        null,
+                        ContextCompat.getDrawable(context, R.drawable.ic_forward),
+                        null
+                    )
+                    text = item.getTitle(context)
                 }
             }
         }

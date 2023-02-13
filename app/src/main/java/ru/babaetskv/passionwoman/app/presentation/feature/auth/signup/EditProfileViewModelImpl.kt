@@ -2,7 +2,7 @@ package ru.babaetskv.passionwoman.app.presentation.feature.auth.signup
 
 import androidx.lifecycle.MutableLiveData
 import ru.babaetskv.passionwoman.app.analytics.event.SignUpEvent
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
@@ -43,7 +43,7 @@ class EditProfileViewModelImpl(
             if (args.signingUp) {
                 analyticsHandler.log(SignUpEvent())
                 if (args.onAppStart) {
-                    router.newRootScreen(Screens.navigation(null))
+                    router.newRootScreen(ScreenProvider.navigation(null))
                 } else onBackPressed()
             } else onBackPressed()
         }

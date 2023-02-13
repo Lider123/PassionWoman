@@ -46,7 +46,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installAppSplashScreen {
-            !viewModel.dataIsReady
+            !viewModel.appIsReady
         }
 
         super.onCreate(savedInstanceState)

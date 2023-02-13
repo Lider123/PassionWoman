@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.NewPager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
@@ -75,19 +75,19 @@ class ProductListViewModelImpl(
     override fun onProductPressed(product: Product) {
         analyticsHandler.log(SelectProductEvent(product))
         if (isPortraitModeOnly) {
-            router.navigateTo(Screens.productCard(product.id))
+            router.navigateTo(ScreenProvider.productCard(product.id))
         } else launch {
             sendEvent(ProductListViewModel.OpenLandscapeProductCard(product))
         }
     }
 
     override fun onBuyPressed(product: Product) {
-        router.openBottomSheet(Screens.newCartItem(product))
+        router.openBottomSheet(ScreenProvider.newCartItem(product))
     }
 
     override fun onFiltersPressed() {
         filters?.let {
-            val screen = Screens.filters(
+            val screen = ScreenProvider.filters(
                 (args.mode as? ProductListMode.Category)?.category?.id,
                 it,
                 totalProductsCount
@@ -100,7 +100,7 @@ class ProductListViewModelImpl(
     }
 
     override fun onSortingPressed() {
-        router.openBottomSheet(Screens.sorting(sortingLiveData.value!!))
+        router.openBottomSheet(ScreenProvider.sorting(sortingLiveData.value!!))
     }
 
     override fun onLoadStateChanged(states: CombinedLoadStates) {

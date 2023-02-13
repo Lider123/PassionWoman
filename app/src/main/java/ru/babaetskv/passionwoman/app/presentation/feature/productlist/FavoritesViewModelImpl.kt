@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
-import ru.babaetskv.passionwoman.app.navigation.Screens
+import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.domain.StringProvider
@@ -58,7 +58,7 @@ class FavoritesViewModelImpl(
         analyticsHandler.log(SelectProductEvent(product))
 
         if (isPortraitModeOnly) {
-            router.navigateTo(Screens.productCard(product.id))
+            router.navigateTo(ScreenProvider.productCard(product.id))
         } else {
             launch {
                 sendEvent(FavoritesViewModel.OpenLandscapeProductCardEvent(product))
@@ -67,7 +67,7 @@ class FavoritesViewModelImpl(
     }
 
     override fun onBuyPressed(product: Product) {
-        router.openBottomSheet(Screens.newCartItem(product))
+        router.openBottomSheet(ScreenProvider.newCartItem(product))
     }
 
     private suspend fun onFavoritesUpdated(action: FavoritesPreferences.Action) {
