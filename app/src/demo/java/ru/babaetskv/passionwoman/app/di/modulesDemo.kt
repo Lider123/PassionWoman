@@ -15,7 +15,7 @@ val demoModule = module {
     single { DatabaseProvider.provideDatabase(androidContext(), get()) }
 
     viewModel { (args: DemoPresetsFragment.Args) ->
-        DemoPresetsViewModelImpl(args, get(), get(), get(), get(), get(), get())
+        DemoPresetsViewModelImpl(args, get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory<InitDatabaseUseCase> { InitDatabaseInteractor(get(), get(), get(), get()) }

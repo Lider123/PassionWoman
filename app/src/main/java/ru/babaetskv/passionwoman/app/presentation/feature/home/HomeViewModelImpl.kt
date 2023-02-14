@@ -9,7 +9,6 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.event.SelectBrandEvent
 import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
 import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.permission.Permission
 import ru.babaetskv.passionwoman.app.permission.PermissionManager
 import ru.babaetskv.passionwoman.app.permission.PermissionStatus

@@ -18,7 +18,7 @@ class ApiProviderImpl(
     context: Context,
     private val assetProvider: AssetProvider,
     private val authPrefs: AuthPreferences,
-    private val appPrefs: AppPreferences,
+    appPrefs: AppPreferences,
     private val dateTimeConverter: DateTimeConverter
 ) : ApiProvider {
     private val database = DatabaseProvider.provideDatabase(context, appPrefs)
@@ -31,7 +31,7 @@ class ApiProviderImpl(
         )
 
     override fun provideAuthApi(): AuthApi =
-        AuthApiImpl(database, exceptionProvider, authPreferences, dateTimeConverter)
+        AuthApiImpl(database, exceptionProvider, authPrefs, dateTimeConverter)
             .let { CheckTokenAuthApiDecorator(authPrefs, exceptionProvider, it) }
             .let(::DelayAuthApiDecorator)
 

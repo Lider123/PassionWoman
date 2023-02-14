@@ -5,4 +5,5 @@ interface AppPreferences {
     var databaseInitialized: Boolean
     var databaseFilled: Boolean
     var demoOnStartShowed: Boolean
+    var pushToken: String
 }

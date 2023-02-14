@@ -29,7 +29,7 @@ class AppNotificationManager(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createNotificationChannel()
         val notification = createNotification(message)
         with(notificationManager) {
-            Timber.e("notify")
+            Timber.e("notify") // TODO: remove
             notify(Random.nextInt(200), notification)
         }
     }
