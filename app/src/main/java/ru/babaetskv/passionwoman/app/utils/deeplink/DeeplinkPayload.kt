@@ -9,4 +9,9 @@ sealed class DeeplinkPayload : Parcelable {
     data class Product(
         val productId: Long
     ) : DeeplinkPayload()
+
+    @Parcelize
+    data class Order(
+        val orderId: Long
+    ) : DeeplinkPayload()
 }

@@ -5,6 +5,7 @@
     package="ru.babaetskv.passionwoman.app">
 
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"

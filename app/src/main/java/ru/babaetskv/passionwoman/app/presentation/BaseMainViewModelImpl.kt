@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.babaetskv.passionwoman.app.navigation.ScreenProvider
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
+import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverter
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
@@ -18,6 +19,7 @@ import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 abstract class BaseMainViewModelImpl(
     private val deeplinkHandler: DeeplinkHandler,
+    private val notificationDataConverter: AppNotificationDataConverter,
     private val authPrefs: AuthPreferences,
     protected val appPrefs: AppPreferences,
     private val getProfileUseCase: GetProfileUseCase,
@@ -41,15 +43,32 @@ abstract class BaseMainViewModelImpl(
     }
 
     override fun handleIntent(intent: Intent, startApp: Boolean) {
-        // TODO: handle notification
+        handleDeeplink(intent, startApp)
+        handleNotification(intent, startApp)
+    }
+
+    private fun handleDeeplink(intent: Intent, startApp: Boolean) {
         launch {
             val deeplinkPayload = deeplinkHandler.handle(intent.data)
-            if (startApp) {
-                navigateOnStart(deeplinkPayload)
-            } else {
-                resolveScreen(deeplinkPayload)
-                    ?.let(router::navigateTo)
+            handlePayload(deeplinkPayload, startApp)
+        }
+    }
+
+    private fun handleNotification(intent: Intent, startApp: Boolean) {
+        launch {
+            val notificationPayload = intent.extras?.let {
+                notificationDataConverter.convert(it)
             }
+            handlePayload(notificationPayload, startApp)
+        }
+    }
+
+    private fun handlePayload(payload: DeeplinkPayload?, startApp: Boolean) {
+        if (startApp) {
+            navigateOnStart(payload)
+        } else {
+            resolveScreen(payload)
+                ?.let(router::navigateTo)
         }
     }
 
@@ -90,6 +109,7 @@ abstract class BaseMainViewModelImpl(
 
     private fun resolveScreen(payload: DeeplinkPayload?): Screen? = when (payload) {
         is DeeplinkPayload.Product -> ScreenProvider.productCard(payload.productId)
+        is DeeplinkPayload.Order -> ScreenProvider.orders() // TODO: replace with order card
         else -> null
     }
 

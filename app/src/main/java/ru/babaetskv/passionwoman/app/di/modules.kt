@@ -66,6 +66,8 @@ import ru.babaetskv.passionwoman.app.presentation.interactor.*
 import ru.babaetskv.passionwoman.app.presentation.worker.RegisterPushTokenWorker
 import ru.babaetskv.passionwoman.app.presentation.worker.UnregisterPushTokenWorker
 import ru.babaetskv.passionwoman.app.presentation.worker.base.SampleWorkerFactory
+import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverter
+import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverterImpl
 import ru.babaetskv.passionwoman.app.push.AppNotificationManager
 import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
@@ -94,6 +96,7 @@ val appModule = module {
     single { NetworkStateChecker(androidContext()) }
     single<DeeplinkGenerator> { FirebaseDeeplinkGenerator() }
     single<DeeplinkHandler> { FirebaseDeeplinkHandler() }
+    single<AppNotificationDataConverter> { AppNotificationDataConverterImpl() }
     single { WorkManager.getInstance(androidContext()) }
     single<WorkerFactory> {
         SampleWorkerFactory(mapOf(
@@ -116,7 +119,7 @@ val viewModelModule = module {
         AppConfig(isPortraitModeOnly)
     }
     single { ViewModelDependencies(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { MainViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel { MainViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModelImpl(args, get(), get(), get())

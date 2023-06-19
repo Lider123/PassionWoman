@@ -19,6 +19,7 @@ import ru.babaetskv.passionwoman.app.utils.notifier.AlertSnackbarFactory
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 import java.util.*
 
+// TODO: fix status and navigation bars color
 class MainActivity : BaseActivity<MainViewModel>() {
     private val navigatorHolder: NavigatorHolder by inject()
     private val currentFragment: ViewComponent<*>?

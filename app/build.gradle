@@ -138,7 +138,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
 
     // SplashScreen
-    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"

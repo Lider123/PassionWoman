@@ -7,14 +7,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import com.google.firebase.messaging.RemoteMessage
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.MainActivity
-import timber.log.Timber
 import kotlin.random.Random
 
 class AppNotificationManager(
@@ -28,13 +28,9 @@ class AppNotificationManager(
     fun showNotification(message: RemoteMessage) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) createNotificationChannel()
         val notification = createNotification(message)
-        with(notificationManager) {
-            Timber.e("notify") // TODO: remove
-            notify(Random.nextInt(200), notification)
-        }
+        notificationManager.notify(Random.nextInt(200), notification)
     }
 
-    // TODO: parse message
     private fun createNotification(message: RemoteMessage): Notification {
         val pendingIntent = createPendingIntent(message)
         return NotificationCompat.Builder(context, notificationChannelId)
@@ -48,12 +44,17 @@ class AppNotificationManager(
             .build()
     }
 
-    // TODO: parse message
     private fun createPendingIntent(message: RemoteMessage): PendingIntent {
         val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val extras: Bundle = message.data.entries.map {
+                Pair<String, String>(it.key, it.value)
+            }.let {
+                bundleOf(*it.toTypedArray())
+            }
+            putExtras(extras)
         }
-        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
