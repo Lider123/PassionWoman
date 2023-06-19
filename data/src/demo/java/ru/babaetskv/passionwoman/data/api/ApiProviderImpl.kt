@@ -8,6 +8,8 @@ import ru.babaetskv.passionwoman.data.api.decorator.DelayCommonApiDecorator
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProviderImpl
 import ru.babaetskv.passionwoman.data.database.DatabaseProvider
+import ru.babaetskv.passionwoman.data.database.entity.transformations.CartItemTransformableParamsProvider
+import ru.babaetskv.passionwoman.data.database.entity.transformations.OrderTransformableParamsProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductItemTransformableParamsProvider
 import ru.babaetskv.passionwoman.data.database.entity.transformations.ProductTransformableParamsProvider
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
@@ -29,9 +31,21 @@ class ApiProviderImpl(
             exceptionProvider,
             ProductItemTransformableParamsProvider(database)
         )
+    private val orderTransformableParamsProvider =
+        OrderTransformableParamsProvider(
+            database,
+            exceptionProvider,
+            CartItemTransformableParamsProvider(database)
+        )
 
     override fun provideAuthApi(): AuthApi =
-        AuthApiImpl(database, exceptionProvider, authPrefs, dateTimeConverter)
+        AuthApiImpl(
+            database,
+            exceptionProvider,
+            authPrefs,
+            dateTimeConverter,
+            orderTransformableParamsProvider
+        )
             .let { CheckTokenAuthApiDecorator(authPrefs, exceptionProvider, it) }
             .let(::DelayAuthApiDecorator)
 

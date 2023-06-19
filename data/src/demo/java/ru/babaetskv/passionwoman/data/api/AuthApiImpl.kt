@@ -9,10 +9,13 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.entity.CartItemEntity
+import ru.babaetskv.passionwoman.data.database.entity.OrderEntity
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
@@ -23,11 +26,11 @@ class AuthApiImpl(
     private val database: PassionWomanDatabase,
     private val exceptionProvider: ApiExceptionProvider,
     private val authPreferences: AuthPreferences,
-    private val dateTimeConverter: DateTimeConverter
+    private val dateTimeConverter: DateTimeConverter,
+    private val orderTransformableParamsProvider: OrderEntity.TransformableParamsProvider
 ) : AuthApi {
     private var profile: ProfileModel? = null
     private var favoriteIds: List<Long> = emptyList()
-    private var orders: MutableList<OrderModel> = mutableListOf() // TODO: setup push send on status update
     private var cart: CartModel = CartModel(
         items = emptyList(),
         price = 0f,
@@ -58,37 +61,31 @@ class AuthApiImpl(
         favoriteIds = ids
     }
 
-    override suspend fun getOrders(): List<OrderModel> {
-        for (i in orders.indices) {
-            val newStatus = orders[i].status.let(::getNextOrderStatus)
-            orders[i] = orders[i].copy(
-                status = newStatus
-            )
-        }
-        return orders
+    override suspend fun getOrders(): List<OrderModel> = withContext(Dispatchers.IO) {
+        return@withContext database.orderDao.getAll()
+            .transformList(orderTransformableParamsProvider)
     }
 
-    override suspend fun checkout(): CartModel {
-        // TODO: insert order to the database
+    override suspend fun checkout(): CartModel = withContext(Dispatchers.IO) {
         if (cart.items.isEmpty()) {
             throw exceptionProvider.getBadRequestException("The cart is empty")
         }
 
-        val newOrder = OrderModel(
+        val newOrder = OrderEntity(
             id = UUID.randomUUID()
                 .toString()
                 .filter { it.isDigit() }
                 .take(8)
-                .toInt(),
+                .toLong(),
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },
-            cartItems = cart.items,
             status = Order.Status.PENDING.apiName
         )
-        orders.add(newOrder)
+        val orderId = database.orderDao.insert(newOrder)[0]
+        saveCartItems(cart.items, orderId)
         clearCart()
-        return cart
+        return@withContext cart
     }
 
     override suspend fun getCart(): CartModel = cart
@@ -157,6 +154,23 @@ class AuthApiImpl(
 
         activeUserTokens.remove(tokenString)
         pushTokens[authPreferences.authToken] = activeUserTokens
+    }
+
+    private suspend fun saveCartItems(items: List<CartItemModel>, orderId: Long) = withContext(Dispatchers.IO) {
+        val entities = items.map { item ->
+            CartItemEntity(
+                orderId = orderId,
+                productId = item.productId,
+                preview = item.preview,
+                selectedColorId = item.selectedColor.id,
+                selectedSize = item.selectedSize,
+                name = item.name,
+                price = item.price,
+                priceWithDiscount = item.priceWithDiscount,
+                count = item.count
+            )
+        }
+        database.cartItemDao.insert(*entities.toTypedArray())
     }
 
     private suspend fun readPart(part: MultipartBody.Part): String = withContext(Dispatchers.IO) {

@@ -6,7 +6,7 @@ import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 data class OrderModel(
-    @Json(name = "id") val id: Int,
+    @Json(name = "id") val id: Long,
     @Json(name = "createdAt") val createdAt: String,
     @Json(name = "cartItems") val cartItems: List<CartItemModel>,
     @Json(name = "status") val status: String

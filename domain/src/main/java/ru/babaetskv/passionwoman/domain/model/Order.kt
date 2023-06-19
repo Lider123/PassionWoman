@@ -5,7 +5,7 @@ import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.OrderStatusResourcesResolver
 
 data class Order(
-    val id: Int,
+    val id: Long,
     val createdAt: LocalDateTime,
     val cartItems: List<CartItem>,
     val status: Status?
