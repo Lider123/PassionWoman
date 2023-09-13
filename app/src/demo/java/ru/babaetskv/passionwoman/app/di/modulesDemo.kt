@@ -9,6 +9,8 @@ import ru.babaetskv.passionwoman.app.presentation.feature.demopresets.DemoPreset
 import ru.babaetskv.passionwoman.app.presentation.interactor.InitDatabaseInteractor
 import ru.babaetskv.passionwoman.app.presentation.interactor.StartOrderStatusUpdateServiceInteractor
 import ru.babaetskv.passionwoman.app.presentation.interactor.UpdateOrderStatusInteractor
+import ru.babaetskv.passionwoman.data.order.OrderUpdatedPushSender
+import ru.babaetskv.passionwoman.data.order.OrderUpdatedPushSenderImpl
 import ru.babaetskv.passionwoman.data.database.DatabaseProvider
 import ru.babaetskv.passionwoman.data.repository.OrdersRepositoryImpl
 import ru.babaetskv.passionwoman.data.repository.ProductsRepositoryImpl
@@ -30,8 +32,10 @@ val demoModule = module {
 
     factory<InitDatabaseUseCase> { InitDatabaseInteractor(get(), get(), get(), get()) }
     factory<StartOrderStatusUpdateServiceUseCase> { StartOrderStatusUpdateServiceInteractor(androidContext(), get()) }
-    factory<UpdateOrderStatusUseCase> { UpdateOrderStatusInteractor(get(), get()) }
+    factory<UpdateOrderStatusUseCase> { UpdateOrderStatusInteractor(get(), get(), get()) }
 
     single<ProductsRepository> { ProductsRepositoryImpl(get()) }
     single<OrdersRepository> { OrdersRepositoryImpl(get()) }
+
+    single<OrderUpdatedPushSender> { OrderUpdatedPushSenderImpl(get(), get(), get()) }
 }

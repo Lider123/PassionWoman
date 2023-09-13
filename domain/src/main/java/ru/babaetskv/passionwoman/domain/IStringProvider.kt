@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.domain
 
-interface StringProvider {
+interface IStringProvider {
     val GET_CATEGORIES_ERROR: String
     val GET_PRODUCTS_ERROR: String
     val AUTHORIZE_AS_GUEST_ERROR: String

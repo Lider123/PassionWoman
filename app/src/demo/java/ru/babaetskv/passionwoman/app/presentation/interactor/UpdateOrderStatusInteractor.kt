@@ -1,6 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
+import ru.babaetskv.passionwoman.data.order.OrderUpdatedPushSender
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
 import ru.babaetskv.passionwoman.domain.model.Order
@@ -9,6 +10,7 @@ import ru.babaetskv.passionwoman.domain.usecase.UpdateOrderStatusUseCase
 
 class UpdateOrderStatusInteractor(
     private val repository: OrdersRepository,
+    private val orderUpdatedPushSender: OrderUpdatedPushSender,
     private val stringProvider: StringProvider
 ) : BaseInteractor<Long, Boolean>(), UpdateOrderStatusUseCase {
 
@@ -26,6 +28,7 @@ class UpdateOrderStatusInteractor(
 
         val newOrder = entity.copy(status = newStatus)
         repository.updateOrder(newOrder)
+        orderUpdatedPushSender.send(newOrder.id, Order.Status.fromApiName(newOrder.status)!!)
         return true
     }
 

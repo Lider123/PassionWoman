@@ -7,6 +7,10 @@ plugins {
 
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
+def fcmPropertiesFile = rootProject.file("data/fcm.properties")
+def fcmProperties = new Properties()
+fcmProperties.load(new FileInputStream(fcmPropertiesFile))
+
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
@@ -30,6 +34,7 @@ android {
         demo {
             dimension "version"
             versionNameSuffix "-demo"
+            buildConfigField("String", "FCM_KEY", "\"${fcmProperties['SERVER_KEY']}\"")
         }
         full {
             dimension "version"
@@ -66,6 +71,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation "ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0"
 
     // Database
     def room_version = "2.4.3"

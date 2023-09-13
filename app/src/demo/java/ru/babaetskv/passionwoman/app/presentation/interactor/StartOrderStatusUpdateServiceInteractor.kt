@@ -1,7 +1,7 @@
 package ru.babaetskv.passionwoman.app.presentation.interactor
 
 import android.content.Context
-import ru.babaetskv.passionwoman.app.OrderStatusUpdateService
+import ru.babaetskv.passionwoman.app.service.OrderStatusUpdateService
 import ru.babaetskv.passionwoman.app.presentation.interactor.base.BaseInteractor
 import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException

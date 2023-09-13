@@ -12,4 +12,10 @@
     <string name="demo_surname">Doe</string>
 
     <string name="profile_demo_presets">Demo presets</string>
+
+    <string name="order_notification_body_pending_template">Your order %s is pending</string>
+    <string name="order_notification_body_in_progress_template">Your order %s is in progress</string>
+    <string name="order_notification_body_awaiting_template">Your order %s is delivered and waiting for picking</string>
+    <string name="order_notification_body_completed_template">Your order %s is completed</string>
+    <string name="order_notification_body_canceled_template">Unfortunately your order %s was canceled</string>
 </resources>

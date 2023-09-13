@@ -3,7 +3,7 @@
     package="ru.babaetskv.passionwoman.app">
     <application android:icon="@mipmap/ic_launcher">
         <service
-            android:name="OrderStatusUpdateService"
+            android:name=".service.OrderStatusUpdateService"
             android:exported="false"/>
     </application>
 </manifest>
