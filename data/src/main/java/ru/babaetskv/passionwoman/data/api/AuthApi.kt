@@ -33,7 +33,7 @@ interface AuthApi {
     suspend fun getOrders(): List<OrderModel>
 
     @POST("api/cart/checkout")
-    suspend fun checkout(): CartModel
+    suspend fun checkout(): CheckoutResultModel
 
     @GET("api/cart")
     suspend fun getCart(): CartModel

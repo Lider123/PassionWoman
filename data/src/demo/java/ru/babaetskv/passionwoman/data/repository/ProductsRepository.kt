@@ -1,4 +1,4 @@
-package ru.babaetskv.passionwoman.domain.repository
+package ru.babaetskv.passionwoman.data.repository
 
 import ru.babaetskv.passionwoman.domain.model.Product
 

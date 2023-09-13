@@ -3,6 +3,7 @@ package ru.babaetskv.passionwoman.data.gateway.decorator.base
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.CheckoutResult
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 abstract class CartGatewayDecorator(
@@ -12,7 +13,7 @@ abstract class CartGatewayDecorator(
     override suspend fun addToCart(item: CartItem): Transformable<Unit, Cart> =
         gateway.addToCart(item)
 
-    override suspend fun checkout(): Transformable<Unit, Cart> = gateway.checkout()
+    override suspend fun checkout(): Transformable<Unit, CheckoutResult> = gateway.checkout()
 
     override suspend fun getCart(): Transformable<Unit, Cart> = gateway.getCart()
 

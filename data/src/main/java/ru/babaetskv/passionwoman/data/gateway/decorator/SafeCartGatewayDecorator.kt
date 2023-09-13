@@ -5,6 +5,7 @@ import ru.babaetskv.passionwoman.domain.gateway.exception.GatewayExceptionProvid
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.CheckoutResult
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 class SafeCartGatewayDecorator(
@@ -19,7 +20,7 @@ class SafeCartGatewayDecorator(
             throw exceptionProvider.getGatewayException(e)
         }
 
-    override suspend fun checkout(): Transformable<Unit, Cart> =
+    override suspend fun checkout(): Transformable<Unit, CheckoutResult> =
         try {
             super.checkout()
         } catch (e: Exception) {

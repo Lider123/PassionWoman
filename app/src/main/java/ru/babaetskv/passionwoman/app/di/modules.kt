@@ -30,7 +30,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewM
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModelImpl
-import ru.babaetskv.passionwoman.app.presentation.feature.cart.CartViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModelImpl
@@ -152,9 +151,6 @@ val viewModelModule = module {
     }
     viewModel { (args: StoriesFragment.Args) ->
         StoriesViewModelImpl(args, get())
-    }
-    viewModel {
-        CartViewModelImpl(get(), get(), get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
         AddToCartViewModelImpl(args, get(), get())

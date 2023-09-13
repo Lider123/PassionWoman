@@ -12,14 +12,15 @@ class CheckoutInteractor(
     private val cartGateway: CartGateway,
     private val cartFlow: CartFlow,
     private val stringProvider: StringProvider
-) : BaseInteractor<Unit, Unit>(), CheckoutUseCase {
+) : BaseInteractor<Unit, Long>(), CheckoutUseCase {
     override val emptyException: UseCaseException.EmptyData? = null
 
     override fun transformException(cause: Exception): UseCaseException =
         CheckoutUseCase.CheckoutException(cause, stringProvider)
 
-    override suspend fun run(params: Unit) {
-        val cart = cartGateway.checkout().transform()
-        cartFlow.send(cart)
+    override suspend fun run(params: Unit): Long {
+        val result = cartGateway.checkout().transform()
+        cartFlow.send(result.cart)
+        return result.orderId
     }
 }

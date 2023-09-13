@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.api.decorator.base.AuthApiDecorator
 import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.data.model.CartModel
+import ru.babaetskv.passionwoman.data.model.CheckoutResultModel
 import ru.babaetskv.passionwoman.data.model.OrderModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 
@@ -18,7 +19,7 @@ class DelayAuthApiDecorator(
         return super.addToCart(item)
     }
 
-    override suspend fun checkout(): CartModel {
+    override suspend fun checkout(): CheckoutResultModel {
         delay(DELAY_LOADING)
         return super.checkout()
     }

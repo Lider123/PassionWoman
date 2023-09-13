@@ -36,8 +36,8 @@ class AppNotificationManager(
         return NotificationCompat.Builder(context, notificationChannelId)
             .setSmallIcon(R.drawable.ic_push)
             .setColor(ContextCompat.getColor(context, R.color.secondary))
-            .setContentTitle(message.notification?.title)
-            .setContentText(message.notification?.body)
+            .setContentTitle(message.data[KEY_TITLE])
+            .setContentText(message.data[KEY_BODY])
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -63,5 +63,10 @@ class AppNotificationManager(
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(notificationChannelId, name, importance)
         notificationManager.createNotificationChannel(channel)
+    }
+
+    companion object {
+        private const val KEY_TITLE = "title"
+        private const val KEY_BODY = "body"
     }
 }

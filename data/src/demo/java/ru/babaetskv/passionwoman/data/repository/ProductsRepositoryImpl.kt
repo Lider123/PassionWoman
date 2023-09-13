@@ -8,7 +8,7 @@ import ru.babaetskv.passionwoman.data.database.entity.*
 import ru.babaetskv.passionwoman.data.filters.FilterResolver
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.ProductItem
-import ru.babaetskv.passionwoman.domain.repository.ProductsRepository
+import ru.babaetskv.passionwoman.data.repository.ProductsRepository
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream

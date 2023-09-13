@@ -66,7 +66,7 @@ class AuthApiImpl(
             .transformList(orderTransformableParamsProvider)
     }
 
-    override suspend fun checkout(): CartModel = withContext(Dispatchers.IO) {
+    override suspend fun checkout(): CheckoutResultModel = withContext(Dispatchers.IO) {
         if (cart.items.isEmpty()) {
             throw exceptionProvider.getBadRequestException("The cart is empty")
         }
@@ -85,7 +85,7 @@ class AuthApiImpl(
         val orderId = database.orderDao.insert(newOrder)[0]
         saveCartItems(cart.items, orderId)
         clearCart()
-        return@withContext cart
+        return@withContext CheckoutResultModel(orderId, cart)
     }
 
     override suspend fun getCart(): CartModel = cart
