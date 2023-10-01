@@ -38,16 +38,16 @@ class OverlaidConstraintLayout @JvmOverloads constructor(
         }
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
-        if (disabled) canvas?.saveLayer(null, paint)
+    override fun dispatchDraw(canvas: Canvas) {
+        if (disabled) canvas.saveLayer(null, paint)
         super.dispatchDraw(canvas)
-        if (disabled) canvas?.restore()
+        if (disabled) canvas.restore()
     }
 
-    override fun draw(canvas: Canvas?) {
-        if (disabled) canvas?.saveLayer(null, paint)
+    override fun draw(canvas: Canvas) {
+        if (disabled) canvas.saveLayer(null, paint)
         super.draw(canvas)
-        if (disabled) canvas?.restore()
+        if (disabled) canvas.restore()
     }
 
     private fun resolveColorMatrixProvider(overlay: Int): ColorMatrixProvider =

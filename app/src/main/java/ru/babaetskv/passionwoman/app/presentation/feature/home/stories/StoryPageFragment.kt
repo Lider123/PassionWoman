@@ -51,7 +51,7 @@ class StoryPageFragment : Fragment(), MediaPlayer.ProgressListener {
             progressContainer.run {
                 removeAllViews()
                 contents.forEachIndexed { index, _ ->
-                    ProgressBar(context, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
+                    ProgressBar(context, null, com.google.android.material.R.style.Widget_AppCompat_ProgressBar_Horizontal)
                         .apply {
                             tag = index
                             layoutParams = LinearLayout.LayoutParams(0, dip(4)).apply {

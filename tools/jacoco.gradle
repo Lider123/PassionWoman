@@ -18,8 +18,12 @@ def setupKotlinReporting() {
     jacocoTestReport {
         dependsOn test
         reports {
-            csv.enabled false // change if needed
-            xml.enabled false // change if needed
+            csv {
+                enabled false
+            }
+            xml {
+                enabled false
+            }
             html {
                 enabled true
                 destination file("${buildDir}/reports/jacoco")
@@ -142,8 +146,12 @@ def setupAndroidReporting() {
                 additionalSourceDirs.setFrom(files(coverageSourceDirs))
 
                 reports {
-                    csv.enabled false // change if needed
-                    xml.enabled false // change if needed
+                    csv {
+                        enabled false
+                    }
+                    xml {
+                        enabled false
+                    }
                     html {
                         enabled true
                         destination file("${buildDir}/reports/jacoco")
