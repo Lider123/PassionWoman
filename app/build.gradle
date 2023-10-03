@@ -11,13 +11,13 @@ apply from: 'signingCredentials.gradle'
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
+    namespace "ru.babaetskv.passionwoman.app"
 
     defaultConfig {
         applicationId "ru.babaetskv.passionwoman.app"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 21
+        compileSdk 34
+        targetSdk 34
         versionCode 3
         versionName "0.2.0"
 
@@ -33,7 +33,7 @@ android {
         }
     }
 
-    flavorDimensions "version"
+    flavorDimensions = ["version"]
     productFlavors {
         demo {
             dimension "version"
@@ -60,17 +60,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
-    applicationVariants.all { variant ->
-        variant.outputs.all {
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
             outputFileName = "$applicationName${variant.productFlavors[0].versionNameSuffix}-${defaultConfig.versionName}-${variant.buildType.name}.apk"
         }
     }
@@ -81,9 +82,9 @@ dependencies {
     implementation project(":domain")
 
     // Common
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
 
     // ConstraintLayout
@@ -135,13 +136,13 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 
     // SplashScreen
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Paging
-    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
 
     // WorkManager
     def work_version = "2.7.1"
