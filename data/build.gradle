@@ -2,18 +2,18 @@ plugins {
     id 'com.android.library'
     id 'jacoco'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "30.0.3"
+    namespace "ru.babaetskv.passionwoman.data"
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 32
+        minSdk 21
+        compileSdk 34
+        targetSdk 34
 
         buildConfigField 'String', 'API_URL', '"http://192.168.1.167:8080"' // TODO: check
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -25,7 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "1"
+    flavorDimensions = ["1"]
     productFlavors {
         demo {
             dimension "1"
@@ -37,14 +37,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17
     }
     testOptions {
         unitTests.returnDefaultValues true
+    }
+    buildFeatures {
+        buildConfig true
     }
 }
 
@@ -68,10 +71,10 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     // Database
-    def room_version = "2.4.3"
+    def room_version = "2.5.2"
     demoImplementation "androidx.room:room-ktx:$room_version"
     demoAnnotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
 
     // Testing
     testImplementation project(path: ":domain", configuration: "testDependencies")
