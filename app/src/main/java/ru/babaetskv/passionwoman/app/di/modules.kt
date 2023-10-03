@@ -1,7 +1,10 @@
 package ru.babaetskv.passionwoman.app.di
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import com.github.terrakok.cicerone.Cicerone
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -19,6 +22,7 @@ import ru.babaetskv.passionwoman.app.utils.StringProviderImpl
 import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.presentation.MainViewModelImpl
 import ru.babaetskv.passionwoman.app.AppConfig
+import ru.babaetskv.passionwoman.app.permission.PermissionManager
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.presentation.event.EventHub
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthFragment
@@ -26,7 +30,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.contacts.ContactsViewM
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.AuthViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.auth.signup.EditProfileViewModelImpl
-import ru.babaetskv.passionwoman.app.presentation.feature.cart.CartViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartFragment
 import ru.babaetskv.passionwoman.app.presentation.feature.cart.newcartitem.AddToCartViewModelImpl
 import ru.babaetskv.passionwoman.app.presentation.feature.catalog.CatalogViewModelImpl
@@ -59,6 +62,12 @@ import ru.babaetskv.passionwoman.data.api.ApiProviderImpl
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProvider
 import ru.babaetskv.passionwoman.data.preferences.PreferencesProviderImpl
 import ru.babaetskv.passionwoman.app.presentation.interactor.*
+import ru.babaetskv.passionwoman.app.presentation.worker.RegisterPushTokenWorker
+import ru.babaetskv.passionwoman.app.presentation.worker.UnregisterPushTokenWorker
+import ru.babaetskv.passionwoman.app.presentation.worker.base.SampleWorkerFactory
+import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverter
+import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverterImpl
+import ru.babaetskv.passionwoman.app.push.AppNotificationManager
 import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
@@ -86,6 +95,15 @@ val appModule = module {
     single { NetworkStateChecker(androidContext()) }
     single<DeeplinkGenerator> { FirebaseDeeplinkGenerator() }
     single<DeeplinkHandler> { FirebaseDeeplinkHandler() }
+    single<AppNotificationDataConverter> { AppNotificationDataConverterImpl() }
+    single { WorkManager.getInstance(androidContext()) }
+    single<WorkerFactory> {
+        SampleWorkerFactory(mapOf(
+            RegisterPushTokenWorker::class.java to RegisterPushTokenWorker.Factory(get(), get()),
+            UnregisterPushTokenWorker::class.java to UnregisterPushTokenWorker.Factory(get(), get())
+        ))
+    }
+    single { AppNotificationManager(androidContext()) }
 }
 
 val navigationModule = module {
@@ -100,7 +118,7 @@ val viewModelModule = module {
         AppConfig(isPortraitModeOnly)
     }
     single { ViewModelDependencies(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { MainViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel { MainViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { CatalogViewModelImpl(get(), get()) }
     viewModel { (args: ProductListFragment.Args) ->
         ProductListViewModelImpl(args, get(), get(), get())
@@ -110,16 +128,19 @@ val viewModelModule = module {
     }
     viewModel { OnboardingViewModelImpl(get(), get()) }
     viewModel { (args: AuthFragment.Args) ->
-        AuthViewModelImpl(args, get(), get(), get(), get())
+        AuthViewModelImpl(args, get(), get(), get(), get(), get())
     }
     viewModel { (args: EditProfileFragment.Args) ->
         EditProfileViewModelImpl(args, get(), get())
     }
-    viewModel { ProfileViewModelImpl(get(), get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { (args: ProductCardFragment.Args) ->
         ProductCardViewModelImpl(args, get(), get(), get(), get(), get(), get(), get(), get())
     }
-    viewModel { HomeViewModelImpl(get(), get(), get()) }
+    viewModel { (activity: Activity) ->
+        val permissionManager = PermissionManager(activity)
+        HomeViewModelImpl(permissionManager, get(), get(), get())
+    }
     viewModel { (args: SortingFragment.Args) ->
         SortingViewModelImpl(args, get(), get())
     }
@@ -130,9 +151,6 @@ val viewModelModule = module {
     }
     viewModel { (args: StoriesFragment.Args) ->
         StoriesViewModelImpl(args, get())
-    }
-    viewModel {
-        CartViewModelImpl(get(), get(), get(), get(), get(), get())
     }
     viewModel { (args: AddToCartFragment.Args) ->
         AddToCartViewModelImpl(args, get(), get())
@@ -162,6 +180,8 @@ val interactorModule = module {
     factory<SyncCartUseCase> { SyncCartInteractor(get(), get(), get()) }
     factory<GetOrdersUseCase> { GetOrdersInteractor(get(), get()) }
     factory<CheckoutUseCase> { CheckoutInteractor(get(), get(), get()) }
+    factory<RegisterPushTokenUseCase> { RegisterPushTokenInteractor(get(), get()) }
+    factory<UnregisterPushTokenUseCase> { UnregisterPushTokenInteractor(get(), get()) }
 }
 
 val gatewayModule = module {
@@ -171,6 +191,7 @@ val gatewayModule = module {
     factory { get<GatewayProvider>().provideAuthGateway() }
     factory { get<GatewayProvider>().provideProfileGateway() }
     factory { get<GatewayProvider>().provideCartGateway() }
+    factory { get<GatewayProvider>().providePushGateway() }
 }
 
 val dataFlowModule = module {

@@ -4,6 +4,7 @@
     <string name="email" translatable="false">example@example.com</string> <!--TODO: check-->
     <string name="instagram" translatable="false">https://instagram.com</string> <!--TODO: check-->
     <string name="telegram" translatable="false">https://telegram.me</string> <!--TODO: check-->
+    <string name="notification_channel_id">passionwoman-notification-channel</string>
 
     <string name="in_development">Feature is in development</string>
     <string name="retry">Retry</string>
@@ -51,6 +52,8 @@
     <string name="error_get_orders">Failed to fetch orders</string>
     <string name="error_get_products_page">Failed to retrieve additional products</string>
     <string name="error_checkout">Failed to create the order</string>
+    <string name="error_register_push_token">Failed to register push token</string>
+    <string name="error_unregister_push_token">Failed to unregister push token</string>
     <string name="error_no_categories">The list of categories is empty</string>
     <string name="error_no_favorites">The list of favorites is empty</string>
     <string name="error_no_products">The list of products is empty</string>
@@ -106,6 +109,10 @@
     <string name="home_popular_products_title">Popular</string>
     <string name="home_new_products_title">New</string>
     <string name="home_popular_brands_title">Popular brands</string>
+    <string name="home_push_permission_not_granted_error">The app won\'t show push notifications until the permission is granted</string>
+    <string name="home_push_rationale_dialog_message">Get notified about status of your orders, upcoming sales and promotions!</string>
+    <string name="home_push_rationale_dialog_confirm">OK</string>
+    <string name="home_push_rationale_dialog_reject">No thanks</string>
 
     <string name="sort_new">By new</string>
     <string name="sort_popularity">By popularity</string>

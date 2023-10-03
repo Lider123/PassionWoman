@@ -33,16 +33,15 @@ android {
         }
     }
 
-    flavorDimensions = ["1"]
+    flavorDimensions = ["version"]
     productFlavors {
         demo {
-            dimension "1"
-            applicationIdSuffix ""
+            dimension "version"
+            applicationId "ru.babaetskv.passionwoman.demo.app"
             versionNameSuffix "-demo"
         }
         full {
-            dimension "1"
-            applicationIdSuffix ""
+            dimension "version"
             versionNameSuffix ""
         }
     }
@@ -117,6 +116,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
     // Country code picker
     implementation 'com.hbb20:ccp:2.5.0'
@@ -143,6 +143,10 @@ dependencies {
 
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
+
+    // WorkManager
+    def work_version = "2.7.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // Testing
     testImplementation project(path: ":domain", configuration: "testDependencies")

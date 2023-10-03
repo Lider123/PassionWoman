@@ -22,6 +22,8 @@ import ru.babaetskv.passionwoman.data.database.entity.*
         ProductItemEntity::class,
         ProductImageEntity::class,
         PromotionEntity::class,
+        OrderEntity::class,
+        CartItemEntity::class,
         CountryToProductEntity::class,
         ModelToProductEntity::class,
         MaterialToProductEntity::class,
@@ -48,6 +50,8 @@ abstract class PassionWomanDatabase : RoomDatabase() {
     abstract val productItemDao: ProductItemDao
     abstract val productImageDao: ProductImageDao
     abstract val promotionDao: PromotionDao
+    abstract val orderDao: OrderDao
+    abstract val cartItemDao: CartItemDao
     abstract val countryToProductDao: CountryToProductDao
     abstract val materialToProductDao: MaterialToProductDao
     abstract val modelToProductDao: ModelToProductDao

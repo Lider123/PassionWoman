@@ -4,6 +4,7 @@ import okhttp3.MultipartBody
 import ru.babaetskv.passionwoman.data.api.AuthApi
 import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.data.model.CartModel
+import ru.babaetskv.passionwoman.data.model.CheckoutResultModel
 import ru.babaetskv.passionwoman.data.model.OrderModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 
@@ -13,7 +14,7 @@ abstract class AuthApiDecorator(
 
     override suspend fun addToCart(item: CartItemModel): CartModel = api.addToCart(item)
 
-    override suspend fun checkout(): CartModel = api.checkout()
+    override suspend fun checkout(): CheckoutResultModel = api.checkout()
 
     override suspend fun getCart(): CartModel = api.getCart()
 
@@ -35,5 +36,13 @@ abstract class AuthApiDecorator(
 
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         api.uploadAvatar(image)
+    }
+
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        api.registerPushToken(token)
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        api.unregisterPushToken(token)
     }
 }

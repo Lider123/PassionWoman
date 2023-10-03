@@ -3,8 +3,11 @@ package ru.babaetskv.passionwoman.app.utils
 import android.content.res.Resources
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.domain.StringProvider
+import ru.babaetskv.passionwoman.domain.model.Order
 
-class StringProviderImpl(resources: Resources): StringProvider {
+class StringProviderImpl(
+    private val resources: Resources
+): StringProvider {
     override val GET_CATEGORIES_ERROR: String = resources.getString(R.string.error_get_categories)
     override val GET_PRODUCTS_ERROR: String = resources.getString(R.string.error_get_products)
     override val AUTHORIZE_AS_GUEST_ERROR: String = resources.getString(R.string.error_auth_failed)
@@ -24,6 +27,8 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val REMOVE_FROM_CART_ERROR: String = resources.getString(R.string.error_remove_from_cart)
     override val GET_CART_ITEMS_ERROR: String = resources.getString(R.string.error_get_cart_items)
     override val GET_ORDERS_ERROR: String = resources.getString(R.string.error_get_orders)
+    override val REGISTER_PUSH_TOKEN_ERROR: String = resources.getString(R.string.error_register_push_token)
+    override val UNREGISTER_PUSH_TOKEN_ERROR: String = resources.getString(R.string.error_unregister_push_token)
 
     override val EMPTY_CATEGORIES_ERROR: String = resources.getString(R.string.error_no_categories)
     override val EMPTY_FAVORITES_ERROR: String = resources.getString(R.string.error_no_favorites)
@@ -46,4 +51,13 @@ class StringProviderImpl(resources: Resources): StringProvider {
     override val FILTER_DISCOUNT: String = resources.getString(R.string.filter_discount)
 
     override val GUEST_PROFILE_NAME: String = resources.getString(R.string.profile_guest)
+
+    override fun getOrderNotificationBody(orderId: Long, orderStatus: Order.Status): String =
+        when (orderStatus) {
+            Order.Status.CANCELED -> resources.getString(R.string.order_notification_body_canceled_template, orderId.toString())
+            Order.Status.IN_PROGRESS -> resources.getString(R.string.order_notification_body_in_progress_template, orderId.toString())
+            Order.Status.AWAITING -> resources.getString(R.string.order_notification_body_awaiting_template, orderId.toString())
+            Order.Status.COMPLETED -> resources.getString(R.string.order_notification_body_completed_template, orderId.toString())
+            Order.Status.PENDING -> resources.getString(R.string.order_notification_body_pending_template, orderId.toString())
+        }
 }

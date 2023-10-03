@@ -18,14 +18,16 @@ import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
 import ru.babaetskv.passionwoman.domain.usecase.LogOutUseCase
+import ru.babaetskv.passionwoman.domain.usecase.UnregisterPushTokenUseCase
 import ru.babaetskv.passionwoman.domain.usecase.UpdateAvatarUseCase
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 abstract class BaseProfileViewModelImpl(
     private val getProfileUseCase: GetProfileUseCase,
-    private val authPreferences: AuthPreferences,
+    private val authPreferences: AuthPreferences, // TODO: use only inside UseCase
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
+    private val unregisterPushTokenUseCase: UnregisterPushTokenUseCase,
     private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), ProfileViewModel {
@@ -113,6 +115,7 @@ abstract class BaseProfileViewModelImpl(
         launchWithLoading {
             logOutUseCase.execute()
             dialogLiveData.postValue(null)
+            unregisterPushTokenUseCase.execute()
         }
     }
 

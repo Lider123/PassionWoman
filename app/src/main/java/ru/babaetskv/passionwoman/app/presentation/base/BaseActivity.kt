@@ -69,12 +69,16 @@ abstract class BaseActivity<VM : IViewModel> : AppCompatActivity(), ViewComponen
         installSplashScreen().apply {
             condition?.run(::setKeepOnScreenCondition)
             setOnExitAnimationListener { splashScreenView ->
-                val fadeOut = ObjectAnimator.ofFloat(splashScreenView.iconView, View.ALPHA, 1f, 0f).apply {
-                    interpolator = LinearInterpolator()
-                    duration = 500L
-                    doOnEnd { splashScreenView.remove() }
+                try {
+                    val fadeOut = ObjectAnimator.ofFloat(splashScreenView.iconView, View.ALPHA, 1f, 0f).apply {
+                        interpolator = LinearInterpolator()
+                        duration = 500L
+                        doOnEnd { splashScreenView.remove() }
+                    }
+                    fadeOut.start()
+                } catch (e: NullPointerException) {
+                    splashScreenView.remove()
                 }
-                fadeOut.start()
             }
         }
 }

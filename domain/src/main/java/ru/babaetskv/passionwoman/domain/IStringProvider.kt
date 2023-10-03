@@ -1,6 +1,6 @@
 package ru.babaetskv.passionwoman.domain
 
-interface StringProvider {
+interface IStringProvider {
     val GET_CATEGORIES_ERROR: String
     val GET_PRODUCTS_ERROR: String
     val AUTHORIZE_AS_GUEST_ERROR: String
@@ -21,6 +21,8 @@ interface StringProvider {
     val GET_CART_ITEMS_ERROR: String
     val GET_ORDERS_ERROR: String
     val CHECKOUT_ERROR: String
+    val REGISTER_PUSH_TOKEN_ERROR: String
+    val UNREGISTER_PUSH_TOKEN_ERROR: String
 
     val UNAUTHORIZED_ERROR: String
     val CLIENT_ERROR: String

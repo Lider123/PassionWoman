@@ -18,7 +18,7 @@ import ru.babaetskv.passionwoman.domain.usecase.CheckoutUseCase
 import ru.babaetskv.passionwoman.domain.usecase.RemoveFromCartUseCase
 
 // TODO: if profile is not filled when checkout pressed then ask to fill it
-class CartViewModelImpl(
+abstract class BaseCartViewModelImpl(
     private val addToCartUseCase: AddToCartUseCase,
     private val removeFromCartUseCase: RemoveFromCartUseCase,
     private val cartFlow: CartFlow, // TODO: replace with use case subscription
@@ -59,10 +59,15 @@ class CartViewModelImpl(
     override fun onCheckoutPressed() {
         // TODO: handle payment
         launchWithLoading {
-            checkoutUseCase.execute(Unit)
-            notifier.newRequest(this, R.string.cart_order_created)
-                .sendAlert()
-            router.navigateTo(ScreenProvider.orders())
+            checkout()
         }
+    }
+
+    protected open suspend fun checkout(): Long {
+        val orderId = checkoutUseCase.execute(Unit)
+        notifier.newRequest(this, R.string.cart_order_created)
+            .sendAlert()
+        router.navigateTo(ScreenProvider.orders())
+        return orderId
     }
 }

@@ -22,14 +22,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions = ["1"]
+    flavorDimensions = ["version"]
     productFlavors {
         demo {
-            dimension "1"
+            dimension "version"
             versionNameSuffix "-demo"
         }
         full {
-            dimension "1"
+            dimension "version"
             versionNameSuffix ""
         }
     }

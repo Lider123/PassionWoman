@@ -33,7 +33,7 @@ interface AuthApi {
     suspend fun getOrders(): List<OrderModel>
 
     @POST("api/cart/checkout")
-    suspend fun checkout(): CartModel
+    suspend fun checkout(): CheckoutResultModel
 
     @GET("api/cart")
     suspend fun getCart(): CartModel
@@ -47,4 +47,16 @@ interface AuthApi {
     suspend fun removeFromCart(
         @Body item: CartItemModel
     ): CartModel
+
+    @Multipart
+    @POST("api/push/token")
+    suspend fun registerPushToken(
+        @Part("token") token: MultipartBody.Part
+    )
+
+    @Multipart
+    @HTTP(method = "DELETE", path = "api/push/token", hasBody = true)
+    suspend fun unregisterPushToken(
+        @Part("token") token: MultipartBody.Part
+    )
 }

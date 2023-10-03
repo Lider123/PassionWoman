@@ -11,12 +11,14 @@ import ru.babaetskv.passionwoman.domain.model.AuthResult
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeAsGuestUseCase
 import ru.babaetskv.passionwoman.domain.usecase.AuthorizeUseCase
+import ru.babaetskv.passionwoman.domain.usecase.RegisterPushTokenUseCase
 import ru.babaetskv.passionwoman.domain.usecase.base.UseCase.Companion.execute
 
 class AuthViewModelImpl(
     private val args: AuthFragment.Args,
     private val authorizeUseCase: AuthorizeUseCase,
     private val authorizeAsGuestUseCase: AuthorizeAsGuestUseCase,
+    private val registerPushTokenUseCase: RegisterPushTokenUseCase,
     private val authPreferences: AuthPreferences,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), AuthViewModel {
@@ -52,6 +54,7 @@ class AuthViewModelImpl(
                 smsCodeLiveData.postValue("")
                 modeLiveData.postValue(AuthViewModel.AuthMode.LOGIN)
             }
+            registerPushTokenUseCase.execute()
         }
     }
 

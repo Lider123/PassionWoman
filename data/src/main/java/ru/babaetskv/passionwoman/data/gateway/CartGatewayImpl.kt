@@ -7,13 +7,14 @@ import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.domain.gateway.CartGateway
 import ru.babaetskv.passionwoman.domain.model.Cart
 import ru.babaetskv.passionwoman.domain.model.CartItem
+import ru.babaetskv.passionwoman.domain.model.CheckoutResult
 import ru.babaetskv.passionwoman.domain.model.base.Transformable
 
 class CartGatewayImpl(
     private val authApi: AuthApi
 ) : CartGateway {
 
-    override suspend fun checkout(): Transformable<Unit, Cart> = withContext(Dispatchers.IO) {
+    override suspend fun checkout(): Transformable<Unit, CheckoutResult> = withContext(Dispatchers.IO) {
         return@withContext authApi.checkout()
     }
 

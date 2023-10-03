@@ -6,6 +6,7 @@ import ru.babaetskv.passionwoman.data.api.decorator.base.AuthApiDecorator
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.model.CartItemModel
 import ru.babaetskv.passionwoman.data.model.CartModel
+import ru.babaetskv.passionwoman.data.model.CheckoutResultModel
 import ru.babaetskv.passionwoman.data.model.OrderModel
 import ru.babaetskv.passionwoman.data.model.ProfileModel
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
@@ -22,7 +23,7 @@ class CheckTokenAuthApiDecorator(
         return super.addToCart(item)
     }
 
-    override suspend fun checkout(): CartModel {
+    override suspend fun checkout(): CheckoutResultModel {
         checkToken()
         return super.checkout()
     }
@@ -65,6 +66,16 @@ class CheckTokenAuthApiDecorator(
     override suspend fun uploadAvatar(image: MultipartBody.Part) {
         checkToken()
         super.uploadAvatar(image)
+    }
+
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        checkToken()
+        super.registerPushToken(token)
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        checkToken()
+        super.unregisterPushToken(token)
     }
 
     private fun checkToken() {

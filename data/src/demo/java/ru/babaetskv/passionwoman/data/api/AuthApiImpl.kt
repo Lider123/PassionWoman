@@ -3,30 +3,40 @@ package ru.babaetskv.passionwoman.data.api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import okio.buffer
+import okio.sink
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import ru.babaetskv.passionwoman.data.api.exception.ApiExceptionProvider
 import ru.babaetskv.passionwoman.data.database.PassionWomanDatabase
+import ru.babaetskv.passionwoman.data.database.entity.CartItemEntity
+import ru.babaetskv.passionwoman.data.database.entity.OrderEntity
 import ru.babaetskv.passionwoman.data.model.*
 import ru.babaetskv.passionwoman.domain.DateTimeConverter
 import ru.babaetskv.passionwoman.domain.model.Order
 import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transform
+import ru.babaetskv.passionwoman.domain.model.base.Transformable.Companion.transformList
+import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.util.*
 import kotlin.random.Random
 
 class AuthApiImpl(
     private val database: PassionWomanDatabase,
     private val exceptionProvider: ApiExceptionProvider,
-    private val dateTimeConverter: DateTimeConverter
+    private val authPreferences: AuthPreferences,
+    private val dateTimeConverter: DateTimeConverter,
+    private val orderTransformableParamsProvider: OrderEntity.TransformableParamsProvider
 ) : AuthApi {
     private var profile: ProfileModel? = null
     private var favoriteIds: List<Long> = emptyList()
-    private var orders: MutableList<OrderModel> = mutableListOf()
     private var cart: CartModel = CartModel(
         items = emptyList(),
         price = 0f,
         total = 0f
     )
+    private val pushTokens = mutableMapOf<String, MutableSet<String>>()
 
     override suspend fun getProfile(): ProfileModel = withContext(Dispatchers.IO) {
         return@withContext if (profile == null) {
@@ -51,37 +61,31 @@ class AuthApiImpl(
         favoriteIds = ids
     }
 
-    override suspend fun getOrders(): List<OrderModel> {
-        for (i in orders.indices) {
-            val newStatus = orders[i].status.let(::getNextOrderStatus)
-            orders[i] = orders[i].copy(
-                status = newStatus
-            )
-        }
-        return orders
+    override suspend fun getOrders(): List<OrderModel> = withContext(Dispatchers.IO) {
+        return@withContext database.orderDao.getAll()
+            .transformList(orderTransformableParamsProvider)
     }
 
-    override suspend fun checkout(): CartModel {
-        // TODO: insert order to the database
+    override suspend fun checkout(): CheckoutResultModel = withContext(Dispatchers.IO) {
         if (cart.items.isEmpty()) {
             throw exceptionProvider.getBadRequestException("The cart is empty")
         }
 
-        val newOrder = OrderModel(
+        val newOrder = OrderEntity(
             id = UUID.randomUUID()
                 .toString()
                 .filter { it.isDigit() }
                 .take(8)
-                .toInt(),
+                .toLong(),
             createdAt = DateTime.now(DateTimeZone.getDefault()).let {
                 dateTimeConverter.format(it, DateTimeConverter.Format.API)
             },
-            cartItems = cart.items,
             status = Order.Status.PENDING.apiName
         )
-        orders.add(newOrder)
+        val orderId = database.orderDao.insert(newOrder)[0]
+        saveCartItems(cart.items, orderId)
         clearCart()
-        return cart
+        return@withContext CheckoutResultModel(orderId, cart)
     }
 
     override suspend fun getCart(): CartModel = cart
@@ -131,6 +135,49 @@ class AuthApiImpl(
             )
         }
         return cart
+    }
+
+    override suspend fun registerPushToken(token: MultipartBody.Part) {
+        val tokenString = readPart(token)
+        val activeUserTokens: MutableSet<String> = pushTokens[authPreferences.authToken]
+            ?: mutableSetOf()
+        activeUserTokens.add(tokenString)
+        pushTokens[authPreferences.authToken] = activeUserTokens
+    }
+
+    override suspend fun unregisterPushToken(token: MultipartBody.Part) {
+        val tokenString = readPart(token)
+        val activeUserTokens: MutableSet<String> = pushTokens[authPreferences.authToken]
+            ?: return
+
+        if (!activeUserTokens.contains(tokenString)) return
+
+        activeUserTokens.remove(tokenString)
+        pushTokens[authPreferences.authToken] = activeUserTokens
+    }
+
+    private suspend fun saveCartItems(items: List<CartItemModel>, orderId: Long) = withContext(Dispatchers.IO) {
+        val entities = items.map { item ->
+            CartItemEntity(
+                orderId = orderId,
+                productId = item.productId,
+                preview = item.preview,
+                selectedColorId = item.selectedColor.id,
+                selectedSize = item.selectedSize,
+                name = item.name,
+                price = item.price,
+                priceWithDiscount = item.priceWithDiscount,
+                count = item.count
+            )
+        }
+        database.cartItemDao.insert(*entities.toTypedArray())
+    }
+
+    private suspend fun readPart(part: MultipartBody.Part): String = withContext(Dispatchers.IO) {
+        val ostream: OutputStream = ByteArrayOutputStream()
+        val buffer = ostream.sink().buffer()
+        part.body.writeTo(buffer)
+        return@withContext ostream.toString()
     }
 
     private fun calculatePrice(items: List<CartItemModel>): Float =
