@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "ru.babaetskv.passionwoman.app"
-        minSdk 21
+        minSdk 28
         compileSdk 34
         targetSdk 34
         versionCode 3
@@ -83,12 +83,12 @@ dependencies {
 
     // Common
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
 
     // ConstraintLayout
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
     // Navigation
     implementation "com.github.terrakok:cicerone:7.0"
@@ -111,7 +111,7 @@ dependencies {
     implementation "me.relex:circleindicator:2.1.6"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation platform('com.google.firebase:firebase-bom:33.13.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
@@ -142,7 +142,7 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
     // Paging
-    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
+    implementation "androidx.paging:paging-runtime-ktx:3.3.6"
 
     // WorkManager
     def work_version = "2.7.1"
