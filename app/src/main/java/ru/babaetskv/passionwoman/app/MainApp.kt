@@ -15,6 +15,14 @@ import timber.log.Timber
 class MainApp : Application(), Configuration.Provider {
     private val workerFactory: WorkerFactory by inject()
 
+    override val workManagerConfiguration: Configuration
+        get() {
+            if (!KoinInitializer.isInitialized) KoinInitializer.init(this)
+            return Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .build()
+        }
+
     override fun onCreate() {
         super.onCreate()
         initTimber()
@@ -24,13 +32,6 @@ class MainApp : Application(), Configuration.Provider {
         if (Build.VERSION.SDK_INT < 29) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        if (!KoinInitializer.isInitialized) KoinInitializer.init(this)
-        return Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
     }
 
     private fun initTimber() {
