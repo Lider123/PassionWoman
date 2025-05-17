@@ -37,6 +37,7 @@ class StoriesFragment :
         parametersOf(args)
     }
 
+    @Deprecated("Deprecated in Java") // TODO: replace with a launcher
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

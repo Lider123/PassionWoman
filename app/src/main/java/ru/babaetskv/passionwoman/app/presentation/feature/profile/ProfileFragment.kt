@@ -35,6 +35,7 @@ class ProfileFragment :
     override val viewModel: ProfileViewModel by viewModel<ProfileViewModelImpl>()
     override val screenName: String = ScreenKeys.PROFILE
 
+    @Deprecated("Deprecated in Java") // TODO: replace with a launcher
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             ImagePicker.REQUEST_CODE -> {
