@@ -16,8 +16,8 @@ android {
     defaultConfig {
         applicationId "ru.babaetskv.passionwoman.app"
         minSdk 28
-        compileSdk 34
-        targetSdk 34
+        compileSdk 35
+        targetSdk 35
         versionCode 3
         versionName "0.2.0"
 
