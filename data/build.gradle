@@ -77,7 +77,7 @@ dependencies {
     implementation "ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0"
 
     // Database
-    def room_version = "2.5.2"
+    def room_version = "2.7.1"
     demoImplementation "androidx.room:room-ktx:$room_version"
     demoAnnotationProcessor "androidx.room:room-compiler:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
