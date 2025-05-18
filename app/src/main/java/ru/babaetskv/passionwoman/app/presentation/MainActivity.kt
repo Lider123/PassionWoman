@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.Fragment
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
@@ -19,7 +20,6 @@ import ru.babaetskv.passionwoman.app.utils.notifier.AlertSnackbarFactory
 import ru.babaetskv.passionwoman.app.utils.notifier.AlertMessage
 import java.util.*
 
-// TODO: fix status and navigation bars color
 class MainActivity : BaseActivity<MainViewModel>() {
     private val navigatorHolder: NavigatorHolder by inject()
     private val currentFragment: ViewComponent<*>?
@@ -51,6 +51,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         }
 
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         savedInstanceState ?: run {
             viewModel.handleIntent(intent, true)
         }
