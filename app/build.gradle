@@ -5,6 +5,7 @@ plugins {
     id 'jacoco'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id "org.jetbrains.kotlin.plugin.compose" version "$kotlin_version"
 }
 
 apply from: 'signingCredentials.gradle'
@@ -69,12 +70,18 @@ android {
     buildFeatures {
         viewBinding true
         buildConfig true
+        compose true
     }
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach {
             outputFileName = "$applicationName${variant.productFlavors[0].versionNameSuffix}-${defaultConfig.versionName}-${variant.buildType.name}.apk"
         }
     }
+}
+
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -147,6 +154,16 @@ dependencies {
     // WorkManager
     def work_version = "2.10.1"
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // Jetpack Compose
+    def composeBom = platform('androidx.compose:compose-bom:2025.05.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+    implementation 'androidx.compose.material:material'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
     // Testing
     testImplementation project(path: ":domain", configuration: "testDependencies")
