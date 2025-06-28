@@ -47,12 +47,21 @@
             </intent-filter>
 
             <!-- TODO: fix deeplinks on the demo screen -->
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
                     android:host="passionwoman.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="passionwoman-d63c4.web.app"
                     android:scheme="https"/>
             </intent-filter>
         </activity>

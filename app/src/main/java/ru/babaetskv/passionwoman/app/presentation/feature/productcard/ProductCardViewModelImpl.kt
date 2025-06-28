@@ -8,6 +8,8 @@ import ru.babaetskv.passionwoman.app.analytics.event.AddToWishlistEvent
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
 import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.deeplink.ExternalDeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDynamicLinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.domain.model.*
 import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
@@ -24,7 +26,7 @@ class ProductCardViewModelImpl(
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val removeFromFavoritesUseCase: RemoveFromFavoritesUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val deeplinkGenerator: DeeplinkGenerator,
+    private val externalDeeplinkGenerator: ExternalDeeplinkGenerator,
     private val externalActionHandler: ExternalActionHandler,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), ProductCardViewModel {
@@ -121,7 +123,7 @@ class ProductCardViewModelImpl(
         val product = productLiveData.value ?: return
 
         launch {
-            val deeplink = deeplinkGenerator.createProductDeeplink(product) ?: return@launch
+            val deeplink = externalDeeplinkGenerator.createProductDeeplink(product) ?: return@launch
 
             externalActionHandler.handleText(deeplink)
         }

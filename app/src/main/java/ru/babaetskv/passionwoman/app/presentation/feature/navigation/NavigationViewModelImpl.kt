@@ -43,6 +43,7 @@ class NavigationViewModelImpl(
             when (it) {
                 is DeeplinkPayload.Product -> router.navigateTo(ScreenProvider.productCard(it.productId))
                 is DeeplinkPayload.Order -> router.navigateTo(ScreenProvider.orders()) // TODO: replace with an order card
+                is DeeplinkPayload.Search -> router.navigateTo(ScreenProvider.search())
             }
         }
     }

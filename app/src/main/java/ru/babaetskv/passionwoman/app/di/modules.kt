@@ -10,7 +10,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.koin.dsl.single
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.base.AnalyticsHandler
 import ru.babaetskv.passionwoman.app.analytics.FirebaseAnalyticsHandler
@@ -54,7 +56,7 @@ import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalIntentHandler
 import ru.babaetskv.passionwoman.app.utils.NetworkStateChecker
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandler
-import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkGenerator
+import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDynamicLinkGenerator
 import ru.babaetskv.passionwoman.app.utils.deeplink.FirebaseDeeplinkHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.NotifierImpl
 import ru.babaetskv.passionwoman.data.api.ApiProvider
@@ -70,6 +72,10 @@ import ru.babaetskv.passionwoman.app.push.AppNotificationDataConverterImpl
 import ru.babaetskv.passionwoman.app.push.AppNotificationManager
 import ru.babaetskv.passionwoman.app.utils.bool
 import ru.babaetskv.passionwoman.app.utils.datetime.DefaultDateTimeConverter
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkGeneratorImpl
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkHandlerImpl
+import ru.babaetskv.passionwoman.app.utils.deeplink.DefaultDeeplinkHandler
+import ru.babaetskv.passionwoman.app.utils.deeplink.ExternalDeeplinkGenerator
 import ru.babaetskv.passionwoman.app.utils.externalaction.ExternalActionHandler
 import ru.babaetskv.passionwoman.app.utils.notifier.Notifier
 import ru.babaetskv.passionwoman.data.assets.AssetProvider
@@ -93,8 +99,20 @@ val appModule = module {
     single<AnalyticsHandler> { FirebaseAnalyticsHandler(get()) }
     single<ErrorLogger> { FirebaseErrorLogger(get()) }
     single { NetworkStateChecker(androidContext()) }
-    single<DeeplinkGenerator> { FirebaseDeeplinkGenerator() }
-    single<DeeplinkHandler> { FirebaseDeeplinkHandler() }
+    single<DeeplinkGenerator> { DeeplinkGeneratorImpl() }
+    single<ExternalDeeplinkGenerator> { FirebaseDynamicLinkGenerator(get()) }
+    single<DeeplinkHandler> {
+        DeeplinkHandlerImpl(
+            defaultDeeplinkHandler = get(named("default")),
+            externalDeeplinkHandler = get(named("external"))
+        )
+    }
+    single<DeeplinkHandler>(named("default")) { DefaultDeeplinkHandler() }
+    single<DeeplinkHandler>(named("external")) {
+        FirebaseDeeplinkHandler(
+            deeplinkHandler = get(named("default"))
+        )
+    }
     single<AppNotificationDataConverter> { AppNotificationDataConverterImpl() }
     single { WorkManager.getInstance(androidContext()) }
     single<WorkerFactory> {
