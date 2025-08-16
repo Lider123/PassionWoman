@@ -7,7 +7,7 @@ interface DeeplinkGenerator {
 
     companion object {
         const val URL_SCHEMA = "https"
-        const val URL_HOST = "passionwoman-d63c4.web.app"
+        const val URL_HOST = "passionwoman-d63c4.firebaseapp.com"
         const val PRODUCT_PATH = "product"
         const val SEARCH_PATH = "search"
         const val PRODUCT_PARAM_ID = "id"

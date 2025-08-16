@@ -58,11 +58,14 @@
 
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
+
                 <data
-                    android:host="passionwoman-d63c4.web.app"
-                    android:scheme="https"/>
+                    android:host="passionwoman-d63c4.firebaseapp.com"
+                    android:scheme="https"
+                    android:pathPrefix="/"/>
             </intent-filter>
         </activity>
 
