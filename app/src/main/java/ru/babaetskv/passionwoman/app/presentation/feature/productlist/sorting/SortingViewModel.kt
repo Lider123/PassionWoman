@@ -1,37 +1,15 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting
 
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import androidx.lifecycle.LiveData
+import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
-class SortingViewModel(
-    private val args: SortingFragment.Args,
-    private val sortingUpdateHub: SortingUpdateHub,
-    val stringProvider: StringProvider,
-    dependencies: ViewModelDependencies
-) : BaseViewModel<SortingViewModel.Router>(dependencies) {
+interface SortingViewModel : IViewModel {
+    val stringProvider: StringProvider
+    val sortingsLiveData: LiveData<List<SelectableItem<Sorting>>>
 
-    val sortingsLiveData = MutableLiveData(Sorting.values().map { SortingItem(it, selected = it == args.sorting) })
-
-    fun onSortingPressed(item: SortingItem) {
-        val newValues = sortingsLiveData.value!!.map {
-            it.copy(
-                selected = it.sorting == item.sorting
-            )
-        }
-        sortingsLiveData.postValue(newValues)
-    }
-
-    fun onApplySortingPressed() {
-        launch {
-            sortingUpdateHub.post(sortingsLiveData.value!!.find { it.selected }?.sorting ?: args.sorting)
-            onBackPressed()
-        }
-    }
-
-    sealed class Router : RouterEvent
+    fun onSortingPressed(item: SelectableItem<Sorting>)
+    fun onApplySortingPressed()
 }

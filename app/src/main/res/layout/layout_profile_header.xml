@@ -8,13 +8,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutAvatarWrapper"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="4dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_marginVertical="@dimen/margin_default"
         android:layout_marginStart="@dimen/margin_default"
-        app:layout_constraintWidth_percent=".33"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -25,6 +22,20 @@
             android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic"/>
     </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnEditAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="@dimen/margin_small"
+        android:src="@drawable/ic_edit"
+        android:background="@drawable/bg_round"
+        android:backgroundTint="@color/secondary"
+        android:elevation="@dimen/margin_extra_small"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/layoutAvatarWrapper"
+        app:layout_constraintBottom_toBottomOf="@id/layoutAvatarWrapper"
+        tools:visibility="visible"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
@@ -59,7 +70,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Theme.PassionWoman.Button.Text"
+        style="@style/Widget.PassionWoman.Button.Text"
         tools:visibility="visible"/>
 
     <com.google.android.material.button.MaterialButton
@@ -70,5 +81,5 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/Theme.PassionWoman.Button.Text" />
+        style="@style/Widget.PassionWoman.Button.Text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

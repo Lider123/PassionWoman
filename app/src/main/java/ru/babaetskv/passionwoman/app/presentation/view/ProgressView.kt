@@ -2,7 +2,6 @@ package ru.babaetskv.passionwoman.app.presentation.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -10,6 +9,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewProgressBinding
+import ru.babaetskv.passionwoman.app.utils.viewBinding
 
 
 class ProgressView @JvmOverloads constructor(
@@ -17,7 +17,8 @@ class ProgressView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    private val binding: ViewProgressBinding
+    private val binding: ViewProgressBinding =
+        viewBinding(ViewProgressBinding::inflate, true)
     private val blinkingAnimation: Animation by lazy {
         AlphaAnimation(0.35f, 1f).apply {
             duration = 750
@@ -27,11 +28,6 @@ class ProgressView @JvmOverloads constructor(
     }
     private val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fragment_fade_in)
     private val fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fragment_fade_out)
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_progress, this)
-        binding = ViewProgressBinding.bind(this)
-    }
 
     override fun onVisibilityChanged(changedView: View, visibility: Int) {
         super.onVisibilityChanged(changedView, visibility)

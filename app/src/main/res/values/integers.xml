@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="categories_list_span_count">1</integer>
+    <integer name="categories_list_orientation">1</integer>
+    <integer name="profile_menu_item_list_span_count">1</integer>
+    <integer name="stories_items_per_page">3</integer>
+    <integer name="products_items_per_page">2</integer>
+    <integer name="brands_list_span_count">4</integer>
+    <integer name="products_list_span_count">2</integer>
+</resources>

@@ -2,23 +2,25 @@ package ru.babaetskv.passionwoman.app.presentation.feature.catalog
 
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentCatalogBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+import ru.babaetskv.passionwoman.app.utils.integer
 import ru.babaetskv.passionwoman.domain.model.Category
 
-class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, FragmentComponent.NoArgs>() {
+class CatalogFragment :
+    BaseFragment<CatalogViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentCatalogBinding by viewBinding()
     private val categoriesAdapter: CategoriesAdapter by lazy {
         CategoriesAdapter(viewModel::onCategoryPressed)
     }
 
-    override val viewModel: CatalogViewModel by viewModel()
+    override val viewModel: CatalogViewModel by viewModel<CatalogViewModelImpl>()
     override val layoutRes: Int = R.layout.fragment_catalog
     override val applyBottomInset: Boolean = false
     override val screenName: String = ScreenKeys.CATEGORIES
@@ -26,12 +28,20 @@ class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, 
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.setOnEndClickListener {
-                viewModel.onSearchPressed()
-            }
+            toolbar.setEndActions(
+                ToolbarView.Action(
+                    iconRes = R.drawable.ic_search,
+                    onClick = viewModel::onSearchPressed
+                )
+            )
             rvCategories.run {
+                layoutManager = GridLayoutManager(
+                    requireContext(),
+                    integer(R.integer.categories_list_span_count),
+                    integer(R.integer.categories_list_orientation),
+                    false
+                )
                 adapter = categoriesAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_default))
             }
         }
     }
@@ -39,15 +49,6 @@ class CatalogFragment : BaseFragment<CatalogViewModel, CatalogViewModel.Router, 
     override fun initObservers() {
         super.initObservers()
         viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::populateCategories)
-    }
-
-    override fun handleRouterEvent(event: CatalogViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            is CatalogViewModel.Router.CategoryScreen -> {
-                router.navigateTo(Screens.category(event.category))
-            }
-        }
     }
 
     private fun populateCategories(categories: List<Category>) {

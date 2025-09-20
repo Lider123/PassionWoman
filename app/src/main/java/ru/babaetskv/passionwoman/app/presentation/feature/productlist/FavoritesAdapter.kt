@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -10,10 +9,10 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
+import ru.babaetskv.passionwoman.app.utils.inflateLayout
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setHtmlText
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toPriceString
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class FavoritesAdapter(
@@ -23,8 +22,7 @@ class FavoritesAdapter(
 ) : BaseAdapter<Product>(ProductDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_product, parent, false)
+        val view = parent.inflateLayout(R.layout.view_item_product)
         if (itemWidthRatio < 0 && itemWidthRatio > 1) throw IllegalStateException("Item width ratio should be from 0 to 1")
 
         view.updateLayoutParams {
@@ -35,20 +33,25 @@ class FavoritesAdapter(
 
     inner class ViewHolder(v: View) : BaseViewHolder<Product>(v) {
         private val binding = ViewItemProductBinding.bind(v)
+        private var item: Product? = null
+
+        init {
+            binding.cardPreview.setOnSingleClickListener {
+                item?.let(onItemClick)
+            }
+        }
 
         override fun bind(item: Product) {
+            this.item = item
             binding.run {
-                root.setOnSingleClickListener {
-                    onItemClick.invoke(item)
-                }
                 if (item.discountRate > 0) {
-                    tvPrice.text = item.priceWithDiscount.toPriceString()
+                    tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
                         isVisible = true
-                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toPriceString()))
+                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toFormattedString()))
                     }
                 } else {
-                    tvPrice.text = item.price.toPriceString()
+                    tvPrice.text = item.price.toFormattedString()
                     tvPriceDeleted.isVisible = false
                 }
                 ratingBar.rating = item.rating

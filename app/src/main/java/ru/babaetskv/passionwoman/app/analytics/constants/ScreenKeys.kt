@@ -16,4 +16,9 @@ object ScreenKeys {
     const val SORTING = "sorting"
     const val PROFILE = "profile"
     const val SPLASH = "splash"
+    const val FILTERS = "filters"
+    const val STORIES = "stories"
+    const val CART = "cart"
+    const val NEW_CART_ITEM = "new_cart_item"
+    const val ORDER_LIST = "order_list"
 }

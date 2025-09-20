@@ -31,4 +31,10 @@
     <color name="ucrop_color_widget_rotate_angle">@color/secondary</color>
     <color name="ucrop_color_crop_background">@color/onPrimary</color>
     <color name="ucrop_color_progress_wheel_line">@color/secondary</color>
+
+    <color name="order_status_pending">#d3d3d3</color>
+    <color name="order_status_in_progress">#f0ad4e</color>
+    <color name="order_status_awaiting">#0275d8</color>
+    <color name="order_status_completed">#5cb85c</color>
+    <color name="order_status_canceled">#d9534f</color>
 </resources>

@@ -1,24 +1,25 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.auth
 
 import android.content.Intent
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.viewbinding.library.fragment.viewBinding
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
+import androidx.core.view.isVisible
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.auth.AuthHandler
 import ru.babaetskv.passionwoman.app.auth.AuthHandlerImpl
 import ru.babaetskv.passionwoman.app.databinding.FragmentAuthBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.utils.*
 
-class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentComponent.NoArgs>() {
+class AuthFragment : BaseFragment<AuthViewModel, AuthFragment.Args>() {
     private val binding: FragmentAuthBinding by viewBinding()
     private var smsAutoFilled = false
     private val authHandler: AuthHandler by lazy {
@@ -29,7 +30,9 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
     }
 
     override val layoutRes: Int = R.layout.fragment_auth
-    override val viewModel: AuthViewModel by viewModel()
+    override val viewModel: AuthViewModel by viewModel<AuthViewModelImpl> {
+        parametersOf(args)
+    }
     override val screenName: String = ScreenKeys.LOGIN
 
     override fun initViews() {
@@ -48,9 +51,16 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                     val formattedPhone = countryCodePicker.formattedFullNumber
                     viewModel.onLoginPressed(phone, formattedPhone)
                 }
+                groupGuest.isVisible = args.onAppStart
                 btnGuest.setOnSingleClickListener {
                     hideKeyboard()
                     viewModel.onGuestPressed()
+                }
+                btnBack.run {
+                    isVisible = !args.onAppStart
+                    setOnSingleClickListener {
+                        viewModel.onBackPressed()
+                    }
                 }
                 etPhone.run {
                     setOnEditorActionListener { _, actionId, _ ->
@@ -101,16 +111,14 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         viewModel.lastPhoneLiveData.observe(viewLifecycleOwner, ::populateLastPhone)
         viewModel.modeLiveData.observe(viewLifecycleOwner, ::populateMode)
         viewModel.smsCodeLiveData.observe(viewLifecycleOwner, ::populateSmsCode)
-        lifecycleScope.launchWhenResumed {
-            viewModel.eventBus.collect(::handleEvent)
-        }
     }
 
-    override fun handleRouterEvent(event: AuthViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            AuthViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
-            is AuthViewModel.Router.SignUpScreen -> router.navigateTo(Screens.signUp(event.profile))
+            is AuthViewModel.LoginWithPhoneEvent -> {
+                authHandler.loginWithPhone(event.phone, viewModel)
+            }
+            else -> super.onEvent(event)
         }
     }
 
@@ -127,10 +135,10 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         }
     }
 
-    private fun populateMode(mode: AuthMode) {
+    private fun populateMode(mode: AuthViewModel.AuthMode) {
         binding.run {
             when (mode) {
-                AuthMode.LOGIN -> {
+                AuthViewModel.AuthMode.LOGIN -> {
                     layoutSmsConfirm.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutLogin.run {
                         root.showAnimated(R.anim.fragment_fade_in) {
@@ -138,7 +146,7 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
                         }
                     }
                 }
-                AuthMode.SMS_CONFIRM -> {
+                AuthViewModel.AuthMode.SMS_CONFIRM -> {
                     layoutLogin.root.hideAnimated(R.anim.fragment_fade_out)
                     layoutSmsConfirm.run {
                         root.showAnimated(R.anim.fragment_fade_in) {
@@ -155,16 +163,13 @@ class AuthFragment : BaseFragment<AuthViewModel, AuthViewModel.Router, FragmentC
         binding.layoutSmsConfirm.tvTitle.text = getString(R.string.sms_title_template, phone)
     }
 
-    private fun handleEvent(event: AuthViewModel.Event) {
-        when (event) {
-            is AuthViewModel.Event.LoginWithPhone -> {
-                authHandler.loginWithPhone(event.phone, viewModel)
-            }
-        }
-    }
+    @Parcelize
+    data class Args(
+        val onAppStart: Boolean
+    ) : Parcelable
 
     companion object {
 
-        fun create() = AuthFragment()
+        fun create(onAppStart: Boolean) = AuthFragment().withArgs(Args(onAppStart))
     }
 }

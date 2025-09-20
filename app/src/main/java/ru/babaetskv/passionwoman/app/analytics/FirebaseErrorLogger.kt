@@ -26,8 +26,8 @@ class FirebaseErrorLogger(authPreferences: AuthPreferences) : ErrorLogger {
         Firebase.crashlytics.recordException(t)
     }
 
-    private fun onUserIdChanged(userId: String) {
-        Firebase.crashlytics.setUserId(userId)
+    private fun onUserIdChanged(userId: Long) {
+        Firebase.crashlytics.setUserId(userId.toString())
     }
 
     private object CrashKeys {

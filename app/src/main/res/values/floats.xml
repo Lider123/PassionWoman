@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="input_constraint_width_percentage" type="integer" format="float">.8</item>
+</resources>

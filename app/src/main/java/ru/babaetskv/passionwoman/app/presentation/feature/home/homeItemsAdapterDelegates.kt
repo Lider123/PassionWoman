@@ -1,19 +1,18 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.home
 
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeBrandsBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeHeaderBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomeProductsBinding
-import ru.babaetskv.passionwoman.app.databinding.ViewItemHomePromotionsBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
+import ru.babaetskv.passionwoman.app.databinding.*
 import ru.babaetskv.passionwoman.app.presentation.feature.productlist.PagedProductsAdapter
+import ru.babaetskv.passionwoman.app.utils.dimen
+import ru.babaetskv.passionwoman.app.utils.integer
+import ru.babaetskv.passionwoman.app.utils.view.LinearLayoutPagerManager
 import ru.babaetskv.passionwoman.domain.model.Brand
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Promotion
-
-private const val HOME_PRODUCT_ITEM_WIDTH_RATIO = 0.41f
+import ru.babaetskv.passionwoman.domain.model.Story
 
 fun headerHomeItemAdapterDelegate(onClickListener: (item: HomeItem.Header) -> Unit) =
     adapterDelegateViewBinding<HomeItem.Header, HomeItem, ViewItemHomeHeaderBinding>(
@@ -57,6 +56,29 @@ fun promotionsHomeItemDelegate(onPromotionClickListener: (item: Promotion) -> Un
         }
     }
 
+fun storiesHomeItemDelegate(onStoryClickListener: (item: Story) -> Unit) =
+    adapterDelegateViewBinding<HomeItem.Stories, HomeItem, ViewItemHomeStoriesBinding>(
+        { layoutInflater, parent ->
+            ViewItemHomeStoriesBinding.inflate(layoutInflater, parent, false)
+        }
+    ) {
+        binding.root.run {
+            layoutManager = LinearLayoutPagerManager(
+                context,
+                RecyclerView.HORIZONTAL,
+                false,
+                integer(R.integer.stories_items_per_page),
+                dimen(R.dimen.margin_default)
+            )
+            adapter = StoriesAdapter(onStoryClickListener)
+        }
+        bind {
+            with (binding.root.adapter as StoriesAdapter) {
+                submitList(item.data)
+            }
+        }
+    }
+
 fun LifecycleOwner.productsHomeItemDelegate(
     onProductClickListener: (item: Product) -> Unit,
     onBuyProductPressed: (item: Product) -> Unit
@@ -67,10 +89,14 @@ fun LifecycleOwner.productsHomeItemDelegate(
         }
     ) {
         binding.root.run {
-            adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed,
-                itemWidthRatio = HOME_PRODUCT_ITEM_WIDTH_RATIO
+            layoutManager = LinearLayoutPagerManager(
+                context,
+                RecyclerView.HORIZONTAL,
+                false,
+                integer(R.integer.products_items_per_page),
+                dimen(R.dimen.margin_default)
             )
-            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_default))
+            adapter = PagedProductsAdapter(onProductClickListener, onBuyProductPressed)
         }
         bind {
             with (binding.root.adapter as PagedProductsAdapter) {
@@ -85,10 +111,7 @@ fun brandsHomeItemDelegate(onBrandClickListener: (item: Brand) -> Unit) =
             ViewItemHomeBrandsBinding.inflate(layoutInflater, parent, false)
         }
     ) {
-        binding.root.run {
-            adapter = BrandsAdapter(onBrandClickListener)
-            addItemDecoration(EmptyDividerDecoration(context, R.dimen.margin_small))
-        }
+        binding.root.adapter = BrandsAdapter(onBrandClickListener)
         bind {
             with (binding.root.adapter as BrandsAdapter) {
                 submitList(item.data)

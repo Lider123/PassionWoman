@@ -4,9 +4,11 @@
     <string name="email" translatable="false">example@example.com</string> <!--TODO: check-->
     <string name="instagram" translatable="false">https://instagram.com</string> <!--TODO: check-->
     <string name="telegram" translatable="false">https://telegram.me</string> <!--TODO: check-->
+    <string name="notification_channel_id">passionwoman-notification-channel</string>
 
     <string name="in_development">Feature is in development</string>
     <string name="retry">Retry</string>
+    <string name="log_in">Log in</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -22,6 +24,11 @@
     <string name="item_product_button_buy">Buy now</string>
 
     <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_client">Failed to connect to the requested resource. Please try again later</string>
+    <string name="error_server">The requested resource is not available. Please try again later</string>
+    <string name="error_unauthorized">You are not authorized. Please log in and try again</string>
+    <string name="error_network_unavailable">Network error. Please check your internet connection</string>
+    <string name="error_no_data">No data available</string>
     <string name="error_get_categories">Failed to retrieve categories</string>
     <string name="error_get_products">Failed to retrieve products</string>
     <string name="error_phone_number_is_null">Phone number is empty</string>
@@ -39,7 +46,19 @@
     <string name="error_add_to_favorites">Failed to add the product to favorites</string>
     <string name="error_remove_from_favorites">Failed to remove the product from favorites</string>
     <string name="error_sync_favorites">Failed to synchronize favorites</string>
+    <string name="error_add_to_cart">Failed to add product to the cart</string>
+    <string name="error_remove_from_cart">Failed to remove product from the cart</string>
+    <string name="error_get_cart_items">Failed to fetch cart items</string>
+    <string name="error_get_orders">Failed to fetch orders</string>
     <string name="error_get_products_page">Failed to retrieve additional products</string>
+    <string name="error_checkout">Failed to create the order</string>
+    <string name="error_register_push_token">Failed to register push token</string>
+    <string name="error_unregister_push_token">Failed to unregister push token</string>
+    <string name="error_no_categories">The list of categories is empty</string>
+    <string name="error_no_favorites">The list of favorites is empty</string>
+    <string name="error_no_products">The list of products is empty</string>
+    <string name="error_no_cart_items">The cart is empty</string>
+    <string name="error_no_orders">The list of orders is empty</string>
 
     <string name="onboarding_1">Feel the magic with our lingerie brand</string>
     <string name="onboarding_2">Your body deserves comfort</string>
@@ -81,27 +100,73 @@
 
     <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
     <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>
+    <string name="product_card_sizes">Sizes</string>
     <string name="product_card_add_to_cart">Add to cart</string>
+    <string name="product_card_not_available">Not available</string>
     <string name="product_card_discount_template" translatable="false">-%.0f%%</string>
 
     <string name="home_sale_products_title">Sale</string>
     <string name="home_popular_products_title">Popular</string>
     <string name="home_new_products_title">New</string>
     <string name="home_popular_brands_title">Popular brands</string>
+    <string name="home_push_permission_not_granted_error">The app won\'t show push notifications until the permission is granted</string>
+    <string name="home_push_rationale_dialog_message">Get notified about status of your orders, upcoming sales and promotions!</string>
+    <string name="home_push_rationale_dialog_confirm">OK</string>
+    <string name="home_push_rationale_dialog_reject">No thanks</string>
 
     <string name="sort_new">By new</string>
     <string name="sort_popularity">By popularity</string>
     <string name="sort_price_asc">By price ascending</string>
     <string name="sort_price_desc">By price descending</string>
+    <string name="sort_rating">By rating</string>
 
     <string name="sorting_apply">Apply</string>
     <string name="sorting_title">Sorting</string>
 
+    <plurals name="filters_apply_placeholder">
+        <item quantity="zero">No products</item>
+        <item quantity="one">Apply: %d product</item>
+        <item quantity="two">Apply :%d products</item>
+        <item quantity="few">Apply: %d products</item>
+        <item quantity="many">Apply: %d products</item>
+        <item quantity="other">Apply: %d products</item>
+    </plurals>
+    <string name="filters_title">Filters</string>
+    <string name="filters_clear">Clear</string>
+    <string name="filters_range_from">from</string>
+    <string name="filters_range_to">to</string>
+
+    <string name="filter_discount">Discount</string>
+
     <string name="product_list_favorites">Favorites</string>
+    <string name="product_list_no_filters">No filters available</string>
+    <string name="product_list_search">search</string>
+
+    <string name="cart_title">Cart</string>
+    <string name="cart_checkout">Checkout</string>
+    <string name="cart_total">Total:</string>
+    <string name="cart_order_created">Your order has now been created</string>
+
+    <string name="add_to_cart_title">Add to the cart</string>
 
     <string name="contacts_version_placeholder">v%s</string>
     <string name="contacts_phone">Call us</string>
     <string name="contacts_email">Send us an email</string>
     <string name="contacts_instagram">Find us on Instagram</string>
     <string name="contacts_telegram">Write to us on Telegram</string>
+
+    <string name="view_input_range_hint">0</string>
+
+    <string name="add_to_cart_success">Successfully added to cart</string>
+
+    <string name="orders_title">Orders</string>
+
+    <string name="order_title_placeholder">Order %s</string>
+    <string name="order_previews_more_placeholder">+%d</string>
+
+    <string name="order_status_pending">Pending</string>
+    <string name="order_status_in_progress">In progress</string>
+    <string name="order_status_awaiting">Awaiting</string>
+    <string name="order_status_completed">Completed</string>
+    <string name="order_status_canceled">Canceled</string>
 </resources>

@@ -5,17 +5,15 @@ import android.content.Intent
 import android.viewbinding.library.fragment.viewBinding
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.github.dhaval2404.imagepicker.ImagePicker
-import kotlinx.coroutines.flow.collect
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
-import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.presentation.event.Event
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
@@ -26,15 +24,7 @@ import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
 import ru.babaetskv.passionwoman.domain.model.Profile
 
 class ProfileFragment :
-    BaseFragment<ProfileViewModel, ProfileViewModel.Router, FragmentComponent.NoArgs>() {
-    private val guestProfile: Profile
-        get() = Profile(
-            id = "-1",
-            name = getString(R.string.profile_guest),
-            surname = "",
-            phone = "",
-            avatar = null
-        )
+    BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentProfileBinding by viewBinding()
     private val profileMenuItemsAdapter: ProfileMenuItemAdapter by lazy {
         ProfileMenuItemAdapter(viewModel::onMenuItemPressed)
@@ -42,9 +32,10 @@ class ProfileFragment :
     private var activeDialog: AlertDialog? = null
 
     override val layoutRes: Int = R.layout.fragment_profile
-    override val viewModel: ProfileViewModel by sharedViewModel()
+    override val viewModel: ProfileViewModel by viewModel<ProfileViewModelImpl>()
     override val screenName: String = ScreenKeys.PROFILE
 
+    @Deprecated("Deprecated in Java") // TODO: replace with a launcher
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             ImagePicker.REQUEST_CODE -> {
@@ -62,10 +53,7 @@ class ProfileFragment :
     override fun initViews() {
         super.initViews()
         binding.run {
-            rvMenuItems.run {
-                adapter = profileMenuItemsAdapter
-                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
-            }
+            rvMenuItems.adapter = profileMenuItemsAdapter
             btnLogOut.setOnSingleClickListener {
                 viewModel.onLogOutPressed()
             }
@@ -76,8 +64,8 @@ class ProfileFragment :
                 btnEdit.setOnSingleClickListener {
                     viewModel.onEditPressed()
                 }
-                ivAvatar.setOnSingleClickListener {
-                    viewModel.onAvatarPressed()
+                btnEditAvatar.setOnSingleClickListener {
+                    viewModel.onEditAvatarPressed()
                 }
             }
         }
@@ -88,39 +76,25 @@ class ProfileFragment :
         viewModel.profileLiveData.observe(viewLifecycleOwner, ::populateProfile)
         viewModel.menuItemsLiveData.observe(viewLifecycleOwner, ::populateMenu)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
-        lifecycleScope.launchWhenResumed {
-            viewModel.eventBus.collect(::handleEvent)
-        }
     }
 
-    override fun handleRouterEvent(event: ProfileViewModel.Router) {
-        super.handleRouterEvent(event)
+    override fun onEvent(event: Event) {
         when (event) {
-            ProfileViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
-            is ProfileViewModel.Router.EditProfileScreen -> {
-                router.navigateTo(Screens.editProfile(event.profile))
-            }
-            ProfileViewModel.Router.FavoritesScreen -> router.navigateTo(Screens.favorites())
-            ProfileViewModel.Router.ContactsScreen -> router.openBottomSheet(Screens.contacts())
-        }
-    }
-
-    private fun handleEvent(event: ProfileViewModel.Event) {
-        when (event) {
-            ProfileViewModel.Event.PickAvatarCamera -> {
+            ProfileViewModel.PickCameraImageEvent -> {
                 ImagePicker.with(this)
                     .cameraOnly()
                     .cropSquare()
                     .maxResultSize(400, 400)
                     .start()
             }
-            ProfileViewModel.Event.PickAvatarGallery -> {
+            ProfileViewModel.PickGalleryImageEvent -> {
                 ImagePicker.with(this)
                     .galleryOnly()
                     .cropSquare()
                     .maxResultSize(400, 400)
                     .start()
             }
+            else -> super.onEvent(event)
         }
     }
 
@@ -176,6 +150,7 @@ class ProfileFragment :
     }
 
     private fun populateProfile(profile: Profile?) {
+        val guestProfile = viewModel.guestProfile
         profile ?: run {
             populateProfile(guestProfile)
             return
@@ -189,6 +164,7 @@ class ProfileFragment :
                 tvName.text = getString(R.string.profile_full_name_template, profile.name, profile.surname)
                 tvPhone.text = profile.phone.toFormattedPhone()
                 btnLogin.isVisible = profile == guestProfile
+                btnEditAvatar.isVisible = profile != guestProfile
                 btnEdit.isVisible = profile != guestProfile
             }
             btnLogOut.isVisible = profile != guestProfile

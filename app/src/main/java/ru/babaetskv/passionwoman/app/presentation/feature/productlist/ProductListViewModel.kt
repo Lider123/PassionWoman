@@ -1,105 +1,39 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.LiveData
 import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
-import androidx.paging.cachedIn
+import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.analytics.event.SelectProductEvent
-import ru.babaetskv.passionwoman.app.presentation.base.BaseViewModel
-import ru.babaetskv.passionwoman.app.presentation.base.RouterEvent
-import ru.babaetskv.passionwoman.app.presentation.base.SimplePager
-import ru.babaetskv.passionwoman.app.presentation.base.ViewModelDependencies
-import ru.babaetskv.passionwoman.app.presentation.feature.productlist.sorting.SortingUpdateHub
-import ru.babaetskv.passionwoman.data.datasource.ProductsDataSource
-import ru.babaetskv.passionwoman.domain.interactor.exception.StringProvider
+import ru.babaetskv.passionwoman.app.presentation.base.IViewModel
+import ru.babaetskv.passionwoman.app.presentation.event.Event
+import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Product
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.filters.Filter
 
-class ProductListViewModel(
-    args: ProductListFragment.Args,
-    sortingUpdateHub: SortingUpdateHub,
-    val stringProvider: StringProvider,
-    productsDataSource: ProductsDataSource,
-    dependencies: ViewModelDependencies
-) : BaseViewModel<ProductListViewModel.Router>(dependencies) {
-    private val sortingUpdateFlow: Flow<Sorting> = sortingUpdateHub.flow
-        .onEach(::onSortingUpdated)
-    private val productsPager = SimplePager(PAGE_SIZE) { productsDataSource }
+interface ProductListViewModel : IViewModel {
+    val modeLiveData: LiveData<ProductListMode>
+    val sortingLiveData: LiveData<Sorting>
+    val appliedFiltersCountLiveData: LiveData<Int>
+    val productsFlow: Flow<PagingData<Product>>
+    val stringProvider: StringProvider
 
-    val sortingLiveData = MutableLiveData(args.sorting)
-    val productsFlow = productsPager.flow.cachedIn(viewModelScope)
+    fun onProductPressed(product: Product)
+    fun onBuyPressed(product: Product)
+    fun onFiltersPressed()
+    fun onSortingPressed()
+    fun onSearchQueryChanged(query: String)
+    fun onLoadStateChanged(states: CombinedLoadStates)
 
-    init {
-        sortingUpdateFlow.launchIn(this@ProductListViewModel)
-    }
+    data class UpdateSortingEvent(
+        val data: Sorting
+    ) : Event
 
-    override fun onErrorActionPressed() {
-        super.onErrorActionPressed()
-        productsPager.invalidate()
-    }
+    data class UpdateFiltersEvent(
+        val data: List<Filter>
+    ) : Event
 
-    private fun onSortingUpdated(sorting: Sorting) {
-        sortingLiveData.postValue(sorting)
-        productsPager.invalidate()
-    }
-
-    fun onProductPressed(product: Product) {
-        analyticsHandler.log(SelectProductEvent(product))
-        launch {
-            navigateTo(Router.ProductCardScreen(product))
-        }
-    }
-
-    fun onBuyPressed(product: Product) {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendError()
-    }
-
-    fun onFiltersPressed() {
-        // TODO
-        notifier.newRequest(this, R.string.in_development)
-            .sendError()
-    }
-
-    fun onSortingPressed() {
-        launch {
-            navigateTo(Router.SortingScreen(sortingLiveData.value!!))
-        }
-    }
-
-    fun onLoadStateChanged(states: CombinedLoadStates) {
-        when (val state = states.refresh) {
-            is LoadState.NotLoading -> {
-                loadingLiveData.postValue(false)
-                errorLiveData.postValue(null)
-            }
-            LoadState.Loading -> {
-                loadingLiveData.postValue(true)
-                errorLiveData.postValue(null)
-            }
-            is LoadState.Error -> onError(coroutineContext, state.error)
-        }
-    }
-
-    sealed class Router : RouterEvent {
-
-        data class ProductCardScreen(
-            val product: Product
-        ) : Router()
-
-        data class SortingScreen(
-            val selectedSorting: Sorting
-        ) : Router()
-    }
-
-    companion object {
-        private const val PAGE_SIZE = 10
-    }
+    data class OpenLandscapeProductCard(
+        val product: Product
+    ) : Event
 }

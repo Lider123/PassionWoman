@@ -6,4 +6,6 @@ interface ParamsKeys {
     val CONTENT_TYPE: String
     val SCREEN_NAME: String
     val USER_ID: String
+    val CATEGORY_NAME: String
+    val BRAND_NAME: String
 }

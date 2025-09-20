@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/margin_default"
+    android:paddingVertical="@dimen/margin_small"
+    tools:theme="@style/Theme.PassionWoman">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.PassionWoman.Button.Colored"
+        tools:text="@tools:sample/lorem"/>
+</FrameLayout>

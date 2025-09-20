@@ -20,14 +20,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_default"
         android:text="@string/sms_title_template"
         android:textAppearance="@style/Typography.PassionWoman.TextAppearance.Subtitle"
-        android:textAlignment="center"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/tvAppName"
-        app:layout_constraintBottom_toTopOf="@id/pevSmsCode"/>
+        app:layout_constraintBottom_toTopOf="@id/pevSmsCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <me.philio.pinentry.PinEntryView
         android:id="@+id/pevSmsCode"

@@ -3,66 +3,81 @@ package ru.babaetskv.passionwoman.app.presentation.base
 import android.content.Context
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.coroutines.flow.collect
+import androidx.lifecycle.lifecycleScope
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.presentation.view.ErrorView
-import ru.babaetskv.passionwoman.app.presentation.view.LinearMockView
+import ru.babaetskv.passionwoman.app.presentation.event.Event
+import ru.babaetskv.passionwoman.app.presentation.view.StubView
 import ru.babaetskv.passionwoman.app.presentation.view.ProgressView
-import ru.babaetskv.passionwoman.domain.interactor.exception.NetworkDataException
+import ru.babaetskv.passionwoman.domain.exceptions.GatewayException
+import ru.babaetskv.passionwoman.domain.exceptions.UseCaseException
+import timber.log.Timber
 
-interface ViewComponent<VM, TRouterEvent : RouterEvent> where VM : BaseViewModel<TRouterEvent> {
+interface ViewComponent<VM : IViewModel> {
     val viewModel: VM
     val screenName: String
     val componentView: View
     val componentViewLifecycleOwner: LifecycleOwner
-    val componentLifecycleScope: LifecycleCoroutineScope
     val componentContext: Context
 
     fun onBackPressed()
 
+    fun onEvent(event: Event) = Unit
+
     fun initViews() = Unit
 
-    @Suppress("UNCHECKED_CAST")
     fun initObservers() {
+        Timber.e("initObservers()")
         viewModel.loadingLiveData.observe(componentViewLifecycleOwner, ::showLoading)
         viewModel.errorLiveData.observe(componentViewLifecycleOwner, ::showError)
-        componentLifecycleScope.launchWhenResumed {
-            viewModel.routerEventBus.collect {
-                when (it) {
-                    RouterEvent.GoBack -> onBackPressed()
-                    else -> handleRouterEvent(it as TRouterEvent)
-                }
-            }
+        componentViewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            Timber.e("launchWhenResumed()")
+            viewModel.eventFlow.collect(::onEvent)
         }
     }
 
-    fun handleRouterEvent(event: TRouterEvent) = Unit
-
     fun showLoading(show: Boolean) {
-        componentView.findViewById<LinearMockView>(R.id.mockView)?.isVisible = show
+        componentView.findViewById<View>(R.id.mockView)?.isVisible = show
         componentView.findViewById<ProgressView>(R.id.progressView)?.isVisible = show
     }
 
     fun showError(exception: Exception?) {
-        val errorView = componentView.findViewById<ErrorView>(R.id.errorView) ?: return
+        val errorView = componentView.findViewById<StubView>(R.id.errorView) ?: return
 
         exception ?: run {
             errorView.isVisible = false
             return
         }
 
+        errorView.isVisible = true
         when (exception) {
-            is NetworkDataException -> {
-                errorView.isVisible = true
-                errorView.message = exception.message ?: componentContext.getString(R.string.error_unknown)
+            is UseCaseException.Data -> {
+                errorView.message = exception.message
                 errorView.setBackButtonListener {
                     onBackPressed()
                 }
+                errorView.isActionButtonVisible = true
                 errorView.setActionButtonListener {
-                    viewModel.onErrorActionPressed()
+                    viewModel.onErrorActionPressed(exception)
                 }
+            }
+            is UseCaseException.EmptyData -> {
+                errorView.message = exception.message
+                errorView.setBackButtonListener {
+                    onBackPressed()
+                }
+                errorView.isActionButtonVisible = false
+            }
+            is GatewayException.Unauthorized -> {
+                errorView.message = exception.message
+                errorView.setBackButtonListener {
+                    onBackPressed()
+                }
+                errorView.isActionButtonVisible = true
+                errorView.setActionButtonListener {
+                    viewModel.onErrorActionPressed(exception)
+                }
+                errorView.action = componentContext.getString(R.string.log_in)
             }
         }
     }

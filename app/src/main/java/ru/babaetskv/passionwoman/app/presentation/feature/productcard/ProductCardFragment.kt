@@ -1,8 +1,10 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productcard
 
 import android.os.Parcelable
+import android.view.View
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.view.isVisible
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -10,48 +12,74 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentProductCardBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
+import ru.babaetskv.passionwoman.app.presentation.HorizontalMarginItemDecoration
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.utils.setHtmlText
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toPriceString
-import ru.babaetskv.passionwoman.domain.model.Image
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
+import ru.babaetskv.passionwoman.app.utils.*
+import ru.babaetskv.passionwoman.domain.model.Color
 import ru.babaetskv.passionwoman.domain.model.Product
+import ru.babaetskv.passionwoman.domain.model.ProductSize
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
+import kotlin.math.abs
 
-class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewModel.Router, ProductCardFragment.Args>() {
+class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardFragment.Args>() {
     private val binding: FragmentProductCardBinding by viewBinding()
     private val productPhotosAdapter: ProductPhotosAdapter by lazy {
         ProductPhotosAdapter()
     }
-    private val productColorsAdapter: ProductColorsAdapter by lazy {
-        ProductColorsAdapter(viewModel::onColorItemPressed)
+    private val productSizesAdapter: ProductSizesAdapter by lazy {
+        ProductSizesAdapter(viewModel::onSizeItemPressed)
+    }
+    private val colorsAdapter: ColorsAdapter by lazy {
+        ColorsAdapter(viewModel::onColorItemPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_product_card
-    override val viewModel: ProductCardViewModel by viewModel {
+    override val viewModel: ProductCardViewModel by viewModel<ProductCardViewModelImpl> {
         parametersOf(args)
     }
     override val screenName: String = ScreenKeys.PRODUCT_CARD
+    override val applyTopInset: Boolean
+        get() = args.isSeparate
+    override val applyBottomInset: Boolean
+        get() = args.isSeparate
 
     override fun initViews() {
         super.initViews()
         binding.run {
             toolbar.run {
-                setOnStartClickListener {
-                    viewModel.onBackPressed()
+                if (args.isSeparate) {
+                    setStartActions(
+                        ToolbarView.Action(
+                            iconRes = R.drawable.ic_back,
+                            onClick = viewModel::onBackPressed
+                        )
+                    )
                 }
-                setOnEndClickListener {
-                    viewModel.onFavoritePressed()
-                }
+                this@ProductCardFragment.setEndActions()
             }
             vpPhotos.run {
-                adapter = productPhotosAdapter.apply {
-                    registerAdapterDataObserver(pageIndicator.adapterDataObserver)
+                adapter = productPhotosAdapter
+                offscreenPageLimit = 1
+                val nextItemVisiblePx = dimen(R.dimen.margin_default)
+                val currentItemHorizontalMarginPx = dimen(R.dimen.margin_large)
+                val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+                val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+                    page.translationX = -pageTranslationX * position
+                    page.scaleY = 1 - (0.25f * abs(position))
+                    // page.alpha = 0.25f + (1 - abs(position))
                 }
-                pageIndicator.setViewPager(this)
+                setPageTransformer(pageTransformer)
+                addItemDecoration(HorizontalMarginItemDecoration(context, R.dimen.margin_large))
             }
             rvColors.run {
-                adapter = productColorsAdapter
+                adapter = colorsAdapter
                 addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_small))
+            }
+            rvSizes.run {
+                adapter = productSizesAdapter
+                itemAnimator = null
+                addItemDecoration(EmptyDividerDecoration(requireContext(), R.dimen.margin_extra_small))
             }
             btnAddToCart.setOnSingleClickListener {
                 viewModel.onAddToCartPressed()
@@ -62,20 +90,32 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
     override fun initObservers() {
         super.initObservers()
         viewModel.productLiveData.observe(viewLifecycleOwner, ::populateProduct)
-        viewModel.productColorsLiveData.observe(viewLifecycleOwner, ::populateProductColorItems)
+        viewModel.colorsLiveData.observe(viewLifecycleOwner, ::populateColorItems)
         viewModel.productPhotosLiveData.observe(viewLifecycleOwner, ::populateProductPhotos)
+        viewModel.productSizesLiveData.observe(viewLifecycleOwner, ::populateProductSizeItems)
         viewModel.isFavoriteLiveData.observe(viewLifecycleOwner, ::populateFavorite)
     }
 
     private fun populateFavorite(isFavorite: Boolean) {
-        val iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked
-        binding.toolbar.setActionEnd(iconRes)
+        setEndActions(isFavorite)
     }
 
-    private fun populateProductPhotos(photos: List<Image>) {
-        productPhotosAdapter.submitList(photos) {
-            binding.layoutEmpty.isVisible = photos.isEmpty()
-        }
+    private fun setEndActions(isFavorite: Boolean = false) {
+        binding.toolbar.setEndActions(
+            ToolbarView.Action(
+                iconRes = R.drawable.ic_share,
+                onClick = viewModel::onSharePressed
+            ),
+            ToolbarView.Action(
+                iconRes = if (isFavorite) R.drawable.ic_like_checked else R.drawable.ic_like_unchecked,
+                tintRes = R.color.favorite,
+                onClick = viewModel::onFavoritePressed
+            )
+        )
+    }
+
+    private fun populateProductPhotos(photos: List<ProductImageItem>) {
+        productPhotosAdapter.submitList(photos)
     }
 
     private fun populateProduct(product: Product) {
@@ -83,36 +123,61 @@ class ProductCardFragment : BaseFragment<ProductCardViewModel, ProductCardViewMo
             tvProductName.text = product.name
             ratingBar.rating = product.rating
             if (product.discountRate > 0) {
-                tvPrice.text = product.priceWithDiscount.toPriceString()
+                tvPrice.text = product.priceWithDiscount.toFormattedString()
                 tvPriceDeleted.run {
                     isVisible = true
-                    setHtmlText(getString(R.string.deleted_text_template, product.price.toPriceString()))
+                    setHtmlText(getString(R.string.deleted_text_template, product.price.toFormattedString()))
                 }
             } else {
-                tvPrice.text = product.price.toPriceString()
+                tvPrice.text = product.price.toFormattedString()
                 tvPriceDeleted.isVisible = false
             }
             tvDiscountPercent.run {
                 isVisible = product.discountRate > 0
                 text = context.getString(R.string.product_card_discount_template, product.discountRate)
             }
+            tvDesription.run {
+                isVisible = product.description.isNullOrBlank().not()
+                text = product.description
+            }
+            layoutBrand.run {
+                root.isVisible = product.brand?.let {
+                    ivLogo.load(it.logo, R.drawable.ic_logo, resizeAsItem = true)
+                    true
+                } ?: false
+            }
             content.isVisible = true
         }
     }
 
-    private fun populateProductColorItems(items: List<ProductColorItem>) {
-        val selectedColorName = items.find { it.selected }?.productColor?.color?.name ?: ""
+    private fun populateColorItems(items: List<SelectableItem<Color>>) {
+        val selectedColorName = items.find { it.isSelected }?.value?.uiName ?: ""
         binding.tvColors.setHtmlText(getString(R.string.product_card_color_placeholder, selectedColorName))
-        productColorsAdapter.submitList(items)
+        colorsAdapter.submitList(items)
+    }
+
+    private fun populateProductSizeItems(items: List<SelectableItem<ProductSize>>) {
+        val productIsAvailable = items.any { it.value.isAvailable }
+        binding.btnAddToCart.run {
+            isEnabled = productIsAvailable
+            setText(if (productIsAvailable) R.string.product_card_add_to_cart else R.string.product_card_not_available)
+        }
+        productSizesAdapter.submitList(items) {
+            binding.groupSizes.isVisible = items.isNotEmpty()
+        }
     }
 
     @Parcelize
     data class Args(
-        val productId: String
+        val productId: Long,
+        val isSeparate: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(productId: String) = ProductCardFragment().withArgs(Args(productId))
+        fun create(
+            productId: Long,
+            isSeparate: Boolean = true
+        ) = ProductCardFragment().withArgs(Args(productId, isSeparate))
     }
 }

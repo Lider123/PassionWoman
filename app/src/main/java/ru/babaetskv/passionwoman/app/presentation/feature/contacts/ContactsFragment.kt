@@ -6,17 +6,17 @@ import ru.babaetskv.passionwoman.app.BuildConfig
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentContactsBinding
-import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 
-class ContactsFragment : BaseBottomSheetDialogFragment<ContactsViewModel, ContactsViewModel.Router, FragmentComponent.NoArgs>() {
+class ContactsFragment : BaseFragment<ContactsViewModel, FragmentComponent.NoArgs>() {
     private val binding: FragmentContactsBinding by viewBinding()
     private val adapter: ContactsOptionsAdapter by lazy {
         ContactsOptionsAdapter(viewModel::onOptionPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_contacts
-    override val viewModel: ContactsViewModel by viewModel()
+    override val viewModel: ContactsViewModel by viewModel<ContactsViewModelImpl>()
     override val screenName: String = ScreenKeys.CONTACTS
 
     override fun initViews() {

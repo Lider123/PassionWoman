@@ -20,22 +20,25 @@
 
         <ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="?android:attr/actionBarSize"
             android:textAlignment="viewStart"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:tv_title="@string/edit_profile_sign_up"
-            app:tv_actionStartVisible="true"
-            app:tv_actionStartSrc="@drawable/ic_back"
             app:tv_titleTextAppearance="@style/Typography.PassionWoman.TextAppearance.Title"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputNameWrapper"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_marginHorizontal="@dimen/margin_default"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputName"
                 android:layout_width="match_parent"
@@ -45,17 +48,20 @@
                 android:ellipsize="end"
                 android:inputType="textCapSentences"
                 android:imeOptions="actionNext"
-                style="@style/Theme.PassionWoman.EditText"
+                style="@style/Widget.PassionWoman.EditText"
                 tools:text="@tools:sample/first_names" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputSurnameWrapper"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_marginHorizontal="@dimen/margin_default"
-            app:layout_constraintTop_toBottomOf="@id/inputNameWrapper">
+            app:layout_constraintTop_toBottomOf="@id/inputNameWrapper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputSurname"
                 android:layout_width="match_parent"
@@ -65,19 +71,22 @@
                 android:ellipsize="end"
                 android:inputType="textCapSentences"
                 android:imeOptions="actionDone"
-                style="@style/Theme.PassionWoman.EditText"
+                style="@style/Widget.PassionWoman.EditText"
                 tools:text="@tools:sample/last_names" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDone"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_default"
             android:layout_marginHorizontal="@dimen/margin_default"
             android:text="@string/edit_profile_done"
             app:layout_constraintTop_toBottomOf="@id/inputSurnameWrapper"
-            style="@style/Theme.PassionWoman.Button.Colored"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="@integer/input_constraint_width_percentage"
+            style="@style/Widget.PassionWoman.Button.Colored"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAuthor"

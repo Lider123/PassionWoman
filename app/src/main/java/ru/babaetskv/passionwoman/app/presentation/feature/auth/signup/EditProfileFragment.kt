@@ -5,37 +5,43 @@ import android.view.inputmethod.EditorInfo
 import android.viewbinding.library.fragment.viewBinding
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.parcelize.Parcelize
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentEditProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.ProfileViewModel
+import ru.babaetskv.passionwoman.app.presentation.view.ToolbarView
 import ru.babaetskv.passionwoman.app.utils.hideKeyboard
 import ru.babaetskv.passionwoman.app.utils.load
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Profile
 
-class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewModel.Router, EditProfileFragment.Args>() {
+class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileFragment.Args>() {
     private val binding: FragmentEditProfileBinding by viewBinding()
-    private val profileViewModel: ProfileViewModel by sharedViewModel()
 
     override val layoutRes: Int = R.layout.fragment_edit_profile
-    override val viewModel: EditProfileViewModel by viewModel {
-        parametersOf(args, profileViewModel)
+    override val viewModel: EditProfileViewModel by viewModel<EditProfileViewModelImpl> {
+        parametersOf(args)
     }
-    override val screenName: String =
+    override val screenName: String by lazy {
         if (args.signingUp) ScreenKeys.SIGN_UP else ScreenKeys.EDIT_PROFILE
+    }
 
     override fun initViews() {
         super.initViews()
         binding.run {
-            toolbar.title = if (args.signingUp) {
-                getString(R.string.edit_profile_sign_up)
-            } else getString(R.string.edit_profile_edit)
+            toolbar.run {
+                title = if (args.signingUp) {
+                    getString(R.string.edit_profile_sign_up)
+                } else getString(R.string.edit_profile_edit)
+                setStartActions(
+                    ToolbarView.Action(
+                        iconRes = R.drawable.ic_back,
+                        onClick = viewModel::onBackPressed
+                    )
+                )
+            }
             if (args.signingUp) ivBackground.load(R.drawable.bg_login)
             inputName.run {
                 setText(args.profile.name)
@@ -62,22 +68,12 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
                 hideKeyboard()
                 viewModel.onDonePressed()
             }
-            toolbar.setOnSingleClickListener {
-                viewModel.onBackPressed()
-            }
         }
     }
 
     override fun initObservers() {
         super.initObservers()
         viewModel.dataIsValidLiveData.observe(viewLifecycleOwner, ::updateDoneButton)
-    }
-
-    override fun handleRouterEvent(event: EditProfileViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            EditProfileViewModel.Router.NavigationScreen -> router.newRootScreen(Screens.navigation())
-        }
     }
 
     private fun updateDoneButton(dataIsValid: Boolean) {
@@ -87,12 +83,13 @@ class EditProfileFragment : BaseFragment<EditProfileViewModel, EditProfileViewMo
     @Parcelize
     data class Args(
         val profile: Profile,
-        val signingUp: Boolean
+        val signingUp: Boolean,
+        val onAppStart: Boolean
     ) : Parcelable
 
     companion object {
 
-        fun create(profile: Profile, signingUp: Boolean) =
-            EditProfileFragment().withArgs(Args(profile, signingUp))
+        fun create(profile: Profile, signingUp: Boolean, onAppStart: Boolean) =
+            EditProfileFragment().withArgs(Args(profile, signingUp, onAppStart))
     }
 }

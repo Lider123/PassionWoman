@@ -2,22 +2,25 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'jacoco'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id "org.jetbrains.kotlin.plugin.compose" version "$kotlin_version"
 }
 
 apply from: 'signingCredentials.gradle'
+apply from: "$project.rootDir/tools/jacoco.gradle"
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    namespace "ru.babaetskv.passionwoman.app"
 
     defaultConfig {
         applicationId "ru.babaetskv.passionwoman.app"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 3
-        versionName "0.2.0"
+        minSdk 28
+        compileSdk 35
+        targetSdk 35
+        versionCode 4
+        versionName "0.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,16 +34,15 @@ android {
         }
     }
 
-    flavorDimensions "1"
+    flavorDimensions = ["version"]
     productFlavors {
         demo {
-            dimension "1"
-            applicationIdSuffix ""
+            dimension "version"
+            applicationId "ru.babaetskv.passionwoman.demo.app"
             versionNameSuffix "-demo"
         }
         full {
-            dimension "1"
-            applicationIdSuffix ""
+            dimension "version"
             versionNameSuffix ""
         }
     }
@@ -49,6 +51,7 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.demo.signingConfig signingConfigs.demo
         }
         release {
             minifyEnabled false
@@ -59,20 +62,27 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
+        compose true
     }
-    applicationVariants.all { variant ->
-        variant.outputs.all {
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
             outputFileName = "$applicationName${variant.productFlavors[0].versionNameSuffix}-${defaultConfig.versionName}-${variant.buildType.name}.apk"
         }
     }
+}
+
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -80,21 +90,23 @@ dependencies {
     implementation project(":domain")
 
     // Common
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
 
+    // ConstraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+
     // Navigation
-    implementation "com.github.terrakok:cicerone:$cicerone_version"
+    implementation "com.github.terrakok:cicerone:7.0"
 
     // DI
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "io.insert-koin:koin-android:3.1.5"
 
     // Glide
+    def glide_version = "4.12.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     // ViewBinding
@@ -107,13 +119,16 @@ dependencies {
     implementation "me.relex:circleindicator:2.1.6"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    implementation platform('com.google.firebase:firebase-bom:33.15.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     // Country code picker
-    implementation 'com.hbb20:ccp:2.4.0'
+    implementation 'com.hbb20:ccp:2.5.0'
 
     // Pin entry view
     implementation 'me.philio:pinentryview:1.0.6'
@@ -122,8 +137,39 @@ dependencies {
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     // AdapterDelegates
+    def adapter_delegates_version = "4.3.0"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl:$adapter_delegates_version"
     implementation "com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:$adapter_delegates_version"
+
+    // Flexbox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+
+    // SplashScreen
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.3.6"
+
+    // WorkManager
+    def work_version = "2.10.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // Jetpack Compose
+    def composeBom = platform('androidx.compose:compose-bom:2025.05.00')
+    implementation composeBom
+    androidTestImplementation composeBom
+    implementation 'androidx.compose.material:material'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    // Testing
+    testImplementation project(path: ":domain", configuration: "testDependencies")
+    androidTestImplementation project(path: ":domain", configuration: "androidTestDependencies")
 }
 repositories {
     mavenCentral()

@@ -1,54 +1,53 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.productlist
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.databinding.ViewItemProductBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BasePagingAdapter
 import ru.babaetskv.passionwoman.app.presentation.base.BaseViewHolder
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.setHtmlText
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toPriceString
+import ru.babaetskv.passionwoman.app.utils.*
 import ru.babaetskv.passionwoman.domain.model.Product
 
 class PagedProductsAdapter(
     private val onItemClick: (Product) -> Unit,
-    private val onBuyClick: (Product) -> Unit,
-    private val itemWidthRatio: Float = 1f
+    private val onBuyClick: (Product) -> Unit
 ) : BasePagingAdapter<Product>(ProductDiffUtilCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item_product, parent, false)
-        if (itemWidthRatio < 0 && itemWidthRatio > 1) throw IllegalStateException("Item width ratio should be from 0 to 1")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> =
+        ViewHolder(parent.viewBinding(ViewItemProductBinding::inflate), onItemClick, onBuyClick)
 
-        view.updateLayoutParams {
-            width = if (itemWidthRatio != 1f) (itemWidthRatio * parent.measuredWidth).toInt() else width
+    class ViewHolder(
+        private val binding: ViewItemProductBinding,
+        onItemClick: (Product) -> Unit,
+        onBuyClick: (Product) -> Unit
+    ) : BaseViewHolder<Product>(binding.root) {
+        private var item: Product? = null
+
+        init {
+            binding.run {
+                cardPreview.setOnSingleClickListener {
+                    item?.let(onItemClick)
+                }
+                btnBuy.setOnSingleClickListener {
+                    item?.let(onBuyClick)
+                }
+            }
         }
-        return ViewHolder(view)
-    }
-
-    inner class ViewHolder(v: View) : BaseViewHolder<Product>(v) {
-        private val binding = ViewItemProductBinding.bind(v)
 
         override fun bind(item: Product) {
+            this.item = item
             binding.run {
-                root.setOnSingleClickListener {
-                    onItemClick.invoke(item)
-                }
+                root.disabled = !item.isAvailable
                 if (item.discountRate > 0) {
-                    tvPrice.text = item.priceWithDiscount.toPriceString()
+                    tvPrice.text = item.priceWithDiscount.toFormattedString()
                     tvPriceDeleted.run {
                         isVisible = true
-                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toPriceString()))
+                        setHtmlText(context.getString(R.string.deleted_text_template, item.price.toFormattedString()))
                     }
                 } else {
-                    tvPrice.text = item.price.toPriceString()
+                    tvPrice.text = item.price.toFormattedString()
                     tvPriceDeleted.isVisible = false
                 }
                 ratingBar.rating = item.rating
@@ -56,8 +55,9 @@ class PagedProductsAdapter(
                 ivPreview.load(item.preview, R.drawable.photo_placeholder,
                     resizeAsItem = true
                 )
-                btnBuy.setOnSingleClickListener {
-                    onBuyClick.invoke(item)
+                btnBuy.run {
+                    isEnabled = item.isAvailable
+                    setText(if (item.isAvailable) R.string.item_product_button_buy else R.string.product_card_not_available)
                 }
                 tvDiscountPercent.run {
                     isVisible = item.discountRate > 0

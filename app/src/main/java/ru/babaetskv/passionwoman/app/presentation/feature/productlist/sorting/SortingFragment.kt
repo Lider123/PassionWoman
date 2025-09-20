@@ -9,18 +9,19 @@ import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
 import ru.babaetskv.passionwoman.app.databinding.FragmentSortingBinding
 import ru.babaetskv.passionwoman.app.presentation.EmptyDividerDecoration
-import ru.babaetskv.passionwoman.app.presentation.base.BaseBottomSheetDialogFragment
+import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
 import ru.babaetskv.passionwoman.domain.model.Sorting
+import ru.babaetskv.passionwoman.domain.model.base.SelectableItem
 
-class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingViewModel.Router, SortingFragment.Args>() {
+class SortingFragment : BaseFragment<SortingViewModel, SortingFragment.Args>() {
     private val binding: FragmentSortingBinding by viewBinding()
     private val sortingAdapter: SortingAdapter by lazy {
         SortingAdapter(viewModel.stringProvider, viewModel::onSortingPressed)
     }
 
     override val layoutRes: Int = R.layout.fragment_sorting
-    override val viewModel: SortingViewModel by viewModel {
+    override val viewModel: SortingViewModel by viewModel<SortingViewModelImpl> {
         parametersOf(args)
     }
     override val screenName: String = ScreenKeys.SORTING
@@ -43,7 +44,7 @@ class SortingFragment : BaseBottomSheetDialogFragment<SortingViewModel, SortingV
         viewModel.sortingsLiveData.observe(viewLifecycleOwner, ::populateSortings)
     }
 
-    private fun populateSortings(sortings: List<SortingItem>) {
+    private fun populateSortings(sortings: List<SelectableItem<Sorting>>) {
         sortingAdapter.submitList(sortings)
     }
 

@@ -7,31 +7,39 @@
     android:layout_height="?android:attr/actionBarSize"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btnActionStart"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:scaleType="centerInside"
+    <LinearLayout
+        android:id="@+id/layoutActionsStart"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintDimensionRatio="1:1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:gravity="center_vertical"
+        android:lines="1"
+        android:ellipsize="end"
         android:textAppearance="@style/Typography.PassionWoman.TextAppearance.AppName"
-        app:layout_constraintStart_toEndOf="@id/btnActionStart"
-        app:layout_constraintEnd_toStartOf="@id/btnActionEnd"
+        app:layout_constraintStart_toEndOf="@id/layoutActionsStart"
+        app:layout_constraintEnd_toStartOf="@id/layoutActionsEnd"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_goneMarginStart="@dimen/margin_default"
         app:layout_goneMarginEnd="@dimen/margin_default"
         tools:text="@string/app_name"/>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btnActionEnd"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/layoutActionsEnd"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintDimensionRatio="1:1" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent" />
 </merge>

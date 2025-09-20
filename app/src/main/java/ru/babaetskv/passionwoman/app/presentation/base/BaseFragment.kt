@@ -7,19 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import org.koin.android.ext.android.inject
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.AppRouter
 import ru.babaetskv.passionwoman.app.utils.setInsetsListener
 
-abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
+abstract class BaseFragment<VM : IViewModel, TArgs : Parcelable> :
     Fragment(),
-    FragmentComponent<VM, TRouterEvent, TArgs>
-    where VM : BaseViewModel<TRouterEvent> {
-    protected val router: AppRouter by inject()
+    FragmentComponent<VM, TArgs> {
     protected open val applyTopInset: Boolean = true
     protected open val applyBottomInset: Boolean = true
 
@@ -33,8 +27,6 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     override var _args: TArgs? = null
     override val componentView: View
         get() = requireView()
-    override val componentLifecycleScope: LifecycleCoroutineScope
-        get() = lifecycleScope
     override val componentViewLifecycleOwner: LifecycleOwner
         get() = viewLifecycleOwner
 
@@ -48,7 +40,11 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<View>(R.id.contentInsetsView)?.setInsetsListener(applyTopInset, applyBottomInset)
+        view.findViewById<View>(R.id.contentInsetsView)
+            ?.setInsetsListener(
+                top = applyTopInset,
+                bottom = applyBottomInset
+            )
         initViews()
         initObservers()
     }
@@ -74,7 +70,7 @@ abstract class BaseFragment<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
     }
 
     override fun onBackPressed() {
-        router.exit()
+        viewModel.onBackPressed()
     }
 
     fun withArgs(args: TArgs) = also { it.args = args }

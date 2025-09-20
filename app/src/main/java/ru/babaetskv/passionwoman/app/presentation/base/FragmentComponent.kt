@@ -5,9 +5,7 @@ import android.os.Parcelable
 import androidx.core.os.bundleOf
 import kotlinx.parcelize.Parcelize
 
-interface FragmentComponent<VM, TRouterEvent: RouterEvent, TArgs : Parcelable> :
-    ViewComponent<VM, TRouterEvent>
-    where VM : BaseViewModel<TRouterEvent> {
+interface FragmentComponent<VM : IViewModel, TArgs : Parcelable> : ViewComponent<VM> {
     var componentArguments: Bundle
     var _args: TArgs?
     var args: TArgs

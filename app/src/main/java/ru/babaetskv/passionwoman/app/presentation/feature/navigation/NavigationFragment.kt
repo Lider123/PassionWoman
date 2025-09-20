@@ -1,29 +1,35 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.navigation
 
 import android.app.Dialog
+import android.os.Parcelable
 import android.viewbinding.library.fragment.viewBinding
+import com.google.android.material.navigation.NavigationBarView
+import kotlinx.parcelize.Parcelize
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.babaetskv.passionwoman.app.R
-import ru.babaetskv.passionwoman.app.navigation.Screens
 import ru.babaetskv.passionwoman.app.databinding.FragmentNavigationBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
-import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
+import ru.babaetskv.passionwoman.app.utils.deeplink.DeeplinkPayload
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
+import ru.babaetskv.passionwoman.domain.model.Cart
 
-class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel.Router, FragmentComponent.NoArgs>() {
+class NavigationFragment : BaseFragment<NavigationViewModel, NavigationFragment.Args>() {
     private val binding: FragmentNavigationBinding by viewBinding()
     private var activeDialog: Dialog? = null
 
     override val layoutRes: Int = R.layout.fragment_navigation
-    override val viewModel: NavigationViewModel by viewModel()
+    override val viewModel: NavigationViewModel by viewModel<NavigationViewModelImpl> {
+        parametersOf(args)
+    }
     override val applyTopInset: Boolean = false
     override val applyBottomInset: Boolean = false
     override val screenName: String = ""
 
     override fun initViews() {
         super.initViews()
-        binding.navView.setOnNavigationItemSelectedListener { menuItem ->
+        (binding.navView as NavigationBarView).setOnItemSelectedListener { menuItem ->
             NavigationViewModel.Tab.findByMenuItemId(menuItem.itemId)?.let {
                 viewModel.onTabPressed(it)
                 true
@@ -36,13 +42,21 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
         super.initObservers()
         viewModel.selectedTabLiveData.observe(viewLifecycleOwner, ::showTab)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
+        viewModel.cartLiveData.observe(viewLifecycleOwner, ::populateCart)
     }
 
-    override fun handleRouterEvent(event: NavigationViewModel.Router) {
-        super.handleRouterEvent(event)
-        when (event) {
-            NavigationViewModel.Router.AuthScreen -> router.newRootScreen(Screens.auth())
-        }
+    private fun populateCart(cart: Cart) {
+        val count = cart.items.size
+        (binding.navView as NavigationBarView)
+            .getOrCreateBadge(NavigationViewModel.Tab.CART.menuItemId)
+            .run {
+                if (count < 1) {
+                    isVisible = false
+                } else {
+                    isVisible = true
+                    number = count
+                }
+            }
     }
 
     private fun populateDialog(dialog: NavigationViewModel.Dialog?) {
@@ -53,6 +67,7 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
 
         when (dialog) {
             is NavigationViewModel.Dialog.MergeFavorites -> showMergeFavoritesDialog(dialog)
+            else -> Unit
         }
     }
 
@@ -86,11 +101,16 @@ class NavigationFragment : BaseFragment<NavigationViewModel, NavigationViewModel
                 attach(nextFragment)
             }
         }.commitNow()
-        binding.navView.menu.findItem(tab.menuItemId).isChecked = true
+        (binding.navView as NavigationBarView).menu.findItem(tab.menuItemId).isChecked = true
     }
+
+    @Parcelize
+    data class Args(
+        val payload: DeeplinkPayload?
+    ) : Parcelable
 
     companion object {
 
-        fun create() = NavigationFragment()
+        fun create(payload: DeeplinkPayload?) = NavigationFragment().withArgs(Args(payload))
     }
 }
