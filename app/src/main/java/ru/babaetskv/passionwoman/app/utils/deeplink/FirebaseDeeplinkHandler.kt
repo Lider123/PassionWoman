@@ -4,7 +4,9 @@ import android.net.Uri
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.coroutines.tasks.await
 
-class FirebaseDeeplinkHandler : DeeplinkHandler {
+class FirebaseDeeplinkHandler(
+    private val deeplinkHandler: DeeplinkHandler
+) : DeeplinkHandler {
 
     override suspend fun handle(deeplink: Uri?): DeeplinkPayload? {
         deeplink ?: return null
@@ -14,17 +16,6 @@ class FirebaseDeeplinkHandler : DeeplinkHandler {
             .await()
             .link ?: return null
 
-        return createPayloadFromUrl(url)
-    }
-
-    private fun createPayloadFromUrl(url: Uri): DeeplinkPayload? {
-        return when (url.host) {
-            DeeplinkGenerator.PRODUCT_HOST -> {
-                url.getQueryParameter(DeeplinkGenerator.PRODUCT_PARAM_ID)?.toLongOrNull()?.let {
-                    DeeplinkPayload.Product(it)
-                }
-            }
-            else -> null
-        }
+        return deeplinkHandler.handle(url)
     }
 }

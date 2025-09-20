@@ -51,6 +51,7 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.demo.signingConfig signingConfigs.demo
         }
         release {
             minifyEnabled false
@@ -118,12 +119,13 @@ dependencies {
     implementation "me.relex:circleindicator:2.1.6"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:33.13.0')
+    implementation platform('com.google.firebase:firebase-bom:33.15.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     // Country code picker
     implementation 'com.hbb20:ccp:2.5.0'

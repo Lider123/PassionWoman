@@ -110,7 +110,8 @@ abstract class BaseMainViewModelImpl(
     private fun resolveScreen(payload: DeeplinkPayload?): Screen? = when (payload) {
         is DeeplinkPayload.Product -> ScreenProvider.productCard(payload.productId)
         is DeeplinkPayload.Order -> ScreenProvider.orders() // TODO: replace with order card
-        else -> null
+        is DeeplinkPayload.Search -> ScreenProvider.search()
+        null -> null
     }
 
     protected open fun prepareApp() {
