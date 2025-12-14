@@ -1,6 +1,5 @@
 package ru.babaetskv.passionwoman.app.presentation.feature.onboarding
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -26,16 +23,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
-import androidx.compose.material.icons.automirrored.rounded.Backspace
-import androidx.compose.material.icons.automirrored.rounded.Forward
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -55,19 +45,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import ru.babaetskv.passionwoman.app.presentation.theme.PassionWomanTheme
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.presentation.components.PassionWomanButton
-import ru.babaetskv.passionwoman.app.presentation.theme.PassionWomanTypography
+import ru.babaetskv.passionwoman.app.presentation.theme.PassionWomanTheme
 
 @Composable
 fun OnboardingScreen(
@@ -151,48 +135,52 @@ fun OnboardingScreen(
                 }
             }
 
-            IconButton(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .onSizeChanged { size ->
-                        prevButtonWidth = with (density) {
-                            size.width.toDp()
+            if (currentPage > 0) {
+                IconButton(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .onSizeChanged { size ->
+                            prevButtonWidth = with (density) {
+                                size.width.toDp()
+                            }
                         }
-                    }
-                    .align(Alignment.CenterStart)
-                    .padding(
-                        start = innerPadding.calculateStartPadding(layoutDirection),
-                        top = innerPadding.calculateTopPadding(),
-                        bottom = innerPadding.calculateBottomPadding()
-                    ),
-                onClick = onBackwardClick
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
-                    contentDescription = stringResource(R.string.previous)
-                )
+                        .align(Alignment.CenterStart)
+                        .padding(
+                            start = innerPadding.calculateStartPadding(layoutDirection),
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = innerPadding.calculateBottomPadding()
+                        ),
+                    onClick = onBackwardClick
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowBackIos,
+                        contentDescription = stringResource(R.string.previous)
+                    )
+                }
             }
 
-            IconButton(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .onSizeChanged { size ->
-                        nextButtonWidth = with (density) {
-                            size.width.toDp()
+            if (currentPage < pages.lastIndex) {
+                IconButton(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .onSizeChanged { size ->
+                            nextButtonWidth = with (density) {
+                                size.width.toDp()
+                            }
                         }
-                    }
-                    .align(Alignment.CenterEnd)
-                    .padding(
-                        end = innerPadding.calculateEndPadding(layoutDirection),
-                        top = innerPadding.calculateTopPadding(),
-                        bottom = innerPadding.calculateBottomPadding()
-                    ),
-                onClick = onForwardClick
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-                    contentDescription = stringResource(R.string.next)
-                )
+                        .align(Alignment.CenterEnd)
+                        .padding(
+                            end = innerPadding.calculateEndPadding(layoutDirection),
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = innerPadding.calculateBottomPadding()
+                        ),
+                    onClick = onForwardClick
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+                        contentDescription = stringResource(R.string.next)
+                    )
+                }
             }
 
             ListIndicator(
