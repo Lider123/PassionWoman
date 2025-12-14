@@ -11,6 +11,8 @@
     <string name="log_in">Log in</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 
     <string name="deleted_text_template"><![CDATA[<del>%s</del>]]></string>
 

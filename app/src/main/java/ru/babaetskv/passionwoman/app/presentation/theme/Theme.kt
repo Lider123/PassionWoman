@@ -24,6 +24,8 @@ private val PassionWomanColors: Colors
 fun PassionWomanTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = PassionWomanColors,
+        typography = PassionWomanTypography,
+        shapes = PassionWomanShapes,
         content = content
     )
 }
