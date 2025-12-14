@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -99,9 +100,14 @@ fun OnboardingScreen(
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(
-                                start = innerPadding.calculateStartPadding(layoutDirection) + prevButtonWidth,
-                                end = innerPadding.calculateEndPadding(layoutDirection) + nextButtonWidth,
-                                bottom = innerPadding.calculateBottomPadding() + listIndicatorHeight
+                                start = prevButtonWidth,
+                                end = nextButtonWidth,
+                                bottom = listIndicatorHeight
+                            )
+                            .padding(
+                                start = innerPadding.calculateStartPadding(layoutDirection),
+                                end = innerPadding.calculateEndPadding(layoutDirection),
+                                bottom = innerPadding.calculateBottomPadding()
                             ),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement =
@@ -191,11 +197,13 @@ fun OnboardingScreen(
                             size.height.toDp()
                         }
                     }
+                    .padding(bottom = 20.dp)
                     .padding(
                         start = innerPadding.calculateStartPadding(layoutDirection),
                         end = innerPadding.calculateEndPadding(layoutDirection),
-                        bottom = innerPadding.calculateBottomPadding() + 20.dp
-                    ),
+                        bottom = innerPadding.calculateBottomPadding()
+                    )
+                    .navigationBarsPadding(),
                 currentItem = currentPage,
                 itemsCount = pages.size,
             )
