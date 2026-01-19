@@ -19,7 +19,7 @@ class ProfileViewModelImpl(
     unregisterPushTokenUseCase: UnregisterPushTokenUseCase,
     stringProvider: StringProvider,
     dependencies: ViewModelDependencies
-) : BaseProfileViewModelImpl(getProfileUseCase, authPreferences, logOutUseCase, updateAvatarUseCase, unregisterPushTokenUseCase, stringProvider, dependencies) {
+) : BaseProfileViewModelImpl(getProfileUseCase, authPreferences, logOutUseCase, updateAvatarUseCase, unregisterPushTokenUseCase, dependencies) {
     override val menuItemsLiveData = MutableLiveData(listOf(
         FavoritesProfileMenuItem(),
         OrdersProfileMenuItem(),

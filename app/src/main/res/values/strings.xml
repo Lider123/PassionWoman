@@ -88,6 +88,7 @@
     <string name="navigation_merge_favorites_confirmation_message">Do you want to merge favorites?</string>
 
     <string name="profile_guest">Guest</string>
+    <string name="profile_guest_welcome">It looks like you\'re not logged in. Feel free to log in to get the full experience.</string>
     <string name="profile_full_name_template">%s %s</string>
     <string name="profile_favorites">Favorites</string>
     <string name="profile_orders">Orders</string>
@@ -96,9 +97,11 @@
     <string name="profile_contacts">Contacts</string>
     <string name="profile_log_out_confirmation_message">Are you sure you want to log out?</string>
     <string name="profile_edit">Edit</string>
+    <string name="profile_edit_avatar">Edit avatar</string>
     <string name="profile_pick_avatar_message">Pick avatar from…</string>
     <string name="profile_camera">Camera</string>
     <string name="profile_gallery">Gallery</string>
+    <string name="profile_greeting_template">Hi, %s</string>
 
     <string name="product_card_empty_photos">Sorry\nThere are no photos for the product</string>
     <string name="product_card_color_placeholder"><![CDATA[Color <font color=#bbbbbb>%s</font>]]></string>

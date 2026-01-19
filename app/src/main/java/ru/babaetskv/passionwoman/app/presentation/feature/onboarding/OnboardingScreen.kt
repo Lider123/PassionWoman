@@ -114,7 +114,7 @@ fun OnboardingScreen(
                             Arrangement.spacedBy(dimensionResource(R.dimen.margin_small).value.dp)
                     ) {
                         Text(
-                            style = MaterialTheme.typography.h5,
+                            style = MaterialTheme.typography.h4,
                             text = stringResource(page.messageRes),
                             textAlign = TextAlign.Center
                         )

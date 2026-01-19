@@ -21,11 +21,29 @@ private val LoraFontFamily = FontFamily(
 )
 
 val PassionWomanTypography = Typography(
-    h5 = TextStyle(
+    h4 = TextStyle(
         fontSize = 28.sp,
         fontFamily = LoraFontFamily,
         fontStyle = FontStyle.Italic,
         fontWeight = FontWeight.Bold
+    ),
+    h5 = TextStyle(
+        fontSize = 22.sp,
+        fontFamily = LoraFontFamily,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Bold
+    ),
+    h6 = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = LoraFontFamily,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Bold
+    ),
+    subtitle1 = TextStyle(
+        fontSize = 16.sp,
+        fontFamily = LoraFontFamily,
+        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Normal
     ),
     body1 = TextStyle(
         fontSize = 16.sp,

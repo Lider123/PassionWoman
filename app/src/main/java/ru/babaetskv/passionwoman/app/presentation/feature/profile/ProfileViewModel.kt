@@ -11,7 +11,6 @@ interface ProfileViewModel : IViewModel {
     val menuItemsLiveData: LiveData<List<ProfileMenuItem>>
     val profileLiveData: LiveData<Profile?>
     val dialogLiveData: LiveData<Dialog?>
-    val guestProfile: Profile
 
     fun onMenuItemPressed(item: ProfileMenuItem)
     fun onImagePickSuccess(imageUri: Uri)
