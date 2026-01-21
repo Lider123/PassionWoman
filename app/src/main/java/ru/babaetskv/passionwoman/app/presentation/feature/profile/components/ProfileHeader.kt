@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -101,7 +102,6 @@ private fun ProfileHeader(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_default)),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             PassionWomanCard {
                 Box {
                     AsyncImage(
@@ -126,7 +126,6 @@ private fun ProfileHeader(
             }
 
             Column {
-                
                 Text(
                     style = MaterialTheme.typography.h6,
                     text = stringResource(R.string.profile_greeting_template, name)
@@ -197,39 +196,6 @@ private fun PreviewProfileHeader() {
                     contentColor = MaterialTheme.colors.onError
                 )
             ),
-        )
-    }
-}
-
-@ComponentPreviews
-@Composable
-private fun PreviewProfileHeaderWithoutAvatar() {
-    PassionWomanTheme {
-        ProfileHeader(
-            name = "Wolfgang",
-            subtitle = "wamozart56@mail.com",
-            avatarUrl = null,
-            avatarAction = AvatarAction(
-                painter = painterResource(R.drawable.ic_edit),
-                contentDescription = stringResource(R.string.profile_edit_avatar),
-                onClick = {}
-            ),
-            actions = listOf(
-                profileAction(
-                    title = stringResource(R.string.profile_edit),
-                    onClick = {}
-                ),
-                profileAction(
-                    title = stringResource(R.string.profile_log_out),
-                    onClick = {},
-                    backgroundColor = MaterialTheme.colors.error,
-                    contentColor = MaterialTheme.colors.onError
-                ),
-                profileAction(
-                    title = "Do something",
-                    onClick = {},
-                )
-            )
         )
     }
 }

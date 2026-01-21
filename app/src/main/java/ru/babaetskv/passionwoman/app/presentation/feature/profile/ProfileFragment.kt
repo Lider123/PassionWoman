@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.platform.ComposeView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -16,6 +18,7 @@ import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.event.Event
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.components.ProfileScreen
 import ru.babaetskv.passionwoman.app.presentation.theme.PassionWomanTheme
+import ru.babaetskv.passionwoman.app.utils.deviceType
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
@@ -28,6 +31,7 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>
     override val viewModel: ProfileViewModel by viewModel<ProfileViewModelImpl>()
     override val screenName: String = ScreenKeys.PROFILE
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +39,10 @@ class ProfileFragment : BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>
     ) = ComposeView(requireContext()).apply {
         setContent {
             PassionWomanTheme {
-                ProfileScreen(viewModel)
+                ProfileScreen(
+                    viewModel = viewModel,
+                    deviceType = calculateWindowSizeClass(requireActivity()).deviceType
+                )
             }
         }
     }
