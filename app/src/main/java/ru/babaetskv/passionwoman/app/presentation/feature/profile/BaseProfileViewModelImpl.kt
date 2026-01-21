@@ -13,7 +13,6 @@ import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ContactsP
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.FavoritesProfileMenuItem
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.OrdersProfileMenuItem
 import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
-import ru.babaetskv.passionwoman.domain.StringProvider
 import ru.babaetskv.passionwoman.domain.model.Profile
 import ru.babaetskv.passionwoman.domain.preferences.AuthPreferences
 import ru.babaetskv.passionwoman.domain.usecase.GetProfileUseCase
@@ -28,7 +27,6 @@ abstract class BaseProfileViewModelImpl(
     private val logOutUseCase: LogOutUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
     private val unregisterPushTokenUseCase: UnregisterPushTokenUseCase,
-    private val stringProvider: StringProvider,
     dependencies: ViewModelDependencies
 ) : BaseViewModel(dependencies), ProfileViewModel {
     private val authTypeFlow = authPreferences.authTypeFlow.onEach(::onAuthTypeUpdated)
@@ -40,15 +38,6 @@ abstract class BaseProfileViewModelImpl(
     ))
     override val profileLiveData = MutableLiveData<Profile?>()
     override val dialogLiveData = MutableLiveData<ProfileViewModel.Dialog?>()
-
-    override val guestProfile: Profile
-        get() = Profile(
-            id = -1,
-            name = stringProvider.GUEST_PROFILE_NAME,
-            surname = "",
-            phone = "",
-            avatar = null
-        )
 
     init {
         authTypeFlow.launchIn(this)

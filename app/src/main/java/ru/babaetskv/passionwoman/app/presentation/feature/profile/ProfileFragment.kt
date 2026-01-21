@@ -2,38 +2,50 @@ package ru.babaetskv.passionwoman.app.presentation.feature.profile
 
 import android.app.Activity
 import android.content.Intent
-import android.viewbinding.library.fragment.viewBinding
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.ui.platform.ComposeView
 import com.github.dhaval2404.imagepicker.ImagePicker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.babaetskv.passionwoman.app.R
 import ru.babaetskv.passionwoman.app.analytics.constants.ScreenKeys
-import ru.babaetskv.passionwoman.app.databinding.FragmentProfileBinding
 import ru.babaetskv.passionwoman.app.presentation.base.BaseFragment
 import ru.babaetskv.passionwoman.app.presentation.base.FragmentComponent
 import ru.babaetskv.passionwoman.app.presentation.event.Event
-import ru.babaetskv.passionwoman.app.presentation.feature.profile.menu.ProfileMenuItem
+import ru.babaetskv.passionwoman.app.presentation.feature.profile.components.ProfileScreen
+import ru.babaetskv.passionwoman.app.presentation.theme.PassionWomanTheme
+import ru.babaetskv.passionwoman.app.utils.deviceType
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_HORIZONTAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DIALOG_ACTIONS_ORIENTATION_VERTICAL
 import ru.babaetskv.passionwoman.app.utils.dialog.DialogAction
 import ru.babaetskv.passionwoman.app.utils.dialog.showAlertDialog
-import ru.babaetskv.passionwoman.app.utils.load
-import ru.babaetskv.passionwoman.app.utils.setOnSingleClickListener
-import ru.babaetskv.passionwoman.app.utils.toFormattedPhone
-import ru.babaetskv.passionwoman.domain.model.Profile
 
-class ProfileFragment :
-    BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>() {
-    private val binding: FragmentProfileBinding by viewBinding()
-    private val profileMenuItemsAdapter: ProfileMenuItemAdapter by lazy {
-        ProfileMenuItemAdapter(viewModel::onMenuItemPressed)
-    }
+class ProfileFragment : BaseFragment<ProfileViewModel, FragmentComponent.NoArgs>() {
     private var activeDialog: AlertDialog? = null
 
-    override val layoutRes: Int = R.layout.fragment_profile
+    override val layoutRes: Int = 0
     override val viewModel: ProfileViewModel by viewModel<ProfileViewModelImpl>()
     override val screenName: String = ScreenKeys.PROFILE
+
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = ComposeView(requireContext()).apply {
+        setContent {
+            PassionWomanTheme {
+                ProfileScreen(
+                    viewModel = viewModel,
+                    deviceType = calculateWindowSizeClass(requireActivity()).deviceType
+                )
+            }
+        }
+    }
 
     @Deprecated("Deprecated in Java") // TODO: replace with a launcher
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -50,31 +62,8 @@ class ProfileFragment :
         }
     }
 
-    override fun initViews() {
-        super.initViews()
-        binding.run {
-            rvMenuItems.adapter = profileMenuItemsAdapter
-            btnLogOut.setOnSingleClickListener {
-                viewModel.onLogOutPressed()
-            }
-            layoutHeader.run {
-                btnLogin.setOnSingleClickListener {
-                    viewModel.onLogInPressed()
-                }
-                btnEdit.setOnSingleClickListener {
-                    viewModel.onEditPressed()
-                }
-                btnEditAvatar.setOnSingleClickListener {
-                    viewModel.onEditAvatarPressed()
-                }
-            }
-        }
-    }
-
     override fun initObservers() {
         super.initObservers()
-        viewModel.profileLiveData.observe(viewLifecycleOwner, ::populateProfile)
-        viewModel.menuItemsLiveData.observe(viewLifecycleOwner, ::populateMenu)
         viewModel.dialogLiveData.observe(viewLifecycleOwner, ::populateDialog)
     }
 
@@ -143,32 +132,6 @@ class ProfileFragment :
                 }
             )
         )
-    }
-
-    private fun populateMenu(items: List<ProfileMenuItem>) {
-        profileMenuItemsAdapter.submitList(items)
-    }
-
-    private fun populateProfile(profile: Profile?) {
-        val guestProfile = viewModel.guestProfile
-        profile ?: run {
-            populateProfile(guestProfile)
-            return
-        }
-
-        binding.run {
-            layoutHeader.run {
-                profile.avatar?.let {
-                    ivAvatar.load(it, R.drawable.avatar_placeholder)
-                } ?: ivAvatar.setImageResource(R.drawable.avatar_placeholder)
-                tvName.text = getString(R.string.profile_full_name_template, profile.name, profile.surname)
-                tvPhone.text = profile.phone.toFormattedPhone()
-                btnLogin.isVisible = profile == guestProfile
-                btnEditAvatar.isVisible = profile != guestProfile
-                btnEdit.isVisible = profile != guestProfile
-            }
-            btnLogOut.isVisible = profile != guestProfile
-        }
     }
 
     companion object {
